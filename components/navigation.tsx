@@ -90,7 +90,7 @@ export function Navigation() {
 
   return (
     <>
-      <nav className="fixed top-10 left-1/2 -translate-x-1/2 z-50 hidden md:block">
+      <nav className="fixed top-10 left-1/2 -translate-x-1/2 z-50 hidden lg:block">
         <div
           className="flex items-center justify-between h-[52px] rounded-[50px] border"
           style={{
@@ -1144,7 +1144,7 @@ export function Navigation() {
 
       {/* Mobile Navigation */}
       <nav
-        className="fixed top-0 left-0 right-0 z-50 md:hidden"
+        className="fixed top-0 left-0 right-0 z-50 lg:hidden"
         style={{
           background: isScrolled ? "#FFFFFF26" : "transparent",
           border: isScrolled ? "1px solid #FFFFFF1A" : "none",
