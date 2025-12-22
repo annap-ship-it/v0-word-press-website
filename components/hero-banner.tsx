@@ -126,6 +126,7 @@ export function HeroBanner() {
           style={{
             maxWidth: "1116px",
             height: "auto",
+            gap: "40px",
             margin: "48px auto 0",
           }}
         >
@@ -204,27 +205,8 @@ export function HeroBanner() {
         </div>
 
         <style jsx>{`
-          @media (min-width: 768px) and (max-width: 999px) {
-            .hero-banner {
-              min-height: 100vh !important;
-              max-height: none !important;
-            }
-            
-            .hero-content {
-              padding-top: 0 !important;
-            }
-            
-            .hero-title {
-              margin-top: 197px !important;
-            }
-            
-            .stats-section {
-              margin-top: 64px !important;
-              margin-bottom: 48px !important;
-            }
-          }
-
-          @media (min-width: 480px) and (max-width: 767px) {
+          @media (max-width: 767px) {
+            /* Setting proper auto height that expands with content */
             .hero-banner {
               height: auto !important;
               min-height: 100vh !important;
@@ -239,6 +221,7 @@ export function HeroBanner() {
               min-height: auto !important;
             }
             
+            /* Ensuring H1 font-size is 40px for mobile 0-767px */
             .hero-title {
               margin-top: 166px !important;
               font-size: 40px !important;
@@ -261,15 +244,15 @@ export function HeroBanner() {
               margin-top: 0 !important;
             }
             
+            /* 2-row layout for stats section on 0-767px: 2 columns per row */
             .stats-section {
               width: 100% !important;
-              max-width: 480px !important;
+              max-width: 440px !important;
               margin: 48px auto 0 !important;
-              padding: 0 10px !important;
-              gap: 5px !important;
+              padding: 0 20px !important;
               display: grid !important;
-              grid-template-columns: repeat(4, 1fr) !important;
-              justify-items: center !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 20px 40px !important;
               align-items: start !important;
             }
             
@@ -280,42 +263,61 @@ export function HeroBanner() {
               flex-direction: column !important;
               align-items: center !important;
               gap: 4px !important;
-              padding: 0 4px !important;
-              border-right: 1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"} !important;
-            }
-            
-            .stats-section > div:last-child {
+              padding: 0 !important;
               border-right: none !important;
             }
             
+            /* Hide all dividers on mobile */
             .stats-section > div.w-px {
               display: none !important;
             }
             
             .stats-section span:first-child {
-              font-size: 28px !important;
+              font-size: 32px !important;
               line-height: 1 !important;
               white-space: nowrap !important;
             }
             
             .stats-section span:last-child {
-              font-size: 11px !important;
-              line-height: 1.2 !important;
+              font-size: 14px !important;
+              line-height: 1.3 !important;
               text-align: center !important;
-              word-wrap: break-word !important;
               max-width: 100% !important;
             }
           }
 
-          @media (min-width: 768px) {
+          @media (min-width: 768px) and (max-width: 999px) {
+            .hero-banner {
+              min-height: 100vh !important;
+              max-height: none !important;
+            }
+            
+            .hero-content {
+              padding-top: 0 !important;
+            }
+            
+            .hero-title {
+              margin-top: 197px !important;
+            }
+            
+            /* Tablet keeps single row layout */
             .stats-section {
-              gap: 40px !important;
+              display: flex !important;
+              flex-direction: row !important;
+              margin-top: 64px !important;
+              margin-bottom: 48px !important;
             }
           }
 
           @media (min-width: 1000px) {
             .hero-banner {
               max-height: 100vh !important;
+            }
+            
+            /* Desktop keeps single row layout */
+            .stats-section {
+              display: flex !important;
+              flex-direction: row !important;
             }
           }
         `}</style>
