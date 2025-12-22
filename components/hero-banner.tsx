@@ -10,17 +10,17 @@ export function HeroBanner() {
 
   return (
     <section
-      className="hero-banner relative w-full mx-auto h-[838px] md:h-[838px] flex flex-col items-center justify-center overflow-hidden"
+      className="hero-banner relative w-full mx-auto min-h-screen flex flex-col items-center justify-center"
       style={{
         backgroundImage: `url(${theme === "dark" ? darkBg : lightBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px]">
+      <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px] flex flex-col justify-center py-8 md:py-12 items-center h-max">
         {/* Main Title with specific typography */}
         <h1
-          className="font-extrabold text-center mb-6 mt-[65px] md:w-[738px] md:mx-auto md:mt-[197px] md:mb-4"
+          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto md:mt-12 leading-4 mt-20"
           style={{
             fontSize: "64px",
             lineHeight: "110%",
@@ -48,7 +48,7 @@ export function HeroBanner() {
 
         {/* Subtitle */}
         <p
-          className="text-white text-center mb-4 md:w-[408px] md:mx-auto md:mt-[17px]"
+          className="text-white text-center mb-4 md:w-[408px] md:mx-auto md:mt-4"
           style={{
             fontSize: "20px",
             lineHeight: "100%",
@@ -63,7 +63,7 @@ export function HeroBanner() {
         </p>
 
         {/* CTA Button */}
-        <div className="flex flex-col items-center gap-3 md:mt-[148px]" style={{ marginTop: "calc(2rem + 65px)" }}>
+        <div className="flex flex-col items-center gap-3 mt-8 md:mt-12">
           <button
             className="h-10 rounded-full px-7 font-normal transition-all duration-300 ease-out disabled:cursor-not-allowed md:w-[200px] md:h-[40px]"
             style={{
@@ -105,7 +105,7 @@ export function HeroBanner() {
           </button>
 
           <p
-            className="text-white/80 text-center md:w-[272px] md:h-[40px] md:mt-[15px]"
+            className="text-white/80 text-center md:w-[272px] md:h-[40px] md:mt-[15px] opacity-60"
             style={{
               fontSize: "16px",
               lineHeight: "100%",
@@ -122,12 +122,12 @@ export function HeroBanner() {
 
         {/* Stats Section */}
         <div
-          className="stats-section flex items-center justify-center mt-20"
+          className="stats-section flex items-center justify-center mt-12 md:mt-16"
           style={{
             maxWidth: "1116px",
             height: "auto",
             gap: "40px",
-            margin: "80px auto 0",
+            margin: "48px auto 0",
           }}
         >
           <div className="text-center">
@@ -137,7 +137,7 @@ export function HeroBanner() {
             >
               25+
             </span>
-            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
+            <span className="block mt-0" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Estimations
             </span>
           </div>
@@ -154,7 +154,7 @@ export function HeroBanner() {
             >
               15+
             </span>
-            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
+            <span className="block mt-0" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Total Projects
             </span>
           </div>
@@ -181,7 +181,7 @@ export function HeroBanner() {
             >
               10+
             </span>
-            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
+            <span className="block mt-0" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Successful Clients
             </span>
           </div>
@@ -198,7 +198,7 @@ export function HeroBanner() {
             >
               20+
             </span>
-            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
+            <span className="block mt-0" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Professionals
             </span>
           </div>
@@ -206,26 +206,107 @@ export function HeroBanner() {
 
         <style jsx>{`
           @media (max-width: 767px) {
-            .stats-section {
-              width: 635px !important;
-              gap: 0 !important;
-              margin-top: 80px !important;
+            /* Removing conflicting 767px styles that break 480px layout */
+          }
+
+          @media (min-width: 768px) and (max-width: 999px) {
+            .hero-banner {
+              min-height: 100vh !important;
+              max-height: none !important;
             }
+            
+            .hero-content {
+              padding-top: 0 !important;
+            }
+            
+            .hero-title {
+              margin-top: 197px !important;
+            }
+            
+            .stats-section {
+              margin-top: 64px !important;
+              margin-bottom: 48px !important;
+            }
+          }
+
+          @media (min-width: 480px) and (max-width: 767px) {
+            /* Setting proper auto height that expands with content */
+            .hero-banner {
+              height: auto !important;
+              min-height: 100vh !important;
+              max-height: none !important;
+              overflow: visible !important;
+              padding-bottom: 60px !important;
+            }
+            
+            .hero-content {
+              padding: 0 28px 0 !important;
+              height: auto !important;
+              min-height: auto !important;
+            }
+            
+            .hero-title {
+              margin-top: 166px !important;
+              font-size: 40px !important;
+              line-height: 110% !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              margin-bottom: 24px !important;
+            }
+            
+            .hero-title + p {
+              width: 100% !important;
+              max-width: 100% !important;
+              font-size: 20px !important;
+              margin-bottom: 40px !important;
+            }
+            
+            .hero-content > div:nth-child(3) {
+              margin-top: 0 !important;
+            }
+            
+            /* Fixing stats section to fit within 480px viewport */
+            .stats-section {
+              width: 100% !important;
+              max-width: 424px !important;
+              margin: 48px auto 0 !important;
+              gap: 0 !important;
+              display: flex !important;
+              justify-content: space-between !important;
+            }
+            
             .stats-section > div:not(.w-px) {
-              width: 125px !important;
-              height: 61px !important;
+              width: 91px !important;
               display: flex !important;
               flex-direction: column !important;
+              align-items: center !important;
               gap: 10px !important;
-              padding-right: 34px !important;
+              padding: 0 !important;
               border-right: 1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"} !important;
             }
+            
             .stats-section > div:last-child {
               border-right: none !important;
-              padding-right: 0 !important;
             }
+            
             .stats-section > div.w-px {
               display: none !important;
+            }
+            
+            .stats-section span:first-child {
+              font-size: 32px !important;
+            }
+            
+            .stats-section span:last-child {
+              font-size: 14px !important;
+              text-align: center !important;
+            }
+          }
+
+          /* Adding desktop max-height constraint back for 1000px+ */
+          @media (min-width: 1000px) {
+            .hero-banner {
+              max-height: 100vh !important;
             }
           }
         `}</style>
