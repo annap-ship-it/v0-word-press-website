@@ -20,7 +20,7 @@ export function HeroBanner() {
       <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px] flex flex-col justify-center py-8 md:py-12 items-center h-max">
         {/* Main Title with specific typography */}
         <h1
-          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto md:mt-12 leading-4 mt-20"
+          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto md:mt-12 leading-4 mt-20 px-2"
           style={{
             fontSize: "64px",
             lineHeight: "110%",
@@ -126,7 +126,6 @@ export function HeroBanner() {
           style={{
             maxWidth: "1116px",
             height: "auto",
-            gap: "40px",
             margin: "48px auto 0",
           }}
         >
@@ -205,10 +204,6 @@ export function HeroBanner() {
         </div>
 
         <style jsx>{`
-          @media (max-width: 767px) {
-            /* Removing conflicting 767px styles that break 480px layout */
-          }
-
           @media (min-width: 768px) and (max-width: 999px) {
             .hero-banner {
               min-height: 100vh !important;
@@ -230,7 +225,6 @@ export function HeroBanner() {
           }
 
           @media (min-width: 480px) and (max-width: 767px) {
-            /* Setting proper auto height that expands with content */
             .hero-banner {
               height: auto !important;
               min-height: 100vh !important;
@@ -250,7 +244,9 @@ export function HeroBanner() {
               font-size: 40px !important;
               line-height: 110% !important;
               width: 100% !important;
-              max-width: 100% !important;
+              max-width: 423px !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
               margin-bottom: 24px !important;
             }
             
@@ -265,23 +261,26 @@ export function HeroBanner() {
               margin-top: 0 !important;
             }
             
-            /* Fixing stats section to fit within 480px viewport */
             .stats-section {
               width: 100% !important;
-              max-width: 424px !important;
+              max-width: 480px !important;
               margin: 48px auto 0 !important;
-              gap: 0 !important;
-              display: flex !important;
-              justify-content: space-between !important;
+              padding: 0 10px !important;
+              gap: 5px !important;
+              display: grid !important;
+              grid-template-columns: repeat(4, 1fr) !important;
+              justify-items: center !important;
+              align-items: start !important;
             }
             
             .stats-section > div:not(.w-px) {
-              width: 91px !important;
+              width: 100% !important;
+              max-width: none !important;
               display: flex !important;
               flex-direction: column !important;
               align-items: center !important;
-              gap: 10px !important;
-              padding: 0 !important;
+              gap: 4px !important;
+              padding: 0 4px !important;
               border-right: 1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"} !important;
             }
             
@@ -294,16 +293,26 @@ export function HeroBanner() {
             }
             
             .stats-section span:first-child {
-              font-size: 32px !important;
+              font-size: 28px !important;
+              line-height: 1 !important;
+              white-space: nowrap !important;
             }
             
             .stats-section span:last-child {
-              font-size: 14px !important;
+              font-size: 11px !important;
+              line-height: 1.2 !important;
               text-align: center !important;
+              word-wrap: break-word !important;
+              max-width: 100% !important;
             }
           }
 
-          /* Adding desktop max-height constraint back for 1000px+ */
+          @media (min-width: 768px) {
+            .stats-section {
+              gap: 40px !important;
+            }
+          }
+
           @media (min-width: 1000px) {
             .hero-banner {
               max-height: 100vh !important;
