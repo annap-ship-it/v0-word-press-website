@@ -10,17 +10,17 @@ export function HeroBanner() {
 
   return (
     <section
-      className="hero-banner relative w-full mx-auto h-[838px] flex flex-col items-center justify-center overflow-hidden"
+      className="hero-banner relative w-full mx-auto h-[838px] md:h-[838px] flex flex-col items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url(${theme === "dark" ? darkBg : lightBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center flex flex-col items-center">
+      <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px]">
         {/* Main Title with specific typography */}
         <h1
-          className="hero-title font-extrabold text-center mb-6"
+          className="font-extrabold text-center mb-6 mt-[65px] md:w-[738px] md:mx-auto md:mt-[197px] md:mb-4"
           style={{
             fontSize: "64px",
             lineHeight: "110%",
@@ -48,7 +48,7 @@ export function HeroBanner() {
 
         {/* Subtitle */}
         <p
-          className="hero-subtitle text-center mb-4"
+          className="text-white text-center mb-4 md:w-[408px] md:mx-auto md:mt-[17px]"
           style={{
             fontSize: "20px",
             lineHeight: "100%",
@@ -63,9 +63,9 @@ export function HeroBanner() {
         </p>
 
         {/* CTA Button */}
-        <div className="hero-cta flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3 md:mt-[148px]" style={{ marginTop: "calc(2rem + 65px)" }}>
           <button
-            className="hero-button h-10 rounded-full px-7 font-normal transition-all duration-300 ease-out disabled:cursor-not-allowed"
+            className="h-10 rounded-full px-7 font-normal transition-all duration-300 ease-out disabled:cursor-not-allowed md:w-[200px] md:h-[40px]"
             style={{
               width: "200px",
               height: "40px",
@@ -105,11 +105,12 @@ export function HeroBanner() {
           </button>
 
           <p
-            className="hero-button-desc text-center"
+            className="text-white/80 text-center md:w-[272px] md:h-[40px] md:mt-[15px]"
             style={{
               fontSize: "16px",
               lineHeight: "100%",
               fontWeight: 400,
+              paddingTop: "15px",
               color: theme === "light" ? "#000000" : "#FFFFFF",
             }}
           >
@@ -120,50 +121,52 @@ export function HeroBanner() {
         </div>
 
         {/* Stats Section */}
-        <div className="stats-section flex items-center justify-center">
-          <div className="stat-item text-center">
+        <div
+          className="stats-section flex items-center justify-center mt-20"
+          style={{
+            maxWidth: "1116px",
+            height: "auto",
+            gap: "40px",
+            margin: "80px auto 0",
+          }}
+        >
+          <div className="text-center">
             <span
-              className="block font-bold stat-number"
+              className="block font-bold"
               style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
             >
               25+
             </span>
-            <span
-              className="block mt-3 stat-label"
-              style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-            >
+            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Estimations
             </span>
           </div>
 
           <div
-            className="stat-divider w-px h-8"
+            className="w-px h-8"
             style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
           />
 
-          <div className="stat-item text-center">
+          <div className="text-center">
             <span
-              className="block font-bold stat-number"
+              className="block font-bold"
               style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
             >
               15+
             </span>
-            <span
-              className="block mt-3 stat-label"
-              style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-            >
+            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Total Projects
             </span>
           </div>
 
           <div
-            className="stat-divider w-px h-8"
+            className="w-px h-8"
             style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
           />
 
-          <div className="stat-item text-center">
+          <div className="text-center">
             <span
-              className="block font-bold stat-number"
+              className="block font-bold"
               style={{
                 fontSize: "32px",
                 ...(theme === "light"
@@ -178,187 +181,37 @@ export function HeroBanner() {
             >
               10+
             </span>
-            <span
-              className="block mt-3 stat-label"
-              style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-            >
+            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Successful Clients
             </span>
           </div>
 
           <div
-            className="stat-divider w-px h-8"
+            className="w-px h-8"
             style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
           />
 
-          <div className="stat-item text-center">
+          <div className="text-center">
             <span
-              className="block font-bold stat-number"
+              className="block font-bold"
               style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
             >
               20+
             </span>
-            <span
-              className="block mt-3 stat-label"
-              style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-            >
+            <span className="block mt-3" style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}>
               Professionals
             </span>
           </div>
         </div>
 
         <style jsx>{`
-          /* Desktop default styles */
-          .hero-banner {
-            height: 838px;
-          }
-          
-          .hero-title {
-            width: 738px;
-            margin-top: 197px;
-            margin-bottom: 17px;
-          }
-          
-          .hero-subtitle {
-            width: 408px;
-            margin-bottom: 148px;
-          }
-          
-          .hero-cta {
-            margin-bottom: 80px;
-          }
-          
-          .hero-button-desc {
-            width: 272px;
-            margin-top: 15px;
-          }
-          
-          .stats-section {
-            max-width: 1116px;
-            gap: 40px;
-          }
-          
-          .stat-divider {
-            display: block;
-          }
-          
-          .stat-item {
-            border-right: none;
-          }
-
-          /* Tablet: 768px and above - keep desktop styles */
-          @media (min-width: 768px) {
-            .hero-title {
-              width: 738px;
-              font-size: 64px !important;
-            }
-            
-            .hero-subtitle {
-              width: 408px;
-            }
-            
-            .stats-section {
-              max-width: 1116px;
-              gap: 40px;
-            }
-          }
-
-          /* Small mobile: 480px to 767px only */
-          @media (min-width: 480px) and (max-width: 767px) {
-            .hero-content {
-              align-items: flex-start !important;
-              padding: 0 28px !important;
-              max-width: 480px !important;
-            }
-            
-            .hero-banner {
-              max-width: 480px;
-              height: 718px !important;
-            }
-            
-            .hero-title {
-              width: 423px !important;
-              height: 88px !important;
-              font-size: 40px !important;
-              line-height: 110% !important;
-              margin-top: 166px !important;
-              margin-left: 1px !important;
-              margin-bottom: 24px !important;
-              margin-right: auto !important;
-              text-align: center !important;
-            }
-            
-            .hero-subtitle {
-              width: 408px !important;
-              height: 52px !important;
-              font-size: 20px !important;
-              margin-bottom: 40px !important;
-              margin-left: auto !important;
-              margin-right: auto !important;
-              text-align: center !important;
-            }
-            
-            .hero-cta {
-              margin-bottom: 97px !important;
-              align-self: center !important;
-            }
-            
-            .hero-button {
-              width: 200px !important;
-              height: 40px !important;
-            }
-            
-            .hero-button-desc {
-              width: 272px !important;
-              height: 40px !important;
-              text-align: center !important;
-            }
-            
-            .stats-section {
-              width: 424px !important;
-              height: 80px !important;
-              gap: 30px !important;
-              flex-wrap: nowrap !important;
-              margin-left: auto !important;
-              margin-right: auto !important;
-            }
-            
-            .stat-item {
-              width: 91px !important;
-              height: 61px !important;
-              display: flex !important;
-              flex-direction: column !important;
-              gap: 10px !important;
-              border-right: 1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"} !important;
-              padding-right: 0 !important;
-            }
-            
-            .stat-item:last-child {
-              border-right: none !important;
-            }
-            
-            .stat-divider {
-              display: none !important;
-            }
-            
-            .stat-number {
-              font-size: 32px !important;
-            }
-            
-            .stat-label {
-              font-size: 14px !important;
-              margin-top: 10px !important;
-            }
-          }
-
-          /* Mobile below 480px - keep using 635px wide stats */
-          @media (max-width: 479px) {
+          @media (max-width: 767px) {
             .stats-section {
               width: 635px !important;
               gap: 0 !important;
+              margin-top: 80px !important;
             }
-            
-            .stat-item {
+            .stats-section > div:not(.w-px) {
               width: 125px !important;
               height: 61px !important;
               display: flex !important;
@@ -367,13 +220,11 @@ export function HeroBanner() {
               padding-right: 34px !important;
               border-right: 1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"} !important;
             }
-            
-            .stat-item:last-child {
+            .stats-section > div:last-child {
               border-right: none !important;
               padding-right: 0 !important;
             }
-            
-            .stat-divider {
+            .stats-section > div.w-px {
               display: none !important;
             }
           }
