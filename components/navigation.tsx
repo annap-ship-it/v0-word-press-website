@@ -15,6 +15,9 @@ export function Navigation() {
   const [servicesOpen, setServicesOpen] = useState(false)
   const [projectsOpen, setProjectsOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false)
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
+  const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false)
   const [hoverStates, setHoverStates] = useState<{ [key: number]: string }>({})
   const [isScrolled, setIsScrolled] = useState(false)
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -712,13 +715,20 @@ export function Navigation() {
                       </div>
 
                       {/* Column 3 - Blog Article Card - 40% width */}
-                      <div style={{ width: "40%", display: "flex", justifyContent: "center" }}>
+                      <div
+                        className="relative"
+                        style={{
+                          width: "40%",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
                         <Link
                           href="/services_dark"
                           className="relative overflow-hidden transition-all duration-300 ease-out"
                           style={{
                             width: "196px",
-                            height: "157px",
+                            height: "167px",
                             borderRadius: "6px",
                             boxShadow: "0px 4px 4px 0px #00000040",
                           }}
@@ -1232,17 +1242,1047 @@ export function Navigation() {
               }}
               aria-label="Toggle menu"
             >
-              <Menu
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  color: textColor,
-                }}
-              />
+              {mobileMenuOpen ? (
+                <svg width="24" height="24" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 12L32 32"
+                    stroke={textColor}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M32 12L12 32"
+                    stroke={textColor}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              ) : (
+                <Menu
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                    color: textColor,
+                  }}
+                />
+              )}
             </button>
           </div>
         </div>
+
+        {mobileMenuOpen && (
+          <div
+            className="fixed z-50 animate-in fade-in"
+            style={{
+              top: "96px",
+              left: "24px",
+              width: "calc(100vw - 48px)",
+              maxWidth: "720px",
+              maxHeight: "calc(100vh - 120px)",
+              overflowY: "auto",
+              borderRadius: "14px",
+              background: isDark ? "#212121" : "#FFFFFF",
+              boxShadow: !isDark ? "0px 4px 10px 0px #00000026" : undefined,
+              paddingTop: "50px",
+              paddingRight: "36px",
+              paddingBottom: "50px",
+              paddingLeft: "36px",
+              gap: "13px",
+              display: "flex",
+              flexDirection: "column",
+              animationTimingFunction: "ease-out",
+              animationDuration: "300ms",
+            }}
+          >
+            {/* Company Accordion */}
+            <div>
+              <button
+                onClick={() => setCompanyOpen(!companyOpen)}
+                className="w-full flex items-center justify-between transition-all duration-300 ease-out"
+                style={{
+                  padding: "16px 20px",
+                  borderRadius: "8px",
+                  background: companyOpen
+                    ? isDark
+                      ? "rgba(255, 255, 255, 0.05)"
+                      : "rgba(0, 0, 0, 0.03)"
+                    : "transparent",
+                  fontFamily: "Onest",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                  color: isDark ? "#FFFFFF" : "#212121",
+                }}
+              >
+                Company
+                {companyOpen ? (
+                  <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
+                ) : (
+                  <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
+                )}
+              </button>
+
+              {companyOpen && (
+                <div
+                  className="animate-in fade-in slide-in-from-top-2"
+                  style={{
+                    marginTop: "8px",
+                    padding: "16px",
+                    animationTimingFunction: "ease-out",
+                    animationDuration: "300ms",
+                  }}
+                >
+                  <div className="flex flex-col min-[480px]:flex-row min-[480px]:gap-6">
+                    {/* Menu items */}
+                    <div className="flex flex-col gap-3">
+                      <Link
+                        href="/about"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out"
+                        style={{
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: "transparent",
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark
+                            ? "rgba(255, 255, 255, 0.05)"
+                            : "rgba(0, 0, 0, 0.03)"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Building2 className="h-4 w-4 text-white" />
+                        </div>
+                        <span>About us</span>
+                      </Link>
+
+                      <Link
+                        href="/experience"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out"
+                        style={{
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: "transparent",
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark
+                            ? "rgba(255, 255, 255, 0.05)"
+                            : "rgba(0, 0, 0, 0.03)"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Award className="h-4 w-4 text-white" />
+                        </div>
+                        <span>Our experience</span>
+                      </Link>
+
+                      <Link
+                        href="/careers"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out"
+                        style={{
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: "transparent",
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark
+                            ? "rgba(255, 255, 255, 0.05)"
+                            : "rgba(0, 0, 0, 0.03)"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Briefcase className="h-4 w-4 text-white" />
+                        </div>
+                        <span>Careers</span>
+                      </Link>
+                    </div>
+
+                    <div
+                      className="relative mt-4 min-[480px]:mt-0 min-[480px]:flex-1"
+                      style={{
+                        width: "100%",
+                        height: "167px",
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {/* World map background */}
+                      <img
+                        src={isDark ? "/images/world-20map.svg" : "/images/world-map-light.svg"}
+                        alt="World map"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          border: "0.5px solid rgba(255, 255, 255, 0.5)",
+                        }}
+                      />
+
+                      {/* 20+ text overlay */}
+                      <div
+                        className="absolute z-10"
+                        style={{
+                          top: "10px",
+                          left: "13px",
+                          fontFamily: "Onest",
+                          fontWeight: 800,
+                          fontSize: "24px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        20+
+                      </div>
+
+                      {/* Different Countries text */}
+                      <div
+                        className="absolute z-10"
+                        style={{
+                          top: "36px",
+                          left: "13px",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        Different Countries
+                      </div>
+
+                      {/* Read All Reviews button */}
+                      <button
+                        className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                        style={{
+                          height: "30px",
+                          borderRadius: "50px",
+                          border: "1px solid #FF6200",
+                          padding: "4px 14px",
+                          backdropFilter: "blur(4px)",
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "14px",
+                          lineHeight: "100%",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          background: "transparent",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                      >
+                        Read All Reviews
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Services Accordion */}
+            <div>
+              <button
+                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                className="w-full flex items-center justify-between transition-all duration-300 ease-out"
+                style={{
+                  padding: "16px 20px",
+                  borderRadius: "8px",
+                  background: mobileServicesOpen
+                    ? isDark
+                      ? "rgba(255, 255, 255, 0.05)"
+                      : "rgba(0, 0, 0, 0.03)"
+                    : "transparent",
+                  fontFamily: "Onest",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                  color: isDark ? "#FFFFFF" : "#212121",
+                }}
+              >
+                Services
+                {mobileServicesOpen ? (
+                  <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
+                ) : (
+                  <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
+                )}
+              </button>
+
+              {mobileServicesOpen && (
+                <div
+                  className="mt-3 animate-in fade-in"
+                  style={{
+                    animationTimingFunction: "ease-out",
+                    animationDuration: "300ms",
+                  }}
+                >
+                  {/* Responsive layout: vertical on <480px, horizontal on >=480px */}
+                  <div className="flex flex-col min-[480px]:flex-row min-[480px]:gap-5">
+                    {/* Services links */}
+                    <div className="flex flex-col gap-3 min-[480px]:grid min-[480px]:grid-cols-2 min-[480px]:flex-1">
+                      <Link
+                        href="/services_dark"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchStart={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchEnd={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                      >
+                        Custom web solutions
+                      </Link>
+                      <Link
+                        href="/services_dark"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchStart={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchEnd={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                      >
+                        Manual and Automation QA
+                      </Link>
+                      <Link
+                        href="/services_dark"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchStart={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchEnd={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                      >
+                        Mobile aplications
+                      </Link>
+                      <Link
+                        href="/services_dark"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchStart={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchEnd={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                      >
+                        DevOps
+                      </Link>
+                      <Link
+                        href="/services_dark"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchStart={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchEnd={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                      >
+                        UI/UX and Graphic Design
+                      </Link>
+                      <Link
+                        href="/services_dark"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchStart={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                        }}
+                        onTouchEnd={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                        }}
+                      >
+                        Data Analytics
+                      </Link>
+                    </div>
+
+                    {/* Blog Article Card */}
+                    <div className="mt-5 min-[480px]:mt-0 min-[480px]:flex min-[480px]:items-start min-[480px]:justify-center min-[480px]:min-w-[200px]">
+                      <Link
+                        href="/services_dark"
+                        className="relative overflow-hidden block transition-all duration-300 ease-out"
+                        style={{
+                          width: "100%",
+                          maxWidth: "280px",
+                          height: "180px",
+                          borderRadius: "6px",
+                          boxShadow: "0px 4px 4px 0px #00000040",
+                        }}
+                      >
+                        <img
+                          src="/images/blog-article-laptop.jpg"
+                          alt="Blog article"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="absolute top-3 left-3.5 right-3.5">
+                          <h3
+                            style={{
+                              fontFamily: "Onest",
+                              fontWeight: 500,
+                              fontSize: "16px",
+                              lineHeight: "110%",
+                              letterSpacing: "-0.03em",
+                              color: "#FFFFFF",
+                            }}
+                          >
+                            Article from blog
+                          </h3>
+                        </div>
+                        <button
+                          className="absolute bottom-3.5 left-3.5 right-3.5 transition-all duration-300 ease-out"
+                          style={{
+                            height: "36px",
+                            borderRadius: "50px",
+                            border: "1px solid #FF6200",
+                            paddingTop: "4px",
+                            paddingRight: "14px",
+                            paddingBottom: "4px",
+                            paddingLeft: "14px",
+                            backdropFilter: "blur(4px)",
+                            background: "rgba(255, 255, 255, 0.1)",
+                            fontFamily: "Onest",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                            lineHeight: "100%",
+                            letterSpacing: "-0.03em",
+                            color: "#FFFFFF",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#FF6200"
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"
+                          }}
+                        >
+                          Read All
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Projects Accordion */}
+            <div>
+              <button
+                onClick={() => setMobileProjectsOpen(!mobileProjectsOpen)}
+                className="w-full flex items-center justify-between transition-all duration-300 ease-out"
+                style={{
+                  padding: "16px 20px",
+                  borderRadius: "8px",
+                  background: mobileProjectsOpen
+                    ? isDark
+                      ? "rgba(255, 255, 255, 0.05)"
+                      : "rgba(0, 0, 0, 0.03)"
+                    : "transparent",
+                  fontFamily: "Onest",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                  color: isDark ? "#FFFFFF" : "#212121",
+                }}
+              >
+                Projects
+                {mobileProjectsOpen ? (
+                  <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
+                ) : (
+                  <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
+                )}
+              </button>
+
+              {mobileProjectsOpen && (
+                <div
+                  className="mt-4"
+                  style={{
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                  }}
+                >
+                  {/* Project Links - full width on mobile */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "2px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <Link
+                      href="/projects"
+                      onClick={() => {
+                        setMobileMenuOpen(false)
+                        setMobileProjectsOpen(false)
+                      }}
+                      className="transition-all duration-300 ease-out"
+                      style={{
+                        fontFamily: "Onest",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "100%",
+                        letterSpacing: "0.02em",
+                        color: isDark ? "#FFFFFF99" : "#21212199",
+                        padding: "6px 0",
+                        borderRadius: "8px",
+                        textDecoration: "none",
+                      }}
+                      onMouseDown={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "1px solid #FF620033"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseUp={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                      onTouchStart={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onTouchEnd={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                    >
+                      Multi-brand eCommerce Landing Pages
+                    </Link>
+                    <Link
+                      href="/projects"
+                      onClick={() => {
+                        setMobileMenuOpen(false)
+                        setMobileProjectsOpen(false)
+                      }}
+                      className="transition-all duration-300 ease-out"
+                      style={{
+                        fontFamily: "Onest",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "100%",
+                        letterSpacing: "0.02em",
+                        color: isDark ? "#FFFFFF99" : "#21212199",
+                        padding: "6px 0",
+                        borderRadius: "8px",
+                        textDecoration: "none",
+                      }}
+                      onMouseDown={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "1px solid #FF620033"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseUp={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                      onTouchStart={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onTouchEnd={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                    >
+                      Statistics Platform
+                    </Link>
+                    <Link
+                      href="/projects"
+                      onClick={() => {
+                        setMobileMenuOpen(false)
+                        setMobileProjectsOpen(false)
+                      }}
+                      className="transition-all duration-300 ease-out"
+                      style={{
+                        fontFamily: "Onest",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "100%",
+                        letterSpacing: "0.02em",
+                        color: isDark ? "#FFFFFF99" : "#21212199",
+                        padding: "6px 0",
+                        borderRadius: "8px",
+                        textDecoration: "none",
+                      }}
+                      onMouseDown={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "1px solid #FF620033"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseUp={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                      onTouchStart={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onTouchEnd={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                    >
+                      Sensor Infobox
+                    </Link>
+                    <Link
+                      href="/projects"
+                      onClick={() => {
+                        setMobileMenuOpen(false)
+                        setMobileProjectsOpen(false)
+                      }}
+                      className="transition-all duration-300 ease-out"
+                      style={{
+                        fontFamily: "Onest",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "100%",
+                        letterSpacing: "0.02em",
+                        color: isDark ? "#FFFFFF99" : "#21212199",
+                        padding: "6px 0",
+                        borderRadius: "8px",
+                        textDecoration: "none",
+                      }}
+                      onMouseDown={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "1px solid #FF620033"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseUp={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.border = "none"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                      onTouchStart={(e) => {
+                        e.currentTarget.style.background = isDark ? "#303030" : "#E6E6E6"
+                        e.currentTarget.style.color = isDark ? "#FFC7A3" : "#000000"
+                      }}
+                      onTouchEnd={(e) => {
+                        e.currentTarget.style.background = "transparent"
+                        e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
+                      }}
+                    >
+                      High-performance eCommerce platform
+                    </Link>
+                  </div>
+
+                  <div className="flex gap-3 min-[480px]:gap-5">
+                    {/* Portfolio Card - left column */}
+                    <div className="flex-shrink-0">
+                      <Link
+                        href="/projects"
+                        onClick={() => {
+                          setMobileMenuOpen(false)
+                          setMobileProjectsOpen(false)
+                        }}
+                        className="block transition-transform duration-300 hover:scale-105"
+                      >
+                        {/* Mobile card (360px-479px) */}
+                        <div
+                          className="block min-[480px]:hidden"
+                          style={{
+                            width: "128px",
+                            height: "148px",
+                            borderRadius: "6px",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <img
+                            src="/images/portfolio-card-mobile.png"
+                            alt="Multi-brand E-commerce Landing Pages"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+
+                        {/* Tablet card (480px+) */}
+                        <div
+                          className="hidden min-[480px]:block"
+                          style={{
+                            width: "100%",
+                            maxWidth: "235px",
+                            height: "276px",
+                            borderRadius: "6px",
+                            background: "#000000",
+                            overflow: "hidden",
+                            position: "relative",
+                          }}
+                        >
+                          <img
+                            src="/images/projects-laptop.png"
+                            alt="Multi-brand eCommerce Landing Pages"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+                      </Link>
+                    </div>
+
+                    {/* Heading and Button - right column */}
+                    <div className="flex flex-col justify-center gap-3 flex-1">
+                      <h3
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "20px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                          color: isDark ? "#FFFFFF" : "#000000",
+                          margin: 0,
+                        }}
+                        className="min-[480px]:text-2xl"
+                      >
+                        A Portfolio of Our Flagship Projects
+                      </h3>
+                      <Link
+                        href="/projects"
+                        onClick={() => {
+                          setMobileMenuOpen(false)
+                          setMobileProjectsOpen(false)
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = "#FF620099"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "14px",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          padding: "8px 16px",
+                          borderRadius: "50px",
+                          border: "1px solid #FF6200",
+                          background: "transparent",
+                          backdropFilter: "blur(4px)",
+                          textAlign: "center",
+                          transition: "all 300ms ease-out",
+                          textDecoration: "none",
+                          display: "inline-block",
+                          whiteSpace: "nowrap",
+                        }}
+                        className="min-[480px]:text-base"
+                      >
+                        Explore All
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Blog Link */}
+            <Link
+              href="/blog"
+              className="w-full transition-all duration-300 ease-out"
+              style={{
+                padding: "16px 20px",
+                borderRadius: "8px",
+                fontFamily: "Onest",
+                fontWeight: 400,
+                fontSize: "16px",
+                lineHeight: "100%",
+                letterSpacing: "0.02em",
+                color: isDark ? "#FFFFFF" : "#212121",
+                background: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent"
+              }}
+            >
+              Blog
+            </Link>
+
+            {/* Careers Link */}
+            <Link
+              href="/careers"
+              className="w-full transition-all duration-300 ease-out"
+              style={{
+                padding: "16px 20px",
+                borderRadius: "8px",
+                fontFamily: "Onest",
+                fontWeight: 400,
+                fontSize: "16px",
+                lineHeight: "100%",
+                letterSpacing: "0.02em",
+                color: isDark ? "#FFFFFF" : "#212121",
+                background: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent"
+              }}
+            >
+              Careers
+            </Link>
+
+            {/* Contact us button */}
+            <button
+              className="w-full transition-all duration-300 ease-out"
+              style={{
+                marginTop: "20px",
+                height: "40px",
+                borderRadius: "50px",
+                background: "#FF6200",
+                fontFamily: "Onest",
+                fontWeight: 400,
+                fontSize: "16px",
+                lineHeight: "100%",
+                letterSpacing: "0.02em",
+                color: "#FFFFFF",
+                padding: "12px 14px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#E55800"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#FF6200"
+              }}
+            >
+              Contact us
+            </button>
+          </div>
+        )}
       </nav>
     </>
   )
 }
+
+export default Navigation
