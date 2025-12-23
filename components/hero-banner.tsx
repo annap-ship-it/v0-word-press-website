@@ -20,7 +20,7 @@ export function HeroBanner() {
       <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px] flex flex-col justify-center py-8 md:py-12 items-center h-max">
         {/* Main Title with specific typography */}
         <h1
-          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto md:mt-12 leading-4 mt-20 px-2"
+          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto md:mt-12 leading-4 mt-24 px-2"
           style={{
             fontSize: "64px",
             lineHeight: "110%",
@@ -150,7 +150,17 @@ export function HeroBanner() {
           <div className="text-center">
             <span
               className="block font-bold"
-              style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+              style={{
+                fontSize: "32px",
+                ...(theme === "light"
+                  ? { color: "#212121" }
+                  : {
+                      backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #FF6200 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }),
+              }}
             >
               15+
             </span>
@@ -167,17 +177,7 @@ export function HeroBanner() {
           <div className="text-center">
             <span
               className="block font-bold"
-              style={{
-                fontSize: "32px",
-                ...(theme === "light"
-                  ? { color: "#212121" }
-                  : {
-                      backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #FF6200 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }),
-              }}
+              style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
             >
               10+
             </span>
@@ -223,7 +223,7 @@ export function HeroBanner() {
             
             /* Ensuring H1 font-size is 40px for mobile 0-767px */
             .hero-title {
-              margin-top: 166px !important;
+              margin-top: 199px !important;
               font-size: 40px !important;
               line-height: 110% !important;
               width: 100% !important;
@@ -296,8 +296,9 @@ export function HeroBanner() {
               padding-top: 0 !important;
             }
             
+            /* Increased top margin by 20%: from 197px to 236px */
             .hero-title {
-              margin-top: 197px !important;
+              margin-top: 236px !important;
             }
             
             /* Tablet keeps single row layout */
