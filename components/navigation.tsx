@@ -1299,12 +1299,12 @@ export function Navigation() {
             {/* Company Accordion */}
             <div>
               <button
-                onClick={() => setCompanyOpen(!companyOpen)}
+                onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
                 className="w-full flex items-center justify-between transition-all duration-300 ease-out"
                 style={{
                   padding: "16px 20px",
                   borderRadius: "8px",
-                  background: companyOpen
+                  background: mobileCompanyOpen
                     ? isDark
                       ? "rgba(255, 255, 255, 0.05)"
                       : "rgba(0, 0, 0, 0.03)"
@@ -1318,14 +1318,14 @@ export function Navigation() {
                 }}
               >
                 Company
-                {companyOpen ? (
+                {mobileCompanyOpen ? (
                   <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 ) : (
                   <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 )}
               </button>
 
-              {companyOpen && (
+              {mobileCompanyOpen && (
                 <div
                   className="animate-in fade-in slide-in-from-top-2"
                   style={{
@@ -1335,8 +1335,15 @@ export function Navigation() {
                     animationDuration: "300ms",
                   }}
                 >
-                  <div className="flex flex-col min-[480px]:flex-row min-[480px]:gap-6">
-                    {/* Menu items */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: window.innerWidth >= 480 ? "1fr 1fr" : "1fr",
+                      gap: "16px",
+                      alignItems: "start",
+                    }}
+                  >
+                    {/* Menu items - Left column on 480px+ */}
                     <div className="flex flex-col gap-3">
                       <Link
                         href="/about"
@@ -1435,24 +1442,29 @@ export function Navigation() {
                       </Link>
                     </div>
 
+                    {/* World map card - Right column on 480px+ */}
                     <div
-                      className="relative mt-4 min-[480px]:mt-0 min-[480px]:flex-1"
+                      className="relative"
                       style={{
                         width: "100%",
-                        height: "167px",
-                        borderRadius: "8px",
-                        overflow: "hidden",
+                        maxWidth: "258px",
+                        aspectRatio: "258 / 167",
+                        borderRadius: "6px",
+                        overflow: "visible",
+                        marginTop: window.innerWidth < 480 ? "16px" : "0",
                       }}
                     >
                       {/* World map background */}
                       <img
                         src={isDark ? "/images/world-20map.svg" : "/images/world-map-light.svg"}
                         alt="World map"
+                        className="absolute inset-0"
                         style={{
                           width: "100%",
                           height: "100%",
                           objectFit: "cover",
-                          border: "0.5px solid rgba(255, 255, 255, 0.5)",
+                          border: "none",
+                          borderRadius: "6px",
                         }}
                       />
 
@@ -1460,11 +1472,11 @@ export function Navigation() {
                       <div
                         className="absolute z-10"
                         style={{
-                          top: "10px",
-                          left: "13px",
+                          top: "min(10px, 3%)",
+                          left: "min(13px, 5%)",
                           fontFamily: "Onest",
                           fontWeight: 800,
-                          fontSize: "24px",
+                          fontSize: "clamp(18px, 4.5vw, 24px)",
                           lineHeight: "110%",
                           letterSpacing: "-0.03em",
                           color: isDark ? "#FFFFFF" : "#212121",
@@ -1478,16 +1490,18 @@ export function Navigation() {
                       <div
                         className="absolute z-10"
                         style={{
-                          top: "36px",
-                          left: "13px",
+                          top: "min(36px, 22%)",
+                          left: "min(13px, 5%)",
+                          right: "min(13px, 5%)",
                           fontFamily: "Onest",
                           fontWeight: 500,
-                          fontSize: "16px",
-                          lineHeight: "110%",
+                          fontSize: "clamp(13px, 3.2vw, 16px)",
+                          lineHeight: "120%",
                           letterSpacing: "-0.03em",
                           color: isDark ? "#FFFFFF" : "#212121",
                           textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                          whiteSpace: "nowrap",
+                          whiteSpace: "normal",
+                          wordBreak: "break-word",
                         }}
                       >
                         Different Countries
@@ -1495,25 +1509,36 @@ export function Navigation() {
 
                       {/* Read All Reviews button */}
                       <button
-                        className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                        className="absolute transition-all duration-300 ease-out"
                         style={{
-                          height: "30px",
+                          bottom: "min(14px, 8%)",
+                          left: "min(14px, 5%)",
+                          right: "min(14px, 5%)",
+                          maxWidth: "168px",
+                          height: "clamp(26px, 7vw, 30px)",
                           borderRadius: "50px",
                           border: "1px solid #FF6200",
-                          padding: "4px 14px",
+                          padding: "4px 12px",
                           backdropFilter: "blur(4px)",
                           fontFamily: "Onest",
                           fontWeight: 400,
-                          fontSize: "14px",
+                          fontSize: "clamp(12px, 3vw, 16px)",
                           lineHeight: "100%",
                           color: isDark ? "#FFFFFF" : "#212121",
                           background: "transparent",
+                          whiteSpace: "nowrap",
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = "#FF62001A"
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = "transparent"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = "#FF620099"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
                         }}
                       >
                         Read All Reviews

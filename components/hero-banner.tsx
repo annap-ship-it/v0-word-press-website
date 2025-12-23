@@ -20,7 +20,7 @@ export function HeroBanner() {
       <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px] flex flex-col justify-center py-8 md:py-12 items-center h-max">
         {/* Main Title with specific typography */}
         <h1
-          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto md:mt-12 leading-4 mt-24 px-2"
+          className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto lg:mt-20 xl:mt-24 leading-4 mt-40 px-2"
           style={{
             fontSize: "64px",
             lineHeight: "110%",
@@ -205,8 +205,73 @@ export function HeroBanner() {
         </div>
 
         <style jsx>{`
-          @media (max-width: 767px) {
-            /* Setting proper auto height that expands with content */
+          @media (max-width: 479px) {
+            .hero-banner {
+              height: auto !important;
+              min-height: 100vh !important;
+              max-height: none !important;
+              overflow: visible !important;
+              padding-bottom: 60px !important;
+            }
+            
+            .hero-content {
+              padding: 0 20px 0 !important;
+              height: auto !important;
+              min-height: auto !important;
+            }
+            
+            .hero-title {
+              margin-top: 200px !important;
+              font-size: 36px !important;
+              line-height: 110% !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              margin-bottom: 24px !important;
+            }
+            
+            .hero-title + p {
+              width: 100% !important;
+              max-width: 100% !important;
+              font-size: 18px !important;
+              margin-bottom: 32px !important;
+            }
+            
+            .stats-section {
+              width: 100% !important;
+              max-width: 100% !important;
+              margin: 40px auto 0 !important;
+              padding: 0 20px !important;
+              display: grid !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 20px 30px !important;
+              align-items: start !important;
+            }
+            
+            .stats-section > div:not(.w-px) {
+              width: 100% !important;
+              max-width: none !important;
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              gap: 4px !important;
+            }
+            
+            .stats-section > div.w-px {
+              display: none !important;
+            }
+            
+            .stats-section span:first-child {
+              font-size: 28px !important;
+            }
+            
+            .stats-section span:last-child {
+              font-size: 13px !important;
+            }
+          }
+          
+          @media (min-width: 480px) and (max-width: 767px) {
             .hero-banner {
               height: auto !important;
               min-height: 100vh !important;
@@ -221,9 +286,8 @@ export function HeroBanner() {
               min-height: auto !important;
             }
             
-            /* Ensuring H1 font-size is 40px for mobile 0-767px */
             .hero-title {
-              margin-top: 199px !important;
+              margin-top: 240px !important;
               font-size: 40px !important;
               line-height: 110% !important;
               width: 100% !important;
@@ -240,11 +304,6 @@ export function HeroBanner() {
               margin-bottom: 40px !important;
             }
             
-            .hero-content > div:nth-child(3) {
-              margin-top: 0 !important;
-            }
-            
-            /* 2-row layout for stats section on 0-767px: 2 columns per row */
             .stats-section {
               width: 100% !important;
               max-width: 440px !important;
@@ -263,62 +322,97 @@ export function HeroBanner() {
               flex-direction: column !important;
               align-items: center !important;
               gap: 4px !important;
-              padding: 0 !important;
-              border-right: none !important;
             }
             
-            /* Hide all dividers on mobile */
             .stats-section > div.w-px {
               display: none !important;
             }
             
             .stats-section span:first-child {
               font-size: 32px !important;
-              line-height: 1 !important;
-              white-space: nowrap !important;
             }
             
             .stats-section span:last-child {
               font-size: 14px !important;
-              line-height: 1.3 !important;
-              text-align: center !important;
-              max-width: 100% !important;
             }
           }
 
-          @media (min-width: 768px) and (max-width: 999px) {
+          @media (min-width: 768px) and (max-width: 1023px) {
             .hero-banner {
               min-height: 100vh !important;
-              max-height: none !important;
             }
             
             .hero-content {
-              padding-top: 0 !important;
+              padding: 0 40px !important;
             }
             
-            /* Increased top margin by 20%: from 197px to 236px */
             .hero-title {
-              margin-top: 236px !important;
+              margin-top: 180px !important;
+              font-size: 52px !important;
             }
             
-            /* Tablet keeps single row layout */
+            .hero-title + p {
+              font-size: 20px !important;
+            }
+            
             .stats-section {
               display: flex !important;
               flex-direction: row !important;
               margin-top: 64px !important;
               margin-bottom: 48px !important;
+              gap: 30px !important;
             }
           }
-
-          @media (min-width: 1000px) {
+          
+          @media (min-width: 1024px) and (max-width: 1279px) {
+            .hero-banner {
+              min-height: 100vh !important;
+            }
+            
+            .hero-title {
+              margin-top: 140px !important;
+              font-size: 56px !important;
+            }
+            
+            .stats-section {
+              display: flex !important;
+              flex-direction: row !important;
+              margin-top: 72px !important;
+              gap: 35px !important;
+            }
+          }
+          
+          @media (min-width: 1280px) and (max-width: 1439px) {
             .hero-banner {
               max-height: 100vh !important;
             }
             
-            /* Desktop keeps single row layout */
+            .hero-title {
+              margin-top: 120px !important;
+              font-size: 60px !important;
+            }
+            
             .stats-section {
               display: flex !important;
               flex-direction: row !important;
+              margin-top: 80px !important;
+            }
+          }
+          
+          @media (min-width: 1440px) {
+            .hero-banner {
+              max-height: 100vh !important;
+            }
+            
+            .hero-title {
+              margin-top: 160px !important;
+              font-size: 64px !important;
+            }
+            
+            .stats-section {
+              display: flex !important;
+              flex-direction: row !important;
+              margin-top: 96px !important;
             }
           }
         `}</style>
