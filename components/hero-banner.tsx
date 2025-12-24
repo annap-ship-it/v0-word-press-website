@@ -133,97 +133,100 @@ export function HeroBanner() {
           </div>
 
           <div
-            className="stats-section flex items-center justify-center mt-12 md:mt-16"
+            className="stats-section flex flex-col w-full px-4 gap-6 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4 md:flex-nowrap items-center justify-center mt-12 md:mt-16"
             style={{
               maxWidth: "1116px",
               height: "auto",
-              gap: "40px",
               margin: "48px auto 0",
             }}
           >
-            <div className="text-center">
-              <span
-                className="block font-bold"
-                style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                25+
-              </span>
-              <span
-                className="block mt-0"
-                style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                Estimations
-              </span>
+            <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center">
+              <div className="text-center flex-1 sm:flex-none">
+                <span
+                  className="block font-bold"
+                  style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  25+
+                </span>
+                <span
+                  className="block mt-0"
+                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  Estimations
+                </span>
+              </div>
+
+              <div
+                className="w-px h-12 sm:h-8"
+                style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
+              />
+
+              <div className="text-center flex-1 sm:flex-none">
+                <span
+                  className="block font-bold"
+                  style={{
+                    fontSize: "32px",
+                    ...(theme === "light"
+                      ? { color: "#212121" }
+                      : {
+                          backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #FF6200 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                        }),
+                  }}
+                >
+                  15+
+                </span>
+                <span
+                  className="block mt-0"
+                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  Total Projects
+                </span>
+              </div>
             </div>
 
             <div
-              className="w-px h-8"
+              className="hidden md:block w-px h-8"
               style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
             />
 
-            <div className="text-center">
-              <span
-                className="block font-bold"
-                style={{
-                  fontSize: "32px",
-                  ...(theme === "light"
-                    ? { color: "#212121" }
-                    : {
-                        backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #FF6200 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                      }),
-                }}
-              >
-                15+
-              </span>
-              <span
-                className="block mt-0"
-                style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                Total Projects
-              </span>
-            </div>
+            <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center">
+              <div className="text-center flex-1 sm:flex-none">
+                <span
+                  className="block font-bold"
+                  style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  10+
+                </span>
+                <span
+                  className="block mt-0"
+                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  Successful Clients
+                </span>
+              </div>
 
-            <div
-              className="w-px h-8"
-              style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
-            />
+              <div
+                className="w-px h-12 sm:h-8"
+                style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
+              />
 
-            <div className="text-center">
-              <span
-                className="block font-bold"
-                style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                10+
-              </span>
-              <span
-                className="block mt-0"
-                style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                Successful Clients
-              </span>
-            </div>
-
-            <div
-              className="w-px h-8"
-              style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
-            />
-
-            <div className="text-center">
-              <span
-                className="block font-bold"
-                style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                20+
-              </span>
-              <span
-                className="block mt-0"
-                style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-              >
-                Professionals
-              </span>
+              <div className="text-center flex-1 sm:flex-none">
+                <span
+                  className="block font-bold"
+                  style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  20+
+                </span>
+                <span
+                  className="block mt-0"
+                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
+                >
+                  Professionals
+                </span>
+              </div>
             </div>
           </div>
 
@@ -244,53 +247,14 @@ export function HeroBanner() {
               }
               
               .hero-title {
-                marginTop: 200px !important;
-                fontSize: 36px !important;
-                lineHeight: 110% !important;
+                margin-top: 200px !important;
+                font-size: 36px !important;
+                line-height: 110% !important;
                 width: 100% !important;
-                maxWidth: 100% !important;
-                marginLeft: auto !important;
-                marginRight: auto !important;
-                marginBottom: 24px !important;
-              }
-              
-              .hero-title + p {
-                width: 100% !important;
-                maxWidth: 100% !important;
-                fontSize: 18px !important;
-                marginBottom: 32px !important;
-              }
-              
-              .stats-section {
-                width: 100% !important;
-                maxWidth: 100% !important;
-                margin: 40px auto 0 !important;
-                padding: 0 20px !important;
-                display: grid !important;
-                gridTemplateColumns: "repeat(2, 1fr) !important";
-                gap: "20px 30px !important";
-                alignItems: "start !important";
-              }
-              
-              .stats-section > div:not(.w-px) {
-                width: 100% !important;
-                maxWidth: none !important;
-                display: flex !important;
-                flexDirection: "column !important";
-                alignItems: "center !important";
-                gap: "4px !important";
-              }
-              
-              .stats-section > div.w-px {
-                display: "none !important";
-              }
-              
-              .stats-section span:first-child {
-                fontSize: "28px !important";
-              }
-              
-              .stats-section span:last-child {
-                fontSize: "13px !important";
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                margin-bottom: 24px !important;
               }
             }
             
@@ -310,132 +274,62 @@ export function HeroBanner() {
               }
               
               .hero-title {
-                marginTop: 166px !important;
-                fontSize: "40px !important";
-                lineHeight: "110% !important";
-                width: "100% !important";
-                maxWidth: "423px !important";
-                marginLeft: "auto !important";
-                marginRight: "auto !important";
-                marginBottom: "24px !important";
-              }
-              
-              .hero-title + p {
-                width: "100% !important";
-                maxWidth: "100% !important";
-                fontSize: "20px !important";
-                marginBottom: "40px !important";
-              }
-              
-              .stats-section {
-                width: "100% !important";
-                maxWidth: "440px !important";
-                margin: "48px auto 0 !important";
-                padding: "0 20px !important";
-                display: "grid !important";
-                gridTemplateColumns: "repeat(2, 1fr) !important";
-                gap: "20px 40px !important";
-                alignItems: "start !important";
-              }
-              
-              .stats-section > div:not(.w-px) {
-                width: "100% !important";
-                maxWidth: "none !important";
-                display: "flex !important";
-                flexDirection: "column !important";
-                alignItems: "center !important";
-                gap: "4px !important";
-              }
-              
-              .stats-section > div.w-px {
-                display: "none !important";
-              }
-              
-              .stats-section span:first-child {
-                fontSize: "32px !important";
-              }
-              
-              .stats-section span:last-child {
-                fontSize: "14px !important";
+                margin-top: 166px !important;
+                font-size: 40px !important;
+                line-height: 110% !important;
+                width: 100% !important;
+                max-width: 423px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                margin-bottom: 24px !important;
               }
             }
 
             @media (min-width: 768px) and (max-width: 1023px) {
               .hero-banner {
-                minHeight: "100vh !important";
+                min-height: 100vh !important;
               }
               
               .hero-content {
-                padding: "0 40px !important";
+                padding: 0 40px !important;
               }
               
               .hero-title {
-                marginTop: "180px !important";
-                fontSize: "52px !important";
-              }
-              
-              .hero-title + p {
-                fontSize: "20px !important";
-              }
-              
-              .stats-section {
-                display: "flex !important";
-                flexDirection: "row !important";
-                marginTop: "64px !important";
-                marginBottom: "48px !important";
-                gap: "30px !important";
+                margin-top: 180px !important;
+                font-size: 52px !important;
               }
             }
             
             @media (min-width: 1024px) and (max-width: 1279px) {
               .hero-banner {
-                minHeight: "100vh !important";
+                min-height: 100vh !important;
               }
               
               .hero-title {
-                marginTop: "140px !important";
-                fontSize: "56px !important";
-              }
-              
-              .stats-section {
-                display: "flex !important";
-                flexDirection: "row !important";
-                marginTop: "72px !important";
-                gap: "35px !important";
+                margin-top: 140px !important;
+                font-size: 56px !important;
               }
             }
             
             @media (min-width: 1280px) and (max-width: 1439px) {
               .hero-banner {
-                maxHeight: "100vh !important";
+                max-height: 100vh !important;
               }
               
               .hero-title {
-                marginTop: "120px !important";
-                fontSize: "60px !important";
-              }
-              
-              .stats-section {
-                display: "flex !important";
-                flexDirection: "row !important";
-                marginTop: "80px !important";
+                margin-top: 120px !important;
+                font-size: 60px !important;
               }
             }
             
             @media (min-width: 1440px) {
               .hero-banner {
-                maxHeight: "100vh !important";
+                max-height: 100vh !important;
               }
               
               .hero-title {
-                marginTop: "160px !important";
-                fontSize: "64px !important";
-              }
-              
-              .stats-section {
-                display: "flex !important";
-                flexDirection: "row !important";
-                marginTop: "96px !important";
+                margin-top: 160px !important;
+                font-size: 64px !important;
               }
             }
           `}</style>
