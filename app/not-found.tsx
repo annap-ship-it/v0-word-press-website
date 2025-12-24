@@ -19,9 +19,7 @@ export default function NotFound() {
             fontSize: "clamp(48px, 10vw, 96px)",
             lineHeight: "110%",
             letterSpacing: "-0.03em",
-            background: isDark
-              ? "linear-gradient(90deg, #FF6200 36.45%, rgba(255, 255, 255, 0.6) 100%)"
-              : "linear-gradient(90deg, #FF6200 36.45%, rgba(0, 0, 0, 0.6) 100%)",
+            background: "linear-gradient(90deg, #FF6200 0%, #D4A892 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
