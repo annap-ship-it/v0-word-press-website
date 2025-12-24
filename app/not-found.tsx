@@ -12,7 +12,7 @@ export default function NotFound() {
       <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
         {/* Oops title with gradient */}
         <h1
-          className="text-center mb-4"
+          className="text-center mb-4 mt-40 lg:mt-20 xl:mt-24"
           style={{
             fontFamily: "Onest",
             fontWeight: 800,
@@ -23,6 +23,7 @@ export default function NotFound() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
+            marginTop: "197px",
           }}
         >
           Oops!
