@@ -6,12 +6,18 @@ import Image from "next/image"
 export function Footer() {
   return (
     <footer
-      className="text-white relative overflow-hidden"
+      className="relative text-white overflow-hidden"
       style={{
         background: "linear-gradient(147.3deg, #2A2929 46.71%, #37271D 95.83%)",
       }}
     >
-      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] opacity-[0.03] pointer-events-none">
+      <div
+        className="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] opacity-[0.03] pointer-events-none"
+        style={{
+          bottom: "calc(var(--spacing, 1rem) * 12)",
+          right: "calc(var(--spacing, 1rem) * 12)",
+        }}
+      >
         <svg
           width="627"
           height="541"
@@ -39,7 +45,7 @@ export function Footer() {
 
       <div className="container mx-auto px-4 py-12 relative z-10">
         {/* Top section with logo, contact, and navigation */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12 pb-12 border-b border-[#3A3A3A]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12 pb-12">
           <div className="lg:col-span-3">
             <Link href="/" className="inline-block mb-6">
               <Image src="/images/logo-dark.svg" alt="IdeaTeam" width={140} height={22} />
@@ -480,15 +486,17 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
           <p>© Idea Team 2024. All Rights Reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms of Use
             </Link>
+            <span className="text-[#3A3A3A]">|</span>
             <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
+            <span className="text-[#3A3A3A]">|</span>
             <Link href="/cookie-policy" className="hover:text-white transition-colors">
               Cookie Policy
             </Link>
