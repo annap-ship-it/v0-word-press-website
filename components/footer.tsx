@@ -14,8 +14,8 @@ export function Footer() {
       <div
         className="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] opacity-[0.03] pointer-events-none"
         style={{
-          bottom: "calc(var(--spacing, 1rem) * 12)",
-          right: "calc(var(--spacing, 1rem) * 12)",
+          bottom: "calc(var(--spacing, 1rem) * 16)",
+          right: "calc(var(--spacing, 1rem) * 16)",
         }}
       >
         <svg
