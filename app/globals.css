@@ -123,6 +123,147 @@
   }
 }
 
+/* Added component state styles for dark mode based on design guide */
+@layer components {
+  /* Primary button states (filled orange) */
+  .btn-primary {
+    background: linear-gradient(180deg, #ff6200 0%, #ff6200 100%);
+    color: #ffffff;
+    border-radius: 50px;
+    transition: all 0.3s ease-out;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(180deg, #ff6200 0%, #cc4e00 100%);
+  }
+
+  .btn-primary:active {
+    background: linear-gradient(180deg, #cc4e00 0%, #994000 100%);
+  }
+
+  .btn-primary:disabled {
+    background: #4a4a4a;
+    color: #808080;
+    cursor: not-allowed;
+  }
+
+  /* Secondary button states (outline) */
+  .btn-secondary {
+    background: transparent;
+    border: 1.5px solid #ff6200;
+    color: #ffffff;
+    border-radius: 50px;
+    transition: all 0.3s ease-out;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 98, 0, 0.1);
+    border-color: #ff7a2e;
+  }
+
+  .btn-secondary:active {
+    background: rgba(255, 98, 0, 0.2);
+    border-color: #cc4e00;
+  }
+
+  /* Tertiary button states (outline with background) */
+  .btn-tertiary {
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 50px;
+    transition: all 0.3s ease-out;
+  }
+
+  .btn-tertiary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-tertiary:active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Input field states */
+  .input-field {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    color: #ffffff;
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+  }
+
+  .input-field:hover {
+    border-color: #4a4a4a;
+  }
+
+  .input-field:focus {
+    border-color: #ff6200;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 98, 0, 0.1);
+  }
+
+  .input-field.error {
+    border-color: #ff4444;
+  }
+
+  .input-field.error:focus {
+    border-color: #ff4444;
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
+  }
+
+  .input-field.success {
+    border-color: #4caf50;
+  }
+
+  .input-field::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Dropdown item states */
+  .dropdown-item {
+    transition: background-color 0.15s ease-out;
+  }
+
+  .dropdown-item:hover {
+    background-color: #2f2f2f;
+  }
+
+  .dropdown-item:active {
+    background-color: #404040;
+  }
+
+  .dropdown-item.selected {
+    background-color: #3a3a3a;
+  }
+
+  /* Toggle button states */
+  .toggle-btn {
+    background: #2a2a2a;
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    background: #333333;
+  }
+
+  .toggle-btn.active {
+    background: #ff6200;
+    color: #ffffff;
+  }
+
+  .toggle-btn.active:hover {
+    background: #ff7a2e;
+  }
+
+  .toggle-btn.active:active {
+    background: #cc4e00;
+  }
+}
+
 /* Added media queries for 1000px responsive design */
 @media only screen and (max-width: 1000px) {
   /* Hero banner container stays at 1000px width, reduces horizontal padding */
