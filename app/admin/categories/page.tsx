@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect, useState } from "react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
@@ -9,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { Pencil, Trash2 } from "lucide-react"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
 interface Category {
   id: string
@@ -22,19 +22,29 @@ export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [isEditing, setIsEditing] = useState<string | null>(null)
   const [formData, setFormData] = useState({ name: "", slug: "", color: "#FF6B35" })
-  const supabase = createBrowserClient()
+  const [supabase, setSupabase] = useState<SupabaseClient | null>(null)
 
   useEffect(() => {
-    loadCategories()
+    const client = createBrowserClient()
+    setSupabase(client)
   }, [])
 
+  useEffect(() => {
+    if (supabase) {
+      loadCategories()
+    }
+  }, [supabase])
+
   async function loadCategories() {
+    if (!supabase) return
     const { data } = await supabase.from("categories").select("*").order("name")
     if (data) setCategories(data)
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!supabase) return
+
     if (isEditing) {
       await supabase.from("categories").update(formData).eq("id", isEditing)
     } else {
@@ -46,6 +56,7 @@ export default function CategoriesPage() {
   }
 
   async function handleDelete(id: string) {
+    if (!supabase) return
     if (confirm("Delete this category?")) {
       await supabase.from("categories").delete().eq("id", id)
       loadCategories()
@@ -55,6 +66,14 @@ export default function CategoriesPage() {
   function handleEdit(category: Category) {
     setFormData({ name: category.name, slug: category.slug, color: category.color })
     setIsEditing(category.id)
+  }
+
+  if (!supabase) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-muted-foreground">Loading...</div>
+      </div>
+    )
   }
 
   return (

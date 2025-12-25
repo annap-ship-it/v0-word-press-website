@@ -8,7 +8,7 @@ interface Post {
   slug: string
   excerpt: string
   featured_image: string | null
-  category: string
+  category: { name: string } | null
   created_at: string
   author_id: string
   is_featured: boolean
@@ -19,7 +19,7 @@ async function getPosts(): Promise<Post[]> {
 
   const { data: posts, error } = await supabase
     .from("posts")
-    .select("id, title, slug, excerpt, featured_image, category, created_at, is_featured, author_id")
+    .select("id, title, slug, excerpt, featured_image, category:categories(name), created_at, is_featured, author_id")
     .eq("status", "published")
     .order("created_at", { ascending: false })
 
@@ -70,14 +70,14 @@ export default async function BlogPage() {
                 <div className="relative">
                   {/* Image */}
                   <div className="relative h-[400px] rounded-lg overflow-hidden mb-6">
-                    {featuredPost.category && (
+                    {featuredPost.category?.name && (
                       <div className="absolute top-4 left-4 z-10">
                         <span
                           className={`px-4 py-2 rounded-full text-sm font-medium ${getCategoryColor(
-                            featuredPost.category,
+                            featuredPost.category.name,
                           )}`}
                         >
-                          {featuredPost.category}
+                          {featuredPost.category.name}
                         </span>
                       </div>
                     )}
@@ -131,12 +131,12 @@ export default async function BlogPage() {
               {regularPosts.map((post) => (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group">
                   <div className="relative h-[250px] rounded-lg overflow-hidden mb-4">
-                    {post.category && (
+                    {post.category?.name && (
                       <div className="absolute top-4 left-4 z-10">
                         <span
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium ${getCategoryColor(post.category)}`}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium ${getCategoryColor(post.category.name)}`}
                         >
-                          {post.category}
+                          {post.category.name}
                         </span>
                       </div>
                     )}

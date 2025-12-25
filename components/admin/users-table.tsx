@@ -38,8 +38,6 @@ export default function UsersTable({ users }: { users: Profile[] }) {
     fullName: "",
   })
 
-  const supabase = createBrowserClient()
-
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -47,6 +45,8 @@ export default function UsersTable({ users }: { users: Profile[] }) {
     setSuccess("")
 
     try {
+      const supabase = createBrowserClient()
+
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -77,6 +77,7 @@ export default function UsersTable({ users }: { users: Profile[] }) {
     if (!confirm(`Are you sure you want to delete user ${email}?`)) return
 
     try {
+      const supabase = createBrowserClient()
       const { error } = await supabase.from("profiles").delete().eq("id", userId)
 
       if (error) throw error
