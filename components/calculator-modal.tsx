@@ -3,6 +3,7 @@
 import { useTheme } from "@/lib/theme-context"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import CalculatorResults from "./calculator-results"
 
 interface CalculatorModalProps {
   isOpen: boolean
@@ -13,13 +14,21 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
   const { theme } = useTheme()
   const isDark = theme === "dark"
   const [mounted, setMounted] = useState(false)
+  const [showResults, setShowResults] = useState(false)
 
   const [selectedTech, setSelectedTech] = useState("")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedLevel, setSelectedLevel] = useState("Senior")
-  const [employmentType, setEmploymentType] = useState("Part-time")
-  const [projectDuration, setProjectDuration] = useState("6 months to 1 year")
+  const [selectedLevel, setSelectedLevel] = useState("")
+  const [employmentType, setEmploymentType] = useState("")
+  const [projectDuration, setProjectDuration] = useState("")
+
+  const [errors, setErrors] = useState({
+    tech: false,
+    level: false,
+    employment: false,
+    duration: false,
+  })
 
   useEffect(() => {
     setMounted(true)
@@ -28,6 +37,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
+      setShowResults(false)
     } else {
       document.body.style.overflow = "unset"
     }
@@ -38,10 +48,33 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
 
   if (!isOpen || !mounted) return null
 
+  const handleCalculate = () => {
+    const newErrors = {
+      tech: !selectedTech,
+      level: !selectedLevel,
+      employment: !employmentType,
+      duration: !projectDuration,
+    }
+    setErrors(newErrors)
+
+    // If there are any errors, don't proceed
+    if (Object.values(newErrors).some((error) => error)) {
+      console.log("[v0] Validation failed:", newErrors)
+      return
+    }
+
+    console.log("[v0] Calculator submitted:", { selectedTech, selectedLevel, employmentType, projectDuration })
+    setShowResults(true)
+  }
+
   const techOptions = ["JavaScript", "TypeScript", "HTML", "CSS", "React", "Node.js", "Python", "Java"]
   const filteredTechOptions = techOptions.filter((tech) => tech.toLowerCase().includes(searchQuery.toLowerCase()))
   const levelOptions = ["Middle", "Middle+", "Senior", "Solution Architect", "Team Lead"]
   const durationOptions = ["Up to 2 months", "3 months to 6 months", "6 months to 1 year", "1 year"]
+
+  if (showResults) {
+    return <CalculatorResults onClose={onClose} />
+  }
 
   return (
     <div
@@ -113,7 +146,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   className="w-full flex items-center justify-between px-4 py-3 border transition-colors rounded"
                   style={{
                     backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5",
-                    borderColor: isDark ? "#3A3A3A" : "#E0E0E0",
+                    borderColor: errors.tech ? "#EF4444" : isDark ? "#3A3A3A" : "#E0E0E0",
                     fontFamily: "Onest, sans-serif",
                     fontSize: "16px",
                     color: selectedTech ? (isDark ? "#FFFFFF" : "#000000") : isDark ? "#FFFFFF80" : "#00000080",
@@ -137,6 +170,19 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     />
                   </svg>
                 </button>
+
+                {errors.tech && (
+                  <p
+                    className="mt-2"
+                    style={{
+                      fontFamily: "Onest, sans-serif",
+                      fontSize: "14px",
+                      color: "#EF4444",
+                    }}
+                  >
+                    Select Item...
+                  </p>
+                )}
 
                 {isDropdownOpen && (
                   <div
@@ -199,6 +245,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                             setSelectedTech(tech)
                             setIsDropdownOpen(false)
                             setSearchQuery("")
+                            setErrors((prev) => ({ ...prev, tech: false }))
                           }}
                           className="w-full text-left px-4 py-3 transition-all"
                           style={{
@@ -247,7 +294,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
               </div>
             </div>
 
-            {/* 2. Developer Level */}
+            {/* 2. Experience Level */}
             <div className="mb-6">
               <label
                 className="block mb-3"
@@ -258,7 +305,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   color: isDark ? "#FFFFFF" : "#000000",
                 }}
               >
-                2. Developer Level:
+                2. Experience Level:
               </label>
               <div className="space-y-3">
                 {levelOptions.map((level) => (
@@ -271,7 +318,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                         </svg>
                       ) : (
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="7" cy="7" r="6.5" stroke="#999897" />
+                          <circle cx="7" cy="7" r="6.5" stroke={errors.level ? "#EF4444" : "#999897"} />
                         </svg>
                       )}
                     </div>
@@ -280,7 +327,10 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                       name="level"
                       value={level}
                       checked={selectedLevel === level}
-                      onChange={(e) => setSelectedLevel(e.target.value)}
+                      onChange={(e) => {
+                        setSelectedLevel(e.target.value)
+                        setErrors((prev) => ({ ...prev, level: false }))
+                      }}
                       className="sr-only"
                     />
                     <span
@@ -295,6 +345,18 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   </label>
                 ))}
               </div>
+              {errors.level && (
+                <p
+                  className="mt-2"
+                  style={{
+                    fontFamily: "Onest, sans-serif",
+                    fontSize: "14px",
+                    color: "#EF4444",
+                  }}
+                >
+                  Select Item...
+                </p>
+              )}
             </div>
 
             {/* 3. Employment Type */}
@@ -312,7 +374,10 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
               </label>
               <div className="flex gap-3">
                 <button
-                  onClick={() => setEmploymentType("Full-time")}
+                  onClick={() => {
+                    setEmploymentType("Full-time")
+                    setErrors((prev) => ({ ...prev, employment: false }))
+                  }}
                   className="px-4 py-2 transition-all"
                   style={{
                     borderRadius: "4px",
@@ -320,36 +385,16 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     color: employmentType === "Full-time" ? "#FFFFFF" : isDark ? "#FFFFFF80" : "#00000080",
                     fontFamily: "Onest, sans-serif",
                     fontSize: "16px",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (employmentType === "Full-time") {
-                      e.currentTarget.style.backgroundColor = "#FF7A2E"
-                    } else {
-                      e.currentTarget.style.backgroundColor = isDark ? "#333333" : "#E8E8E8"
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (employmentType === "Full-time") {
-                      e.currentTarget.style.backgroundColor = "#FF6200"
-                    } else {
-                      e.currentTarget.style.backgroundColor = isDark ? "#2A2A2A" : "#F5F5F5"
-                    }
-                  }}
-                  onMouseDown={(e) => {
-                    if (employmentType === "Full-time") {
-                      e.currentTarget.style.backgroundColor = "#CC4E00"
-                    }
-                  }}
-                  onMouseUp={(e) => {
-                    if (employmentType === "Full-time") {
-                      e.currentTarget.style.backgroundColor = "#FF7A2E"
-                    }
+                    border: errors.employment ? "1px solid #EF4444" : "none",
                   }}
                 >
                   Full-time
                 </button>
                 <button
-                  onClick={() => setEmploymentType("Part-time")}
+                  onClick={() => {
+                    setEmploymentType("Part-time")
+                    setErrors((prev) => ({ ...prev, employment: false }))
+                  }}
                   className="px-4 py-2 transition-all"
                   style={{
                     borderRadius: "4px",
@@ -357,35 +402,24 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     color: employmentType === "Part-time" ? "#FFFFFF" : isDark ? "#FFFFFF80" : "#00000080",
                     fontFamily: "Onest, sans-serif",
                     fontSize: "16px",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (employmentType === "Part-time") {
-                      e.currentTarget.style.backgroundColor = "#FF7A2E"
-                    } else {
-                      e.currentTarget.style.backgroundColor = isDark ? "#333333" : "#E8E8E8"
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (employmentType === "Part-time") {
-                      e.currentTarget.style.backgroundColor = "#FF6200"
-                    } else {
-                      e.currentTarget.style.backgroundColor = isDark ? "#2A2A2A" : "#F5F5F5"
-                    }
-                  }}
-                  onMouseDown={(e) => {
-                    if (employmentType === "Part-time") {
-                      e.currentTarget.style.backgroundColor = "#CC4E00"
-                    }
-                  }}
-                  onMouseUp={(e) => {
-                    if (employmentType === "Part-time") {
-                      e.currentTarget.style.backgroundColor = "#FF7A2E"
-                    }
+                    border: errors.employment ? "1px solid #EF4444" : "none",
                   }}
                 >
                   Part-time
                 </button>
               </div>
+              {errors.employment && (
+                <p
+                  className="mt-2"
+                  style={{
+                    fontFamily: "Onest, sans-serif",
+                    fontSize: "14px",
+                    color: "#EF4444",
+                  }}
+                >
+                  Select Item...
+                </p>
+              )}
             </div>
 
             {/* 4. Project Duration */}
@@ -412,7 +446,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                         </svg>
                       ) : (
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="7" cy="7" r="6.5" stroke="#999897" />
+                          <circle cx="7" cy="7" r="6.5" stroke={errors.duration ? "#EF4444" : "#999897"} />
                         </svg>
                       )}
                     </div>
@@ -421,7 +455,10 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                       name="duration"
                       value={duration}
                       checked={projectDuration === duration}
-                      onChange={(e) => setProjectDuration(e.target.value)}
+                      onChange={(e) => {
+                        setProjectDuration(e.target.value)
+                        setErrors((prev) => ({ ...prev, duration: false }))
+                      }}
                       className="sr-only"
                     />
                     <span
@@ -436,6 +473,18 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   </label>
                 ))}
               </div>
+              {errors.duration && (
+                <p
+                  className="mt-2"
+                  style={{
+                    fontFamily: "Onest, sans-serif",
+                    fontSize: "14px",
+                    color: "#EF4444",
+                  }}
+                >
+                  Select Item...
+                </p>
+              )}
             </div>
           </div>
 
@@ -506,9 +555,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
           onMouseUp={(e) => {
             e.currentTarget.style.background = "linear-gradient(180deg, #FF6200 0%, #CC4E00 100%)"
           }}
-          onClick={() => {
-            console.log("[v0] Calculator submitted:", { selectedTech, selectedLevel, employmentType, projectDuration })
-          }}
+          onClick={handleCalculate}
         >
           Calculate
         </button>

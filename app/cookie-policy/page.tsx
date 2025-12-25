@@ -1,158 +1,184 @@
 "use client"
 
+import Link from "next/link"
+import { ChevronRight } from "lucide-react"
+import { PolicyBanner } from "@/components/policy-banner"
+
 export default function CookiePolicyPage() {
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-20">
-      <h1
-        className="mb-8"
-        style={{
-          fontFamily: "Onest",
-          fontWeight: 800,
-          fontSize: "48px",
-          lineHeight: "110%",
-          letterSpacing: "-0.03em",
-        }}
-      >
-        Cookie Policy
-      </h1>
+    <div className="min-h-screen">
+      <PolicyBanner title="Cookie Policy" lightBanner="/images/white.png" darkBanner="/images/black.png" />
 
-      <div
-        className="prose prose-lg max-w-none"
-        style={{
-          fontFamily: "Onest",
-          fontWeight: 400,
-          fontSize: "16px",
-          lineHeight: "160%",
-        }}
-      >
-        <section className="mb-8">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex items-center gap-2 text-sm">
+          <Link href="/" className="policy-breadcrumb-main hover:opacity-80 transition-opacity">
+            Main
+          </Link>
+          <ChevronRight className="w-4 h-4 text-[#787877] dark:text-[#FFFFFF99]" />
+          <span className="text-[#787877] dark:text-[#FFFFFF99]">Cookie Policy</span>
+        </div>
+      </div>
+
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 force-white-dark">
+        <div className="prose prose-lg max-w-none">
           <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
+            className="text-[#212121] dark:text-white mb-4"
+            style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "24px" }}
           >
-            1. What Are Cookies
+            Idea Team Dev
           </h2>
-          <p className="mb-4">
-            Cookies are small text files that are placed on your computer or mobile device when you visit a website.
-            They are widely used to make websites work more efficiently and provide information to the site owners.
+          <p className="text-[#212121] dark:text-white mb-2" style={{ fontFamily: "Onest", fontWeight: 600 }}>
+            Effective Date: 10.10.2025
           </p>
-        </section>
-
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
+          <p
+            className="text-[#212121] dark:text-white mb-8"
+            style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
           >
-            2. How We Use Cookies
-          </h2>
-          <p className="mb-4">We use cookies for the following purposes:</p>
-          <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>
-              <strong>Essential Cookies:</strong> These cookies are necessary for the website to function properly
-            </li>
-            <li>
-              <strong>Analytics Cookies:</strong> These cookies help us understand how visitors interact with our
-              website
-            </li>
-            <li>
-              <strong>Functionality Cookies:</strong> These cookies enable enhanced functionality and personalization
-            </li>
-            <li>
-              <strong>Preference Cookies:</strong> These cookies remember your settings and preferences (like theme and
-              language)
-            </li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            3. Types of Cookies We Use
-          </h2>
-          <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>
-              <strong>Session Cookies:</strong> Temporary cookies that expire when you close your browser
-            </li>
-            <li>
-              <strong>Persistent Cookies:</strong> Cookies that remain on your device until they expire or you delete
-              them
-            </li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            4. Managing Cookies
-          </h2>
-          <p className="mb-4">
-            Most web browsers allow you to control cookies through their settings. You can set your browser to refuse
-            cookies or delete certain cookies. Please note that if you disable cookies, some features of our website may
-            not function properly.
+            Idea Team Dev ("ITD", "we", "our") uses cookies to enhance user experience, improve website performance, and
+            analyze traffic.
           </p>
-        </section>
 
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            5. Updates to This Policy
-          </h2>
-          <p className="mb-4">
-            We may update this Cookie Policy from time to time. We will notify you of any changes by posting the new
-            Cookie Policy on this page.
-          </p>
-        </section>
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              1. What Are Cookies
+            </h3>
+            <p
+              className="text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              Cookies are small text files stored on your device that help identify your browser and preferences.
+            </p>
+          </section>
 
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            6. Contact Us
-          </h2>
-          <p className="mb-4">
-            If you have any questions about our use of cookies, please contact us at{" "}
-            <a href="mailto:sales@ideateam.dev" className="text-[#FF6200] hover:underline">
-              sales@ideateam.dev
-            </a>
-          </p>
-        </section>
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              2. Types of Cookies Used
+            </h3>
+            <ul
+              className="list-disc pl-6 space-y-2 text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>
+                <strong>Essential Cookies:</strong> Required for site functionality and navigation.
+              </li>
+              <li>
+                <strong>Analytics Cookies:</strong> Used to analyze website usage, e.g., Google Analytics.
+              </li>
+              <li>
+                <strong>Security Cookies:</strong> Help prevent fraud and ensure safe login sessions.
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              3. How We Use Cookies
+            </h3>
+            <ul
+              className="list-disc pl-6 space-y-2 text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>Improve website functionality and user experience.</li>
+              <li>Analyze site performance and traffic patterns.</li>
+              <li>Ensure security and prevent unauthorized activity.</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              4. Controlling Cookies
+            </h3>
+            <p
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              Users can manage or disable cookies through their browser settings.
+            </p>
+            <p
+              className="text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              Some features of the website may not function properly if cookies are disabled.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              5. Data Privacy
+            </h3>
+            <p
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              Cookies may collect information about your device, IP address, and browsing behavior.
+            </p>
+            <p
+              className="text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              All data collected via cookies is processed in accordance with our Privacy Policy.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              6. Third-Party Cookies
+            </h3>
+            <p
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              ITD may use third-party analytics or advertising services that deploy cookies on our site.
+            </p>
+            <p
+              className="text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              We ensure that such third parties comply with data protection regulations.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h3
+              className="text-[#212121] dark:text-white mb-4"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
+              7. Contact Information
+            </h3>
+            <ul
+              className="list-disc pl-6 space-y-2 text-[#212121] dark:text-white"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>
+                <strong>Email:</strong>{" "}
+                <a href="mailto:sales@ideateam.dev" className="text-[#FF6200] hover:underline">
+                  sales@ideateam.dev
+                </a>
+              </li>
+              <li>
+                <strong>Address:</strong> Ukraine, Chernihiv, Rokossovsky street 13, 14027
+              </li>
+            </ul>
+          </section>
+        </div>
       </div>
     </div>
   )

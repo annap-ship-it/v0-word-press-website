@@ -1,124 +1,147 @@
 "use client"
 
+import Link from "next/link"
+import { ChevronRight } from "lucide-react"
+import { PolicyBanner } from "@/components/policy-banner"
+
 export default function TermsPage() {
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-20">
-      <h1
-        className="mb-8"
-        style={{
-          fontFamily: "Onest",
-          fontWeight: 800,
-          fontSize: "48px",
-          lineHeight: "110%",
-          letterSpacing: "-0.03em",
-        }}
-      >
-        Terms of Use
-      </h1>
+    <div className="min-h-screen">
+      <PolicyBanner title="Terms of Use" lightBanner="/images/white.png" darkBanner="/images/black.png" />
 
-      <div
-        className="prose prose-lg max-w-none"
-        style={{
-          fontFamily: "Onest",
-          fontWeight: 400,
-          fontSize: "16px",
-          lineHeight: "160%",
-        }}
-      >
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            1. Acceptance of Terms
-          </h2>
-          <p className="mb-4">
-            By accessing and using this website, you accept and agree to be bound by the terms and provision of this
-            agreement.
-          </p>
-        </section>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex items-center gap-2 text-sm">
+          <Link href="/" className="policy-breadcrumb-main hover:opacity-80 transition-opacity">
+            Main
+          </Link>
+          <ChevronRight className="w-4 h-4 text-[#787877] dark:text-[#FFFFFF99]" />
+          <span className="text-[#787877] dark:text-[#FFFFFF99]">Terms of Use</span>
+        </div>
+      </div>
 
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            2. Use License
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 force-white-dark">
+        <div className="max-w-none">
+          <h2 className="py-[50x] pb-[0] pt-14" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "24px" }}>
+            Idea Team Dev
           </h2>
-          <p className="mb-4">
-            Permission is granted to temporarily download one copy of the materials (information or software) on Idea
-            Team's website for personal, non-commercial transitory viewing only.
+          <p style={{ fontFamily: "Onest", fontWeight: 600 }}>Effective Date: 10.10.2025</p>
+          <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+            Welcome to the Idea Team Dev website and services (hereinafter "ITD", "we", "our", "us"). By accessing or
+            using our website, applications, or services, you agree to comply with these Terms of Use.
           </p>
-        </section>
 
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            3. Disclaimer
-          </h2>
-          <p className="mb-4">
-            The materials on Idea Team's website are provided on an 'as is' basis. Idea Team makes no warranties,
-            expressed or implied, and hereby disclaims and negates all other warranties including, without limitation,
-            implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement
-            of intellectual property or other violation of rights.
-          </p>
-        </section>
+          <section className="mb-8">
+            <h3 className="mx-0 my-0 py-7 pb-0" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              1. Acceptance of Terms
+            </h3>
+            <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+              By using ITD services, you accept these Terms of Use in full. If you do not agree, please do not use our
+              services.
+            </p>
+          </section>
 
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            4. Limitations
-          </h2>
-          <p className="mb-4">
-            In no event shall Idea Team or its suppliers be liable for any damages (including, without limitation,
-            damages for loss of data or profit, or due to business interruption) arising out of the use or inability to
-            use the materials on Idea Team's website.
-          </p>
-        </section>
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>2. Use of Services</h3>
+            <ul
+              className="list-disc pl-6 space-y-2"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>ITD provides services related to software development, consulting, and IT solutions.</li>
+              <li>You agree to use our services only for lawful purposes and in compliance with applicable laws.</li>
+              <li>
+                You may not use ITD services to infringe the rights of others, distribute malware, or engage in illegal
+                activity.
+              </li>
+            </ul>
+          </section>
 
-        <section className="mb-8">
-          <h2
-            className="mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontWeight: 700,
-              fontSize: "24px",
-              lineHeight: "110%",
-            }}
-          >
-            5. Contact Information
-          </h2>
-          <p className="mb-4">
-            If you have any questions about these Terms of Use, please contact us at{" "}
-            <a href="mailto:sales@ideateam.dev" className="text-[#FF6200] hover:underline">
-              sales@ideateam.dev
-            </a>
-          </p>
-        </section>
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>3. User Accounts and Security</h3>
+            <ul
+              className="list-disc pl-6 space-y-2"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>If registration is required, you must provide accurate and complete information.</li>
+              <li>
+                You are responsible for maintaining the confidentiality of your login credentials and for all activity
+                under your account.
+              </li>
+              <li>
+                You are responsible for maintaining the confidentiality of your login credentials and for all activity
+                under your account.
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>4. Intellectual Property</h3>
+            <ul
+              className="list-disc pl-6 space-y-2"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>
+                All content, logos, designs, and materials on ITD platforms are the property of ITD or its affiliates.
+              </li>
+              <li>You may not copy, reproduce, or distribute any ITD content without prior written permission.</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>5. Limitation of Liability</h3>
+            <ul
+              className="list-disc pl-6 space-y-2"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>
+                ITD is not liable for any direct or indirect damages resulting from the use of its services or website.
+              </li>
+              <li>Services are provided "as is" without warranties of any kind, unless explicitly stated.</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>6. Data Protection</h3>
+            <ul
+              className="list-disc pl-6 space-y-2"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>All personal data is processed in accordance with our Privacy Policy.</li>
+              <li>
+                Users have rights under GDPR to access, modify, delete, and restrict processing of their personal data.
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>7. Termination</h3>
+            <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+              ITD may suspend or terminate access to services for violations of these Terms or applicable law.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>8. Governing Law</h3>
+            <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+              These Terms are governed by the laws applicable in Ukraine.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>9. Contact Information</h3>
+            <ul
+              className="list-disc pl-6 space-y-2"
+              style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
+            >
+              <li>
+                Email:{" "}
+                <a href="mailto:sales@ideateam.dev" className="text-[#FF6200] hover:underline">
+                  sales@ideateam.dev
+                </a>
+              </li>
+              <li>Address: Ukraine, Chernihiv, Rokossovsky street 13, 14027</li>
+            </ul>
+          </section>
+        </div>
       </div>
     </div>
   )

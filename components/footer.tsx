@@ -2,8 +2,36 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { useEffect, useState } from "react"
+import { createBrowserClient } from "@/lib/supabase/client"
+
+interface BlogPost {
+  slug: string
+  title: string
+}
 
 export function Footer() {
+  const [latestPosts, setLatestPosts] = useState<BlogPost[]>([])
+
+  useEffect(() => {
+    const fetchLatestPosts = async () => {
+      const supabase = createBrowserClient()
+
+      const { data, error } = await supabase
+        .from("posts")
+        .select("slug, title")
+        .eq("status", "published")
+        .order("created_at", { ascending: false })
+        .limit(3)
+
+      if (!error && data) {
+        setLatestPosts(data)
+      }
+    }
+
+    fetchLatestPosts()
+  }, [])
+
   return (
     <footer
       className="relative text-white overflow-hidden"
@@ -226,6 +254,29 @@ export function Footer() {
 
           <div className="lg:col-span-1">
             <h4 className="text-white font-semibold text-base mb-4">Blog</h4>
+            <ul className="space-y-3">
+              {latestPosts.length > 0 ? (
+                latestPosts.map((post) => (
+                  <li key={post.slug}>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300 line-clamp-2"
+                    >
+                      {post.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <Link
+                    href="/blog"
+                    className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  >
+                    View all posts
+                  </Link>
+                </li>
+              )}
+            </ul>
           </div>
         </div>
 

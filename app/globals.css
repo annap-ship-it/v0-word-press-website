@@ -282,3 +282,36 @@
     gap: 30px !important;
   }
 }
+
+/* Policy page content styles - isolated and non-conflicting */
+.policy-content-text {
+  color: #212121;
+}
+
+.dark .policy-content-text {
+  color: #ffffff;
+}
+
+.policy-heading {
+  color: #000000;
+}
+
+.dark .policy-heading {
+  color: #ffffff;
+}
+
+.policy-breadcrumb-main {
+  color: #000000;
+}
+
+.dark .policy-breadcrumb-main {
+  color: #fff !important;
+}
+
+.policy-breadcrumb-active {
+  color: #787877;
+}
+
+.dark .policy-breadcrumb-active {
+  color: #ffffff99;
+}
