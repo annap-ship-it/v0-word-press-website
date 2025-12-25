@@ -81,7 +81,7 @@ export default async function PagesAdminPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(page.status || (page.is_published ? "published" : "draft"))}`}
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded ${getStatusColor(page.status || (page.is_published ? "published" : "draft"))}`}
                     >
                       {page.status || (page.is_published ? "published" : "draft")}
                     </span>

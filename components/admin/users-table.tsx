@@ -197,7 +197,7 @@ export default function UsersTable({ users }: { users: Profile[] }) {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="h-10 w-10 flex-shrink-0">
-                        <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                        <div className="h-10 w-10 rounded bg-blue-600 flex items-center justify-center text-white font-medium">
                           {user.display_name?.charAt(0) || "U"}
                         </div>
                       </div>
@@ -210,7 +210,7 @@ export default function UsersTable({ users }: { users: Profile[] }) {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex rounded-full bg-blue-100 dark:bg-blue-900 px-2 text-xs font-semibold leading-5 text-blue-800 dark:text-blue-200">
+                    <span className="inline-flex rounded bg-blue-100 dark:bg-blue-900 px-2 text-xs font-semibold leading-5 text-blue-800 dark:text-blue-200">
                       {user.role || "user"}
                     </span>
                   </td>

@@ -25,7 +25,17 @@ export function PageEditor({ page }: PageEditorProps) {
   const [metaDescription, setMetaDescription] = useState(page?.meta_description || "")
   const [redirectUrl, setRedirectUrl] = useState(page?.redirect_url || "")
   const [metafields, setMetafields] = useState<Record<string, string>>(page?.metafields || {})
-  const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(page?.content || [])
+  const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(() => {
+    if (!page?.content) return []
+    if (typeof page.content === "string") {
+      try {
+        return JSON.parse(page.content)
+      } catch {
+        return []
+      }
+    }
+    return Array.isArray(page.content) ? page.content : []
+  })
   const [saving, setSaving] = useState(false)
 
   const handleSave = async () => {

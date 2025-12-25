@@ -9,7 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GutenbergBlockEditor, type GutenbergBlock } from "./gutenberg-blocks"
+import { MediaPickerDialog } from "./media-picker-dialog"
 
 interface PostEditorProps {
   post?: any
@@ -17,17 +19,32 @@ interface PostEditorProps {
 
 export function PostEditor({ post }: PostEditorProps) {
   const router = useRouter()
+  const supabase = createBrowserClient()
+
   const [title, setTitle] = useState(post?.title || "")
   const [slug, setSlug] = useState(post?.slug || "")
   const [excerpt, setExcerpt] = useState(post?.excerpt || "")
   const [featuredImage, setFeaturedImage] = useState(post?.featured_image || "")
-  const [category, setCategory] = useState(post?.category || "")
+  const [categoryId, setCategoryId] = useState(post?.category_id || "")
   const [status, setStatus] = useState(post?.status || "draft")
   const [isFeatured, setIsFeatured] = useState(post?.is_featured || false)
   const [metaTitle, setMetaTitle] = useState(post?.meta_title || "")
   const [metaDescription, setMetaDescription] = useState(post?.meta_description || "")
   const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(post?.content || [])
   const [saving, setSaving] = useState(false)
+
+  const [categories, setCategories] = useState<any[]>([])
+  const [showMediaPicker, setShowMediaPicker] = useState(false)
+
+  useEffect(() => {
+    loadCategories()
+  }, [])
+
+  const loadCategories = async () => {
+    const { data } = await supabase.from("categories").select("*").order("name")
+
+    if (data) setCategories(data)
+  }
 
   useEffect(() => {
     if (!post && title) {
@@ -46,7 +63,6 @@ export function PostEditor({ post }: PostEditorProps) {
     }
 
     setSaving(true)
-    const supabase = createBrowserClient()
 
     const {
       data: { user },
@@ -58,13 +74,15 @@ export function PostEditor({ post }: PostEditorProps) {
       return
     }
 
+    console.log("[v0] Saving post with category_id:", categoryId)
+
     const postData = {
       title,
       slug,
       excerpt,
       content: gutenbergBlocks,
       featured_image: featuredImage || null,
-      category: category || null,
+      category_id: categoryId || null,
       status: publishStatus,
       is_featured: isFeatured,
       author_id: user.id,
@@ -72,20 +90,24 @@ export function PostEditor({ post }: PostEditorProps) {
       meta_description: metaDescription || excerpt,
     }
 
+    console.log("[v0] Post data being saved:", postData)
+
     let error
 
     if (post) {
       const result = await supabase.from("posts").update(postData).eq("id", post.id)
       error = result.error
+      console.log("[v0] Update result:", result)
     } else {
       const result = await supabase.from("posts").insert([postData])
       error = result.error
+      console.log("[v0] Insert result:", result)
     }
 
     setSaving(false)
 
     if (error) {
-      console.error("Error saving post:", error)
+      console.error("[v0] Error saving post:", error)
       alert("Failed to save post: " + error.message)
     } else {
       router.push("/admin/posts")
@@ -105,21 +127,21 @@ export function PostEditor({ post }: PostEditorProps) {
               onClick={() => handleSave("draft")}
               disabled={saving}
               variant="outline"
-              className="rounded bg-transparent"
+              className="rounded-[4px] bg-transparent"
             >
               Save Draft
             </Button>
             <Button
               onClick={() => handleSave("published")}
               disabled={saving}
-              className="bg-[#2271b1] hover:bg-[#135e96] rounded"
+              className="bg-[#2271b1] hover:bg-[#135e96] rounded-[4px]"
             >
               {saving ? "Publishing..." : "Publish"}
             </Button>
           </div>
         </div>
 
-        <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded mb-6">
+        <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px] mb-6">
           <div className="space-y-4 mb-6">
             <div>
               <Label htmlFor="title" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
@@ -131,7 +153,7 @@ export function PostEditor({ post }: PostEditorProps) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter post title"
-                className="text-2xl font-semibold h-auto py-3 border-[#8c8f94] dark:border-[#3c434a] rounded"
+                className="text-2xl font-semibold h-auto py-3 border-[#8c8f94] dark:border-[#3c434a] rounded-[4px]"
               />
             </div>
 
@@ -144,7 +166,7 @@ export function PostEditor({ post }: PostEditorProps) {
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 placeholder="post-url-slug"
-                className="rounded"
+                className="rounded-[4px]"
               />
             </div>
           </div>
@@ -154,18 +176,18 @@ export function PostEditor({ post }: PostEditorProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Post Excerpt</h3>
               <Textarea
                 value={excerpt}
                 onChange={(e) => setExcerpt(e.target.value)}
                 placeholder="Write a short excerpt..."
                 rows={4}
-                className="rounded"
+                className="rounded-[4px]"
               />
             </Card>
 
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">SEO Settings</h3>
               <div className="space-y-4">
                 <div>
@@ -175,7 +197,7 @@ export function PostEditor({ post }: PostEditorProps) {
                     value={metaTitle}
                     onChange={(e) => setMetaTitle(e.target.value)}
                     placeholder="SEO meta title"
-                    className="rounded"
+                    className="rounded-[4px]"
                   />
                 </div>
                 <div>
@@ -186,7 +208,7 @@ export function PostEditor({ post }: PostEditorProps) {
                     onChange={(e) => setMetaDescription(e.target.value)}
                     placeholder="SEO meta description"
                     rows={3}
-                    className="rounded"
+                    className="rounded-[4px]"
                   />
                 </div>
               </div>
@@ -194,32 +216,49 @@ export function PostEditor({ post }: PostEditorProps) {
           </div>
 
           <div className="space-y-6">
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Featured Image</h3>
-              <Input
-                value={featuredImage}
-                onChange={(e) => setFeaturedImage(e.target.value)}
-                placeholder="Image URL"
-                className="rounded mb-3"
-              />
+              <div className="flex gap-2 mb-3">
+                <Input
+                  value={featuredImage}
+                  onChange={(e) => setFeaturedImage(e.target.value)}
+                  placeholder="Image URL"
+                  className="rounded-[4px] flex-1"
+                />
+                <Button
+                  type="button"
+                  onClick={() => setShowMediaPicker(true)}
+                  variant="outline"
+                  size="sm"
+                  className="rounded-[4px]"
+                >
+                  Library
+                </Button>
+              </div>
               {featuredImage && (
-                <div className="mt-3 rounded overflow-hidden border border-gray-200">
+                <div className="mt-3 rounded-[4px] overflow-hidden border border-gray-200">
                   <img src={featuredImage || "/placeholder.svg"} alt="Featured" className="w-full h-auto" />
                 </div>
               )}
             </Card>
 
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Category</h3>
-              <Input
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                placeholder="Category name"
-                className="rounded"
-              />
+              <Select value={categoryId} onValueChange={setCategoryId}>
+                <SelectTrigger className="rounded-[4px]">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </Card>
 
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <div className="flex items-center space-x-2">
                 <Checkbox id="featured" checked={isFeatured} onCheckedChange={(checked) => setIsFeatured(!!checked)} />
                 <Label htmlFor="featured" className="text-sm font-normal cursor-pointer">
@@ -230,6 +269,15 @@ export function PostEditor({ post }: PostEditorProps) {
           </div>
         </div>
       </div>
+
+      <MediaPickerDialog
+        open={showMediaPicker}
+        onClose={() => setShowMediaPicker(false)}
+        onSelect={(url) => {
+          setFeaturedImage(url)
+          setShowMediaPicker(false)
+        }}
+      />
     </div>
   )
 }

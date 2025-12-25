@@ -4,20 +4,10 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 // Global singleton instance
 let browserClientInstance: SupabaseClient | undefined
 
-// Check if running in browser
-const isBrowser = typeof window !== "undefined"
-
-// Create singleton immediately if in browser
-if (isBrowser && !browserClientInstance) {
-  browserClientInstance = createBrowserClientSSR(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  )
-}
-
-export function createClient() {
-  if (!isBrowser) {
-    throw new Error("createClient can only be used in browser context")
+export function createBrowserClient() {
+  // Check if running in browser
+  if (typeof window === "undefined") {
+    throw new Error("createBrowserClient can only be used in browser context")
   }
 
   // Return existing singleton instance
@@ -25,6 +15,7 @@ export function createClient() {
     return browserClientInstance
   }
 
+  // Create singleton on first call
   browserClientInstance = createBrowserClientSSR(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -33,6 +24,4 @@ export function createClient() {
   return browserClientInstance
 }
 
-export function createBrowserClient() {
-  return createClient()
-}
+export const createClient = createBrowserClient

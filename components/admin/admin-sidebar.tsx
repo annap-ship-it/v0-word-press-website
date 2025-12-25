@@ -15,6 +15,7 @@ const menuItems = [
     submenu: [
       { label: "All Posts", href: "/admin/posts" },
       { label: "Add New", href: "/admin/posts/new" },
+      { label: "Categories", href: "/admin/categories" },
     ],
   },
   {
@@ -35,6 +36,10 @@ const menuItems = [
     icon: Palette,
     label: "Appearance",
     href: "/admin/appearance",
+    submenu: [
+      { label: "Theme Editor", href: "/admin/appearance" },
+      { label: "Theme Files", href: "/admin/theme-files" },
+    ],
   },
   { icon: Users, label: "Users", href: "/admin/users" },
 ]

@@ -3,16 +3,21 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Upload, Trash2, Search, ImageIcon, FileText, Film } from "lucide-react"
+import { Upload, Trash2, Search, ImageIcon, FileText, Film, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 
 interface MediaFile {
   id: string
   filename: string
-  url: string
+  file_path: string
+  url?: string
   size: number
-  mime_type: string
+  file_type: string
+  mime_type?: string
+  alt_text?: string
   created_at: string
 }
 
@@ -22,10 +27,18 @@ export default function MediaLibrary() {
   const [uploading, setUploading] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null)
+  const [editingAlt, setEditingAlt] = useState(false)
+  const [altText, setAltText] = useState("")
 
   useEffect(() => {
     loadFiles()
   }, [])
+
+  useEffect(() => {
+    if (selectedFile) {
+      setAltText(selectedFile.alt_text || "")
+    }
+  }, [selectedFile])
 
   const loadFiles = async () => {
     try {
@@ -66,19 +79,46 @@ export default function MediaLibrary() {
     }
   }
 
-  const handleDelete = async (url: string) => {
-    if (!confirm("Are you sure you want to delete this file?")) return
+  const handleUpdateAlt = async () => {
+    if (!selectedFile) return
 
     try {
-      const response = await fetch("/api/media/delete", {
-        method: "DELETE",
+      const response = await fetch("/api/media/update", {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ id: selectedFile.id, alt_text: altText }),
       })
 
       if (response.ok) {
         await loadFiles()
-        if (selectedFile?.url === url) {
+        setSelectedFile({ ...selectedFile, alt_text: altText })
+        setEditingAlt(false)
+        alert("ALT text updated successfully!")
+      } else {
+        alert("Update failed")
+      }
+    } catch (error) {
+      console.error("Update error:", error)
+      alert("Update failed")
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this file?")) return
+
+    try {
+      const file = files.find((f) => f.id === id)
+      if (!file) return
+
+      const response = await fetch("/api/media/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: file.url || file.file_path }),
+      })
+
+      if (response.ok) {
+        await loadFiles()
+        if (selectedFile?.id === id) {
           setSelectedFile(null)
         }
       } else {
@@ -90,8 +130,8 @@ export default function MediaLibrary() {
     }
   }
 
-  const copyToClipboard = (url: string) => {
-    navigator.clipboard.writeText(url)
+  const copyToClipboard = (path: string) => {
+    navigator.clipboard.writeText(path)
     alert("URL copied to clipboard!")
   }
 
@@ -121,10 +161,10 @@ export default function MediaLibrary() {
               placeholder="Search files..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 rounded"
             />
           </div>
-          <Button asChild disabled={uploading}>
+          <Button asChild disabled={uploading} className="rounded">
             <label className="cursor-pointer">
               <Upload className="w-4 h-4 mr-2" />
               {uploading ? "Uploading..." : "Upload File"}
@@ -145,17 +185,21 @@ export default function MediaLibrary() {
               <div
                 key={file.id}
                 onClick={() => setSelectedFile(file)}
-                className={`relative group cursor-pointer border-2 rounded-lg overflow-hidden transition-all ${
+                className={`relative group cursor-pointer border-2 rounded overflow-hidden transition-all ${
                   selectedFile?.id === file.id
                     ? "border-orange-500 ring-2 ring-orange-200"
                     : "border-gray-200 dark:border-gray-700 hover:border-orange-300"
                 }`}
               >
-                {file.mime_type.startsWith("image/") ? (
-                  <img src={file.url || "/placeholder.svg"} alt={file.filename} className="w-full h-32 object-cover" />
+                {(file.file_type || file.mime_type || "").startsWith("image/") ? (
+                  <img
+                    src={file.url || file.file_path || "/placeholder.svg"}
+                    alt={file.alt_text || file.filename}
+                    className="w-full h-32 object-cover"
+                  />
                 ) : (
                   <div className="w-full h-32 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    {getFileIcon(file.mime_type)}
+                    {getFileIcon(file.file_type || file.mime_type || "")}
                   </div>
                 )}
                 <div className="p-2 bg-white dark:bg-gray-900">
@@ -171,52 +215,106 @@ export default function MediaLibrary() {
       {/* File Details */}
       <div className="lg:col-span-1">
         {selectedFile ? (
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-6 space-y-4 sticky top-4">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded p-6 space-y-4 sticky top-4">
             <h3 className="font-semibold text-lg">File Details</h3>
 
-            {selectedFile.mime_type.startsWith("image/") && (
+            {(selectedFile.file_type || selectedFile.mime_type || "").startsWith("image/") && (
               <img
-                src={selectedFile.url || "/placeholder.svg"}
-                alt={selectedFile.filename}
+                src={selectedFile.url || selectedFile.file_path || "/placeholder.svg"}
+                alt={selectedFile.alt_text || selectedFile.filename}
                 className="w-full rounded border border-gray-200 dark:border-gray-700"
               />
             )}
 
-            <div className="space-y-2 text-sm">
+            <div className="space-y-3 text-sm">
               <div>
-                <p className="text-gray-500 dark:text-gray-400">Filename</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-1">Filename</p>
                 <p className="font-medium break-all">{selectedFile.filename}</p>
               </div>
+
               <div>
-                <p className="text-gray-500 dark:text-gray-400">Size</p>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-gray-500 dark:text-gray-400">ALT Text</Label>
+                  {!editingAlt && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditingAlt(true)}
+                      className="h-auto py-1 px-2 text-xs rounded"
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </div>
+                {editingAlt ? (
+                  <div className="space-y-2">
+                    <Textarea
+                      value={altText}
+                      onChange={(e) => setAltText(e.target.value)}
+                      placeholder="Describe this image for accessibility..."
+                      rows={3}
+                      className="text-sm rounded"
+                    />
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={handleUpdateAlt} className="flex-1 rounded">
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setEditingAlt(false)
+                          setAltText(selectedFile.alt_text || "")
+                        }}
+                        className="rounded"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="font-medium text-gray-700 dark:text-gray-300">
+                    {selectedFile.alt_text || <span className="text-gray-400 italic">No ALT text set</span>}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <p className="text-gray-500 dark:text-gray-400 mb-1">Size</p>
                 <p className="font-medium">{formatFileSize(selectedFile.size)}</p>
               </div>
               <div>
-                <p className="text-gray-500 dark:text-gray-400">Type</p>
-                <p className="font-medium">{selectedFile.mime_type}</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-1">Type</p>
+                <p className="font-medium">{selectedFile.file_type || selectedFile.mime_type}</p>
               </div>
               <div>
-                <p className="text-gray-500 dark:text-gray-400">Uploaded</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-1">Uploaded</p>
                 <p className="font-medium">{new Date(selectedFile.created_at).toLocaleDateString()}</p>
               </div>
               <div>
                 <p className="text-gray-500 dark:text-gray-400 mb-1">URL</p>
                 <div className="flex gap-2">
-                  <Input value={selectedFile.url} readOnly className="text-xs" />
-                  <Button size="sm" variant="outline" onClick={() => copyToClipboard(selectedFile.url)}>
+                  <Input value={selectedFile.url || selectedFile.file_path} readOnly className="text-xs rounded" />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => copyToClipboard(selectedFile.url || selectedFile.file_path)}
+                    className="rounded"
+                  >
                     Copy
                   </Button>
                 </div>
               </div>
             </div>
 
-            <Button variant="destructive" className="w-full" onClick={() => handleDelete(selectedFile.url)}>
+            <Button variant="destructive" className="w-full rounded" onClick={() => handleDelete(selectedFile.id)}>
               <Trash2 className="w-4 h-4 mr-2" />
               Delete File
             </Button>
           </div>
         ) : (
-          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 text-center text-gray-500">
+          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-6 text-center text-gray-500">
             Select a file to view details
           </div>
         )}

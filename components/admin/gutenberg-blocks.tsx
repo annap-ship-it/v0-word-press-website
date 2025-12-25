@@ -26,7 +26,23 @@ import {
 
 export interface GutenbergBlock {
   id: string
-  type: "columns" | "heading" | "paragraph" | "image" | "button" | "link" | "form" | "map"
+  type:
+    | "paragraph"
+    | "heading"
+    | "list"
+    | "image"
+    | "table"
+    | "html"
+    | "banner"
+    | "button"
+    | "link"
+    | "form"
+    | "map"
+    | "columns"
+  content: any
+  level?: number
+  listType?: "bullet" | "numbered"
+  innerBlocks?: GutenbergBlock[]
   anchor?: string
   spacing?: {
     marginTop?: number
@@ -34,17 +50,18 @@ export interface GutenbergBlock {
     paddingTop?: number
     paddingBottom?: number
   }
-  // Columns specific
-  columnCount?: 1 | 2 | 3 | 4 | 5
-  columns?: GutenbergBlock[][]
-  // Content specific
-  content?: string
-  level?: 1 | 2 | 3 | 4 | 5 | 6
-  buttonText?: string
-  buttonUrl?: string
-  buttonStyle?: "primary" | "secondary" | "outline"
-  formFields?: { label: string; type: string; required: boolean }[]
-  mapUrl?: string
+  imageSettings?: {
+    alt?: string
+    size?: "small" | "medium" | "large" | "full"
+    alignment?: "left" | "center" | "right" | "wide" | "full"
+    width?: number
+    height?: number
+  }
+  buttonRadius?: number // For button border radius
+  formShowRecaptcha?: boolean // For reCAPTCHA
+  formShowTerms?: boolean // For Terms checkbox
+  formTermsText?: string // Custom terms text
+  formTermsLink?: string // Link to terms page
 }
 
 interface GutenbergBlockEditorProps {
@@ -84,8 +101,13 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
       newBlock.buttonText = "Click here"
       newBlock.buttonUrl = "#"
       newBlock.buttonStyle = "primary"
+      newBlock.buttonRadius = 4
     } else if (type === "form") {
       newBlock.formFields = [{ label: "Name", type: "text", required: true }]
+      newBlock.formShowRecaptcha = false
+      newBlock.formShowTerms = false
+      newBlock.formTermsText = "I Accept Terms and Conditions"
+      newBlock.formTermsLink = "/terms"
     }
 
     onChange([...blocks, newBlock])
@@ -312,7 +334,27 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
               </Button>
             </div>
             {block.content && (
-              <img src={block.content || "/placeholder.svg"} alt="Preview" className="max-w-full h-auto rounded" />
+              <img
+                src={block.content || "/placeholder.svg"}
+                alt={block.imageSettings?.alt || "Preview"}
+                className={`max-w-full h-auto rounded ${
+                  block.imageSettings?.alignment === "left"
+                    ? "float-left"
+                    : block.imageSettings?.alignment === "right"
+                      ? "float-right"
+                      : block.imageSettings?.alignment === "center"
+                        ? "mx-auto"
+                        : block.imageSettings?.alignment === "wide"
+                          ? "w-full"
+                          : block.imageSettings?.alignment === "full"
+                            ? "w-full"
+                            : ""
+                }`}
+                style={{
+                  width: block.imageSettings?.width ? `${block.imageSettings.width}px` : "auto",
+                  height: block.imageSettings?.height ? `${block.imageSettings.height}px` : "auto",
+                }}
+              />
             )}
           </div>
         )
@@ -344,13 +386,25 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                 <option value="secondary">Secondary</option>
                 <option value="outline">Outline</option>
               </select>
+              <div>
+                <Label className="text-xs">Border Radius (px)</Label>
+                <Input
+                  type="number"
+                  value={block.buttonRadius || 4}
+                  onChange={(e) => updateBlock(block.id, { buttonRadius: Number.parseInt(e.target.value) || 4 })}
+                  min="0"
+                  max="50"
+                  className="w-full"
+                />
+              </div>
               <Button
+                style={{ borderRadius: `${block.buttonRadius || 4}px` }}
                 className={
                   block.buttonStyle === "primary"
-                    ? "bg-blue-600 rounded"
+                    ? "bg-blue-600"
                     : block.buttonStyle === "secondary"
-                      ? "bg-gray-600 rounded"
-                      : "border-2 rounded"
+                      ? "bg-gray-600"
+                      : "border-2"
                 }
               >
                 {block.buttonText || "Button"}
@@ -386,6 +440,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
         return (
           <div style={blockStyle} id={block.anchor}>
             <div className="space-y-3">
+              {/* Form fields */}
               {block.formFields?.map((field, i) => (
                 <div key={i} className="flex gap-2 items-end">
                   <div className="flex-1">
@@ -438,10 +493,93 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                 }}
                 variant="outline"
                 size="sm"
-                className="rounded"
+                style={{ borderRadius: "4px" }}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Field
+              </Button>
+
+              <div className="flex items-center gap-2 pt-2 border-t">
+                <input
+                  type="checkbox"
+                  id={`recaptcha-${block.id}`}
+                  checked={block.formShowRecaptcha || false}
+                  onChange={(e) => updateBlock(block.id, { formShowRecaptcha: e.target.checked })}
+                  className="rounded"
+                />
+                <Label htmlFor={`recaptcha-${block.id}`} className="text-sm cursor-pointer">
+                  Show reCAPTCHA
+                </Label>
+              </div>
+
+              <div className="space-y-2 pt-2 border-t">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id={`terms-${block.id}`}
+                    checked={block.formShowTerms || false}
+                    onChange={(e) => updateBlock(block.id, { formShowTerms: e.target.checked })}
+                    className="rounded"
+                  />
+                  <Label htmlFor={`terms-${block.id}`} className="text-sm cursor-pointer">
+                    Show Terms Checkbox
+                  </Label>
+                </div>
+                {block.formShowTerms && (
+                  <>
+                    <Input
+                      type="text"
+                      value={block.formTermsText || "I Accept Terms and Conditions"}
+                      onChange={(e) => updateBlock(block.id, { formTermsText: e.target.value })}
+                      placeholder="Terms checkbox text..."
+                      className="text-sm"
+                    />
+                    <Input
+                      type="text"
+                      value={block.formTermsLink || "/terms"}
+                      onChange={(e) => updateBlock(block.id, { formTermsLink: e.target.value })}
+                      placeholder="Link to terms page..."
+                      className="text-sm"
+                    />
+                  </>
+                )}
+              </div>
+            </div>
+            {/* Form Preview */}
+            <div className="p-4 bg-background/50 rounded space-y-3 mt-4">
+              <p className="text-xs font-medium text-muted-foreground">Preview:</p>
+              {block.formFields?.map((field, i) => (
+                <div key={i}>
+                  <Label className="text-sm">{field.label}</Label>
+                  {field.type === "textarea" ? (
+                    <textarea
+                      className="w-full px-3 py-2 border rounded"
+                      rows={3}
+                      placeholder={`Type your ${field.label.toLowerCase()}...`}
+                      style={{ borderRadius: "4px" }}
+                    />
+                  ) : (
+                    <Input
+                      type={field.type}
+                      placeholder={`Type your ${field.label.toLowerCase()}...`}
+                      style={{ borderRadius: "4px" }}
+                    />
+                  )}
+                </div>
+              ))}
+              {block.formShowRecaptcha && (
+                <div className="border rounded p-2 bg-gray-100 dark:bg-gray-800 text-sm text-center">reCAPTCHA</div>
+              )}
+              {block.formShowTerms && (
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id={`preview-terms-${block.id}`} className="rounded" />
+                  <Label htmlFor={`preview-terms-${block.id}`} className="text-sm">
+                    {block.formTermsText || "I Accept Terms and Conditions"}
+                  </Label>
+                </div>
+              )}
+              <Button type="button" className="rounded">
+                Submit
               </Button>
             </div>
           </div>
@@ -452,88 +590,28 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
           <div style={blockStyle} id={block.anchor}>
             <Input
               type="text"
-              value={block.mapUrl || ""}
-              onChange={(e) => updateBlock(block.id, { mapUrl: e.target.value })}
+              value={block.content || ""}
+              onChange={(e) => updateBlock(block.id, { content: e.target.value })}
               placeholder="Google Maps embed URL..."
-              className="mb-2"
             />
-            {block.mapUrl && (
-              <div className="aspect-video border rounded">
-                <iframe src={block.mapUrl} width="100%" height="100%" frameBorder="0" allowFullScreen />
+            {block.content && (
+              <div className="mt-2 border rounded overflow-hidden">
+                <iframe
+                  src={block.content}
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
             )}
           </div>
         )
 
-      default:
-        return null
-    }
-  }
-
-  const renderBlock = (block: GutenbergBlock, index: number) => {
-    const blockStyle = {
-      marginTop: `${block.spacing?.marginTop || 0}px`,
-      marginBottom: `${block.spacing?.marginBottom || 0}px`,
-      paddingTop: `${block.spacing?.paddingTop || 0}px`,
-      paddingBottom: `${block.spacing?.paddingBottom || 0}px`,
-    }
-
-    return (
-      <Card
-        key={block.id}
-        className="p-5 bg-[#f6f7f7] dark:bg-[#23282d] border-[#c3c4c7] dark:border-[#3c434a] rounded"
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
-              {block.type === "columns" ? `${block.columnCount} Columns` : block.type}
-            </span>
-            {block.anchor && <span className="text-xs text-blue-600">#{block.anchor}</span>}
-          </div>
-          <div className="flex gap-1">
-            <Button
-              type="button"
-              onClick={() => setExpandedSettings(expandedSettings === block.id ? null : block.id)}
-              variant="ghost"
-              size="sm"
-              className="rounded"
-            >
-              <Settings className="w-4 h-4" />
-            </Button>
-            <Button
-              type="button"
-              onClick={() => moveBlock(block.id, "up")}
-              variant="ghost"
-              size="sm"
-              className="rounded"
-            >
-              <MoveUp className="w-4 h-4" />
-            </Button>
-            <Button
-              type="button"
-              onClick={() => moveBlock(block.id, "down")}
-              variant="ghost"
-              size="sm"
-              className="rounded"
-            >
-              <MoveDown className="w-4 h-4" />
-            </Button>
-            <Button
-              type="button"
-              onClick={() => deleteBlock(block.id)}
-              variant="ghost"
-              size="sm"
-              className="rounded text-red-600"
-            >
-              <Trash2 className="w-3 h-3" />
-            </Button>
-          </div>
-        </div>
-
-        {renderSpacingControls(block)}
-
-        {block.type === "columns" ? (
-          <div style={blockStyle} id={block.anchor}>
+      case "columns":
+        return (
+          <Card className="p-4 mb-4 border-2 border-dashed rounded" style={blockStyle} id={block.anchor}>
             <div className="mb-3">
               <Label className="text-xs">Column Count</Label>
               <select
@@ -619,6 +697,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                           buttonText: "Click here",
                           buttonUrl: "#",
                           buttonStyle: "primary",
+                          buttonRadius: 4,
                         }
                         const newColumns = [...(block.columns || [])]
                         newColumns[colIndex] = [...newColumns[colIndex], newInnerBlock]
@@ -634,99 +713,134 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                 </div>
               ))}
             </div>
+          </Card>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  const renderBlock = (block: GutenbergBlock, index: number) => {
+    return (
+      <Card key={block.id} className="p-4 mb-4 rounded">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex gap-2">
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+              {block.type === "columns" ? `${block.columnCount} Columns` : block.type}
+            </span>
+            {block.anchor && <span className="text-xs text-blue-600">#{block.anchor}</span>}
           </div>
-        ) : (
-          renderInnerBlock(block)
-        )}
+          <div className="flex gap-1">
+            <Button
+              type="button"
+              onClick={() => setExpandedSettings(expandedSettings === block.id ? null : block.id)}
+              variant="ghost"
+              size="sm"
+              className="rounded"
+            >
+              <Settings className="w-4 h-4" />
+            </Button>
+            <Button
+              type="button"
+              onClick={() => moveBlock(block.id, "up")}
+              variant="ghost"
+              size="sm"
+              className="rounded"
+              disabled={index === 0}
+            >
+              <MoveUp className="w-4 h-4" />
+            </Button>
+            <Button
+              type="button"
+              onClick={() => moveBlock(block.id, "down")}
+              variant="ghost"
+              size="sm"
+              className="rounded"
+              disabled={index === blocks.length - 1}
+            >
+              <MoveDown className="w-4 h-4" />
+            </Button>
+            <Button
+              type="button"
+              onClick={() => deleteBlock(block.id)}
+              variant="ghost"
+              size="sm"
+              className="rounded text-red-600"
+            >
+              <Trash2 className="w-3 h-3" />
+            </Button>
+          </div>
+        </div>
+
+        {renderSpacingControls(block)}
+        {renderInnerBlock(block)}
       </Card>
     )
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2 p-4 bg-[#f6f7f7] dark:bg-[#23282d] border border-[#c3c4c7] dark:border-[#3c434a] rounded">
-        <Button
-          type="button"
-          onClick={() => addBlock("columns", 1)}
-          variant="outline"
-          size="sm"
-          className="rounded bg-white dark:bg-[#1d2327]"
-        >
-          <Type className="w-4 h-4 mr-2" />1 Column
-        </Button>
-        <Button
-          type="button"
-          onClick={() => addBlock("columns", 2)}
-          variant="outline"
-          size="sm"
-          className="rounded bg-white dark:bg-[#1d2327]"
-        >
-          <Columns className="w-4 h-4 mr-2" />2 Columns
-        </Button>
-        <Button
-          type="button"
-          onClick={() => addBlock("columns", 3)}
-          variant="outline"
-          size="sm"
-          className="rounded bg-white dark:bg-[#1d2327]"
-        >
-          <Columns3 className="w-4 h-4 mr-2" />3 Columns
-        </Button>
-        <Button
-          type="button"
-          onClick={() => addBlock("columns", 4)}
-          variant="outline"
-          size="sm"
-          className="rounded bg-white dark:bg-[#1d2327]"
-        >
-          <Grid2x2 className="w-4 h-4 mr-2" />4 Columns
-        </Button>
-        <Button
-          type="button"
-          onClick={() => addBlock("columns", 5)}
-          variant="outline"
-          size="sm"
-          className="rounded bg-white dark:bg-[#1d2327]"
-        >
-          <Grid3x3 className="w-4 h-4 mr-2" />5 Columns
-        </Button>
-        <Button type="button" onClick={() => addBlock("heading")} variant="outline" size="sm" className="rounded">
-          <Type className="w-4 h-4 mr-2" />
-          Heading
-        </Button>
-        <Button type="button" onClick={() => addBlock("paragraph")} variant="outline" size="sm" className="rounded">
-          <Layout className="w-4 h-4 mr-2" />
-          Paragraph
-        </Button>
-        <Button type="button" onClick={() => addBlock("image")} variant="outline" size="sm" className="rounded">
-          <ImageIcon className="w-4 h-4 mr-2" />
-          Image
-        </Button>
-        <Button type="button" onClick={() => addBlock("button")} variant="outline" size="sm" className="rounded">
-          <Plus className="w-4 h-4 mr-2" />
-          Button
-        </Button>
-        <Button type="button" onClick={() => addBlock("link")} variant="outline" size="sm" className="rounded">
-          <LinkIcon className="w-4 h-4 mr-2" />
-          Link
-        </Button>
-        <Button type="button" onClick={() => addBlock("form")} variant="outline" size="sm" className="rounded">
-          <Mail className="w-4 h-4 mr-2" />
-          Form
-        </Button>
-        <Button type="button" onClick={() => addBlock("map")} variant="outline" size="sm" className="rounded">
-          <Map className="w-4 h-4 mr-2" />
-          Map
-        </Button>
+      {/* Block Toolbar */}
+      <div className="sticky top-0 z-10 bg-background border-b pb-4 mb-4">
+        <div className="flex flex-wrap gap-2">
+          {/* Column Layout Buttons */}
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("columns", 1)} className="rounded">
+            <Layout className="w-4 h-4 mr-1" />1 Column
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("columns", 2)} className="rounded">
+            <Columns className="w-4 h-4 mr-1" />2 Columns
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("columns", 3)} className="rounded">
+            <Columns3 className="w-4 h-4 mr-1" />3 Columns
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("columns", 4)} className="rounded">
+            <Grid2x2 className="w-4 h-4 mr-1" />4 Columns
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("columns", 5)} className="rounded">
+            <Grid3x3 className="w-4 h-4 mr-1" />5 Columns
+          </Button>
+
+          {/* Other Block Types */}
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("heading")} className="rounded">
+            <Type className="w-4 h-4 mr-1" />
+            Heading
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("paragraph")} className="rounded">
+            <Layout className="w-4 h-4 mr-1" />
+            Paragraph
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("image")} className="rounded">
+            <ImageIcon className="w-4 h-4 mr-1" />
+            Image
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("button")} className="rounded">
+            <Plus className="w-4 h-4 mr-1" />
+            Button
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("link")} className="rounded">
+            <LinkIcon className="w-4 h-4 mr-1" />
+            Link
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("form")} className="rounded">
+            <Mail className="w-4 h-4 mr-1" />
+            Form
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => addBlock("map")} className="rounded">
+            <Map className="w-4 h-4 mr-1" />
+            Map
+          </Button>
+        </div>
       </div>
 
-      {blocks.length === 0 && (
-        <div className="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-800/50">
-          <p className="text-gray-500 dark:text-gray-400 mb-4">No blocks yet. Click a button above to get started!</p>
-        </div>
+      {/* Blocks List */}
+      {blocks.length === 0 ? (
+        <Card className="p-8 text-center border-2 border-dashed rounded">
+          <p className="text-muted-foreground mb-4">No blocks yet. Click the buttons above to add your first block.</p>
+        </Card>
+      ) : (
+        blocks.map((block, index) => renderBlock(block, index))
       )}
-
-      {blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
     </div>
   )
 }

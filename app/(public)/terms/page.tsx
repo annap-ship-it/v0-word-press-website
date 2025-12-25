@@ -21,29 +21,39 @@ export default function TermsPage() {
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 force-white-dark">
         <div className="max-w-none">
-          <h2 className="py-[50x] pb-[0] pt-14" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "24px" }}>
+          <h2
+            className="policy-content-text py-[50x] pb-[0] pt-14"
+            style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "24px" }}
+          >
             Idea Team Dev
           </h2>
-          <p style={{ fontFamily: "Onest", fontWeight: 600 }}>Effective Date: 10.10.2025</p>
-          <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+          <p className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 600 }}>
+            Effective Date: 10.10.2025
+          </p>
+          <p className="policy-content-text" style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
             Welcome to the Idea Team Dev website and services (hereinafter "ITD", "we", "our", "us"). By accessing or
             using our website, applications, or services, you agree to comply with these Terms of Use.
           </p>
 
           <section className="mb-8">
-            <h3 className="mx-0 my-0 py-7 pb-0" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+            <h3
+              className="policy-content-text mx-0 my-0 py-7 pb-0"
+              style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}
+            >
               1. Acceptance of Terms
             </h3>
-            <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+            <p className="policy-content-text" style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
               By using ITD services, you accept these Terms of Use in full. If you do not agree, please do not use our
               services.
             </p>
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>2. Use of Services</h3>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              2. Use of Services
+            </h3>
             <ul
-              className="list-disc pl-6 space-y-2"
+              className="list-disc pl-6 space-y-2 policy-content-text"
               style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
             >
               <li>ITD provides services related to software development, consulting, and IT solutions.</li>
@@ -56,9 +66,11 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>3. User Accounts and Security</h3>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              3. User Accounts and Security
+            </h3>
             <ul
-              className="list-disc pl-6 space-y-2"
+              className="list-disc pl-6 space-y-2 policy-content-text"
               style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
             >
               <li>If registration is required, you must provide accurate and complete information.</li>
@@ -74,9 +86,11 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>4. Intellectual Property</h3>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              4. Intellectual Property
+            </h3>
             <ul
-              className="list-disc pl-6 space-y-2"
+              className="list-disc pl-6 space-y-2 policy-content-text"
               style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
             >
               <li>
@@ -87,9 +101,11 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>5. Limitation of Liability</h3>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              5. Limitation of Liability
+            </h3>
             <ul
-              className="list-disc pl-6 space-y-2"
+              className="list-disc pl-6 space-y-2 policy-content-text"
               style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
             >
               <li>
@@ -100,9 +116,11 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>6. Data Protection</h3>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              6. Data Protection
+            </h3>
             <ul
-              className="list-disc pl-6 space-y-2"
+              className="list-disc pl-6 space-y-2 policy-content-text"
               style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
             >
               <li>All personal data is processed in accordance with our Privacy Policy.</li>
@@ -113,23 +131,29 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>7. Termination</h3>
-            <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              7. Termination
+            </h3>
+            <p className="policy-content-text" style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
               ITD may suspend or terminate access to services for violations of these Terms or applicable law.
             </p>
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>8. Governing Law</h3>
-            <p style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              8. Governing Law
+            </h3>
+            <p className="policy-content-text" style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}>
               These Terms are governed by the laws applicable in Ukraine.
             </p>
           </section>
 
           <section className="mb-8">
-            <h3 style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>9. Contact Information</h3>
+            <h3 className="policy-content-text" style={{ fontFamily: "Onest", fontWeight: 700, fontSize: "20px" }}>
+              9. Contact Information
+            </h3>
             <ul
-              className="list-disc pl-6 space-y-2"
+              className="list-disc pl-6 space-y-2 policy-content-text"
               style={{ fontFamily: "Onest", fontSize: "16px", lineHeight: "160%" }}
             >
               <li>

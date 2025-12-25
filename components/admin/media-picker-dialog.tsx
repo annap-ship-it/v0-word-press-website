@@ -73,7 +73,7 @@ export function MediaPickerDialog({ open, onClose, onSelect }: MediaPickerDialog
             placeholder="Search files..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-10 rounded"
           />
         </div>
 
@@ -88,7 +88,7 @@ export function MediaPickerDialog({ open, onClose, onSelect }: MediaPickerDialog
                 <div
                   key={file.id}
                   onClick={() => setSelectedFile(file)}
-                  className={`cursor-pointer border-2 rounded-lg overflow-hidden transition-all ${
+                  className={`cursor-pointer border-2 rounded overflow-hidden transition-all ${
                     selectedFile?.id === file.id
                       ? "border-orange-500 ring-2 ring-orange-200"
                       : "border-gray-200 dark:border-gray-700 hover:border-orange-300"
@@ -115,10 +115,10 @@ export function MediaPickerDialog({ open, onClose, onSelect }: MediaPickerDialog
         </div>
 
         <div className="flex justify-end gap-2 mt-4 pt-4 border-t">
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} className="rounded bg-transparent">
             Cancel
           </Button>
-          <Button onClick={handleSelect} disabled={!selectedFile}>
+          <Button onClick={handleSelect} disabled={!selectedFile} className="rounded">
             Select
           </Button>
         </div>

@@ -177,7 +177,7 @@ export function ThemeEditor() {
                 {Object.entries(colors).map(([key, value]) => (
                   <div key={key} className="text-center">
                     <div
-                      className="w-full h-20 rounded-lg mb-2 border border-gray-200 dark:border-gray-700"
+                      className="w-full h-20 rounded mb-2 border border-gray-200 dark:border-gray-700"
                       style={{ backgroundColor: value }}
                     />
                     <p className="text-sm font-medium capitalize">{key.replace(/([A-Z])/g, " $1")}</p>

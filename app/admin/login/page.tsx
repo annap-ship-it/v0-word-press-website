@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Login Form */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-lg border border-gray-200 dark:border-[#3a3a3a] p-8">
+        <div className="bg-white dark:bg-[#1a1a1a] rounded border border-gray-200 dark:border-[#3a3a3a] p-8">
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email Field */}
             <div>
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-[#3a3a3a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF6200] focus:border-transparent transition-all"
+                className="w-full px-4 py-3 rounded bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-[#3a3a3a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF6200] focus:border-transparent transition-all"
                 placeholder="admin@ideateam.dev"
               />
             </div>
@@ -91,14 +91,14 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-[#3a3a3a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF6200] focus:border-transparent transition-all"
+                className="w-full px-4 py-3 rounded bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-[#3a3a3a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF6200] focus:border-transparent transition-all"
                 placeholder="••••••••"
               />
             </div>
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded p-3">
                 <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
               </div>
             )}
@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#FF6200] hover:bg-[#cc4e00] active:bg-[#994000] disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white font-medium py-3 rounded-full transition-all duration-300 disabled:cursor-not-allowed"
+              className="w-full bg-[#FF6200] hover:bg-[#cc4e00] active:bg-[#994000] disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white font-medium py-3 rounded transition-all duration-300 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
