@@ -26,7 +26,7 @@ interface Block {
   id: string
   type: "paragraph" | "heading" | "list" | "image" | "table" | "html" | "banner"
   content: string
-  level?: number // 1-6 for headings
+  level?: number
   listType?: "ul" | "ol"
   items?: string[]
   formatting?: {
@@ -41,23 +41,19 @@ interface Block {
   }
 }
 
-interface PostEditorProps {
-  post?: any
+interface PageEditorProps {
+  page?: any
 }
 
-export function PostEditor({ post }: PostEditorProps) {
+export function PageEditor({ page }: PageEditorProps) {
   const router = useRouter()
-  const [title, setTitle] = useState(post?.title || "")
-  const [slug, setSlug] = useState(post?.slug || "")
-  const [excerpt, setExcerpt] = useState(post?.excerpt || "")
-  const [featuredImage, setFeaturedImage] = useState(post?.featured_image || "")
-  const [category, setCategory] = useState(post?.category || "")
-  const [status, setStatus] = useState(post?.status || "draft")
-  const [isFeatured, setIsFeatured] = useState(post?.is_featured || false)
-  const [metaTitle, setMetaTitle] = useState(post?.meta_title || "")
-  const [metaDescription, setMetaDescription] = useState(post?.meta_description || "")
+  const [title, setTitle] = useState(page?.title || "")
+  const [slug, setSlug] = useState(page?.slug || "")
+  const [metaTitle, setMetaTitle] = useState(page?.meta_title || "")
+  const [metaDescription, setMetaDescription] = useState(page?.meta_description || "")
+  const [isPublished, setIsPublished] = useState(page?.is_published ?? true)
   const [blocks, setBlocks] = useState<Block[]>(
-    post?.content || [
+    page?.content || [
       {
         id: crypto.randomUUID(),
         type: "paragraph",
@@ -70,14 +66,14 @@ export function PostEditor({ post }: PostEditorProps) {
   const [currentBlockId, setCurrentBlockId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!post && title) {
+    if (!page && title) {
       const generatedSlug = title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "")
       setSlug(generatedSlug)
     }
-  }, [title, post])
+  }, [title, page])
 
   const openMediaPicker = (blockId: string) => {
     setCurrentBlockId(blockId)
@@ -137,7 +133,7 @@ export function PostEditor({ post }: PostEditorProps) {
     }
   }
 
-  const handleSave = async (publishStatus: "draft" | "published") => {
+  const handleSave = async () => {
     if (!title.trim()) {
       alert("Please enter a title")
       return
@@ -151,42 +147,38 @@ export function PostEditor({ post }: PostEditorProps) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      alert("You must be logged in to save posts")
+      alert("You must be logged in to save pages")
       setSaving(false)
       return
     }
 
-    const postData = {
+    const pageData = {
       title,
       slug,
-      excerpt,
       content: blocks,
-      featured_image: featuredImage || null,
-      category: category || null,
-      status: publishStatus,
-      is_featured: isFeatured,
-      author_id: user.id,
       meta_title: metaTitle || title,
-      meta_description: metaDescription || excerpt,
+      meta_description: metaDescription,
+      is_published: isPublished,
+      updated_by: user.id,
     }
 
     let error
 
-    if (post) {
-      const result = await supabase.from("posts").update(postData).eq("id", post.id)
+    if (page) {
+      const result = await supabase.from("pages").update(pageData).eq("id", page.id)
       error = result.error
     } else {
-      const result = await supabase.from("posts").insert([postData])
+      const result = await supabase.from("pages").insert([pageData])
       error = result.error
     }
 
     setSaving(false)
 
     if (error) {
-      console.error("[v0] Error saving post:", error)
-      alert("Failed to save post: " + error.message)
+      console.error("[v0] Error saving page:", error)
+      alert("Failed to save page: " + error.message)
     } else {
-      router.push("/admin/posts")
+      router.push("/admin/pages")
       router.refresh()
     }
   }
@@ -529,23 +521,20 @@ export function PostEditor({ post }: PostEditorProps) {
         <div className="max-w-[900px] mx-auto">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-normal text-[#1d2327] dark:text-[#f0f0f1]">
-              {post ? "Edit Post" : "Add New Post"}
+              {page ? "Edit Page" : "Add New Page"}
             </h1>
-            <div className="flex gap-2">
-              <Button
-                onClick={() => handleSave("draft")}
-                disabled={saving}
-                variant="outline"
-                className="bg-white dark:bg-[#2c3338] border-[#8c8f94] dark:border-[#3c434a] text-[#2271b1] dark:text-[#72aee6]"
-              >
-                {saving ? "Saving..." : "Save Draft"}
-              </Button>
-              <Button
-                onClick={() => handleSave("published")}
-                disabled={saving}
-                className="bg-[#2271b1] hover:bg-[#135e96] text-white"
-              >
-                {saving ? "Publishing..." : "Publish"}
+            <div className="flex gap-4 items-center">
+              <label className="flex items-center gap-2 text-sm text-[#1d2327] dark:text-[#f0f0f1]">
+                <input
+                  type="checkbox"
+                  checked={isPublished}
+                  onChange={(e) => setIsPublished(e.target.checked)}
+                  className="rounded"
+                />
+                Published
+              </label>
+              <Button onClick={handleSave} disabled={saving} className="bg-[#2271b1] hover:bg-[#135e96] text-white">
+                {saving ? "Saving..." : "Save Page"}
               </Button>
             </div>
           </div>
@@ -555,7 +544,7 @@ export function PostEditor({ post }: PostEditorProps) {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Add title"
+              placeholder="Page title"
               className="w-full text-4xl font-bold mb-4 px-0 py-2 border-none bg-transparent text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none placeholder:text-[#646970] dark:placeholder:text-[#a7aaad]"
             />
 
@@ -565,7 +554,7 @@ export function PostEditor({ post }: PostEditorProps) {
                 type="text"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
-                placeholder="post-slug"
+                placeholder="page-slug"
                 className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
               />
             </div>
@@ -670,85 +659,30 @@ export function PostEditor({ post }: PostEditorProps) {
           </Card>
 
           <Card className="bg-white dark:bg-[#2c3338] border border-[#c3c4c7] dark:border-[#3c434a] p-6">
-            <h3 className="text-lg font-semibold text-[#1d2327] dark:text-[#f0f0f1] mb-4">Post Settings</h3>
+            <h3 className="text-lg font-semibold text-[#1d2327] dark:text-[#f0f0f1] mb-4">SEO Settings</h3>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">Excerpt</label>
+              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">Meta Title</label>
+              <input
+                type="text"
+                value={metaTitle}
+                onChange={(e) => setMetaTitle(e.target.value)}
+                placeholder="SEO title (defaults to page title)"
+                className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">
+                Meta Description
+              </label>
               <textarea
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                placeholder="Short description..."
+                value={metaDescription}
+                onChange={(e) => setMetaDescription(e.target.value)}
+                placeholder="SEO description"
                 rows={3}
                 className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] resize-none focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
               />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">
-                Featured Image
-              </label>
-              <input
-                type="text"
-                value={featuredImage}
-                onChange={(e) => setFeaturedImage(e.target.value)}
-                placeholder="Image URL..."
-                className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-              >
-                <option value="">Select category</option>
-                <option value="Automation">Automation</option>
-                <option value="New">New</option>
-                <option value="Most Readed">Most Readed</option>
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2 mb-4">
-              <input
-                type="checkbox"
-                id="is-featured"
-                checked={isFeatured}
-                onChange={(e) => setIsFeatured(e.target.checked)}
-                className="rounded"
-              />
-              <label htmlFor="is-featured" className="text-sm text-[#1d2327] dark:text-[#f0f0f1]">
-                Featured Post
-              </label>
-            </div>
-
-            <div className="mt-6 pt-6 border-t border-[#c3c4c7] dark:border-[#3c434a]">
-              <h4 className="font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-4">SEO Meta Tags</h4>
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">Meta Title</label>
-                <input
-                  type="text"
-                  value={metaTitle}
-                  onChange={(e) => setMetaTitle(e.target.value)}
-                  placeholder="SEO title (defaults to post title)"
-                  className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">
-                  Meta Description
-                </label>
-                <textarea
-                  value={metaDescription}
-                  onChange={(e) => setMetaDescription(e.target.value)}
-                  placeholder="SEO description (defaults to excerpt)"
-                  rows={3}
-                  className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] resize-none focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-                />
-              </div>
             </div>
           </Card>
         </div>

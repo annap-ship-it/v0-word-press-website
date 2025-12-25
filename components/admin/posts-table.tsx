@@ -13,9 +13,6 @@ interface Post {
   status: string
   category: string | null
   created_at: string
-  profiles: {
-    full_name: string
-  } | null
 }
 
 interface PostsTableProps {
@@ -158,9 +155,7 @@ export function PostsTable({ posts }: PostsTableProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-[#646970] dark:text-[#a7aaad]">
-                    {post.profiles?.full_name || "Unknown"}
-                  </td>
+                  <td className="px-4 py-3 text-sm text-[#646970] dark:text-[#a7aaad]">Admin</td>
                   <td className="px-4 py-3 text-sm text-[#646970] dark:text-[#a7aaad]">{post.category || "—"}</td>
                   <td className="px-4 py-3 text-sm text-[#646970] dark:text-[#a7aaad]">
                     <div className="flex flex-col">

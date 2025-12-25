@@ -21,7 +21,7 @@ import { createBrowserClient } from "@/lib/supabase/client"
 
 interface Profile {
   id: string
-  full_name: string | null
+  display_name: string | null
   avatar_url: string | null
   role: string | null
   created_at: string
@@ -47,15 +47,14 @@ export default function UsersTable({ users }: { users: Profile[] }) {
     setSuccess("")
 
     try {
-      // Create user through Supabase Admin API
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
-            full_name: formData.fullName,
+            display_name: formData.fullName,
           },
-          emailRedirectTo: undefined, // No email confirmation
+          emailRedirectTo: undefined,
         },
       })
 
@@ -64,7 +63,6 @@ export default function UsersTable({ users }: { users: Profile[] }) {
       setSuccess(`User ${formData.email} created successfully!`)
       setFormData({ email: "", password: "", fullName: "" })
 
-      // Refresh the page after 2 seconds
       setTimeout(() => {
         window.location.reload()
       }, 2000)
@@ -79,8 +77,6 @@ export default function UsersTable({ users }: { users: Profile[] }) {
     if (!confirm(`Are you sure you want to delete user ${email}?`)) return
 
     try {
-      // Note: Deleting users requires admin privileges
-      // This is a simplified version - in production you'd call a server action
       const { error } = await supabase.from("profiles").delete().eq("id", userId)
 
       if (error) throw error
@@ -202,12 +198,12 @@ export default function UsersTable({ users }: { users: Profile[] }) {
                     <div className="flex items-center">
                       <div className="h-10 w-10 flex-shrink-0">
                         <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
-                          {user.full_name?.charAt(0) || "U"}
+                          {user.display_name?.charAt(0) || "U"}
                         </div>
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
-                          {user.full_name || "Unnamed User"}
+                          {user.display_name || "Unnamed User"}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">{user.id}</div>
                       </div>
@@ -225,7 +221,7 @@ export default function UsersTable({ users }: { users: Profile[] }) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDeleteUser(user.id, user.full_name || "user")}
+                      onClick={() => handleDeleteUser(user.id, user.display_name || "user")}
                       className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                     >
                       <Trash2 className="h-4 w-4" />

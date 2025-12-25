@@ -4,8 +4,6 @@ import { Onest } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/lib/theme-context"
 import { LocaleProvider } from "@/lib/locale-context"
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
 import "./globals.css"
 
 const onest = Onest({
@@ -47,12 +45,10 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
       </head>
-      <body className={`${onest.variable} font-sans antialiased flex flex-col min-h-screen`}>
+      <body className={`${onest.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LocaleProvider>
-            <Navigation />
             {children}
-            <Footer />
             <Analytics />
           </LocaleProvider>
         </ThemeProvider>

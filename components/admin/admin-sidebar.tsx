@@ -2,17 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  LayoutDashboard,
-  FileText,
-  ImageIcon,
-  Users,
-  MessageSquare,
-  Settings,
-  Palette,
-  Plug,
-  ChevronDown,
-} from "lucide-react"
+import { LayoutDashboard, FileText, ImageIcon, Users, Palette, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 
@@ -25,18 +15,12 @@ const menuItems = [
     submenu: [
       { label: "All Posts", href: "/admin/posts" },
       { label: "Add New", href: "/admin/posts/new" },
-      { label: "Categories", href: "/admin/posts/categories" },
-      { label: "Tags", href: "/admin/posts/tags" },
     ],
   },
   {
     icon: ImageIcon,
     label: "Media",
     href: "/admin/media",
-    submenu: [
-      { label: "Library", href: "/admin/media" },
-      { label: "Add New", href: "/admin/media/new" },
-    ],
   },
   {
     icon: FileText,
@@ -47,20 +31,12 @@ const menuItems = [
       { label: "Add New", href: "/admin/pages/new" },
     ],
   },
-  { icon: MessageSquare, label: "Comments", href: "/admin/comments" },
   {
     icon: Palette,
     label: "Appearance",
     href: "/admin/appearance",
-    submenu: [
-      { label: "Themes", href: "/admin/appearance/themes" },
-      { label: "Customize", href: "/admin/appearance/customize" },
-      { label: "Menus", href: "/admin/appearance/menus" },
-    ],
   },
-  { icon: Plug, label: "Plugins", href: "/admin/plugins" },
   { icon: Users, label: "Users", href: "/admin/users" },
-  { icon: Settings, label: "Settings", href: "/admin/settings" },
 ]
 
 export function AdminSidebar() {
