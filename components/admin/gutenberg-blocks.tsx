@@ -19,8 +19,10 @@ import {
   Map,
   Layout,
   Plus,
+  Columns3,
+  Grid2x2,
+  Grid3x3,
 } from "lucide-react"
-import { MediaPickerDialog } from "./media-picker-dialog"
 
 export interface GutenbergBlock {
   id: string
@@ -55,7 +57,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
   const [currentBlockId, setCurrentBlockId] = useState<string | null>(null)
   const [expandedSettings, setExpandedSettings] = useState<string | null>(null)
 
-  const addBlock = (type: GutenbergBlock["type"]) => {
+  const addBlock = (type: GutenbergBlock["type"], columnCount?: number) => {
     const newBlock: GutenbergBlock = {
       id: crypto.randomUUID(),
       type,
@@ -63,23 +65,16 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
     }
 
     if (type === "columns") {
-      newBlock.columnCount = 2
-      newBlock.columns = [
-        [
+      newBlock.columnCount = columnCount || 2
+      newBlock.columns = Array(newBlock.columnCount)
+        .fill(null)
+        .map(() => [
           {
             id: crypto.randomUUID(),
             type: "paragraph",
             content: "",
           },
-        ],
-        [
-          {
-            id: crypto.randomUUID(),
-            type: "paragraph",
-            content: "",
-          },
-        ],
-      ]
+        ])
     } else if (type === "heading") {
       newBlock.level = 2
       newBlock.content = ""
@@ -174,7 +169,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
     if (expandedSettings !== block.id) return null
 
     return (
-      <Card className="p-4 mb-4 bg-gray-50 dark:bg-gray-800">
+      <Card className="p-4 mb-4 bg-gray-50 dark:bg-gray-800 rounded">
         <h4 className="text-sm font-semibold mb-3">Block Settings</h4>
 
         <div className="space-y-3">
@@ -305,7 +300,13 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                 placeholder="Image URL..."
                 className="flex-1"
               />
-              <Button type="button" onClick={() => openMediaPicker(block.id)} variant="outline" size="sm">
+              <Button
+                type="button"
+                onClick={() => openMediaPicker(block.id)}
+                variant="outline"
+                size="sm"
+                className="rounded"
+              >
                 <ImageIcon className="w-4 h-4 mr-2" />
                 Library
               </Button>
@@ -346,10 +347,10 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
               <Button
                 className={
                   block.buttonStyle === "primary"
-                    ? "bg-blue-600"
+                    ? "bg-blue-600 rounded"
                     : block.buttonStyle === "secondary"
-                      ? "bg-gray-600"
-                      : "border-2"
+                      ? "bg-gray-600 rounded"
+                      : "border-2 rounded"
                 }
               >
                 {block.buttonText || "Button"}
@@ -423,6 +424,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                     }}
                     variant="destructive"
                     size="sm"
+                    className="rounded"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -436,6 +438,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                 }}
                 variant="outline"
                 size="sm"
+                className="rounded"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Field
@@ -476,7 +479,10 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
     }
 
     return (
-      <Card key={block.id} className="p-4 mb-4 bg-white dark:bg-gray-900 border-2 hover:border-blue-400">
+      <Card
+        key={block.id}
+        className="p-5 bg-[#f6f7f7] dark:bg-[#23282d] border-[#c3c4c7] dark:border-[#3c434a] rounded"
+      >
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
@@ -490,17 +496,36 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
               onClick={() => setExpandedSettings(expandedSettings === block.id ? null : block.id)}
               variant="ghost"
               size="sm"
+              className="rounded"
             >
               <Settings className="w-4 h-4" />
             </Button>
-            <Button type="button" onClick={() => moveBlock(block.id, "up")} variant="ghost" size="sm">
+            <Button
+              type="button"
+              onClick={() => moveBlock(block.id, "up")}
+              variant="ghost"
+              size="sm"
+              className="rounded"
+            >
               <MoveUp className="w-4 h-4" />
             </Button>
-            <Button type="button" onClick={() => moveBlock(block.id, "down")} variant="ghost" size="sm">
+            <Button
+              type="button"
+              onClick={() => moveBlock(block.id, "down")}
+              variant="ghost"
+              size="sm"
+              className="rounded"
+            >
               <MoveDown className="w-4 h-4" />
             </Button>
-            <Button type="button" onClick={() => deleteBlock(block.id)} variant="ghost" size="sm">
-              <Trash2 className="w-4 h-4 text-red-600" />
+            <Button
+              type="button"
+              onClick={() => deleteBlock(block.id)}
+              variant="ghost"
+              size="sm"
+              className="rounded text-red-600"
+            >
+              <Trash2 className="w-3 h-3" />
             </Button>
           </div>
         </div>
@@ -548,7 +573,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                           onClick={() => deleteBlock(innerBlock.id)}
                           variant="ghost"
                           size="sm"
-                          className="text-red-600"
+                          className="text-red-600 rounded"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -561,7 +586,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                       onClick={() => addColumnBlock(colIndex, block.id)}
                       variant="outline"
                       size="sm"
-                      className="text-xs"
+                      className="text-xs rounded"
                     >
                       <Type className="w-3 h-3 mr-1" />
                       Text
@@ -580,7 +605,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                       }}
                       variant="outline"
                       size="sm"
-                      className="text-xs"
+                      className="text-xs rounded"
                     >
                       <ImageIcon className="w-3 h-3 mr-1" />
                       Image
@@ -601,7 +626,7 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
                       }}
                       variant="outline"
                       size="sm"
-                      className="text-xs"
+                      className="text-xs rounded"
                     >
                       Button
                     </Button>
@@ -618,52 +643,90 @@ export function GutenbergBlockEditor({ blocks, onChange }: GutenbergBlockEditorP
   }
 
   return (
-    <div>
-      <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-800 rounded">
-        <h3 className="text-sm font-semibold mb-3">Add Block</h3>
-        <div className="flex flex-wrap gap-2">
-          <Button type="button" onClick={() => addBlock("columns")} variant="outline" size="sm">
-            <Columns className="w-4 h-4 mr-2" />
-            Columns
-          </Button>
-          <Button type="button" onClick={() => addBlock("heading")} variant="outline" size="sm">
-            <Type className="w-4 h-4 mr-2" />
-            Heading
-          </Button>
-          <Button type="button" onClick={() => addBlock("paragraph")} variant="outline" size="sm">
-            <Layout className="w-4 h-4 mr-2" />
-            Paragraph
-          </Button>
-          <Button type="button" onClick={() => addBlock("image")} variant="outline" size="sm">
-            <ImageIcon className="w-4 h-4 mr-2" />
-            Image
-          </Button>
-          <Button type="button" onClick={() => addBlock("button")} variant="outline" size="sm">
-            <Plus className="w-4 h-4 mr-2" />
-            Button
-          </Button>
-          <Button type="button" onClick={() => addBlock("link")} variant="outline" size="sm">
-            <LinkIcon className="w-4 h-4 mr-2" />
-            Link
-          </Button>
-          <Button type="button" onClick={() => addBlock("form")} variant="outline" size="sm">
-            <Mail className="w-4 h-4 mr-2" />
-            Form
-          </Button>
-          <Button type="button" onClick={() => addBlock("map")} variant="outline" size="sm">
-            <Map className="w-4 h-4 mr-2" />
-            Map
-          </Button>
-        </div>
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2 p-4 bg-[#f6f7f7] dark:bg-[#23282d] border border-[#c3c4c7] dark:border-[#3c434a] rounded">
+        <Button
+          type="button"
+          onClick={() => addBlock("columns", 1)}
+          variant="outline"
+          size="sm"
+          className="rounded bg-white dark:bg-[#1d2327]"
+        >
+          <Type className="w-4 h-4 mr-2" />1 Column
+        </Button>
+        <Button
+          type="button"
+          onClick={() => addBlock("columns", 2)}
+          variant="outline"
+          size="sm"
+          className="rounded bg-white dark:bg-[#1d2327]"
+        >
+          <Columns className="w-4 h-4 mr-2" />2 Columns
+        </Button>
+        <Button
+          type="button"
+          onClick={() => addBlock("columns", 3)}
+          variant="outline"
+          size="sm"
+          className="rounded bg-white dark:bg-[#1d2327]"
+        >
+          <Columns3 className="w-4 h-4 mr-2" />3 Columns
+        </Button>
+        <Button
+          type="button"
+          onClick={() => addBlock("columns", 4)}
+          variant="outline"
+          size="sm"
+          className="rounded bg-white dark:bg-[#1d2327]"
+        >
+          <Grid2x2 className="w-4 h-4 mr-2" />4 Columns
+        </Button>
+        <Button
+          type="button"
+          onClick={() => addBlock("columns", 5)}
+          variant="outline"
+          size="sm"
+          className="rounded bg-white dark:bg-[#1d2327]"
+        >
+          <Grid3x3 className="w-4 h-4 mr-2" />5 Columns
+        </Button>
+        <Button type="button" onClick={() => addBlock("heading")} variant="outline" size="sm" className="rounded">
+          <Type className="w-4 h-4 mr-2" />
+          Heading
+        </Button>
+        <Button type="button" onClick={() => addBlock("paragraph")} variant="outline" size="sm" className="rounded">
+          <Layout className="w-4 h-4 mr-2" />
+          Paragraph
+        </Button>
+        <Button type="button" onClick={() => addBlock("image")} variant="outline" size="sm" className="rounded">
+          <ImageIcon className="w-4 h-4 mr-2" />
+          Image
+        </Button>
+        <Button type="button" onClick={() => addBlock("button")} variant="outline" size="sm" className="rounded">
+          <Plus className="w-4 h-4 mr-2" />
+          Button
+        </Button>
+        <Button type="button" onClick={() => addBlock("link")} variant="outline" size="sm" className="rounded">
+          <LinkIcon className="w-4 h-4 mr-2" />
+          Link
+        </Button>
+        <Button type="button" onClick={() => addBlock("form")} variant="outline" size="sm" className="rounded">
+          <Mail className="w-4 h-4 mr-2" />
+          Form
+        </Button>
+        <Button type="button" onClick={() => addBlock("map")} variant="outline" size="sm" className="rounded">
+          <Map className="w-4 h-4 mr-2" />
+          Map
+        </Button>
       </div>
 
-      <div>{blocks.map((block, index) => renderBlock(block, index))}</div>
+      {blocks.length === 0 && (
+        <div className="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-800/50">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">No blocks yet. Click a button above to get started!</p>
+        </div>
+      )}
 
-      <MediaPickerDialog
-        open={mediaPickerOpen}
-        onClose={() => setMediaPickerOpen(false)}
-        onSelect={handleMediaSelect}
-      />
+      {blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
     </div>
   )
 }
