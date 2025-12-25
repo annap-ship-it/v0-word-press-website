@@ -19,7 +19,7 @@ interface PostEditorProps {
 
 export function PostEditor({ post }: PostEditorProps) {
   const router = useRouter()
-  const supabase = createBrowserClient()
+  const [supabase, setSupabase] = useState<any>(null)
 
   const [title, setTitle] = useState(post?.title || "")
   const [slug, setSlug] = useState(post?.slug || "")
@@ -37,10 +37,17 @@ export function PostEditor({ post }: PostEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
 
   useEffect(() => {
-    loadCategories()
+    setSupabase(createBrowserClient())
   }, [])
 
+  useEffect(() => {
+    if (supabase) {
+      loadCategories()
+    }
+  }, [supabase])
+
   const loadCategories = async () => {
+    if (!supabase) return
     const { data } = await supabase.from("categories").select("*").order("name")
 
     if (data) setCategories(data)
@@ -59,6 +66,11 @@ export function PostEditor({ post }: PostEditorProps) {
   const handleSave = async (publishStatus: "draft" | "published") => {
     if (!title.trim()) {
       alert("Please enter a title")
+      return
+    }
+
+    if (!supabase) {
+      alert("Loading...")
       return
     }
 
@@ -113,6 +125,14 @@ export function PostEditor({ post }: PostEditorProps) {
       router.push("/admin/posts")
       router.refresh()
     }
+  }
+
+  if (!supabase) {
+    return (
+      <div className="min-h-screen bg-[#f0f0f1] dark:bg-[#1d2327] p-6 flex items-center justify-center">
+        <div className="text-[#1d2327] dark:text-[#f0f0f1]">Loading editor...</div>
+      </div>
+    )
   }
 
   return (

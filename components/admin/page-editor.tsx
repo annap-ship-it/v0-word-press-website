@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { Card } from "@/components/ui/card"
@@ -18,6 +18,7 @@ interface PageEditorProps {
 
 export function PageEditor({ page }: PageEditorProps) {
   const router = useRouter()
+  const [supabase, setSupabase] = useState<any>(null)
   const [title, setTitle] = useState(page?.title || "")
   const [slug, setSlug] = useState(page?.slug || "")
   const [status, setStatus] = useState(page?.status || "draft")
@@ -38,10 +39,18 @@ export function PageEditor({ page }: PageEditorProps) {
   })
   const [saving, setSaving] = useState(false)
 
+  useEffect(() => {
+    setSupabase(createBrowserClient())
+  }, [])
+
   const handleSave = async () => {
+    if (!supabase) {
+      alert("Loading...")
+      return
+    }
+
     setSaving(true)
     try {
-      const supabase = createBrowserClient()
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -88,6 +97,14 @@ export function PageEditor({ page }: PageEditorProps) {
     if (key && !metafields[key]) {
       setMetafields({ ...metafields, [key]: "" })
     }
+  }
+
+  if (!supabase) {
+    return (
+      <div className="min-h-screen bg-[#f0f0f1] dark:bg-[#1d2327] p-6 flex items-center justify-center">
+        <div className="text-[#1d2327] dark:text-[#f0f0f1]">Loading editor...</div>
+      </div>
+    )
   }
 
   return (
