@@ -45,8 +45,8 @@ BEGIN
     ) RETURNING id INTO admin_user_id;
     
     -- Create profile for admin
-    INSERT INTO public.profiles (id, full_name, avatar_url, role)
-    VALUES (admin_user_id, 'Super Admin', null, 'admin');
+    INSERT INTO public.profiles (id, display_name, avatar_url)
+    VALUES (admin_user_id, 'Administrator', null);
     
     RAISE NOTICE 'Admin user created with email: admin@ideateam.dev';
     RAISE NOTICE 'Default password: ChangeThisPassword123!';
