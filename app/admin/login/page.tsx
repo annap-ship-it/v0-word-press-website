@@ -115,12 +115,6 @@ export default function AdminLoginPage() {
 
           <div className="mt-6 space-y-3">
             <div className="text-center">
-              <span className="text-sm text-[#787877] dark:text-[#CCCCCC]">Don't have an account? </span>
-              <Link href="/admin/signup" className="text-sm text-[#FF6200] hover:underline font-medium">
-                Sign up
-              </Link>
-            </div>
-            <div className="text-center">
               <Link
                 href="/"
                 className="text-sm text-[#787877] dark:text-[#CCCCCC] hover:text-[#FF6200] transition-colors"
