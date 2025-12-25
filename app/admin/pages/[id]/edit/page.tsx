@@ -2,7 +2,8 @@ import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { PageEditor } from "@/components/admin/page-editor"
 
-export default async function EditPagePage({ params }: { params: { id: string } }) {
+export default async function EditPagePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = await createServerClient()
   const {
     data: { user },
@@ -12,7 +13,7 @@ export default async function EditPagePage({ params }: { params: { id: string } 
     redirect("/admin/login")
   }
 
-  const { data: page } = await supabase.from("pages").select("*").eq("id", params.id).single()
+  const { data: page } = await supabase.from("pages").select("*").eq("id", id).single()
 
   if (!page) {
     redirect("/admin/pages")
