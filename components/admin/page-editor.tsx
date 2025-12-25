@@ -24,6 +24,8 @@ import {
   Bold,
   Italic,
   Layout,
+  Plus,
+  X,
 } from "lucide-react"
 import { MediaPickerDialog } from "./media-picker-dialog"
 
@@ -60,6 +62,7 @@ export function PageEditor({ page }: PageEditorProps) {
     page?.status || (page?.is_published ? "published" : "draft"),
   )
   const [redirectUrl, setRedirectUrl] = useState(page?.redirect_url || "")
+  const [metafields, setMetafields] = useState<Record<string, string>>(page?.metafields || {})
   const [blocks, setBlocks] = useState<Block[]>(
     page?.content || [
       {
@@ -141,6 +144,25 @@ export function PageEditor({ page }: PageEditorProps) {
     }
   }
 
+  const addMetafield = () => {
+    const key = prompt("Enter metafield key (e.g., 'custom_field'):")
+    if (key && !metafields[key]) {
+      setMetafields({ ...metafields, [key]: "" })
+    } else if (metafields[key]) {
+      alert("This metafield key already exists")
+    }
+  }
+
+  const updateMetafield = (key: string, value: string) => {
+    setMetafields({ ...metafields, [key]: value })
+  }
+
+  const deleteMetafield = (key: string) => {
+    const newMetafields = { ...metafields }
+    delete newMetafields[key]
+    setMetafields(newMetafields)
+  }
+
   const handleSave = async () => {
     if (!title.trim()) {
       alert("Please enter a title")
@@ -169,6 +191,7 @@ export function PageEditor({ page }: PageEditorProps) {
       status,
       redirect_url: redirectUrl || null,
       is_published: status === "published",
+      metafields,
       updated_by: user.id,
     }
 
@@ -762,6 +785,53 @@ export function PageEditor({ page }: PageEditorProps) {
                       maxLength={160}
                     />
                     <p className="text-sm text-gray-500 mt-1">{metaDescription.length}/160 characters</p>
+                  </div>
+
+                  <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-md font-semibold text-[#1d2327] dark:text-[#f0f0f1]">Custom Metafields</h3>
+                        <p className="text-sm text-gray-500 mt-1">
+                          Add custom metadata fields for advanced functionality
+                        </p>
+                      </div>
+                      <Button type="button" onClick={addMetafield} variant="outline" size="sm">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Field
+                      </Button>
+                    </div>
+
+                    {Object.keys(metafields).length === 0 ? (
+                      <div className="text-center py-8 text-gray-500 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        No custom metafields yet. Click "Add Field" to create one.
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {Object.entries(metafields).map(([key, value]) => (
+                          <div key={key} className="flex gap-3 items-start p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <div className="flex-1 space-y-2">
+                              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{key}</div>
+                              <Input
+                                type="text"
+                                value={value}
+                                onChange={(e) => updateMetafield(key, e.target.value)}
+                                placeholder="Enter value..."
+                                className="border-[#8c8f94] dark:border-[#3c434a]"
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteMetafield(key)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Card>
