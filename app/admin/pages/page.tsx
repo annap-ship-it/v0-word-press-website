@@ -17,6 +17,19 @@ export default async function PagesAdminPage() {
 
   const { data: pages } = await supabase.from("pages").select("*").order("title", { ascending: true })
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "published":
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+      case "pending":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+      case "archived":
+        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
+      default:
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+    }
+  }
+
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
@@ -41,10 +54,13 @@ export default async function PagesAdminPage() {
                   Title
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Slug
+                  URL
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Redirect
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Last Modified
@@ -65,14 +81,19 @@ export default async function PagesAdminPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        page.is_published
-                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                          : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
-                      }`}
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(page.status || (page.is_published ? "published" : "draft"))}`}
                     >
-                      {page.is_published ? "Published" : "Draft"}
+                      {page.status || (page.is_published ? "published" : "draft")}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {page.redirect_url ? (
+                      <span className="text-xs text-blue-600 dark:text-blue-400 truncate max-w-[150px] inline-block">
+                        {page.redirect_url}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-400">-</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {new Date(page.updated_at).toLocaleDateString()}

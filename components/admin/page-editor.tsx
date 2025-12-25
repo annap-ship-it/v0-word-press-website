@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Trash2,
   MoveUp,
@@ -51,7 +56,10 @@ export function PageEditor({ page }: PageEditorProps) {
   const [slug, setSlug] = useState(page?.slug || "")
   const [metaTitle, setMetaTitle] = useState(page?.meta_title || "")
   const [metaDescription, setMetaDescription] = useState(page?.meta_description || "")
-  const [isPublished, setIsPublished] = useState(page?.is_published ?? true)
+  const [status, setStatus] = useState<"draft" | "pending" | "published" | "archived">(
+    page?.status || (page?.is_published ? "published" : "draft"),
+  )
+  const [redirectUrl, setRedirectUrl] = useState(page?.redirect_url || "")
   const [blocks, setBlocks] = useState<Block[]>(
     page?.content || [
       {
@@ -158,7 +166,9 @@ export function PageEditor({ page }: PageEditorProps) {
       content: blocks,
       meta_title: metaTitle || title,
       meta_description: metaDescription,
-      is_published: isPublished,
+      status,
+      redirect_url: redirectUrl || null,
+      is_published: status === "published",
       updated_by: user.id,
     }
 
@@ -474,6 +484,7 @@ export function PageEditor({ page }: PageEditorProps) {
               value={block.content}
               onChange={(e) => updateBlock(block.id, { content: e.target.value })}
               placeholder="Enter HTML code..."
+              rows={3}
               className="w-full min-h-[150px] px-4 py-3 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
             />
             {block.content && (
@@ -518,173 +529,244 @@ export function PageEditor({ page }: PageEditorProps) {
   return (
     <>
       <div className="min-h-screen bg-[#f0f0f1] dark:bg-[#1d2327] p-6">
-        <div className="max-w-[900px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-normal text-[#1d2327] dark:text-[#f0f0f1]">
               {page ? "Edit Page" : "Add New Page"}
             </h1>
-            <div className="flex gap-4 items-center">
-              <label className="flex items-center gap-2 text-sm text-[#1d2327] dark:text-[#f0f0f1]">
-                <input
-                  type="checkbox"
-                  checked={isPublished}
-                  onChange={(e) => setIsPublished(e.target.checked)}
-                  className="rounded"
-                />
-                Published
-              </label>
-              <Button onClick={handleSave} disabled={saving} className="bg-[#2271b1] hover:bg-[#135e96] text-white">
-                {saving ? "Saving..." : "Save Page"}
+            <div className="flex gap-3 items-center">
+              <Select value={status} onValueChange={(value: any) => setStatus(value)}>
+                <SelectTrigger className="w-[160px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="pending">Pending Review</SelectItem>
+                  <SelectItem value="published">Published</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button onClick={handleSave} disabled={saving} className="bg-[#2271b1] hover:bg-[#135e96]">
+                {saving ? "Saving..." : page ? "Update" : "Publish"}
               </Button>
             </div>
           </div>
 
-          <Card className="bg-white dark:bg-[#2c3338] border border-[#c3c4c7] dark:border-[#3c434a] p-6 mb-6">
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Page title"
-              className="w-full text-4xl font-bold mb-4 px-0 py-2 border-none bg-transparent text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none placeholder:text-[#646970] dark:placeholder:text-[#a7aaad]"
-            />
+          <Tabs defaultValue="content" className="space-y-6">
+            <TabsList className="bg-white dark:bg-gray-800">
+              <TabsTrigger value="content">Content</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+            </TabsList>
 
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">Slug (URL)</label>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                placeholder="page-slug"
-                className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-              />
-            </div>
-
-            <div className="space-y-4 mb-6">
-              {blocks.map((block, index) => (
-                <div key={block.id} className="relative group">
-                  <div className="bg-[#f6f7f7] dark:bg-[#1d2327] border border-[#c3c4c7] dark:border-[#3c434a] rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-medium text-[#646970] dark:text-[#a7aaad] uppercase">
-                        {block.type === "paragraph" && "Paragraph"}
-                        {block.type === "heading" && "Heading"}
-                        {block.type === "list" && "List"}
-                        {block.type === "image" && "Image"}
-                        {block.type === "table" && "Table"}
-                        {block.type === "html" && "HTML"}
-                        {block.type === "banner" && "Banner"}
-                      </span>
-                      <div className="flex gap-1">
-                        <button
-                          onClick={() => moveBlock(block.id, "up")}
-                          disabled={index === 0}
-                          className="p-1 hover:bg-[#e0e0e0] dark:hover:bg-[#2c3338] rounded disabled:opacity-30"
-                          title="Move up"
-                        >
-                          <MoveUp className="w-4 h-4 text-[#646970] dark:text-[#a7aaad]" />
-                        </button>
-                        <button
-                          onClick={() => moveBlock(block.id, "down")}
-                          disabled={index === blocks.length - 1}
-                          className="p-1 hover:bg-[#e0e0e0] dark:hover:bg-[#2c3338] rounded disabled:opacity-30"
-                          title="Move down"
-                        >
-                          <MoveDown className="w-4 h-4 text-[#646970] dark:text-[#a7aaad]" />
-                        </button>
-                        <button
-                          onClick={() => deleteBlock(block.id)}
-                          className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4 text-[#a00]" />
-                        </button>
-                      </div>
-                    </div>
-                    {renderBlock(block, index)}
+            <TabsContent value="content" className="space-y-6">
+              <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a]">
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <Label htmlFor="title" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
+                      Title
+                    </Label>
+                    <Input
+                      id="title"
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="Enter page title"
+                      className="text-2xl font-semibold h-auto py-3 border-[#8c8f94] dark:border-[#3c434a]"
+                    />
                   </div>
                 </div>
-              ))}
-            </div>
 
-            <div className="flex gap-2 flex-wrap">
-              <button
-                onClick={() => addBlock("paragraph")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <Type className="w-4 h-4" />
-                Paragraph
-              </button>
-              <button
-                onClick={() => addBlock("heading")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <Heading2 className="w-4 h-4" />
-                Heading
-              </button>
-              <button
-                onClick={() => addBlock("list")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <List className="w-4 h-4" />
-                List
-              </button>
-              <button
-                onClick={() => addBlock("image")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <ImageIcon className="w-4 h-4" />
-                Image
-              </button>
-              <button
-                onClick={() => addBlock("table")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <Table className="w-4 h-4" />
-                Table
-              </button>
-              <button
-                onClick={() => addBlock("html")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <Code className="w-4 h-4" />
-                HTML
-              </button>
-              <button
-                onClick={() => addBlock("banner")}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1d2327] border border-[#8c8f94] dark:border-[#3c434a] rounded text-[#1d2327] dark:text-[#f0f0f1] hover:bg-[#f6f7f7] dark:hover:bg-[#2c3338] text-sm"
-              >
-                <Layout className="w-4 h-4" />
-                Banner
-              </button>
-            </div>
-          </Card>
+                <div className="space-y-6">
+                  {blocks.map((block, index) => (
+                    <Card
+                      key={block.id}
+                      className="p-5 bg-[#f6f7f7] dark:bg-[#23282d] border-[#c3c4c7] dark:border-[#3c434a]"
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-sm font-medium text-[#646970] dark:text-[#a7aaad] uppercase">
+                          {block.type}
+                        </span>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => moveBlock(block.id, "up")}
+                            disabled={index === 0}
+                            className="p-2 text-[#2c3338] dark:text-[#a7aaad] hover:text-[#2271b1] dark:hover:text-[#72aee6] disabled:opacity-30"
+                            title="Move up"
+                          >
+                            <MoveUp className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => moveBlock(block.id, "down")}
+                            disabled={index === blocks.length - 1}
+                            className="p-2 text-[#2c3338] dark:text-[#a7aaad] hover:text-[#2271b1] dark:hover:text-[#72aee6] disabled:opacity-30"
+                            title="Move down"
+                          >
+                            <MoveDown className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => deleteBlock(block.id)}
+                            className="p-2 text-[#a00] hover:text-[#dc3232]"
+                            title="Delete block"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      {renderBlock(block, index)}
+                    </Card>
+                  ))}
+                </div>
 
-          <Card className="bg-white dark:bg-[#2c3338] border border-[#c3c4c7] dark:border-[#3c434a] p-6">
-            <h3 className="text-lg font-semibold text-[#1d2327] dark:text-[#f0f0f1] mb-4">SEO Settings</h3>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("paragraph")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <Type className="w-4 h-4 mr-2" />
+                    Paragraph
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("heading")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <Heading2 className="w-4 h-4 mr-2" />
+                    Heading
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("list")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <List className="w-4 h-4 mr-2" />
+                    List
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("image")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <ImageIcon className="w-4 h-4 mr-2" />
+                    Image
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("table")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <Table className="w-4 h-4 mr-2" />
+                    Table
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("html")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <Code className="w-4 h-4 mr-2" />
+                    HTML
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addBlock("banner")}
+                    className="border-[#8c8f94] dark:border-[#3c434a]"
+                  >
+                    <Layout className="w-4 h-4 mr-2" />
+                    Banner
+                  </Button>
+                </div>
+              </Card>
+            </TabsContent>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">Meta Title</label>
-              <input
-                type="text"
-                value={metaTitle}
-                onChange={(e) => setMetaTitle(e.target.value)}
-                placeholder="SEO title (defaults to page title)"
-                className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-              />
-            </div>
+            <TabsContent value="settings" className="space-y-6">
+              <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a]">
+                <h2 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Page Settings</h2>
 
-            <div>
-              <label className="block text-sm font-medium text-[#1d2327] dark:text-[#f0f0f1] mb-2">
-                Meta Description
-              </label>
-              <textarea
-                value={metaDescription}
-                onChange={(e) => setMetaDescription(e.target.value)}
-                placeholder="SEO description"
-                rows={3}
-                className="w-full px-4 py-2 border border-[#8c8f94] dark:border-[#3c434a] rounded bg-white dark:bg-[#1d2327] text-[#1d2327] dark:text-[#f0f0f1] resize-none focus:outline-none focus:ring-2 focus:ring-[#2271b1]"
-              />
-            </div>
-          </Card>
+                <div className="space-y-6">
+                  <div>
+                    <Label htmlFor="slug" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
+                      URL Slug
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-500">/</span>
+                      <Input
+                        id="slug"
+                        type="text"
+                        value={slug}
+                        onChange={(e) => setSlug(e.target.value)}
+                        placeholder="page-url"
+                        className="border-[#8c8f94] dark:border-[#3c434a]"
+                      />
+                    </div>
+                    <p className="text-sm text-gray-500 mt-1">The URL-friendly version of the page title</p>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="redirect" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
+                      Redirect URL (Optional)
+                    </Label>
+                    <Input
+                      id="redirect"
+                      type="text"
+                      value={redirectUrl}
+                      onChange={(e) => setRedirectUrl(e.target.value)}
+                      placeholder="https://example.com or /another-page"
+                      className="border-[#8c8f94] dark:border-[#3c434a]"
+                    />
+                    <p className="text-sm text-gray-500 mt-1">
+                      Redirect visitors to another URL when they visit this page
+                    </p>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="metaTitle" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
+                      Meta Title
+                    </Label>
+                    <Input
+                      id="metaTitle"
+                      type="text"
+                      value={metaTitle}
+                      onChange={(e) => setMetaTitle(e.target.value)}
+                      placeholder={title || "Enter SEO title"}
+                      className="border-[#8c8f94] dark:border-[#3c434a]"
+                    />
+                    <p className="text-sm text-gray-500 mt-1">
+                      The title that appears in search engine results (defaults to page title)
+                    </p>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="metaDescription" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
+                      Meta Description
+                    </Label>
+                    <Textarea
+                      id="metaDescription"
+                      value={metaDescription}
+                      onChange={(e) => setMetaDescription(e.target.value)}
+                      placeholder="Enter a brief description for search engines (160 characters recommended)"
+                      className="border-[#8c8f94] dark:border-[#3c434a] min-h-[100px]"
+                      maxLength={160}
+                    />
+                    <p className="text-sm text-gray-500 mt-1">{metaDescription.length}/160 characters</p>
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
