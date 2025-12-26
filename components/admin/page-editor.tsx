@@ -116,34 +116,34 @@ export function PageEditor({ page }: PageEditorProps) {
           </h1>
           <div className="flex gap-3 items-center">
             <Select value={status} onValueChange={(value: any) => setStatus(value)}>
-              <SelectTrigger className="w-[160px] rounded">
+              <SelectTrigger className="w-[160px] rounded-[4px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="rounded">
+              <SelectContent className="rounded-[4px]">
                 <SelectItem value="draft">Draft</SelectItem>
                 <SelectItem value="pending">Pending Review</SelectItem>
                 <SelectItem value="published">Published</SelectItem>
                 <SelectItem value="archived">Archived</SelectItem>
               </SelectContent>
             </Select>
-            <Button onClick={handleSave} disabled={saving} className="bg-[#2271b1] hover:bg-[#135e96] rounded">
+            <Button onClick={handleSave} disabled={saving} className="bg-[#2271b1] hover:bg-[#135e96] rounded-[4px]">
               {saving ? "Saving..." : page ? "Update" : "Publish"}
             </Button>
           </div>
         </div>
 
         <Tabs defaultValue="content" className="space-y-6">
-          <TabsList className="bg-white dark:bg-gray-800 rounded">
-            <TabsTrigger value="content" className="rounded">
+          <TabsList className="bg-white dark:bg-gray-800 rounded-[4px]">
+            <TabsTrigger value="content" className="rounded-[4px]">
               Content
             </TabsTrigger>
-            <TabsTrigger value="settings" className="rounded">
+            <TabsTrigger value="settings" className="rounded-[4px]">
               Settings
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="space-y-6">
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <div className="space-y-4 mb-6">
                 <div>
                   <Label htmlFor="title" className="text-[#1d2327] dark:text-[#f0f0f1] mb-2 block">
@@ -155,7 +155,7 @@ export function PageEditor({ page }: PageEditorProps) {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Enter page title"
-                    className="text-2xl font-semibold h-auto py-3 border-[#8c8f94] dark:border-[#3c434a] rounded"
+                    className="text-2xl font-semibold h-auto py-3 border-[#8c8f94] dark:border-[#3c434a] rounded-[4px]"
                   />
                 </div>
               </div>
@@ -165,7 +165,7 @@ export function PageEditor({ page }: PageEditorProps) {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4">Page Settings</h3>
 
               <div className="space-y-4">
@@ -176,7 +176,7 @@ export function PageEditor({ page }: PageEditorProps) {
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     placeholder="page-url-slug"
-                    className="rounded"
+                    className="rounded-[4px]"
                   />
                   <p className="text-sm text-gray-500 mt-1">
                     Permalink: {typeof window !== "undefined" ? window.location.origin : ""}/{slug || "page-slug"}
@@ -190,7 +190,7 @@ export function PageEditor({ page }: PageEditorProps) {
                     value={metaTitle}
                     onChange={(e) => setMetaTitle(e.target.value)}
                     placeholder="SEO meta title"
-                    className="rounded"
+                    className="rounded-[4px]"
                   />
                 </div>
 
@@ -202,7 +202,7 @@ export function PageEditor({ page }: PageEditorProps) {
                     onChange={(e) => setMetaDescription(e.target.value)}
                     placeholder="SEO meta description"
                     rows={3}
-                    className="rounded"
+                    className="rounded-[4px]"
                   />
                 </div>
 
@@ -213,17 +213,17 @@ export function PageEditor({ page }: PageEditorProps) {
                     value={redirectUrl}
                     onChange={(e) => setRedirectUrl(e.target.value)}
                     placeholder="https://example.com/redirect"
-                    className="rounded"
+                    className="rounded-[4px]"
                   />
                   <p className="text-sm text-gray-500 mt-1">If set, this page will redirect to the specified URL</p>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Custom Metafields</h3>
-                <Button onClick={addMetafield} variant="outline" size="sm" className="rounded bg-transparent">
+                <Button onClick={addMetafield} variant="outline" size="sm" className="rounded-[4px] bg-transparent">
                   Add Metafield
                 </Button>
               </div>
@@ -237,7 +237,7 @@ export function PageEditor({ page }: PageEditorProps) {
                         value={value}
                         onChange={(e) => setMetafields({ ...metafields, [key]: e.target.value })}
                         placeholder={`Value for ${key}`}
-                        className="rounded"
+                        className="rounded-[4px]"
                       />
                     </div>
                     <Button
@@ -248,7 +248,7 @@ export function PageEditor({ page }: PageEditorProps) {
                       }}
                       variant="ghost"
                       size="sm"
-                      className="mt-6 text-red-600 hover:text-red-700 hover:bg-red-50 rounded"
+                      className="mt-6 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-[4px]"
                     >
                       Remove
                     </Button>

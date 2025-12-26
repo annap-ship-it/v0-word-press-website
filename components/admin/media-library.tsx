@@ -161,10 +161,10 @@ export default function MediaLibrary() {
               placeholder="Search files..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 rounded"
+              className="pl-10 rounded-[4px]"
             />
           </div>
-          <Button asChild disabled={uploading} className="rounded">
+          <Button asChild disabled={uploading} className="rounded-[4px]">
             <label className="cursor-pointer">
               <Upload className="w-4 h-4 mr-2" />
               {uploading ? "Uploading..." : "Upload File"}
@@ -185,7 +185,7 @@ export default function MediaLibrary() {
               <div
                 key={file.id}
                 onClick={() => setSelectedFile(file)}
-                className={`relative group cursor-pointer border-2 rounded overflow-hidden transition-all ${
+                className={`relative group cursor-pointer border-2 rounded-[4px] overflow-hidden transition-all ${
                   selectedFile?.id === file.id
                     ? "border-orange-500 ring-2 ring-orange-200"
                     : "border-gray-200 dark:border-gray-700 hover:border-orange-300"
@@ -215,14 +215,14 @@ export default function MediaLibrary() {
       {/* File Details */}
       <div className="lg:col-span-1">
         {selectedFile ? (
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded p-6 space-y-4 sticky top-4">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-[4px] p-6 space-y-4 sticky top-4">
             <h3 className="font-semibold text-lg">File Details</h3>
 
             {(selectedFile.file_type || selectedFile.mime_type || "").startsWith("image/") && (
               <img
                 src={selectedFile.url || selectedFile.file_path || "/placeholder.svg"}
                 alt={selectedFile.alt_text || selectedFile.filename}
-                className="w-full rounded border border-gray-200 dark:border-gray-700"
+                className="w-full rounded-[4px] border border-gray-200 dark:border-gray-700"
               />
             )}
 
@@ -240,7 +240,7 @@ export default function MediaLibrary() {
                       size="sm"
                       variant="ghost"
                       onClick={() => setEditingAlt(true)}
-                      className="h-auto py-1 px-2 text-xs rounded"
+                      className="h-auto py-1 px-2 text-xs rounded-[4px]"
                     >
                       Edit
                     </Button>
@@ -253,10 +253,10 @@ export default function MediaLibrary() {
                       onChange={(e) => setAltText(e.target.value)}
                       placeholder="Describe this image for accessibility..."
                       rows={3}
-                      className="text-sm rounded"
+                      className="text-sm rounded-[4px]"
                     />
                     <div className="flex gap-2">
-                      <Button size="sm" onClick={handleUpdateAlt} className="flex-1 rounded">
+                      <Button size="sm" onClick={handleUpdateAlt} className="flex-1 rounded-[4px]">
                         <Save className="w-3 h-3 mr-1" />
                         Save
                       </Button>
@@ -267,7 +267,7 @@ export default function MediaLibrary() {
                           setEditingAlt(false)
                           setAltText(selectedFile.alt_text || "")
                         }}
-                        className="rounded"
+                        className="rounded-[4px]"
                       >
                         Cancel
                       </Button>
@@ -295,12 +295,16 @@ export default function MediaLibrary() {
               <div>
                 <p className="text-gray-500 dark:text-gray-400 mb-1">URL</p>
                 <div className="flex gap-2">
-                  <Input value={selectedFile.url || selectedFile.file_path} readOnly className="text-xs rounded" />
+                  <Input
+                    value={selectedFile.url || selectedFile.file_path}
+                    readOnly
+                    className="text-xs rounded-[4px]"
+                  />
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => copyToClipboard(selectedFile.url || selectedFile.file_path)}
-                    className="rounded"
+                    className="rounded-[4px]"
                   >
                     Copy
                   </Button>
@@ -308,13 +312,17 @@ export default function MediaLibrary() {
               </div>
             </div>
 
-            <Button variant="destructive" className="w-full rounded" onClick={() => handleDelete(selectedFile.id)}>
+            <Button
+              variant="destructive"
+              className="w-full rounded-[4px]"
+              onClick={() => handleDelete(selectedFile.id)}
+            >
               <Trash2 className="w-4 h-4 mr-2" />
               Delete File
             </Button>
           </div>
         ) : (
-          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-6 text-center text-gray-500">
+          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-[4px] p-6 text-center text-gray-500">
             Select a file to view details
           </div>
         )}

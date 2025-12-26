@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GutenbergBlockEditor, type GutenbergBlock } from "./gutenberg-blocks"
 import { MediaPickerDialog } from "./media-picker-dialog"
@@ -27,7 +26,6 @@ export function PostEditor({ post }: PostEditorProps) {
   const [featuredImage, setFeaturedImage] = useState(post?.featured_image || "")
   const [categoryId, setCategoryId] = useState(post?.category_id || "")
   const [status, setStatus] = useState(post?.status || "draft")
-  const [isFeatured, setIsFeatured] = useState(post?.is_featured || false)
   const [metaTitle, setMetaTitle] = useState(post?.meta_title || "")
   const [metaDescription, setMetaDescription] = useState(post?.meta_description || "")
   const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(post?.content || [])
@@ -96,7 +94,6 @@ export function PostEditor({ post }: PostEditorProps) {
       featured_image: featuredImage || null,
       category_id: categoryId || null,
       status: publishStatus,
-      is_featured: isFeatured,
       author_id: user.id,
       meta_title: metaTitle || title,
       meta_description: metaDescription || excerpt,
@@ -262,10 +259,10 @@ export function PostEditor({ post }: PostEditorProps) {
               )}
             </Card>
 
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Category</h3>
               <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger className="rounded-[4px]">
+                <SelectTrigger className="rounded">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -276,15 +273,6 @@ export function PostEditor({ post }: PostEditorProps) {
                   ))}
                 </SelectContent>
               </Select>
-            </Card>
-
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="featured" checked={isFeatured} onCheckedChange={(checked) => setIsFeatured(!!checked)} />
-                <Label htmlFor="featured" className="text-sm font-normal cursor-pointer">
-                  Mark as featured post
-                </Label>
-              </div>
             </Card>
           </div>
         </div>
