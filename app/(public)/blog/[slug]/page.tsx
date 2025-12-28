@@ -1,24 +1,53 @@
 "use client"
 
+import type React from "react"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Clock, Calendar, Share2, Facebook, Twitter, Linkedin, Copy } from "lucide-react"
+import {
+  ArrowLeft,
+  Clock,
+  Calendar,
+  Share2,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Copy,
+  DollarSign,
+  Users,
+  TrendingUp,
+  Shield,
+  Check,
+} from "lucide-react"
+import type { JSX } from "react"
+
+interface ContentBlock {
+  type: string
+  content?: string
+  level?: number
+  items?: string[] | { title: string; description: string }[]
+}
+
+interface PostContent {
+  blocks?: ContentBlock[]
+  type?: string
+  content?: string
+}
 
 interface Post {
   id: string
   title: string
   slug: string
-  content: string
+  content: PostContent | string | null
   excerpt: string
   featured_image: string | null
-  category: { name: string; slug: string } | null
+  category_id: string | null
   created_at: string
   author_id: string
-  meta_title: string | null
-  meta_description: string | null
+  category?: { name: string; slug: string } | null
+  profiles?: { display_name: string; avatar_url: string | null } | null
 }
 
 interface RelatedPost {
@@ -27,124 +56,11 @@ interface RelatedPost {
   slug: string
   excerpt: string
   featured_image: string | null
-  category: { name: string } | null
+  category_id: string | null
   created_at: string
+  category?: { name: string } | null
+  profiles?: { display_name: string; avatar_url: string | null } | null
 }
-
-// Default article content for IT Personnel Outsourcing
-const defaultArticle = {
-  id: "1",
-  title: "The Ultimate Guide to IT Personnel Outsourcing in 2024",
-  slug: "it-personnel-outsourcing-guide-2024",
-  excerpt:
-    "Learn how IT personnel outsourcing can transform your business operations, reduce costs, and give you access to global talent pools.",
-  featured_image: "/it-team-working-remotely-modern-office.jpg",
-  category: { name: "Automation", slug: "automation" },
-  created_at: new Date().toISOString(),
-  author_id: "1",
-  meta_title: "IT Personnel Outsourcing Guide 2024",
-  meta_description: "Complete guide to IT outsourcing",
-  content: `
-    <h2>What is IT Personnel Outsourcing?</h2>
-    <p>IT personnel outsourcing is a strategic business practice where companies delegate their information technology functions, projects, or staffing needs to external service providers. This approach has become increasingly popular as organizations seek to optimize costs, access specialized skills, and focus on their core competencies.</p>
-    
-    <p>In today's rapidly evolving technological landscape, maintaining an in-house IT team with all the necessary skills can be challenging and expensive. IT outsourcing offers a flexible solution that allows businesses to scale their technical capabilities without the overhead of permanent hires.</p>
-
-    <h2>Key Benefits of IT Outsourcing</h2>
-    
-    <h3>1. Cost Reduction</h3>
-    <p>One of the primary drivers for IT outsourcing is cost savings. By partnering with outsourcing providers, companies can significantly reduce expenses related to:</p>
-    <ul>
-      <li>Salaries and benefits for full-time employees</li>
-      <li>Office space and equipment</li>
-      <li>Training and professional development</li>
-      <li>Recruitment and HR management</li>
-    </ul>
-
-    <h3>2. Access to Global Talent</h3>
-    <p>Outsourcing opens doors to a vast pool of skilled professionals worldwide. Whether you need experts in cloud computing, artificial intelligence, cybersecurity, or web development, outsourcing partners can connect you with the right talent regardless of geographical limitations.</p>
-
-    <h3>3. Scalability and Flexibility</h3>
-    <p>Business needs fluctuate, and IT outsourcing provides the flexibility to scale your team up or down based on project requirements. This elasticity is particularly valuable for:</p>
-    <ul>
-      <li>Seasonal businesses with varying workloads</li>
-      <li>Startups experiencing rapid growth</li>
-      <li>Companies launching new products or services</li>
-      <li>Organizations undergoing digital transformation</li>
-    </ul>
-
-    <h3>4. Focus on Core Business</h3>
-    <p>By delegating IT functions to specialized partners, your internal team can concentrate on strategic initiatives and core business activities that drive growth and competitive advantage.</p>
-
-    <h2>Types of IT Outsourcing Models</h2>
-
-    <h3>Staff Augmentation</h3>
-    <p>Staff augmentation involves adding external IT professionals to your existing team. These resources work under your management and integrate with your internal processes. This model is ideal when you need to quickly fill skill gaps or increase capacity for specific projects.</p>
-
-    <h3>Dedicated Team</h3>
-    <p>A dedicated team model provides you with a complete, self-managed team that works exclusively on your projects. The outsourcing partner handles recruitment, HR, and administrative functions while you retain control over project direction and priorities.</p>
-
-    <h3>Project-Based Outsourcing</h3>
-    <p>In this model, you outsource an entire project to an external provider who takes full responsibility for delivery. This approach works best for well-defined projects with clear requirements and timelines.</p>
-
-    <h2>How to Choose the Right Outsourcing Partner</h2>
-    <p>Selecting the right IT outsourcing partner is crucial for success. Consider these factors when evaluating potential providers:</p>
-    
-    <ol>
-      <li><strong>Technical Expertise:</strong> Verify that the provider has proven experience in the technologies and domains relevant to your needs.</li>
-      <li><strong>Communication:</strong> Assess their communication practices, language proficiency, and time zone compatibility.</li>
-      <li><strong>Security:</strong> Ensure they have robust data protection measures and comply with relevant regulations.</li>
-      <li><strong>Track Record:</strong> Request case studies, client references, and portfolio samples.</li>
-      <li><strong>Cultural Fit:</strong> Evaluate their work culture and values alignment with your organization.</li>
-    </ol>
-
-    <h2>Best Practices for Successful IT Outsourcing</h2>
-    <p>To maximize the benefits of IT outsourcing, follow these best practices:</p>
-    <ul>
-      <li>Clearly define project scope, objectives, and success metrics</li>
-      <li>Establish effective communication channels and regular check-ins</li>
-      <li>Document processes, requirements, and expectations thoroughly</li>
-      <li>Implement robust project management and tracking tools</li>
-      <li>Build strong relationships with your outsourcing team</li>
-      <li>Plan for knowledge transfer and documentation</li>
-    </ul>
-
-    <h2>Conclusion</h2>
-    <p>IT personnel outsourcing has evolved from a cost-cutting measure to a strategic business enabler. When implemented thoughtfully, it can provide your organization with competitive advantages through access to top talent, increased agility, and optimized operations. The key to success lies in choosing the right partner, establishing clear expectations, and maintaining open communication throughout the engagement.</p>
-    
-    <p>Ready to explore IT outsourcing for your organization? Contact our team to discuss how we can help you build a high-performing distributed team tailored to your specific needs.</p>
-  `,
-}
-
-const relatedArticles: RelatedPost[] = [
-  {
-    id: "2",
-    title: "5 Benefits of Outsourcing Your Development Team",
-    slug: "benefits-outsourcing-development-team",
-    excerpt: "Discover the key advantages of working with an outsourced development team.",
-    featured_image: "/developers-collaborating.jpg",
-    category: { name: "New" },
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    title: "How to Choose the Right IT Outsourcing Partner",
-    slug: "choose-right-it-outsourcing-partner",
-    excerpt: "A comprehensive checklist for evaluating IT outsourcing partners.",
-    featured_image: "/business-partnership-meeting.png",
-    category: { name: "Most Readed" },
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: "4",
-    title: "Managing Remote Development Teams: Best Practices",
-    slug: "managing-remote-development-teams",
-    excerpt: "Essential tips for managing distributed development teams.",
-    featured_image: "/remote-team-video-call.jpg",
-    category: { name: "Automation" },
-    created_at: new Date().toISOString(),
-  },
-]
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
@@ -155,21 +71,219 @@ function formatDate(dateString: string): string {
   })
 }
 
-function estimateReadTime(content: string): number {
+function estimateReadTime(content: PostContent | string | null): number {
+  if (!content) return 5
+  let text = ""
+  if (typeof content === "string") {
+    text = content.replace(/<[^>]*>/g, "")
+  } else if (content.blocks) {
+    text = content.blocks
+      .map((block) => {
+        if (block.content) return block.content
+        if (Array.isArray(block.items)) {
+          return block.items
+            .map((item) => (typeof item === "string" ? item : `${item.title} ${item.description}`))
+            .join(" ")
+        }
+        return ""
+      })
+      .join(" ")
+  }
   const wordsPerMinute = 200
-  const wordCount = content.replace(/<[^>]*>/g, "").split(/\s+/).length
-  return Math.ceil(wordCount / wordsPerMinute)
+  const wordCount = text.split(/\s+/).length
+  return Math.max(Math.ceil(wordCount / wordsPerMinute), 3)
 }
 
 function getCategoryColor(category: string): string {
   return "bg-[#FF6200]"
 }
 
+function AnimatedSection({
+  children,
+  className = "",
+  delay = 0,
+}: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay)
+          observer.unobserve(entry.target)
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    )
+
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [delay])
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${className}`}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(30px)",
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+const benefitIcons = [DollarSign, Users, TrendingUp, Shield]
+
+function ContentRenderer({ content }: { content: PostContent | string | null }) {
+  if (!content) return null
+
+  // Handle legacy HTML string content
+  if (typeof content === "string") {
+    return (
+      <div
+        className="article-content prose prose-lg dark:prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    )
+  }
+
+  if (content.type === "html" && typeof content.content === "string") {
+    return (
+      <div className="article-content" style={{ color: "var(--foreground)" }}>
+        <style jsx global>{`
+          .article-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--foreground);
+          }
+          .article-content h3 {
+            font-size: 21.6px;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            color: var(--foreground);
+          }
+          .article-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #4A4A4A;
+          }
+          .dark .article-content p {
+            color: #B0B0B0;
+          }
+          .article-content ul, .article-content ol {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+          }
+          .article-content li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+            color: #4A4A4A;
+          }
+          .dark .article-content li {
+            color: #B0B0B0;
+          }
+        `}</style>
+        <div dangerouslySetInnerHTML={{ __html: content.content }} />
+      </div>
+    )
+  }
+
+  // Handle JSON blocks content
+  if (!content.blocks) return null
+
+  return (
+    <div className="article-content">
+      {content.blocks.map((block, index) => {
+        switch (block.type) {
+          case "heading":
+            const HeadingTag = `h${block.level || 2}` as keyof JSX.IntrinsicElements
+            const headingStyles =
+              block.level === 2
+                ? "text-[28px] font-bold mt-[3rem] mb-[1.5rem]"
+                : "text-[21.6px] font-semibold mt-[2.5rem] mb-[1.25rem]"
+            return (
+              <AnimatedSection key={index} delay={index * 50}>
+                <HeadingTag className={headingStyles} style={{ color: "var(--foreground)" }}>
+                  {block.content}
+                </HeadingTag>
+              </AnimatedSection>
+            )
+
+          case "paragraph":
+            return (
+              <AnimatedSection key={index} delay={index * 50}>
+                <p
+                  className="text-base leading-[1.8] mb-6 text-[#4A4A4A] dark:text-[#B0B0B0] text-foreground"
+                  style={{ marginTop: "0.5rem", marginBottom: "1.5rem" }}
+                >
+                  {block.content}
+                </p>
+              </AnimatedSection>
+            )
+
+          case "benefits":
+            const benefitItems = block.items as { title: string; description: string }[]
+            return (
+              <AnimatedSection key={index} delay={index * 50}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 my-12">
+                  {benefitItems?.map((benefit, i) => {
+                    const IconComponent = benefitIcons[i % benefitIcons.length]
+                    return (
+                      <div
+                        key={i}
+                        className="p-6 rounded-[14px] border border-[#E5E5E5] dark:border-[#333] bg-[#FAFAFA] dark:bg-[#1A1A1A] hover:border-[#FF6200] transition-all duration-300 group"
+                      >
+                        <div className="w-12 h-12 rounded-[8px] bg-[#FF6200]/10 flex items-center justify-center mb-4 group-hover:bg-[#FF6200] transition-colors">
+                          <IconComponent className="w-6 h-6 text-[#FF6200] group-hover:text-white transition-colors" />
+                        </div>
+                        <h4 className="font-semibold text-lg mb-2 text-primary" style={{ color: "#333" }}>
+                          {benefit.title}
+                        </h4>
+                        <p className="text-sm text-[#787877] dark:text-[#AAAAAA] leading-relaxed">
+                          {benefit.description}
+                        </p>
+                      </div>
+                    )
+                  })}
+                </div>
+              </AnimatedSection>
+            )
+
+          case "list":
+            const listItems = block.items as string[]
+            return (
+              <AnimatedSection key={index} delay={index * 50}>
+                <ul className="my-6 space-y-3 pl-0">
+                  {listItems?.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-[#4A4A4A] dark:text-[#B0B0B0]">
+                      <span className="w-2 h-2 rounded-full bg-[#FF6200] mt-2 flex-shrink-0" />
+                      <span className="leading-[1.7] text-popover-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </AnimatedSection>
+            )
+
+          default:
+            return null
+        }
+      })}
+    </div>
+  )
+}
+
 export default function BlogPostPage() {
   const params = useParams()
   const slug = params?.slug as string
   const [post, setPost] = useState<Post | null>(null)
-  const [related, setRelated] = useState<RelatedPost[]>(relatedArticles)
+  const [related, setRelated] = useState<RelatedPost[]>([])
   const [loading, setLoading] = useState(true)
   const [isDark, setIsDark] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -188,33 +302,85 @@ export default function BlogPostPage() {
     async function fetchPost() {
       if (!slug) return
 
+      console.log("[v0] Fetching post with slug:", slug)
+
       const supabase = createBrowserClient()
+
       const { data, error } = await supabase
         .from("posts")
-        .select(
-          "id, title, slug, content, excerpt, featured_image, category:categories(name, slug), created_at, author_id, meta_title, meta_description",
-        )
+        .select(`
+          id, title, slug, content, excerpt, featured_image, 
+          category_id, created_at, author_id
+        `)
         .eq("slug", slug)
+        .eq("status", "published")
         .single()
 
+      console.log("[v0] Post query result:", { data, error })
+
       if (error || !data) {
-        // Use default article if not found
-        setPost(defaultArticle)
-      } else {
-        setPost(data)
+        console.log("[v0] Error fetching post:", error)
+        setPost(null)
+        setLoading(false)
+        return
       }
 
-      // Fetch related posts
+      let categoryData = null
+      if (data.category_id) {
+        const { data: cat } = await supabase.from("categories").select("name, slug").eq("id", data.category_id).single()
+        categoryData = cat
+        console.log("[v0] Category data:", cat)
+      }
+
+      let profileData = null
+      if (data.author_id) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("display_name, avatar_url")
+          .eq("id", data.author_id)
+          .single()
+        profileData = profile
+        console.log("[v0] Profile data:", profile)
+      }
+
+      const postWithRelations = {
+        ...data,
+        category: categoryData,
+        profiles: profileData,
+      } as Post
+
+      console.log("[v0] Final post data:", postWithRelations)
+      setPost(postWithRelations)
+
+      // Fetch related posts (exclude Projects category)
       const { data: relatedData } = await supabase
         .from("posts")
-        .select("id, title, slug, excerpt, featured_image, category:categories(name), created_at")
+        .select(`id, title, slug, excerpt, featured_image, category_id, created_at, author_id`)
         .eq("status", "published")
         .neq("slug", slug)
-        .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79") // Exclude Projects
+        .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79")
+        .order("created_at", { ascending: false })
         .limit(3)
 
-      if (relatedData && relatedData.length > 0) {
-        setRelated(relatedData)
+      console.log("[v0] Related posts:", relatedData)
+
+      if (relatedData) {
+        // Fetch categories for related posts
+        const relatedWithCategories = await Promise.all(
+          relatedData.map(async (post) => {
+            let cat = null
+            if (post.category_id) {
+              const { data: catData } = await supabase
+                .from("categories")
+                .select("name")
+                .eq("id", post.category_id)
+                .single()
+              cat = catData
+            }
+            return { ...post, category: cat } as RelatedPost
+          }),
+        )
+        setRelated(relatedWithCategories)
       }
 
       setLoading(false)
@@ -252,20 +418,27 @@ export default function BlogPostPage() {
 
   if (!post) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--background)" }}>
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
-            Article not found
-          </h1>
-          <Link href="/blog" className="text-[#FF6200] hover:underline">
-            Back to Blog
-          </Link>
-        </div>
+      <div
+        className="min-h-screen flex flex-col items-center justify-center"
+        style={{ background: "var(--background)" }}
+      >
+        <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
+          Article not found
+        </h1>
+        <Link href="/blog" className="text-[#FF6200] hover:underline">
+          Back to Blog
+        </Link>
       </div>
     )
   }
 
-  const readTime = estimateReadTime(post.content || "")
+  const authorName = post.profiles?.display_name || "Jason Francisco"
+  const authorInitials = authorName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+
   const titleGradient = isDark
     ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
     : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)"
@@ -273,7 +446,7 @@ export default function BlogPostPage() {
   return (
     <div className="min-h-screen" style={{ background: "var(--background)" }}>
       {/* Back Button */}
-      <div className="max-w-[1280px] mx-auto px-4 md:px-6 pt-8">
+      <AnimatedSection className="max-w-[1280px] mx-auto px-4 md:px-6 pt-8">
         <Link
           href="/blog"
           className="inline-flex items-center gap-2 text-[#787877] hover:text-[#FF6200] transition-colors"
@@ -281,175 +454,210 @@ export default function BlogPostPage() {
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Blog</span>
         </Link>
-      </div>
+      </AnimatedSection>
 
       {/* Hero Section */}
       <section className="py-8 md:py-12">
         <div className="max-w-[900px] mx-auto px-4 md:px-6">
           {/* Category */}
-          {post.category?.name && (
-            <div className="mb-4">
-              <span
-                className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(post.category.name)}`}
-              >
-                {post.category.name}
-              </span>
-            </div>
-          )}
-
-          {/* Title */}
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
-            style={{
-              backgroundImage: titleGradient,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            {post.title}
-          </h1>
-
-          {/* Meta Info */}
-          <div className="flex flex-wrap items-center gap-4 md:gap-6 mb-8 pb-8 border-b border-[#E5E5E5] dark:border-[#333]">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#FF6200] flex items-center justify-center text-white font-medium">
-                JF
-              </div>
-              <div>
-                <p className="font-medium" style={{ color: "var(--foreground)" }}>
-                  Jason Francisco
-                </p>
-                <p className="text-sm text-[#787877]">Author</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 text-[#787877]">
-              <Calendar className="w-4 h-4" />
-              <span className="text-sm">{formatDate(post.created_at)}</span>
-            </div>
-
-            <div className="flex items-center gap-2 text-[#787877]">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm">{readTime} min read</span>
-            </div>
-          </div>
-
-          {/* Featured Image */}
-          {post.featured_image && (
-            <div className="relative h-[300px] md:h-[400px] lg:h-[500px] rounded-[14px] overflow-hidden mb-10">
-              <Image
-                src={post.featured_image || "/placeholder.svg"}
-                alt={post.title}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          )}
-
-          {/* Content */}
-          <article
-            className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:text-[#787877] dark:prose-p:text-[#CCCCCC] prose-p:leading-relaxed prose-li:text-[#787877] dark:prose-li:text-[#CCCCCC] prose-a:text-[#FF6200] prose-a:no-underline hover:prose-a:underline prose-strong:font-semibold"
-            style={{ color: "var(--foreground)" }}
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-
-          {/* Share Section */}
-          <div className="mt-12 pt-8 border-t border-[#E5E5E5] dark:border-[#333]">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <Share2 className="w-5 h-5 text-[#787877]" />
-                <span className="font-medium" style={{ color: "var(--foreground)" }}>
-                  Share this article
+          <AnimatedSection delay={100}>
+            {post.category?.name && (
+              <div className="mb-4">
+                <span
+                  className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(post.category.name)}`}
+                >
+                  {post.category.name}
                 </span>
               </div>
+            )}
+          </AnimatedSection>
 
+          {/* Title - H1 */}
+          <AnimatedSection delay={200}>
+            <h1
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
+              style={{
+                backgroundImage: titleGradient,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              {post.title}
+            </h1>
+          </AnimatedSection>
+
+          {/* Meta Info */}
+          <AnimatedSection delay={300}>
+            <div className="flex flex-wrap items-center gap-4 md:gap-6 mb-8 pb-8 border-b border-[#E5E5E5] dark:border-[#333]">
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => handleShare("facebook")}
-                  className="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-                  aria-label="Share on Facebook"
-                >
-                  <Facebook className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => handleShare("twitter")}
-                  className="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-                  aria-label="Share on Twitter"
-                >
-                  <Twitter className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => handleShare("linkedin")}
-                  className="w-10 h-10 rounded-full bg-[#0A66C2] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-                  aria-label="Share on LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={handleCopyLink}
-                  className="w-10 h-10 rounded-full bg-[#FF6200] flex items-center justify-center text-white hover:opacity-80 transition-opacity relative"
-                  aria-label="Copy link"
-                >
-                  <Copy className="w-5 h-5" />
-                  {copied && (
-                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs bg-black text-white px-2 py-1 rounded">
-                      Copied!
-                    </span>
-                  )}
-                </button>
+                {post.profiles?.avatar_url ? (
+                  <Image
+                    src={post.profiles.avatar_url || "/placeholder.svg"}
+                    alt={authorName}
+                    width={40}
+                    height={40}
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-[#FF6200] flex items-center justify-center text-white font-medium">
+                    {authorInitials}
+                  </div>
+                )}
+                <div>
+                  <p className="font-medium" style={{ color: "var(--foreground)" }}>
+                    {authorName}
+                  </p>
+                  <p className="text-sm text-[#787877]">Author</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2" style={{ color: "var(--foreground)" }}>
+                <Calendar className="w-4 h-4" />
+                <span className="text-sm">{formatDate(post.created_at)}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-[#787877]">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm">{estimateReadTime(post.content)} min read</span>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
+
+          {/* Featured Image with zoom on hover */}
+          <AnimatedSection delay={400}>
+            {post.featured_image && (
+              <div className="relative h-[300px] md:h-[400px] lg:h-[500px] rounded-[14px] overflow-hidden mb-12 group">
+                <Image
+                  src={post.featured_image || "/placeholder.svg"}
+                  alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  priority
+                />
+              </div>
+            )}
+          </AnimatedSection>
+
+          {/* Content */}
+          <AnimatedSection delay={500}>
+            <ContentRenderer content={post.content} />
+          </AnimatedSection>
+
+          {/* Share Section */}
+          <AnimatedSection delay={100}>
+            <div className="mt-12 pt-8 border-t border-[#E5E5E5] dark:border-[#333]">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <Share2 className="w-5 h-5 text-[#787877]" />
+                  <span className="font-medium" style={{ color: "var(--foreground)" }}>
+                    Share this article
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => handleShare("facebook")}
+                    className="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center text-white hover:opacity-80 hover:scale-110 transition-all"
+                    aria-label="Share on Facebook"
+                  >
+                    <Facebook className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => handleShare("twitter")}
+                    className="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center text-white hover:opacity-80 hover:scale-110 transition-all"
+                    aria-label="Share on Twitter"
+                  >
+                    <Twitter className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => handleShare("linkedin")}
+                    className="w-10 h-10 rounded-full bg-[#0A66C2] flex items-center justify-center text-white hover:opacity-80 hover:scale-110 transition-all"
+                    aria-label="Share on LinkedIn"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={handleCopyLink}
+                    className="w-10 h-10 rounded-full bg-[#E5E5E5] dark:bg-[#333] flex items-center justify-center hover:bg-[#FF6200] hover:scale-110 transition-all group"
+                    aria-label="Copy link"
+                  >
+                    {copied ? (
+                      <Check className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-[#787877] group-hover:text-white transition-colors" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Related Articles */}
-      <section className="py-16" style={{ background: "var(--muted)" }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          <h2 className="text-2xl md:text-3xl font-bold mb-10" style={{ color: "var(--foreground)" }}>
-            Related Articles
-          </h2>
+      {related.length > 0 && (
+        <section className="py-12 md:py-16">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+            <AnimatedSection>
+              <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "var(--foreground)" }}>
+                Related Articles
+              </h2>
+            </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {related.map((article) => (
-              <Link key={article.id} href={`/blog/${article.slug}`} className="group">
-                <div className="bg-white dark:bg-[#1E1E1E] rounded-[14px] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                  <div className="relative h-[200px]">
-                    {article.category?.name && (
-                      <div className="absolute top-4 left-4 z-10">
-                        <span
-                          className={`px-3 py-1.5 rounded-[4px] text-xs font-medium text-white ${getCategoryColor(article.category.name)}`}
-                        >
-                          {article.category.name}
-                        </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {related.map((article, index) => (
+                <AnimatedSection key={article.id} delay={index * 100}>
+                  <Link href={`/blog/${article.slug}`} className="block group">
+                    <div className="rounded-[14px] overflow-hidden border border-[#E5E5E5] dark:border-[#333] hover:border-[#FF6200] transition-all duration-300">
+                      {/* Image */}
+                      <div className="relative h-[200px] overflow-hidden">
+                        {article.category?.name && (
+                          <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-[4px] text-xs font-medium text-white bg-[#FF6200]">
+                            {article.category.name}
+                          </span>
+                        )}
+                        <Image
+                          src={article.featured_image || "/placeholder.svg?height=200&width=400&query=technology blog"}
+                          alt={article.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
                       </div>
-                    )}
-                    <Image
-                      src={article.featured_image || "/placeholder.svg?height=200&width=400"}
-                      alt={article.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
 
-                  <div className="p-5">
-                    <p className="text-xs text-[#FF6200] mb-2">{formatDate(article.created_at)}</p>
-                    <h3
-                      className="font-semibold mb-2 group-hover:text-[#FF6200] transition-colors line-clamp-2"
-                      style={{ color: "var(--foreground)" }}
-                    >
-                      {article.title}
-                    </h3>
-                    <p className="text-sm text-[#787877] line-clamp-2">{article.excerpt}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                      {/* Content */}
+                      <div className="p-5">
+                        <p className="text-sm mb-2" style={{ color: "var(--foreground)" }}>
+                          {formatDate(article.created_at)}
+                        </p>
+                        <h3
+                          className="font-semibold text-lg mb-3 line-clamp-2 group-hover:text-[#FF6200] transition-colors"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          {article.title}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-xs">
+                            {article.profiles?.display_name
+                              ? article.profiles.display_name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")
+                              : "JF"}
+                          </div>
+                          <span className="text-sm text-[#787877]">
+                            {article.profiles?.display_name || "Jason Francisco"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   )
 }
