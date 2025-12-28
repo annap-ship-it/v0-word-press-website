@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useEffect, use } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { createBrowserClient } from "@/lib/supabase/client"
+import { useParams } from "next/navigation"
 
 interface ProjectData {
   id: string
@@ -41,12 +42,6 @@ const defaultProjectsData: Record<string, any> = {
       "Role-based access control",
       "Mobile-responsive design",
     ],
-    testimonial: {
-      quote:
-        "The monitoring system has transformed how we manage our warehouse operations. We can now identify and resolve issues before they impact productivity.",
-      author: "Operations Director",
-      company: "Symbotic",
-    },
     gallery: ["/dashboard-overview-screen.jpg", "/analytics-charts-and-graphs.jpg", "/alert-management-interface.jpg"],
   },
   "intertop-sensor-infobox": {
@@ -126,8 +121,9 @@ const defaultProjectsData: Record<string, any> = {
   },
 }
 
-export default function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params)
+export default function ProjectDetailPage() {
+  const params = useParams()
+  const slug = params.slug as string
   const [project, setProject] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isDark, setIsDark] = useState(false)

@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
@@ -63,7 +63,7 @@ const defaultProjects = [
     id: "1",
     title: "Internal Monitoring System for Symbotic",
     slug: "internal-monitoring-system-symbotic",
-    featured_image: "/monitoring-dashboard-with-graphs-and-data-visualiz.jpg",
+    featured_image: "/images/3a8ceacf9a599490d7b40d1ec06dca37f1ea0d31.jpg",
     challenge: "Develop a scalable internal monitoring tool with real-time data updates.",
     solution:
       "Designed full architecture, implemented GraphQL APIs, and built the admin frontend using Vue.js and Vuex. Integrated Web Push notifications and Apollo Client for real-time updates.",
@@ -74,7 +74,7 @@ const defaultProjects = [
     id: "2",
     title: "Intertop Sensor Infobox",
     slug: "intertop-sensor-infobox",
-    featured_image: "/retail-store-sensor-display-system.jpg",
+    featured_image: "/images/a4b670ec7fa05f0d5a4c674af059268a7f9bb862.jpg",
     challenge: "Provide real-time product availability across online and offline channels.",
     solution:
       "Developed an interactive in-store sensor infobox using Node.js, integrated with offline 1C and MSSQL databases to sync inventory data seamlessly.",
@@ -85,7 +85,7 @@ const defaultProjects = [
     id: "3",
     title: "Multi-brand E-commerce Landing Pages",
     slug: "multi-brand-ecommerce-landing-pages",
-    featured_image: "/ecommerce-landing-page-design-multiple-brands.jpg",
+    featured_image: "/images/684e917a1465786de030e274e2232ff33cd056fe.png",
     challenge: "Create high-performance, SEO-friendly landing pages for major tech brands.",
     solution:
       "Developed multiple SPA landing pages (Lenovo, Samsung, Nokia, Panasonic) focusing on SEO, responsive design, and cross-browser compatibility. Optimized performance for high-traffic campaigns.",
@@ -96,7 +96,7 @@ const defaultProjects = [
     id: "4",
     title: "Testing Expertise for a Sports Social Platform",
     slug: "testing-expertise-sports-social-platform",
-    featured_image: "/sports-social-media-platform-testing-qa.jpg",
+    featured_image: "/images/56951b6f749b0c1c24e1b24aab787192b5cc65e2.jpg",
     challenge:
       "Ensure high product quality and stability during rapid development of an NBA-focused sports social platform.",
     solution:
@@ -126,6 +126,42 @@ const techIcons: Record<string, string> = {
   NodeJS: "/icons/tech/nodejs.svg",
   Apollo: "/icons/tech/apollo.svg",
   Mongo: "/icons/tech/mongodb.svg",
+}
+
+function AnimatedCard({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay)
+          observer.unobserve(entry.target)
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [delay])
+
+  return (
+    <div
+      ref={ref}
+      className="transition-all duration-700 ease-out"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(40px)",
+      }}
+    >
+      {children}
+    </div>
+  )
 }
 
 export default function ProjectsPage() {
@@ -268,20 +304,22 @@ export default function ProjectsPage() {
       {/* Header Section */}
       <section className="pt-20 pb-10 px-6">
         <div className="max-w-[1280px] mx-auto text-center">
-          <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 mt-24"
-            style={{
-              backgroundImage: titleGradient,
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Projects
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Find out how we have turned our clients' inspiring ideas into high-end products
-          </p>
+          <AnimatedCard>
+            <h1
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 mt-24"
+              style={{
+                backgroundImage: titleGradient,
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Projects
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Find out how we have turned our clients' inspiring ideas into high-end products
+            </p>
+          </AnimatedCard>
         </div>
       </section>
 
@@ -292,106 +330,113 @@ export default function ProjectsPage() {
             const isReverse = index % 2 === 1
 
             return (
-              <Link key={project.id} href={`/projects/${project.slug}`} className="block group">
-                <div
-                  className="rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-lg"
-                  style={{
-                    background: isDark
-                      ? isReverse
-                        ? "linear-gradient(70.46deg, #212121 57.09%, #FF6200 125.28%)"
-                        : "linear-gradient(292.61deg, #212121 56.12%, #FF6200 111.19%)"
-                      : isReverse
-                        ? "linear-gradient(73.52deg, #FAF9F8 33.1%, #FFFFFF 75.27%, #FF6200 120.85%)"
-                        : "linear-gradient(283.85deg, #FAF9F8 45%, #FFFFFF 77.04%, #FF6200 110.33%)",
-                    boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
+              <AnimatedCard key={project.id} delay={index * 100}>
+                <Link href={`/projects/${project.slug}`} className="block group">
                   <div
-                    className={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 ${isReverse ? "lg:flex-row-reverse" : ""}`}
+                    className="rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-lg"
+                    style={{
+                      background: isDark
+                        ? isReverse
+                          ? "linear-gradient(70.46deg, #212121 57.09%, #FF6200 125.28%)"
+                          : "linear-gradient(292.61deg, #212121 56.12%, #FF6200 111.19%)"
+                        : isReverse
+                          ? "linear-gradient(73.52deg, #FAF9F8 33.1%, #FFFFFF 75.27%, #FF6200 120.85%)"
+                          : "linear-gradient(283.85deg, #FAF9F8 45%, #FFFFFF 77.04%, #FF6200 110.33%)",
+                      boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
+                    }}
                   >
-                    {/* Image */}
-                    <div className={`${isReverse ? "lg:order-2" : "lg:order-1"}`}>
-                      <div className="relative w-full aspect-[16/10] rounded-[14px] overflow-hidden">
-                        <Image
-                          src={project.featured_image || "/placeholder.svg"}
-                          alt={project.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
+                    <div
+                      className={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 ${isReverse ? "lg:flex-row-reverse" : ""}`}
+                    >
+                      {/* Image */}
+                      <div className={`${isReverse ? "lg:order-2" : "lg:order-1"}`}>
+                        <div className="relative w-full aspect-[16/10] rounded-[14px] overflow-hidden">
+                          <Image
+                            src={project.featured_image || "/placeholder.svg"}
+                            alt={project.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className={`${isReverse ? "lg:order-1" : "lg:order-2"} flex flex-col justify-center`}>
-                      <h2
-                        className="text-xl md:text-2xl font-bold mb-4"
-                        style={{ color: isDark ? "#FFFFFF" : "#000000" }}
-                      >
-                        {project.title}
-                      </h2>
+                      {/* Content */}
+                      <div className={`${isReverse ? "lg:order-1" : "lg:order-2"} flex flex-col justify-center`}>
+                        <h2
+                          className="text-xl md:text-2xl font-bold mb-4"
+                          style={{ color: isDark ? "#FFFFFF" : "#000000" }}
+                        >
+                          {project.title}
+                        </h2>
 
-                      <div className="space-y-3 text-sm">
-                        {project.challenge && (
-                          <div className="flex gap-3">
-                            <span className="font-semibold text-[#FF6200] min-w-[80px]">Challenge:</span>
-                            <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge}</span>
-                          </div>
-                        )}
-                        {project.solution && (
-                          <div className="flex gap-3">
-                            <span className="font-semibold text-[#FF6200] min-w-[80px]">Solution:</span>
-                            <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</span>
-                          </div>
-                        )}
-                        {project.result && (
-                          <div className="flex gap-3">
-                            <span className="font-semibold text-[#FF6200] min-w-[80px]">Result:</span>
-                            <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result}</span>
-                          </div>
-                        )}
-
-                        {/* Stack */}
-                        {project.stack && project.stack.length > 0 && (
-                          <div className="flex gap-3 items-start pt-2">
-                            <span className="font-semibold text-[#FF6200] min-w-[80px]">Stack:</span>
-                            <div className="flex flex-wrap gap-2">
-                              {project.stack.map((tech: string, i: number) => {
-                                const iconPath = techIcons[tech]
-                                return (
-                                  <span
-                                    key={i}
-                                    className="px-3 py-1.5 rounded-[4px] text-xs font-medium flex items-center gap-2"
-                                    style={{
-                                      backgroundColor: isDark ? "#323130" : "#FFFFFF",
-                                      color: isDark ? "#FFFFFF" : "#000000",
-                                      border: isDark ? "none" : "1px solid #E0E0E0",
-                                    }}
-                                  >
-                                    {iconPath && (
-                                      <span
-                                        className="flex items-center justify-center rounded-[2px] flex-shrink-0"
-                                        style={{
-                                          backgroundColor: "#FFFFFF",
-                                          padding: "2px",
-                                          width: "20px",
-                                          height: "20px",
-                                        }}
-                                      >
-                                        <Image src={iconPath || "/placeholder.svg"} alt={tech} width={16} height={16} />
-                                      </span>
-                                    )}
-                                    {tech}
-                                  </span>
-                                )
-                              })}
+                        <div className="space-y-3 text-sm">
+                          {project.challenge && (
+                            <div className="flex gap-3">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Challenge:</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge}</span>
                             </div>
-                          </div>
-                        )}
+                          )}
+                          {project.solution && (
+                            <div className="flex gap-3">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Solution:</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</span>
+                            </div>
+                          )}
+                          {project.result && (
+                            <div className="flex gap-3">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Result:</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result}</span>
+                            </div>
+                          )}
+
+                          {/* Stack */}
+                          {project.stack && project.stack.length > 0 && (
+                            <div className="flex gap-3 items-start pt-2">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Stack:</span>
+                              <div className="flex flex-wrap gap-2">
+                                {project.stack.map((tech: string, i: number) => {
+                                  const iconPath = techIcons[tech]
+                                  return (
+                                    <span
+                                      key={i}
+                                      className="px-3 py-1.5 rounded-[4px] text-xs font-medium flex items-center gap-2 transition-transform duration-200 hover:scale-105"
+                                      style={{
+                                        backgroundColor: isDark ? "#323130" : "#FFFFFF",
+                                        color: isDark ? "#FFFFFF" : "#000000",
+                                        border: isDark ? "none" : "1px solid #E0E0E0",
+                                      }}
+                                    >
+                                      {iconPath && (
+                                        <span
+                                          className="flex items-center justify-center rounded-[2px] flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
+                                          style={{
+                                            backgroundColor: "#FFFFFF",
+                                            padding: "2px",
+                                            width: "20px",
+                                            height: "20px",
+                                          }}
+                                        >
+                                          <Image
+                                            src={iconPath || "/placeholder.svg"}
+                                            alt={tech}
+                                            width={16}
+                                            height={16}
+                                          />
+                                        </span>
+                                      )}
+                                      {tech}
+                                    </span>
+                                  )
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </AnimatedCard>
             )
           })}
         </div>
@@ -400,210 +445,223 @@ export default function ProjectsPage() {
       {/* Request Free Consultation Section */}
       <section className="py-20 px-6">
         <div className="max-w-[1280px] mx-auto">
-          <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
-            style={{ color: isDark ? "#FFFFFF" : "#000000" }}
-          >
-            Request Free Consultation
-          </h2>
+          <AnimatedCard>
+            <h2
+              className="text-3xl md:text-4xl font-bold text-center mb-12"
+              style={{ color: isDark ? "#FFFFFF" : "#000000" }}
+            >
+              Request Free Consultation
+            </h2>
+          </AnimatedCard>
 
           {/* Process Steps */}
-          <div className="rounded-[4px] p-6 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="text-center md:text-left">
-                <h3 className="text-[#FF6200] font-semibold text-lg mb-2">What's the process?</h3>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
+          <AnimatedCard delay={100}>
+            <div className="rounded-[4px] p-6 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="text-center md:text-left">
+                  <h3 className="text-[#FF6200] font-semibold text-lg mb-2">What's the process?</h3>
                 </div>
-                <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                  Our specialist will reach out after reviewing your message
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                  </svg>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                    Our specialist will reach out after reviewing your message
+                  </p>
                 </div>
-                <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                  If needed we'll sign an NDA to ensure trust, after what you provide us with the project details
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                    If needed we'll sign an NDA to ensure trust, after what you provide us with the project details
+                  </p>
                 </div>
-                <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                  You'll receive a detailed proposal including estimates, timelines, and expert profiles
-                </p>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                    You'll receive a detailed proposal including estimates, timelines, and expert profiles
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </AnimatedCard>
 
           {/* Contact Form */}
-          {isSubmitted ? (
-            <div className="rounded-[4px] p-12 text-center" style={{ backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }}>
-              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+          <AnimatedCard delay={200}>
+            {isSubmitted ? (
+              <div
+                className="rounded-[4px] p-12 text-center"
+                style={{ backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }}
+              >
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
+                  Thank you!
+                </h3>
+                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                  We've received your message and will get back to you soon.
+                </p>
               </div>
-              <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
-                Thank you!
-              </h3>
-              <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                We've received your message and will get back to you soon.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="*Type your Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors"
-                    style={{
-                      backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
-                      color: isDark ? "#FFFFFF" : "#000000",
-                    }}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    placeholder="*Type your Email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors"
-                    style={{
-                      backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
-                      color: isDark ? "#FFFFFF" : "#000000",
-                    }}
-                  />
-                </div>
-                <div>
-                  <textarea
-                    placeholder="*Type your Message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    required
-                    rows={4}
-                    className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors resize-none"
-                    style={{
-                      backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
-                      color: isDark ? "#FFFFFF" : "#000000",
-                    }}
-                  />
-                </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="*Type your Name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                      className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors"
+                      style={{
+                        backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
+                        color: isDark ? "#FFFFFF" : "#000000",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="*Type your Email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                      className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors"
+                      style={{
+                        backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
+                        color: isDark ? "#FFFFFF" : "#000000",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      placeholder="*Type your Message"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors resize-none"
+                      style={{
+                        backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
+                        color: isDark ? "#FFFFFF" : "#000000",
+                      }}
+                    />
+                  </div>
 
-                {/* Attach File */}
-                <div className="flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={handleFileAttach}
-                    className="flex items-center gap-2 px-4 py-2 rounded-[4px] border transition-colors hover:border-[#FF6200]"
-                    style={{
-                      borderColor: isDark ? "#3A3A3A" : "#E0E0E0",
-                      color: isDark ? "#FFFFFF" : "#000000",
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
-                      <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                    </svg>
-                    Attach file (optional)
-                  </button>
-                  <span className="text-xs" style={{ color: isDark ? "#666666" : "#999999" }}>
-                    No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.
-                  </span>
-                </div>
-
-                {attachedFile && (
-                  <div className="flex items-center gap-2 text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    <span>{attachedFile.name}</span>
+                  {/* Attach File */}
+                  <div className="flex items-center gap-4">
                     <button
                       type="button"
-                      onClick={() => setAttachedFile(null)}
-                      className="text-red-500 hover:text-red-700"
+                      onClick={handleFileAttach}
+                      className="flex items-center gap-2 px-4 py-2 rounded-[4px] border transition-colors hover:border-[#FF6200]"
+                      style={{
+                        borderColor: isDark ? "#3A3A3A" : "#E0E0E0",
+                        color: isDark ? "#FFFFFF" : "#000000",
+                      }}
                     >
-                      ×
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                      </svg>
+                      Attach file (optional)
                     </button>
-                  </div>
-                )}
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
-                >
-                  {isSubmitting ? "Sending..." : "Send"}
-                </button>
-
-                {/* Terms */}
-                <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="terms-projects"
-                    checked={termsAccepted}
-                    onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="mt-1"
-                  />
-                  <label htmlFor="terms-projects" className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    I Accept{" "}
-                    <Link href="/terms" className="text-[#FF6200] underline">
-                      Terms and Conditions
-                    </Link>
-                    .
-                    <br />
-                    <span className="text-xs">
-                      By submitting your email, you accept terms and conditions. We may send you occasionally marketing
-                      emails.
+                    <span className="text-xs" style={{ color: isDark ? "#666666" : "#999999" }}>
+                      No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.
                     </span>
-                  </label>
-                </div>
-
-                {/* reCAPTCHA placeholder - hidden until implemented */}
-                {false && (
-                  <div
-                    className="inline-flex items-center gap-3 px-4 py-3 rounded-[4px]"
-                    style={{ backgroundColor: isDark ? "#1E1E1E" : "#F9F9F9" }}
-                  >
-                    <div
-                      className="w-6 h-6 border-2 rounded"
-                      style={{ borderColor: isDark ? "#3A3A3A" : "#C0C0C0" }}
-                    ></div>
-                    <span style={{ color: isDark ? "#FFFFFF" : "#000000" }}>I'm not a robot</span>
-                    <div className="ml-4">
-                      <Image src="/recaptcha-logo.png" alt="reCAPTCHA" width={40} height={40} />
-                    </div>
                   </div>
-                )}
-              </form>
 
-              {/* Image */}
-              <div className="relative w-full aspect-[4/3] rounded-[4px] overflow-hidden">
-                <Image
-                  src="/modern-office-workspace-with-developers-coding.jpg"
-                  alt="Our workspace"
-                  fill
-                  className="object-cover"
-                />
+                  {attachedFile && (
+                    <div className="flex items-center gap-2 text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                      <span>{attachedFile.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => setAttachedFile(null)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
+                  >
+                    {isSubmitting ? "Sending..." : "Send"}
+                  </button>
+
+                  {/* Terms */}
+                  <div className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="terms-projects"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      className="mt-1"
+                    />
+                    <label
+                      htmlFor="terms-projects"
+                      className="text-sm"
+                      style={{ color: isDark ? "#A0A0A0" : "#666666" }}
+                    >
+                      I Accept{" "}
+                      <Link href="/terms" className="text-[#FF6200] underline">
+                        Terms and Conditions
+                      </Link>
+                      .
+                      <br />
+                      <span className="text-xs">
+                        By submitting your email, you accept terms and conditions. We may send you occasionally
+                        marketing emails.
+                      </span>
+                    </label>
+                  </div>
+
+                  {/* reCAPTCHA placeholder - hidden until implemented */}
+                  {false && (
+                    <div
+                      className="inline-flex items-center gap-3 px-4 py-3 rounded-[4px]"
+                      style={{ backgroundColor: isDark ? "#1E1E1E" : "#F9F9F9" }}
+                    >
+                      <div
+                        className="w-6 h-6 border-2 rounded"
+                        style={{ borderColor: isDark ? "#3A3A3A" : "#C0C0C0" }}
+                      ></div>
+                      <span style={{ color: isDark ? "#FFFFFF" : "#000000" }}>I'm not a robot</span>
+                      <div className="ml-4">
+                        <Image src="/recaptcha-logo.png" alt="reCAPTCHA" width={40} height={40} />
+                      </div>
+                    </div>
+                  )}
+                </form>
+
+                {/* Image */}
+                <div className="relative w-full aspect-[4/3] rounded-[4px] overflow-hidden">
+                  <Image
+                    src="/images/903416dfea2ecdd32e83cc85f6e0cee9b2d4fb63.jpg"
+                    alt="Our workspace"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </AnimatedCard>
         </div>
       </section>
     </main>
