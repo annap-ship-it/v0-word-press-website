@@ -15,7 +15,25 @@ interface Post {
   featured_image: string | null
   category: { name: string; slug: string } | null
   created_at: string
+  published_at: string | null
   author_id: string
+  author?: {
+    display_name: string | null
+    avatar_url: string | null
+  } | null
+}
+
+function getAuthorInitials(name: string | null | undefined): string {
+  if (!name) return "AU"
+  const parts = name.trim().split(" ")
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
+}
+
+function getAuthorName(author: Post["author"]): string {
+  return author?.display_name || "Author"
 }
 
 function formatDate(dateString: string): string {
@@ -80,15 +98,44 @@ export default function BlogPage() {
   useEffect(() => {
     async function fetchPosts() {
       const supabase = createBrowserClient()
-      const { data, error } = await supabase
+
+      const { data: postsData, error } = await supabase
         .from("posts")
-        .select("id, title, slug, excerpt, featured_image, category:categories(name, slug), created_at, author_id")
+        .select(
+          "id, title, slug, excerpt, featured_image, category:categories(name, slug), created_at, published_at, author_id",
+        )
         .eq("status", "published")
         .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79")
-        .order("created_at", { ascending: false })
+        .order("published_at", { ascending: false, nullsFirst: false })
 
-      if (!error && data) {
-        setPosts(data)
+      if (!error && postsData && postsData.length > 0) {
+        const authorIds = [...new Set(postsData.map((p) => p.author_id).filter(Boolean))]
+
+        let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
+
+        if (authorIds.length > 0) {
+          const { data: authorsData } = await supabase
+            .from("profiles")
+            .select("id, display_name, avatar_url")
+            .in("id", authorIds)
+
+          if (authorsData) {
+            authorsMap = authorsData.reduce(
+              (acc, author) => {
+                acc[author.id] = { display_name: author.display_name, avatar_url: author.avatar_url }
+                return acc
+              },
+              {} as Record<string, { display_name: string | null; avatar_url: string | null }>,
+            )
+          }
+        }
+
+        const postsWithAuthors = postsData.map((post) => ({
+          ...post,
+          author: authorsMap[post.author_id] || null,
+        }))
+
+        setPosts(postsWithAuthors)
       }
       setLoading(false)
     }
@@ -106,7 +153,9 @@ export default function BlogPage() {
       featured_image: "/it-team-working-remotely-on-computers.jpg",
       category: { name: "Automation", slug: "automation" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "2",
@@ -117,7 +166,9 @@ export default function BlogPage() {
       featured_image: "/developers-collaborating-on-project.jpg",
       category: { name: "New", slug: "new" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "3",
@@ -128,7 +179,9 @@ export default function BlogPage() {
       featured_image: "/business-meeting-handshake-partnership.jpg",
       category: { name: "Most Readed", slug: "most-readed" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "4",
@@ -139,7 +192,9 @@ export default function BlogPage() {
       featured_image: "/team-planning-strategy-whiteboard.jpg",
       category: { name: "Automation", slug: "automation" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "5",
@@ -150,7 +205,9 @@ export default function BlogPage() {
       featured_image: "/video-call-remote-team-meeting.jpg",
       category: { name: "New", slug: "new" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "6",
@@ -161,7 +218,9 @@ export default function BlogPage() {
       featured_image: "/financial-charts-data-analysis.jpg",
       category: { name: "Most Readed", slug: "most-readed" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "7",
@@ -172,7 +231,9 @@ export default function BlogPage() {
       featured_image: "/modern-office-space-developers.jpg",
       category: { name: "Automation", slug: "automation" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "8",
@@ -182,7 +243,9 @@ export default function BlogPage() {
       featured_image: "/ai-machine-learning-technology.jpg",
       category: { name: "New", slug: "new" },
       created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
       author_id: "1",
+      author: { display_name: "Author", avatar_url: null },
     },
   ]
 
@@ -260,14 +323,14 @@ export default function BlogPage() {
 
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-sm font-medium">
-                        JF
+                        {getAuthorInitials(displayFeatured.author?.display_name)}
                       </div>
                       <span className="text-sm" style={{ color: "var(--foreground)" }}>
-                        Jason Francisco
+                        {getAuthorName(displayFeatured.author)}
                       </span>
                       <span className="text-sm text-[#787877] dark:text-[#CCCCCC]">•</span>
                       <span className="text-sm" style={{ color: "var(--foreground)" }}>
-                        {formatDate(displayFeatured.created_at)}
+                        {formatDate(displayFeatured.published_at || displayFeatured.created_at)}
                       </span>
                     </div>
                   </div>
@@ -296,14 +359,14 @@ export default function BlogPage() {
                         <p className="text-sm text-[#787877] dark:text-[#CCCCCC] mb-3 line-clamp-2">{post.excerpt}</p>
                         <div className="flex items-center gap-3">
                           <div className="w-6 h-6 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-xs font-medium">
-                            JF
+                            {getAuthorInitials(post.author?.display_name)}
                           </div>
                           <span className="text-xs" style={{ color: "var(--foreground)" }}>
-                            Jason Francisco
+                            {getAuthorName(post.author)}
                           </span>
                           <span className="text-xs text-[#787877] dark:text-[#CCCCCC]">•</span>
                           <span className="text-xs" style={{ color: "var(--foreground)" }}>
-                            {formatDate(post.created_at)}
+                            {formatDate(post.published_at || post.created_at)}
                           </span>
                         </div>
                       </Link>
@@ -339,7 +402,7 @@ export default function BlogPage() {
                     </div>
 
                     <p className="text-xs mb-2" style={{ color: "var(--foreground)" }}>
-                      {formatDate(post.created_at)}
+                      {formatDate(post.published_at || post.created_at)}
                     </p>
 
                     <h3
@@ -351,10 +414,10 @@ export default function BlogPage() {
 
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-xs font-medium">
-                        JF
+                        {getAuthorInitials(post.author?.display_name)}
                       </div>
                       <span className="text-xs" style={{ color: "var(--foreground)" }}>
-                        Jason Francisco
+                        {getAuthorName(post.author)}
                       </span>
                     </div>
                   </Link>

@@ -137,7 +137,7 @@ function AnimatedSection({
 
 const benefitIcons = [DollarSign, Users, TrendingUp, Shield]
 
-function ContentRenderer({ content }: { content: PostContent | string | null }) {
+function ContentRenderer({ content, isDark }: { content: PostContent | string | null; isDark: boolean }) {
   if (!content) return null
 
   // Handle legacy HTML string content
@@ -235,22 +235,7 @@ function ContentRenderer({ content }: { content: PostContent | string | null }) 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 my-12">
                   {benefitItems?.map((benefit, i) => {
                     const IconComponent = benefitIcons[i % benefitIcons.length]
-                    return (
-                      <div
-                        key={i}
-                        className="p-6 rounded-[14px] border border-[#E5E5E5] dark:border-[#333] bg-[#FAFAFA] dark:bg-[#1A1A1A] hover:border-[#FF6200] transition-all duration-300 group"
-                      >
-                        <div className="w-12 h-12 rounded-[8px] bg-[#FF6200]/10 flex items-center justify-center mb-4 group-hover:bg-[#FF6200] transition-colors">
-                          <IconComponent className="w-6 h-6 text-[#FF6200] group-hover:text-white transition-colors" />
-                        </div>
-                        <h4 className="font-semibold text-lg mb-2 text-primary" style={{ color: "#333" }}>
-                          {benefit.title}
-                        </h4>
-                        <p className="text-sm text-[#787877] dark:text-[#AAAAAA] leading-relaxed">
-                          {benefit.description}
-                        </p>
-                      </div>
-                    )
+                    return <BenefitCard key={i} benefit={benefit} icon={IconComponent} isDark={isDark} />
                   })}
                 </div>
               </AnimatedSection>
@@ -275,6 +260,37 @@ function ContentRenderer({ content }: { content: PostContent | string | null }) 
             return null
         }
       })}
+    </div>
+  )
+}
+
+function BenefitCard({
+  benefit,
+  icon: IconComponent,
+  isDark,
+}: { benefit: { title: string; description: string }; icon: any; isDark: boolean }) {
+  return (
+    <div
+      className="p-6 rounded-[14px] border hover:border-[#FF6200] transition-all duration-300 group"
+      style={{
+        backgroundColor: isDark ? "#1A1A1A" : "#FAFAFA",
+        borderColor: isDark ? "#333333" : "#E5E5E5",
+      }}
+    >
+      <div
+        className="w-12 h-12 rounded-[8px] flex items-center justify-center mb-4 group-hover:bg-[#FF6200] transition-colors"
+        style={{
+          backgroundColor: isDark ? "rgba(255, 98, 0, 0.2)" : "rgba(255, 98, 0, 0.1)",
+        }}
+      >
+        <IconComponent className="w-6 h-6 text-[#FF6200] group-hover:text-white transition-colors" />
+      </div>
+      <h4 className="font-semibold text-lg mb-2" style={{ color: isDark ? "#FFFFFF" : "#1A1A1A" }}>
+        {benefit.title}
+      </h4>
+      <p className="text-sm leading-relaxed" style={{ color: isDark ? "#9A9A9A" : "#666666" }}>
+        {benefit.description}
+      </p>
     </div>
   )
 }
@@ -541,7 +557,7 @@ export default function BlogPostPage() {
 
           {/* Content */}
           <AnimatedSection delay={500}>
-            <ContentRenderer content={post.content} />
+            <ContentRenderer content={post.content} isDark={isDark} />
           </AnimatedSection>
 
           {/* Share Section */}
