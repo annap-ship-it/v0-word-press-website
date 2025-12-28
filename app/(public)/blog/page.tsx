@@ -11,7 +11,6 @@ interface Post {
   category: { name: string } | null
   created_at: string
   author_id: string
-  is_featured: boolean
 }
 
 async function getPosts(): Promise<Post[]> {
@@ -19,7 +18,7 @@ async function getPosts(): Promise<Post[]> {
 
   const { data: posts, error } = await supabase
     .from("posts")
-    .select("id, title, slug, excerpt, featured_image, category:categories(name), created_at, is_featured, author_id")
+    .select("id, title, slug, excerpt, featured_image, category:categories(name), created_at, author_id")
     .eq("status", "published")
     .order("created_at", { ascending: false })
 
@@ -51,9 +50,9 @@ function getCategoryColor(category: string): string {
 
 export default async function BlogPage() {
   const posts = await getPosts()
-  const featuredPost = posts.find((post) => post.is_featured) || posts[0]
-  const latestNews = posts.filter((post) => !post.is_featured).slice(0, 3)
-  const regularPosts = posts.filter((post) => !post.is_featured).slice(3)
+  const featuredPost = posts[0]
+  const latestNews = posts.slice(1, 4)
+  const regularPosts = posts.slice(4)
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">

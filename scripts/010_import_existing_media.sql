@@ -10,8 +10,9 @@ BEGIN
   
   -- Only proceed if we have a user
   IF admin_user_id IS NOT NULL THEN
+    -- Updated column names from file_path to url and file_type to mime_type to match actual schema
     -- Insert existing images
-    INSERT INTO media (filename, file_path, file_type, file_size, uploaded_by, alt_text, created_at, updated_at)
+    INSERT INTO media (filename, url, mime_type, size, uploaded_by, alt_text, created_at, updated_at)
     VALUES
       -- Logo images
       ('logo-bg.png', '/images/logo-bg.png', 'image/png', 0, admin_user_id, 'IdeaTeam Logo Background', NOW(), NOW()),
@@ -66,7 +67,8 @@ BEGIN
       ('female-developer-portrait-casual.jpg', '/female-developer-portrait-casual.jpg', 'image/jpeg', 0, admin_user_id, 'Female Developer Casual Portrait', NOW(), NOW()),
       ('male-developer-portrait.png', '/male-developer-portrait.png', 'image/png', 0, admin_user_id, 'Male Developer Portrait', NOW(), NOW()),
       ('placeholder.jpg', '/placeholder.jpg', 'image/jpeg', 0, admin_user_id, 'Placeholder Image', NOW(), NOW())
-    ON CONFLICT (file_path) DO NOTHING;
+    -- Changed ON CONFLICT from file_path to url as url is the actual unique column
+    ON CONFLICT (url) DO NOTHING;
     
     RAISE NOTICE 'Successfully imported existing media files';
   ELSE

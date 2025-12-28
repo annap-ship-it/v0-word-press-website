@@ -1,0 +1,61 @@
+/* Services page specific styles for light/dark theme support */
+
+/* Light theme - always light background */
+@media (prefers-color-scheme: light) {
+  .services-page {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .services-page h1 {
+    color: #ff6200;
+  }
+
+  .services-page h2,
+  .services-page p {
+    color: #000000;
+  }
+}
+
+/* Dark theme - always dark background */
+@media (prefers-color-scheme: dark) {
+  .services-page {
+    background: #161515;
+    color: #ffffff;
+  }
+
+  .services-page h1 {
+    color: #ff6200;
+  }
+
+  .services-page h2,
+  .services-page p {
+    color: #ffffff;
+  }
+}
+
+/* Form section background */
+.services-form-section {
+  background: #212121;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .services-page h1 {
+    font-size: 40px;
+  }
+
+  .services-page h2 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-page h1 {
+    font-size: 32px;
+  }
+
+  .services-page h2 {
+    font-size: 20px;
+  }
+}

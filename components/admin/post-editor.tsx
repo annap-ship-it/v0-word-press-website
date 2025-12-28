@@ -259,10 +259,10 @@ export function PostEditor({ post }: PostEditorProps) {
               )}
             </Card>
 
-            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Category</h3>
               <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger className="rounded">
+                <SelectTrigger className="rounded-[4px]">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>

@@ -123,28 +123,35 @@ export default function CalculatorResults({ onClose }: CalculatorResultsProps) {
         </div>
 
         <button
-          className="w-full py-4 rounded-[50px] font-medium transition-all"
-          style={{
-            backgroundColor: "#FF6200",
-            color: "#FFFFFF",
-            fontFamily: "Onest, sans-serif",
-            fontSize: "clamp(14px, 3.5vw, 18px)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#FF7A2E"
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#FF6200"
-          }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.backgroundColor = "#CC4E00"
-          }}
-          onMouseUp={(e) => {
-            e.currentTarget.style.backgroundColor = "#FF7A2E"
-          }}
-        >
-          Book a score interview to find the exact match
-        </button>
+  className="w-full py-4 rounded-[50px] font-medium transition-all"
+  style={{
+    backgroundColor: "#FF6200",
+    color: "#FFFFFF",
+    fontFamily: "Onest, sans-serif",
+    fontSize: "clamp(14px, 3.5vw, 18px)",
+  }}
+  onClick={() =>
+    window.open(
+      "https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov",
+      "_blank"
+    )
+  }
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "#FF7A2E"
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "#FF6200"
+  }}
+  onMouseDown={(e) => {
+    e.currentTarget.style.backgroundColor = "#CC4E00"
+  }}
+  onMouseUp={(e) => {
+    e.currentTarget.style.backgroundColor = "#FF7A2E"
+  }}
+>
+  Book a score interview to find the exact match
+</button>
+
       </div>
     </div>
   )

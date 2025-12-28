@@ -530,7 +530,7 @@ export function Navigation() {
                       {/* Column 1 - 30% width */}
                       <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                         <Link
-                          href="/services_dark"
+                          href="/services#custom-web-solutions"
                           className="transition-all duration-300 ease-out p-2"
                           style={{
                             fontFamily: "Onest",
@@ -560,7 +560,7 @@ export function Navigation() {
                           Custom web solutions
                         </Link>
                         <Link
-                          href="/services_dark"
+                          href="/services#mobile-applications"
                           className="transition-all duration-300 ease-out p-2"
                           style={{
                             fontFamily: "Onest",
@@ -590,7 +590,7 @@ export function Navigation() {
                           Mobile aplications
                         </Link>
                         <Link
-                          href="/services_dark"
+                          href="/services#ux-ui-design"
                           className="transition-all duration-300 ease-out p-2"
                           style={{
                             fontFamily: "Onest",
@@ -624,7 +624,7 @@ export function Navigation() {
                       {/* Column 2 - 30% width */}
                       <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                         <Link
-                          href="/services_dark"
+                          href="/services#qa"
                           className="transition-all duration-300 ease-out p-2"
                           style={{
                             fontFamily: "Onest",
@@ -654,7 +654,7 @@ export function Navigation() {
                           Manual and Automation QA
                         </Link>
                         <Link
-                          href="/services_dark"
+                          href="/services#devops"
                           className="transition-all duration-300 ease-out p-2"
                           style={{
                             fontFamily: "Onest",
@@ -684,7 +684,7 @@ export function Navigation() {
                           DevOps
                         </Link>
                         <Link
-                          href="/services_dark"
+                          href="/services#data-analytics"
                           className="transition-all duration-300 ease-out p-2"
                           style={{
                             fontFamily: "Onest",
@@ -725,7 +725,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/services_dark"
+                          href="/services"
                           className="relative overflow-hidden transition-all duration-300 ease-out"
                           style={{
                             width: "196px",
@@ -751,7 +751,7 @@ export function Navigation() {
                                 color: "#FFFFFF",
                               }}
                             >
-                              Article from blog
+                              All Services
                             </h3>
                           </div>
                           <button
@@ -786,7 +786,7 @@ export function Navigation() {
                               e.currentTarget.style.background = "#FF62001A"
                             }}
                           >
-                            Read All
+                            View All
                           </button>
                         </Link>
                       </div>
@@ -1592,7 +1592,7 @@ export function Navigation() {
                     {/* Services links */}
                     <div className="flex flex-col gap-3 min-[480px]:grid min-[480px]:grid-cols-2 min-[480px]:flex-1">
                       <Link
-                        href="/services_dark"
+                        href="/services#custom-web-solutions"
                         className="transition-all duration-300 ease-out p-2"
                         style={{
                           fontFamily: "Onest",
@@ -1627,7 +1627,7 @@ export function Navigation() {
                         Custom web solutions
                       </Link>
                       <Link
-                        href="/services_dark"
+                        href="/services#qa"
                         className="transition-all duration-300 ease-out p-2"
                         style={{
                           fontFamily: "Onest",
@@ -1662,7 +1662,7 @@ export function Navigation() {
                         Manual and Automation QA
                       </Link>
                       <Link
-                        href="/services_dark"
+                        href="/services#mobile-applications"
                         className="transition-all duration-300 ease-out p-2"
                         style={{
                           fontFamily: "Onest",
@@ -1697,7 +1697,7 @@ export function Navigation() {
                         Mobile aplications
                       </Link>
                       <Link
-                        href="/services_dark"
+                        href="/services#devops"
                         className="transition-all duration-300 ease-out p-2"
                         style={{
                           fontFamily: "Onest",
@@ -1732,7 +1732,7 @@ export function Navigation() {
                         DevOps
                       </Link>
                       <Link
-                        href="/services_dark"
+                        href="/services#ux-ui-design"
                         className="transition-all duration-300 ease-out p-2"
                         style={{
                           fontFamily: "Onest",
@@ -1767,7 +1767,7 @@ export function Navigation() {
                         UI/UX and Graphic Design
                       </Link>
                       <Link
-                        href="/services_dark"
+                        href="/services#data-analytics"
                         className="transition-all duration-300 ease-out p-2"
                         style={{
                           fontFamily: "Onest",
@@ -1806,7 +1806,7 @@ export function Navigation() {
                     {/* Blog Article Card */}
                     <div className="mt-5 min-[480px]:mt-0 min-[480px]:flex min-[480px]:items-start min-[480px]:justify-center min-[480px]:min-w-[200px]">
                       <Link
-                        href="/services_dark"
+                        href="/services"
                         className="relative overflow-hidden block transition-all duration-300 ease-out"
                         style={{
                           width: "100%",
@@ -1833,7 +1833,7 @@ export function Navigation() {
                               color: "#FFFFFF",
                             }}
                           >
-                            Article from blog
+                            All Services
                           </h3>
                         </div>
                         <button
