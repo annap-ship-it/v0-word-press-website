@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+  <!-- Background circle -->
+  <circle cx="250" cy="250" r="180" fill="#FF6200" opacity="0.1"/>
+  
+  <!-- Checkmark circle -->
+  <circle cx="250" cy="200" r="80" fill="#FF6200"/>
+  <path d="M210 200 L235 225 L290 170" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Person celebrating - left -->
+  <g transform="translate(100, 300)">
+    <!-- Body -->
+    <ellipse cx="30" cy="60" rx="25" ry="35" fill="#4ECDC4"/>
+    <!-- Head -->
+    <circle cx="30" cy="15" r="18" fill="#FFD5B8"/>
+    <!-- Hair -->
+    <path d="M15 10 Q30 -5 45 10 Q50 20 45 25 L15 25 Q10 20 15 10" fill="#5D4E37"/>
+    <!-- Arms up -->
+    <path d="M5 50 L-15 20" stroke="#FFD5B8" stroke-width="8" stroke-linecap="round"/>
+    <path d="M55 50 L75 20" stroke="#FFD5B8" stroke-width="8" stroke-linecap="round"/>
+    <!-- Legs -->
+    <path d="M20 95 L15 130" stroke="#2C3E50" stroke-width="10" stroke-linecap="round"/>
+    <path d="M40 95 L45 130" stroke="#2C3E50" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Person celebrating - right -->
+  <g transform="translate(340, 290)">
+    <!-- Body -->
+    <ellipse cx="30" cy="60" rx="25" ry="35" fill="#FF6B6B"/>
+    <!-- Head -->
+    <circle cx="30" cy="15" r="18" fill="#FFD5B8"/>
+    <!-- Hair -->
+    <ellipse cx="30" cy="8" rx="20" ry="12" fill="#8B4513"/>
+    <!-- Arms up -->
+    <path d="M5 50 L-20 15" stroke="#FFD5B8" stroke-width="8" stroke-linecap="round"/>
+    <path d="M55 50 L80 15" stroke="#FFD5B8" stroke-width="8" stroke-linecap="round"/>
+    <!-- Legs -->
+    <path d="M20 95 L10 135" stroke="#34495E" stroke-width="10" stroke-linecap="round"/>
+    <path d="M40 95 L50 135" stroke="#34495E" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Confetti -->
+  <rect x="150" y="100" width="12" height="12" fill="#FF6200" transform="rotate(45 156 106)"/>
+  <rect x="320" y="120" width="10" height="10" fill="#4ECDC4" transform="rotate(30 325 125)"/>
+  <rect x="180" y="350" width="8" height="8" fill="#FFD93D" transform="rotate(60 184 354)"/>
+  <rect x="350" y="380" width="10" height="10" fill="#FF6B6B" transform="rotate(15 355 385)"/>
+  <circle cx="130" cy="150" r="6" fill="#4ECDC4"/>
+  <circle cx="380" cy="170" r="5" fill="#FFD93D"/>
+  <circle cx="200" cy="400" r="7" fill="#FF6200"/>
+  <circle cx="300" cy="420" r="5" fill="#4ECDC4"/>
+  
+  <!-- Stars -->
+  <path d="M420 100 L423 110 L433 110 L425 117 L428 127 L420 121 L412 127 L415 117 L407 110 L417 110 Z" fill="#FFD93D"/>
+  <path d="M80 200 L82 207 L89 207 L84 212 L86 219 L80 215 L74 219 L76 212 L71 207 L78 207 Z" fill="#FF6200"/>
+</svg>

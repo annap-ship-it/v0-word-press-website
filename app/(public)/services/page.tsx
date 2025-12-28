@@ -169,7 +169,7 @@ export default function ServicesPage() {
               fontFamily: "Onest",
               fontSize: "clamp(40px, 5vw, 72px)",
               lineHeight: "1.1",
-              background: isDark
+              backgroundImage: isDark
                 ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
                 : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
               WebkitBackgroundClip: "text",
@@ -256,7 +256,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-20 px-6 bg-muted">
+      <section className="py-20 px-6">
         <div className="max-w-[1280px] mx-auto">
           {/* Wrapper div with fixed dark background for the form card */}
           <div className="rounded-2xl p-8 md:p-12" style={{ background: "#1E1E1E" }}>

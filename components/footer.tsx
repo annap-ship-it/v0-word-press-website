@@ -199,11 +199,16 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-base mb-4">Services</h4>
+            <Link
+              href="/services"
+              className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
+            >
+              Services
+            </Link>
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/services/custom-web-solutions"
+                  href="/services#custom-web-solutions"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   Custom web solutions
@@ -211,7 +216,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services/mobile-applications"
+                  href="/services#mobile-applications"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   Mobile applications
@@ -219,7 +224,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services/ui-ux-design"
+                  href="/services#ux-ui-design"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   UI/UX and Graphic Design
@@ -227,7 +232,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services/qa-automation"
+                  href="/services#qa"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   Manual and Automation QA
@@ -235,7 +240,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services/devops"
+                  href="/services#devops"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   DevOps
@@ -243,7 +248,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services/data-analytics"
+                  href="/services#data-analytics"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   Data Analytics
