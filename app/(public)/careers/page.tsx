@@ -25,6 +25,7 @@ export default function CareersPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const recaptchaRef = useRef<HTMLDivElement>(null)
 
   // Theme detection for styling
   const [isDarkTheme, setIsDarkTheme] = useState(false)
@@ -37,6 +38,18 @@ export default function CareersPage() {
     const observer = new MutationObserver(checkTheme)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/api.js"
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
   }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -76,6 +89,13 @@ export default function CareersPage() {
       return
     }
 
+    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
+
+    if (!recaptchaResponse) {
+      setError("Please complete the reCAPTCHA")
+      return
+    }
+
     setIsSubmitting(true)
     setError("")
 
@@ -87,6 +107,7 @@ export default function CareersPage() {
       formDataToSend.append("experience", formData.experience)
       formDataToSend.append("message", formData.message)
       formDataToSend.append("type", "career")
+      formDataToSend.append("recaptchaToken", recaptchaResponse)
 
       files.forEach((file) => {
         formDataToSend.append("files", file)
@@ -353,6 +374,9 @@ export default function CareersPage() {
                 </div>
               )}
 
+              {/* reCAPTCHA */}
+              <div ref={recaptchaRef} className="g-recaptcha" data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT" />
+
               {/* Error Message */}
               {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -394,17 +418,6 @@ export default function CareersPage() {
                   emails.
                 </p>
               </div>
-
-              {/* reCAPTCHA placeholder - hidden until integrated */}
-              {false && (
-                <div className="bg-white rounded-[4px] p-3 flex items-center gap-3 w-fit">
-                  <div className="w-6 h-6 border-2 border-gray-300 rounded"></div>
-                  <span className="text-gray-700 text-sm">I'm not a robot</span>
-                  <div className="ml-4">
-                    <Image src="/recaptcha-logo.png" alt="reCAPTCHA" width={40} height={40} />
-                  </div>
-                </div>
-              )}
             </form>
           </div>
         </div>

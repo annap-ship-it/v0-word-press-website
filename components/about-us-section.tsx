@@ -38,25 +38,7 @@ export function AboutUsSection() {
           {/* Right: Interactive Map */}
           <div className="relative">
             <div className="relative w-full" style={{ aspectRatio: "755/443" }}>
-              <div className="absolute inset-0">
-                <WorldMapWithHover />
-              </div>
-
-              <svg viewBox="0 0 755 443" className="absolute inset-0 w-full h-full pointer-events-none">
-                <g className="pins-layer">
-                  {pins.map((pin, i) => (
-                    <image
-                      key={i}
-                      href="/images/location-pin.svg"
-                      x={pin.x - 8}
-                      y={pin.y - 20}
-                      width="16"
-                      height="20"
-                      style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}
-                    />
-                  ))}
-                </g>
-              </svg>
+              <WorldMapWithHover />
             </div>
           </div>
         </div>

@@ -18,6 +18,7 @@ export default function ServicesPage() {
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isDark, setIsDark] = useState(false)
+  const recaptchaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -31,6 +32,18 @@ export default function ServicesPage() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/api.js"
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
   }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +77,13 @@ export default function ServicesPage() {
       return
     }
 
+    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
+
+    if (!recaptchaResponse) {
+      setSubmitStatus({ type: "error", message: "Please complete the reCAPTCHA" })
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus(null)
 
@@ -72,6 +92,7 @@ export default function ServicesPage() {
       submitData.append("name", formData.name)
       submitData.append("email", formData.email)
       submitData.append("message", formData.message)
+      submitData.append("recaptchaToken", recaptchaResponse)
       if (selectedFile) {
         submitData.append("file", selectedFile)
       }
@@ -358,6 +379,12 @@ export default function ServicesPage() {
                       }}
                     />
                   </div>
+
+                  <div
+                    ref={recaptchaRef}
+                    className="g-recaptcha"
+                    data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"
+                  />
 
                   <div className="flex flex-wrap items-center gap-4">
                     <Button

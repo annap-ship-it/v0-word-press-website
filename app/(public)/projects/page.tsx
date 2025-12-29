@@ -179,6 +179,7 @@ export default function ProjectsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
+  const recaptchaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Check theme
@@ -191,6 +192,18 @@ export default function ProjectsPage() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/api.js"
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
   }, [])
 
   useEffect(() => {
@@ -260,6 +273,13 @@ export default function ProjectsPage() {
       return
     }
 
+    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
+
+    if (!recaptchaResponse) {
+      alert("Please complete the reCAPTCHA")
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -268,6 +288,7 @@ export default function ProjectsPage() {
       formDataToSend.append("email", formData.email)
       formDataToSend.append("message", formData.message)
       formDataToSend.append("subject", "Project Consultation Request")
+      formDataToSend.append("recaptchaToken", recaptchaResponse)
       if (attachedFile) {
         formDataToSend.append("file", attachedFile)
       }
@@ -632,22 +653,12 @@ export default function ProjectsPage() {
                     </label>
                   </div>
 
-                  {/* reCAPTCHA placeholder - hidden until implemented */}
-                  {false && (
-                    <div
-                      className="inline-flex items-center gap-3 px-4 py-3 rounded-[4px]"
-                      style={{ backgroundColor: isDark ? "#1E1E1E" : "#F9F9F9" }}
-                    >
-                      <div
-                        className="w-6 h-6 border-2 rounded"
-                        style={{ borderColor: isDark ? "#3A3A3A" : "#C0C0C0" }}
-                      ></div>
-                      <span style={{ color: isDark ? "#FFFFFF" : "#000000" }}>I'm not a robot</span>
-                      <div className="ml-4">
-                        <Image src="/recaptcha-logo.png" alt="reCAPTCHA" width={40} height={40} />
-                      </div>
-                    </div>
-                  )}
+                  {/* reCAPTCHA widget */}
+                  <div
+                    ref={recaptchaRef}
+                    className="g-recaptcha"
+                    data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"
+                  />
                 </form>
 
                 {/* Image */}

@@ -1,4 +1,25 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { Buffer } from "buffer"
+
+async function verifyRecaptcha(token: string): Promise<boolean> {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY || "6LcKsjksAAAAAKwX5Qjqwh3KPfQL6wpAHZpv78WG"
+
+  try {
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `secret=${secretKey}&response=${token}`,
+    })
+
+    const data = await response.json()
+    return data.success === true
+  } catch (error) {
+    console.error("reCAPTCHA verification error:", error)
+    return false
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,10 +29,18 @@ export async function POST(request: NextRequest) {
     const email = formData.get("email") as string
     const message = formData.get("message") as string
     const file = formData.get("file") as File | null
+    const recaptchaToken = formData.get("recaptchaToken") as string
 
     // Validate required fields
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email, and message are required" }, { status: 400 })
+    }
+
+    if (recaptchaToken) {
+      const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
+      if (!isValidRecaptcha) {
+        return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
+      }
     }
 
     // Validate email format
