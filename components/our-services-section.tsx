@@ -78,7 +78,7 @@ const services: Service[] = [
         <path d="M5 5.01L5.01 4.99889" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
-    image: "/images/213432fc8fbf61b5ea543d6c172ebac71c9a9a20.jpg",
+    image: "/images/3a8ceacf9a599490d7b40d1ec06dca37f1ea0d31.jpg",
     link: "/services/qa-automation",
     imagePosition: { row: "2", col: "1" },
   },

@@ -4,7 +4,6 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated color scheme to match Figma design with #FF6200 as primary */
   --background: #ffffff;
   --foreground: #000000;
   --card: #ffffff;
@@ -19,17 +18,17 @@
   --muted-foreground: #00000080;
   --accent: #ff6200;
   --accent-foreground: #ffffff;
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --destructive: #ff4444;
+  --destructive-foreground: #ffffff;
   --border: #ffffff1a;
   --input: #ffffff26;
   --ring: #ff6200;
-  --radius: 50px;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -41,7 +40,6 @@
 }
 
 .dark {
-  /* Dark theme colors matching Figma dark mode */
   --background: #000000;
   --foreground: #ffffff;
   --card: #1a1a1a;
@@ -56,8 +54,8 @@
   --muted-foreground: #00000080;
   --accent: #ff6200;
   --accent-foreground: #ffffff;
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --destructive: #ff4444;
+  --destructive-foreground: #ffffff;
   --border: #ffffff1a;
   --input: #ffffff26;
   --ring: #ff6200;
@@ -77,9 +75,7 @@
 }
 
 @theme inline {
-  /* Updated to use Onest font family */
-  --font-sans: var(--font-onest), "system-ui", "sans-serif";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -104,10 +100,10 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: 25px;
-  --radius-md: 40px;
-  --radius-lg: 50px;
-  --radius-xl: 60px;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -127,167 +123,35 @@
   }
 }
 
-/* Added component state styles for dark mode based on design guide */
 @layer components {
-  /* Primary button states (filled orange) */
   .btn-primary {
-    background: linear-gradient(180deg, #ff6200 0%, #ff6200 100%);
-    color: #ffffff;
-    border-radius: 50px;
-    transition: all 0.3s ease-out;
+    @apply bg-primary text-primary-foreground px-6 py-2 rounded-full transition-all;
   }
 
   .btn-primary:hover {
-    background: linear-gradient(180deg, #ff6200 0%, #cc4e00 100%);
+    @apply opacity-90;
   }
 
-  .btn-primary:active {
-    background: linear-gradient(180deg, #cc4e00 0%, #994000 100%);
-  }
-
-  .btn-primary:disabled {
-    background: #4a4a4a;
-    color: #808080;
-    cursor: not-allowed;
-  }
-
-  /* Secondary button states (outline) */
-  .btn-secondary {
-    background: transparent;
-    border: 1.5px solid #ff6200;
-    color: #ffffff;
-    border-radius: 50px;
-    transition: all 0.3s ease-out;
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255, 98, 0, 0.1);
-    border-color: #ff7a2e;
-  }
-
-  .btn-secondary:active {
-    background: rgba(255, 98, 0, 0.2);
-    border-color: #cc4e00;
-  }
-
-  /* Tertiary button states (outline with background) */
-  .btn-tertiary {
-    background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    border-radius: 50px;
-    transition: all 0.3s ease-out;
-  }
-
-  .btn-tertiary:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-
-  .btn-tertiary:active {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.4);
-  }
-
-  /* Input field states */
   .input-field {
-    background: #2a2a2a;
-    border: 1px solid #3a3a3a;
-    color: #ffffff;
-    border-radius: 4px;
-    transition: all 0.2s ease-out;
-  }
-
-  .input-field:hover {
-    border-color: #4a4a4a;
-  }
-
-  .input-field:focus {
-    border-color: #ff6200;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 98, 0, 0.1);
-  }
-
-  .input-field.error {
-    border-color: #ff4444;
-  }
-
-  .input-field.error:focus {
-    border-color: #ff4444;
-    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
-  }
-
-  .input-field.success {
-    border-color: #4caf50;
-  }
-
-  .input-field::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  /* Dropdown item states */
-  .dropdown-item {
-    transition: background-color 0.15s ease-out;
-  }
-
-  .dropdown-item:hover {
-    background-color: #2f2f2f;
-  }
-
-  .dropdown-item:active {
-    background-color: #404040;
-  }
-
-  .dropdown-item.selected {
-    background-color: #3a3a3a;
-  }
-
-  /* Toggle button states */
-  .toggle-btn {
-    background: #2a2a2a;
-    color: rgba(255, 255, 255, 0.5);
-    border-radius: 4px;
-    transition: all 0.2s ease-out;
-  }
-
-  .toggle-btn:hover:not(.active) {
-    background: #333333;
-  }
-
-  .toggle-btn.active {
-    background: #ff6200;
-    color: #ffffff;
-  }
-
-  .toggle-btn.active:hover {
-    background: #ff7a2e;
-  }
-
-  .toggle-btn.active:active {
-    background: #cc4e00;
+    @apply bg-input text-foreground px-3 py-2 rounded border border-border;
   }
 }
 
-/* Added media queries for 1000px responsive design */
 @media only screen and (max-width: 1000px) {
-  /* Hero banner container stays at 1000px width, reduces horizontal padding */
   .hero-banner {
     max-width: 1000px;
   }
 
-  /* Reduce horizontal padding on smaller screens while keeping block sizes */
   .hero-content {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
 
-  /* Stats section gap adjustment for 1000px screens */
   .stats-section {
     gap: 30px !important;
   }
 }
 
-/* Policy page content styles - isolated and non-conflicting */
 .policy-content-text {
   color: #212121;
 }
