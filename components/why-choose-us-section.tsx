@@ -5,7 +5,7 @@ import Image from "next/image"
 
 export function WhyUsSection() {
   return (
-    <section className="py-16 px-4 md:py-24 bg-primary-foreground dark:bg-[oklch(0.32_0_0)]">
+    <section className="py-16 px-4 md:py-24 dark:bg-[oklch(0.32_0_0)]">
       <div className="max-w-7xl mx-auto">
         {/* Основные блоки с чередованием */}
         <div className="space-y-24 lg:space-y-32">
