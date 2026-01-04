@@ -257,7 +257,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2">
             <h4 className="text-white font-semibold text-base mb-4">Blog</h4>
             <ul className="space-y-3">
               {latestPosts.length > 0 ? (

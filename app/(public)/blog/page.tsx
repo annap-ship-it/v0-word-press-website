@@ -270,7 +270,7 @@ export default function BlogPage() {
           {/* Title with gradient */}
           <AnimatedCard>
             <h1
-              className="text-4xl md:text-6xl font-bold text-center mb-16"
+              className="text-4xl md:text-6xl font-bold text-center mt-[47px] mb-11 leading-[5rem]"
               style={{
                 backgroundImage: "linear-gradient(90.39deg, #FF6200 34.5%, var(--foreground) 66.76%)",
                 WebkitBackgroundClip: "text",

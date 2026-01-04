@@ -3,6 +3,7 @@ import { AwardsSection } from "@/components/awards"
 import { WhyUsSection } from "@/components/why-choose-us-section"
 import { AboutUsSection } from "@/components/about-us-section"
 import { QuoteSection } from "@/components/quote-section"
+import { ExpertiseSection } from "@/components/expertise"
 import { OurServicesSection } from "@/components/our-services-section"
 import { RequestConsultationSection } from "@/components/request-consultation-section"
 
@@ -14,6 +15,7 @@ export default function HomePage() {
       <WhyUsSection />
       <AboutUsSection />
       <QuoteSection />
+      <ExpertiseSection />
       <OurServicesSection />
       <RequestConsultationSection />
     </main>
