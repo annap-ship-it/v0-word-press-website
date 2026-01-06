@@ -3,32 +3,85 @@
 import Image from "next/image"
 import Link from "next/link"
 
+// --- Иконки с fill="currentColor" ---
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.78v2.16h.07c.66-1.25 2.28-2.56 4.7-2.56 5.03 0 5.95 3.3 5.95 7.59V24h-5v-7.75c0-1.85-.03-4.23-2.57-4.23-2.57 0-2.96 2-2.96 4.09V24h-5V8z" />
+    </svg>
+  )
+}
+
+function TelegramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M19 7L4 12.5L9.526 13.233L12.091 14.864V17.267L19 7Z" />
+    </svg>
+  )
+}
+
+// --- Соцсети блок ---
+function SocialLinks() {
+  return (
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8">
+      <Link
+        href="https://www.linkedin.com/in/oleksandr-romanov-idea-team/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground transition-colors"
+      >
+        <LinkedInIcon className="w-6 h-6 text-foreground" />
+        <span className="text-foreground/70 hover:text-primary transition-colors">LinkedIn</span>
+      </Link>
+
+      <Link
+        href="https://t.me/oleksandr_romanov"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground transition-colors"
+      >
+        <TelegramIcon className="w-6 h-6 text-foreground" />
+        <span className="text-foreground/70 hover:text-primary transition-colors">Telegram</span>
+      </Link>
+    </div>
+  )
+}
+
+// --- Основной компонент ---
 export function QuoteSection() {
   return (
     <section className="py-16 px-4 md:py-24 bg-card">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Фото — сверху на мобильных, слева на десктопе */}
+          
+          {/* Фото */}
           <div className="order-2 lg:order-1 flex justify-center lg:justify-end">
             <div className="relative rounded-3xl overflow-hidden w-full max-w-md aspect-[3/4]">
               <Image
-                src="/images/oleksandr-romanov.svg" // ← замени на реальный путь
+                src="/images/oleksandr-romanov.svg"
                 alt="Oleksandr Romanov"
                 fill
                 className="object-cover"
               />
-              {/* Оранжевый градиент снизу */}
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-500/40 via-transparent to-transparent" />
             </div>
           </div>
 
-          {/* Цитата — снизу на мобильных, справа на десктопе */}
-          <div className="order-1 lg:order-2">
-            {/* Открывающая кавычка */}
-            <span className="text-6xl md:text-8xl font-bold text-primary block">“</span>
-
-            {/* Текст цитаты */}
-            <blockquote className="text-m md:text-lg lg:text-xl leading-relaxed text-foreground">
+          {/* Цитата */}
+          <div className="order-1 lg:order-2 space-y-8">
+            <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">“</span>
+            
+            <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground">
               When I started Idea Team, it was more than only about technology, it also was about giving ideas a
               chance to grow. And I began by giving my own idea that chance. I’ve seen how the right people, with
               expertise and persistence, can transform potential into impact. That’s why I brought together
@@ -41,58 +94,25 @@ export function QuoteSection() {
             </blockquote>
 
             {/* Подпись */}
-            <div className="mb-8">
+            <div className="space-y-1">
               <p className="text-xl font-semibold text-foreground">Oleksandr Romanov</p>
-              <p className="text-foreground/50">CEO at Idea Team</p>
-              <p className="text-foreground/50">CEO & Founder, Devea Team</p>
+              <p className="text-foreground/60">CEO at Idea Team</p>
+              <p className="text-foreground/60">CEO & Founder, Devea Team</p>
             </div>
 
-            {/* Соцсети и кнопка — кнопка под иконками на десктопе */}
-            <div className="mt-auto flex flex-col gap-6">
-              {/* Соцсети с иконками и border */}
-              <div className="flex items-center gap-4">
-                <Link
-                  href="https://www.linkedin.com/in/oleksandr-romanov-idea-team/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-foreground/30 hover:border-primary transition-colors"
-                >
-                  <Image
-                    src="/images/linkedin.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                  />
-                  <span className="text-foreground/60 hover:text-primary">LinkedIn</span>
-                </Link>
+            {/* Соцсети */}
+            <SocialLinks />
 
-                <Link
-                  href="https://t.me/oleksandr_romanov"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-foreground/30 hover:border-primary transition-colors"
-                >
-                  <Image
-                    src="/images/telegram.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                  />
-                  <span className="text-foreground/60 hover:text-primary">Telegram</span>
-                </Link>
-              </div>
-
-              {/* Кнопка под соцсетями */}
-              <Link
-                href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button className="w-full lg:w-auto px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors">
-                  Schedule a Call
-                </button>
-              </Link>
-            </div>
+            {/* Кнопка */}
+            <Link
+              href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-orange-600 dark:bg-orange-600 text-primary-foreground dark:text-black font-semibold hover:bg-primary/60 transition-colors">
+                Schedule a Call
+              </button>
+            </Link>
           </div>
         </div>
       </div>

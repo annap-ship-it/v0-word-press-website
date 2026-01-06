@@ -83,7 +83,7 @@ function TechCard({ tech, isHovered, onHover }: { tech: any; isHovered: boolean;
         w-[170px] h-[88px]
         transition-all duration-300 cursor-pointer
         bg-[var(--tech-card)]
-        ${isHovered ? "bg-gradient-to-b from-[#161515] to-[#FF6200]" : ""}
+        ${isHovered ? "bg-gradient-to-b from-[var(--tech-accent)] to-[var(--tech-card)]" : ""}
         border border-[var(--tech-card-border)]
       `}
     >

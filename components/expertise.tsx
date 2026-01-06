@@ -59,9 +59,7 @@ export function ExpertiseSection() {
 
         {/* Контент */}
         <div className="relative z-10">
-          <h2 className="text-5xl md:text-6xl font-bold text-white text-center mb-20">
-            Our Expertise
-          </h2>
+          <h2 className="text-5xl md:text-6xl font-bold text-white text-center mb-20">Our Expertise</h2>
 
           {/* Outstaffing */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 pb-20 border-b border-white/40">
@@ -100,7 +98,8 @@ export function ExpertiseSection() {
                 <div>
                   <p className="font-semibold text-white">Integration & Management:</p>
                   <p className="text-white/60">
-                    Developers fully integrate into your workflows, tools, and communication channels under your direction.
+                    Developers fully integrate into your workflows, tools, and communication channels under your
+                    direction.
                   </p>
                 </div>
               </div>
@@ -122,7 +121,7 @@ export function ExpertiseSection() {
 
           {/* Outsourcing */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 py-20 border-b border-white/40">
-            <h3 className="text-3xl md:text-4xl font-medium bg-gradient-to-r from-primary to-white bg-clip-text text-transparent">
+            <h3 className="text-3xl md:text-4xl font-medium bg-gradient-to-r from-orange-600 to-white bg-clip-text text-transparent">
               Outsourcing
             </h3>
 
