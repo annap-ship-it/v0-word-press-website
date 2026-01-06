@@ -5,6 +5,7 @@ import { AboutUsSection } from "@/components/about-us-section"
 import { QuoteSection } from "@/components/quote-section"
 import { ExpertiseSection } from "@/components/expertise"
 import { OurServicesSection } from "@/components/our-services-section"
+import { TechnologiesSection } from "@/components/technologies"
 import { RequestConsultationSection } from "@/components/request-consultation-section"
 
 export default function HomePage() {
@@ -17,6 +18,7 @@ export default function HomePage() {
       <QuoteSection />
       <ExpertiseSection />
       <OurServicesSection />
+      <TechnologiesSection />
       <RequestConsultationSection />
     </main>
   )

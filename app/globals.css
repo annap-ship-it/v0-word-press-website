@@ -37,12 +37,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --tech-card-light: #F6F6F6;
+  --tech-card: #f6f6f6;
+  --tech-card-border: rgba(0, 0, 0, 0.1);
 }
 
 .dark {
   --background: #000000;
   --foreground: #ffffff;
   --card: #1a1a1a;
+  --tech-card: #252525;
+  --card-dark: #252525;
   --card-foreground: #ffffff;
   --popover: #2a2a2a;
   --popover-foreground: #ffffff;
@@ -72,6 +77,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  --tech-card-border: rgba(255, 255, 255, 0.2);
 }
 
 @theme inline {
