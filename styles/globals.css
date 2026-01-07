@@ -87,6 +87,21 @@
   --tech-card: #252525;
 }
 
+.scroll-stack-scroller {
+  overflow: hidden;
+}
+
+.scroll-stack-inner {
+  position: relative;
+}
+
+.scroll-stack-card {
+  position: sticky;
+  top: 20vh;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';

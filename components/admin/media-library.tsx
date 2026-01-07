@@ -42,11 +42,22 @@ export default function MediaLibrary() {
 
   const loadFiles = async () => {
     try {
-      const response = await fetch("/api/media/list")
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000)
+
+      const response = await fetch("/api/media/list", {
+        signal: controller.signal,
+      })
+      clearTimeout(timeoutId)
+
       const data = await response.json()
       setFiles(data.files || [])
     } catch (error) {
-      console.error("Failed to load files:", error)
+      if (error instanceof Error && error.name === "AbortError") {
+        console.error("Request timeout while loading files")
+      } else {
+        console.error("Failed to load files:", error)
+      }
     } finally {
       setLoading(false)
     }
@@ -61,10 +72,15 @@ export default function MediaLibrary() {
       const formData = new FormData()
       formData.append("file", file)
 
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 30000)
+
       const response = await fetch("/api/media/upload", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       })
+      clearTimeout(timeoutId)
 
       if (response.ok) {
         await loadFiles()
@@ -72,7 +88,11 @@ export default function MediaLibrary() {
         alert("Upload failed")
       }
     } catch (error) {
-      console.error("Upload error:", error)
+      if (error instanceof Error && error.name === "AbortError") {
+        console.error("Upload timeout")
+      } else {
+        console.error("Upload error:", error)
+      }
       alert("Upload failed")
     } finally {
       setUploading(false)
@@ -83,11 +103,16 @@ export default function MediaLibrary() {
     if (!selectedFile) return
 
     try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000)
+
       const response = await fetch("/api/media/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: selectedFile.id, alt_text: altText }),
+        signal: controller.signal,
       })
+      clearTimeout(timeoutId)
 
       if (response.ok) {
         await loadFiles()
@@ -98,7 +123,11 @@ export default function MediaLibrary() {
         alert("Update failed")
       }
     } catch (error) {
-      console.error("Update error:", error)
+      if (error instanceof Error && error.name === "AbortError") {
+        console.error("Update timeout")
+      } else {
+        console.error("Update error:", error)
+      }
       alert("Update failed")
     }
   }
@@ -110,11 +139,16 @@ export default function MediaLibrary() {
       const file = files.find((f) => f.id === id)
       if (!file) return
 
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000)
+
       const response = await fetch("/api/media/delete", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: file.url || file.file_path }),
+        signal: controller.signal,
       })
+      clearTimeout(timeoutId)
 
       if (response.ok) {
         await loadFiles()
@@ -125,7 +159,11 @@ export default function MediaLibrary() {
         alert("Delete failed")
       }
     } catch (error) {
-      console.error("Delete error:", error)
+      if (error instanceof Error && error.name === "AbortError") {
+        console.error("Delete timeout")
+      } else {
+        console.error("Delete error:", error)
+      }
       alert("Delete failed")
     }
   }
