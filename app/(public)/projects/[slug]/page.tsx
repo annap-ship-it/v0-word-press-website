@@ -6,6 +6,7 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { useParams } from "next/navigation"
+import { useLocale } from "@/lib/locale-context"
 
 interface ProjectData {
   id: string
@@ -15,6 +16,41 @@ interface ProjectData {
   featured_image: string
   content: any
   created_at: string
+}
+
+const translations = {
+  en: {
+    backToProjects: "Back to Projects",
+    client: "Client",
+    industry: "Industry",
+    duration: "Duration",
+    team: "Team",
+    overview: "Overview",
+    challenge: "Challenge",
+    solution: "Solution",
+    result: "Result",
+    technologyStack: "Technology Stack",
+    keyFeatures: "Key Features",
+    projectGallery: "Project Gallery",
+    similarProject: "Have a similar project in mind?",
+    letsTalk: "Let's Talk",
+  },
+  uk: {
+    backToProjects: "Назад до проектів",
+    client: "Клієнт",
+    industry: "Індустрія",
+    duration: "Тривалість",
+    team: "Команда",
+    overview: "Огляд",
+    challenge: "Завдання",
+    solution: "Рішення",
+    result: "Результат",
+    technologyStack: "Стек технологій",
+    keyFeatures: "Ключові функції",
+    projectGallery: "Галерея проекту",
+    similarProject: "Чи у вас є подібний проект на думці?",
+    letsTalk: "Давайте поговоримо",
+  },
 }
 
 // Default project data for fallback
@@ -124,9 +160,12 @@ const defaultProjectsData: Record<string, any> = {
 export default function ProjectDetailPage() {
   const params = useParams()
   const slug = params.slug as string
+  const { locale } = useLocale()
   const [project, setProject] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isDark, setIsDark] = useState(false)
+
+  const t = translations[locale]
 
   useEffect(() => {
     const checkTheme = () => {
@@ -205,9 +244,7 @@ export default function ProjectDetailPage() {
     return data
   }
 
-  const titleGradient = isDark
-    ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
-    : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)"
+  const titleGradient = isDark ? "#FFFFFF" : "#000000"
 
   if (loading) {
     return (
@@ -241,7 +278,7 @@ export default function ProjectDetailPage() {
               className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colors"
             >
               <ArrowLeft size={20} />
-              Back to Projects
+              {t.backToProjects}
             </Link>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">{project.title}</h1>
           </div>
@@ -259,25 +296,25 @@ export default function ProjectDetailPage() {
             >
               {project.client && (
                 <div>
-                  <p className="text-[#FF6200] font-semibold text-sm mb-1">Client</p>
+                  <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.client}</p>
                   <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.client}</p>
                 </div>
               )}
               {project.industry && (
                 <div>
-                  <p className="text-[#FF6200] font-semibold text-sm mb-1">Industry</p>
+                  <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.industry}</p>
                   <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.industry}</p>
                 </div>
               )}
               {project.duration && (
                 <div>
-                  <p className="text-[#FF6200] font-semibold text-sm mb-1">Duration</p>
+                  <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.duration}</p>
                   <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.duration}</p>
                 </div>
               )}
               {project.team && (
                 <div>
-                  <p className="text-[#FF6200] font-semibold text-sm mb-1">Team</p>
+                  <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.team}</p>
                   <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.team}</p>
                 </div>
               )}
@@ -290,13 +327,10 @@ export default function ProjectDetailPage() {
               <h2
                 className="text-2xl font-bold mb-4"
                 style={{
-                  backgroundImage: titleGradient,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: titleGradient,
                 }}
               >
-                Overview
+                {t.overview}
               </h2>
               <p className="text-lg leading-relaxed" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
                 {project.overview}
@@ -314,7 +348,7 @@ export default function ProjectDetailPage() {
                   boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
                 }}
               >
-                <h3 className="text-[#FF6200] font-bold text-lg mb-3">Challenge</h3>
+                <h3 className="text-[#FF6200] font-bold text-lg mb-3">{t.challenge}</h3>
                 <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge}</p>
               </div>
             )}
@@ -326,7 +360,7 @@ export default function ProjectDetailPage() {
                   boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
                 }}
               >
-                <h3 className="text-[#FF6200] font-bold text-lg mb-3">Solution</h3>
+                <h3 className="text-[#FF6200] font-bold text-lg mb-3">{t.solution}</h3>
                 <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</p>
               </div>
             )}
@@ -338,7 +372,7 @@ export default function ProjectDetailPage() {
                   boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
                 }}
               >
-                <h3 className="text-[#FF6200] font-bold text-lg mb-3">Result</h3>
+                <h3 className="text-[#FF6200] font-bold text-lg mb-3">{t.result}</h3>
                 <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result}</p>
               </div>
             )}
@@ -350,13 +384,10 @@ export default function ProjectDetailPage() {
               <h2
                 className="text-2xl font-bold mb-6"
                 style={{
-                  backgroundImage: titleGradient,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: titleGradient,
                 }}
               >
-                Technology Stack
+                {t.technologyStack}
               </h2>
               <div className="flex flex-wrap gap-3">
                 {project.stack.map((tech: string, i: number) => (
@@ -382,13 +413,10 @@ export default function ProjectDetailPage() {
               <h2
                 className="text-2xl font-bold mb-6"
                 style={{
-                  backgroundImage: titleGradient,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: titleGradient,
                 }}
               >
-                Key Features
+                {t.keyFeatures}
               </h2>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {project.features.map((feature: string, i: number) => (
@@ -411,13 +439,10 @@ export default function ProjectDetailPage() {
               <h2
                 className="text-2xl font-bold mb-6"
                 style={{
-                  backgroundImage: titleGradient,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: titleGradient,
                 }}
               >
-                Project Gallery
+                {t.projectGallery}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {project.gallery.map((image: string, i: number) => (
@@ -453,13 +478,13 @@ export default function ProjectDetailPage() {
           {/* CTA */}
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
-              Have a similar project in mind?
+              {t.similarProject}
             </h3>
             <Link
               href="/contact"
               className="inline-block px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors"
             >
-              Let's Talk
+              {t.letsTalk}
             </Link>
           </div>
         </div>

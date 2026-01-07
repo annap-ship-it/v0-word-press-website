@@ -15,9 +15,9 @@ export function WhyUsSection() {
               <h3 className="text-3xl md:text-4xl font-bold text-foreground">Your Idea</h3>
               <p className="text-base md:text-lg leading-relaxed text-foreground/80">
                 We work with SaaS startups in the finance and healthcare niches. We also have extensive experience in
-                e-commerce, with more than 10 completed projects. If you need to strengthen your technical team or
-                build an MVP, we will do it with a structured approach by integrating our specialists, business
-                analysts, PMs, and CTOs.
+                e-commerce, with more than 10 completed projects. If you need to strengthen your technical team or build
+                an MVP, we will do it with a structured approach by integrating our specialists, business analysts, PMs,
+                and CTOs.
               </p>
             </div>
 
@@ -27,7 +27,7 @@ export function WhyUsSection() {
                 alt="Your Idea"
                 width={380}
                 height={390}
-                className="w-full max-w-[326px] md:max-w-[380px] object-contain"
+                className="w-full max-w-[326px] md:max-w-[380px] object-contain animate-float"
                 priority
               />
             </div>
@@ -41,7 +41,7 @@ export function WhyUsSection() {
                 alt="Our Team"
                 width={380}
                 height={390}
-                className="w-full max-w-[326px] md:max-w-[380px] object-contain"
+                className="w-full max-w-[326px] md:max-w-[380px] object-contain animate-float"
               />
             </div>
 
@@ -49,9 +49,9 @@ export function WhyUsSection() {
               <h3 className="text-3xl md:text-4xl font-bold text-foreground">Our Team</h3>
               <p className="text-base md:text-lg leading-relaxed text-foreground/80">
                 Our team includes more than thirty specialists at mid-level and above. We take on both end-to-end
-                development and the integration of our developers into your established teams. Thanks to the support
-                of PMs and well-organized processes, we implement solutions of any technical complexity within
-                deadlines and take full responsibility for our work.
+                development and the integration of our developers into your established teams. Thanks to the support of
+                PMs and well-organized processes, we implement solutions of any technical complexity within deadlines
+                and take full responsibility for our work.
               </p>
             </div>
           </div>
@@ -89,7 +89,7 @@ export function WhyUsSection() {
                 alt="Your Success"
                 width={380}
                 height={390}
-                className="w-full max-w-[326px] md:max-w-[380px] object-contain"
+                className="w-full max-w-[326px] md:max-w-[380px] object-contain animate-float"
               />
             </div>
           </div>

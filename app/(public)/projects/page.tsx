@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useLocale } from "@/lib/locale-context"
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -165,6 +165,8 @@ function AnimatedCard({ children, delay = 0 }: { children: React.ReactNode; dela
 }
 
 export default function ProjectsPage() {
+  const { locale } = useLocale()
+
   const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [isDark, setIsDark] = useState(false)
@@ -308,6 +310,43 @@ export default function ProjectsPage() {
     }
   }
 
+  const translations = {
+    en: {
+      title: "Projects",
+      subtitle: "Find out how we have turned our clients' inspiring ideas into high-end products",
+      consultationTitle: "Request Free Consultation",
+      processTitle: "What's the process?",
+      processStep1: "Our specialist will reach out after reviewing your message",
+      processStep2: "We'll create a roadmap to turn your vision into reality",
+      nameLabel: "Your Name",
+      emailLabel: "Your Email",
+      messageLabel: "Your Message",
+      attachLabel: "Attach File (optional)",
+      termsLabel: "I agree to the Terms and Conditions",
+      submitButton: "Send Request",
+      successMessage: "Thank you! We'll be in touch soon.",
+      errorMessage: "Error submitting form. Please try again.",
+    },
+    uk: {
+      title: "Проекти",
+      subtitle: "Дізнайтеся, як ми перетворили натхненні ідеї наших клієнтів на високоякісні продукти",
+      consultationTitle: "Запитати безкоштовну консультацію",
+      processTitle: "Як це працює?",
+      processStep1: "Наш фахівець зв'яжеться з вами після розгляду вашого повідомлення",
+      processStep2: "Ми створимо дорожну карту, щоб втілити вашу видіння в реальність",
+      nameLabel: "Ваше ім'я",
+      emailLabel: "Ваша електронна пошта",
+      messageLabel: "Ваше повідомлення",
+      attachLabel: "Додати файл (опціонально)",
+      termsLabel: "Я згоден з Умовами та положеннями",
+      submitButton: "Надіслати запит",
+      successMessage: "Дякуємо! Ми скоро з вами зв'яжемося.",
+      errorMessage: "Помилка при відправленні форми. Спробуйте ще раз.",
+    },
+  }
+
+  const t = translations[locale as keyof typeof translations]
+
   const titleGradient = isDark
     ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
     : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)"
@@ -327,19 +366,18 @@ export default function ProjectsPage() {
         <div className="max-w-[1280px] mx-auto text-center">
           <AnimatedCard>
             <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 mt-24"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 mt-24 pb-2"
               style={{
                 backgroundImage: titleGradient,
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                lineHeight: "1.2",
               }}
             >
-              Projects
+              {t.title}
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Find out how we have turned our clients' inspiring ideas into high-end products
-            </p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.subtitle}</p>
           </AnimatedCard>
         </div>
       </section>
@@ -471,7 +509,7 @@ export default function ProjectsPage() {
               className="text-3xl md:text-4xl font-bold text-center mb-12"
               style={{ color: isDark ? "#FFFFFF" : "#000000" }}
             >
-              Request Free Consultation
+              {t.consultationTitle}
             </h2>
           </AnimatedCard>
 
@@ -480,7 +518,7 @@ export default function ProjectsPage() {
             <div className="rounded-[4px] p-6 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="text-center md:text-left">
-                  <h3 className="text-[#FF6200] font-semibold text-lg mb-2">What's the process?</h3>
+                  <h3 className="text-[#FF6200] font-semibold text-lg mb-2">{t.processTitle}</h3>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
@@ -489,7 +527,7 @@ export default function ProjectsPage() {
                     </svg>
                   </div>
                   <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    Our specialist will reach out after reviewing your message
+                    {t.processStep1}
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -500,17 +538,7 @@ export default function ProjectsPage() {
                     </svg>
                   </div>
                   <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    If needed we'll sign an NDA to ensure trust, after what you provide us with the project details
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    You'll receive a detailed proposal including estimates, timelines, and expert profiles
+                    {t.processStep2}
                   </p>
                 </div>
               </div>
@@ -530,7 +558,7 @@ export default function ProjectsPage() {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
-                  Thank you!
+                  {t.successMessage}
                 </h3>
                 <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
                   We've received your message and will get back to you soon.
@@ -543,7 +571,7 @@ export default function ProjectsPage() {
                   <div>
                     <input
                       type="text"
-                      placeholder="*Type your Name"
+                      placeholder={t.nameLabel}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
@@ -557,7 +585,7 @@ export default function ProjectsPage() {
                   <div>
                     <input
                       type="email"
-                      placeholder="*Type your Email"
+                      placeholder={t.emailLabel}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
@@ -570,7 +598,7 @@ export default function ProjectsPage() {
                   </div>
                   <div>
                     <textarea
-                      placeholder="*Type your Message"
+                      placeholder={t.messageLabel}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       required
@@ -597,7 +625,7 @@ export default function ProjectsPage() {
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
                         <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
                       </svg>
-                      Attach file (optional)
+                      {t.attachLabel}
                     </button>
                     <span className="text-xs" style={{ color: isDark ? "#666666" : "#999999" }}>
                       No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.
@@ -623,7 +651,7 @@ export default function ProjectsPage() {
                     disabled={isSubmitting}
                     className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
                   >
-                    {isSubmitting ? "Sending..." : "Send"}
+                    {isSubmitting ? "Sending..." : t.submitButton}
                   </button>
 
                   {/* Terms */}
@@ -640,7 +668,7 @@ export default function ProjectsPage() {
                       className="text-sm"
                       style={{ color: isDark ? "#A0A0A0" : "#666666" }}
                     >
-                      I Accept{" "}
+                      {t.termsLabel}{" "}
                       <Link href="/terms" className="text-[#FF6200] underline">
                         Terms and Conditions
                       </Link>

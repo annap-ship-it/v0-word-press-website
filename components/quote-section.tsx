@@ -6,12 +6,7 @@ import Link from "next/link"
 // --- Иконки с fill="currentColor" ---
 function LinkedInIcon({ className }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
       <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.78v2.16h.07c.66-1.25 2.28-2.56 4.7-2.56 5.03 0 5.95 3.3 5.95 7.59V24h-5v-7.75c0-1.85-.03-4.23-2.57-4.23-2.57 0-2.96 2-2.96 4.09V24h-5V8z" />
     </svg>
   )
@@ -19,12 +14,7 @@ function LinkedInIcon({ className }: { className?: string }) {
 
 function TelegramIcon({ className }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
       <path d="M19 7L4 12.5L9.526 13.233L12.091 14.864V17.267L19 7Z" />
     </svg>
   )
@@ -63,31 +53,29 @@ export function QuoteSection() {
     <section className="py-16 px-4 md:py-24 bg-card">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
           {/* Фото */}
           <div className="order-2 lg:order-1 flex justify-center lg:justify-end">
             <div className="relative rounded-3xl overflow-hidden w-full max-w-md aspect-[3/4]">
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-500/40 via-transparent to-transparent z-0" />
               <Image
                 src="/images/oleksandr-romanov.svg"
                 alt="Oleksandr Romanov"
                 fill
-                className="object-cover"
+                className="object-cover relative z-10"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-orange-500/40 via-transparent to-transparent" />
             </div>
           </div>
 
           {/* Цитата */}
           <div className="order-1 lg:order-2 space-y-8">
             <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">“</span>
-            
+
             <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground">
-              When I started Idea Team, it was more than only about technology, it also was about giving ideas a
-              chance to grow. And I began by giving my own idea that chance. I’ve seen how the right people, with
-              expertise and persistence, can transform potential into impact. That’s why I brought together
-              specialists who don’t just execute but challenge and propose, closing the loop by turning our main
-              goal into our mission and positioning Idea Team exists to support ideas in their technical
-              implementation.
+              When I started Idea Team, it was more than only about technology, it also was about giving ideas a chance
+              to grow. And I began by giving my own idea that chance. I’ve seen how the right people, with expertise and
+              persistence, can transform potential into impact. That’s why I brought together specialists who don’t just
+              execute but challenge and propose, closing the loop by turning our main goal into our mission and
+              positioning Idea Team exists to support ideas in their technical implementation.
               <br />
               <br />
               We may not claim to be the key to success, but we strive to be the partner that helps unlock it

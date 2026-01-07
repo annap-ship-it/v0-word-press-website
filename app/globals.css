@@ -12,16 +12,16 @@
   --popover-foreground: #000000;
   --primary: #ff6200;
   --primary-foreground: #ffffff;
-  --secondary: #ffffff80;
+  --secondary: #ffffff;
   --secondary-foreground: #000000;
-  --muted: #ffffff99;
-  --muted-foreground: #00000080;
+  --muted: #ffffff;
+  --muted-foreground: #000000;
   --accent: #ff6200;
   --accent-foreground: #ffffff;
   --destructive: #ff4444;
   --destructive-foreground: #ffffff;
-  --border: #ffffff1a;
-  --input: #ffffff26;
+  --border: #ffffff;
+  --input: #ffffff;
   --ring: #ff6200;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -37,7 +37,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --tech-card-light: #F6F6F6;
   --tech-card: #f6f6f6;
   --tech-card-border: rgba(0, 0, 0, 0.1);
 }
@@ -46,23 +45,21 @@
   --background: #000000;
   --foreground: #ffffff;
   --card: #1a1a1a;
-  --tech-card: #252525;
-  --card-dark: #252525;
   --card-foreground: #ffffff;
   --popover: #2a2a2a;
   --popover-foreground: #ffffff;
   --primary: #ff6200;
   --primary-foreground: #ffffff;
-  --secondary: #ffffff26;
+  --secondary: #000000;
   --secondary-foreground: #ffffff;
-  --muted: #ffffff99;
-  --muted-foreground: #00000080;
+  --muted: #000000;
+  --muted-foreground: #ffffff;
   --accent: #ff6200;
   --accent-foreground: #ffffff;
   --destructive: #ff4444;
   --destructive-foreground: #ffffff;
-  --border: #ffffff1a;
-  --input: #ffffff26;
+  --border: #000000;
+  --input: #000000;
   --ring: #ff6200;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -77,6 +74,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  --tech-card: #252525;
   --tech-card-border: rgba(255, 255, 255, 0.2);
 }
 
@@ -129,63 +127,17 @@
   }
 }
 
-@layer components {
-  .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-2 rounded-full transition-all;
+@layer utilities {
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
   }
-
-  .btn-primary:hover {
-    @apply opacity-90;
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
-
-  .input-field {
-    @apply bg-input text-foreground px-3 py-2 rounded border border-border;
-  }
-}
-
-@media only screen and (max-width: 1000px) {
-  .hero-banner {
-    max-width: 1000px;
-  }
-
-  .hero-content {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-
-  .stats-section {
-    gap: 30px !important;
-  }
-}
-
-.policy-content-text {
-  color: #212121;
-}
-
-.dark .policy-content-text {
-  color: #ffffff;
-}
-
-.policy-heading {
-  color: #000000;
-}
-
-.dark .policy-heading {
-  color: #ffffff;
-}
-
-.policy-breadcrumb-main {
-  color: #000000;
-}
-
-.dark .policy-breadcrumb-main {
-  color: #fff !important;
-}
-
-.policy-breadcrumb-active {
-  color: #787877;
-}
-
-.dark .policy-breadcrumb-active {
-  color: #ffffff99;
 }

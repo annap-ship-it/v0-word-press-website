@@ -9,8 +9,46 @@ import { useState, useRef, useEffect } from "react"
 import { ChevronDown, ChevronUp, Building2, Award, Briefcase, Menu } from "lucide-react"
 
 export function Navigation() {
-  const { t } = useLocale()
+  const { locale } = useLocale()
   const { theme } = useTheme()
+
+  const translations = {
+    en: {
+      company: "Company",
+      aboutUs: "About us",
+      ourExperience: "Our experience",
+      careers: "Careers",
+      differentCountries: "Different Countries",
+      readAllReviews: "Read All Reviews",
+      services: "Services",
+      customWebSolutions: "Custom web solutions",
+      mobileApplications: "Mobile aplications",
+      uiUxDesign: "UI/UX and Graphic Design",
+      qaAutomation: "Manual and Automation QA",
+      devops: "DevOps",
+      dataAnalytics: "Data Analytics",
+      projects: "Projects",
+    },
+    uk: {
+      company: "Компанія",
+      aboutUs: "Про нас",
+      ourExperience: "Наш досвід",
+      careers: "Кар'єра",
+      differentCountries: "Різних країн",
+      readAllReviews: "Прочитати всі відгуки",
+      services: "Послуги",
+      customWebSolutions: "Індивідуальні веб-рішення",
+      mobileApplications: "Мобільні додатки",
+      uiUxDesign: "UI/UX та графічний дизайн",
+      qaAutomation: "Ручне та автоматизоване тестування",
+      devops: "DevOps",
+      dataAnalytics: "Аналітика даних",
+      projects: "Проекти",
+    },
+  }
+
+  const t = translations[locale]
+
   const [companyOpen, setCompanyOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [projectsOpen, setProjectsOpen] = useState(false)
@@ -146,7 +184,7 @@ export function Navigation() {
                   transitionDuration: "300ms",
                 }}
               >
-                Company
+                {t.company}
                 {companyOpen ? (
                   <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
                 ) : (
@@ -243,7 +281,7 @@ export function Navigation() {
                           >
                             <Building2 className="h-4 w-4 text-white" />
                           </div>
-                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>About us</span>
+                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.aboutUs}</span>
                         </Link>
 
                         <Link
@@ -283,7 +321,7 @@ export function Navigation() {
                           >
                             <Award className="h-4 w-4 text-white" />
                           </div>
-                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Our experience</span>
+                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.ourExperience}</span>
                         </Link>
 
                         <Link
@@ -323,7 +361,7 @@ export function Navigation() {
                           >
                             <Briefcase className="h-4 w-4 text-white" />
                           </div>
-                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Careers</span>
+                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.careers}</span>
                         </Link>
                       </div>
 
@@ -331,7 +369,7 @@ export function Navigation() {
                       <div
                         className="relative"
                         style={{
-                          width: "258px",
+                          width: "320px",
                           height: "167px",
                           top: "14px",
                           left: "274px",
@@ -399,28 +437,33 @@ export function Navigation() {
                             whiteSpace: "nowrap",
                           }}
                         >
-                          Different Countries
+                          {t.differentCountries}
                         </div>
 
                         {/* Read All Reviews button */}
                         <button
                           className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
                           style={{
-                            width: "168px",
+                            width: "auto",
+                            minWidth: "140px",
+                            maxWidth: "270px",
                             height: "30px",
                             borderRadius: "50px",
                             border: "1px solid #FF6200",
                             paddingTop: "4px",
-                            paddingRight: "14px",
+                            paddingRight: "12px",
                             paddingBottom: "4px",
-                            paddingLeft: "14px",
+                            paddingLeft: "12px",
                             backdropFilter: "blur(4px)",
                             fontFamily: "Onest",
                             fontWeight: 400,
-                            fontSize: "16px",
+                            fontSize: "13px",
                             lineHeight: "100%",
                             color: isDark ? "#FFFFFF" : "#212121",
                             background: "transparent",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = "#FF62001A"
@@ -435,7 +478,7 @@ export function Navigation() {
                             e.currentTarget.style.background = "#FF62001A"
                           }}
                         >
-                          Read All Reviews
+                          {t.readAllReviews}
                         </button>
                       </div>
                     </div>
@@ -469,7 +512,7 @@ export function Navigation() {
                   transitionDuration: "300ms",
                 }}
               >
-                Services
+                {t.services}
                 {servicesOpen ? (
                   <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
                 ) : (
@@ -557,7 +600,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Custom web solutions
+                          {t.customWebSolutions}
                         </Link>
                         <Link
                           href="/services#mobile-applications"
@@ -587,7 +630,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Mobile aplications
+                          {t.mobileApplications}
                         </Link>
                         <Link
                           href="/services#ux-ui-design"
@@ -617,7 +660,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          UI/UX and Graphic Design
+                          {t.uiUxDesign}
                         </Link>
                       </div>
 
@@ -651,7 +694,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Manual and Automation QA
+                          {t.qaAutomation}
                         </Link>
                         <Link
                           href="/services#devops"
@@ -681,7 +724,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          DevOps
+                          {t.devops}
                         </Link>
                         <Link
                           href="/services#data-analytics"
@@ -711,7 +754,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Data Analytics
+                          {t.dataAnalytics}
                         </Link>
                       </div>
 
@@ -755,7 +798,7 @@ export function Navigation() {
                             </h3>
                           </div>
                           <button
-                            className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                            className="absolute bottom-3.5 left-3.5"
                             style={{
                               width: "168px",
                               height: "30px",
@@ -810,7 +853,7 @@ export function Navigation() {
                   color: textColor,
                 }}
               >
-                Projects
+                {t.projects}
                 {projectsOpen ? (
                   <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
                 ) : (
@@ -1122,7 +1165,7 @@ export function Navigation() {
                 color: textColor,
               }}
             >
-              Careers
+              {t.careers}
             </Link>
           </div>
 
@@ -1318,7 +1361,7 @@ export function Navigation() {
                   color: isDark ? "#FFFFFF" : "#212121",
                 }}
               >
-                Company
+                {t.company}
                 {mobileCompanyOpen ? (
                   <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 ) : (
@@ -1375,7 +1418,7 @@ export function Navigation() {
                         >
                           <Building2 className="h-4 w-4 text-white" />
                         </div>
-                        <span>About us</span>
+                        <span>{t.aboutUs}</span>
                       </Link>
 
                       <Link
@@ -1407,7 +1450,7 @@ export function Navigation() {
                         >
                           <Award className="h-4 w-4 text-white" />
                         </div>
-                        <span>Our experience</span>
+                        <span>{t.ourExperience}</span>
                       </Link>
 
                       <Link
@@ -1439,7 +1482,7 @@ export function Navigation() {
                         >
                           <Briefcase className="h-4 w-4 text-white" />
                         </div>
-                        <span>Careers</span>
+                        <span>{t.careers}</span>
                       </Link>
                     </div>
 
@@ -1505,7 +1548,7 @@ export function Navigation() {
                           wordBreak: "break-word",
                         }}
                       >
-                        Different Countries
+                        {t.differentCountries}
                       </div>
 
                       {/* Read All Reviews button */}
@@ -1515,7 +1558,7 @@ export function Navigation() {
                           bottom: "min(14px, 8%)",
                           left: "min(14px, 5%)",
                           right: "min(14px, 5%)",
-                          maxWidth: "168px",
+                          maxWidth: "188px",
                           height: "clamp(26px, 7vw, 30px)",
                           borderRadius: "50px",
                           border: "1px solid #FF6200",
@@ -1542,7 +1585,7 @@ export function Navigation() {
                           e.currentTarget.style.background = "#FF62001A"
                         }}
                       >
-                        Read All Reviews
+                        {t.readAllReviews}
                       </button>
                     </div>
                   </div>
@@ -1571,7 +1614,7 @@ export function Navigation() {
                   color: isDark ? "#FFFFFF" : "#212121",
                 }}
               >
-                Services
+                {t.services}
                 {mobileServicesOpen ? (
                   <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 ) : (
@@ -1624,7 +1667,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
-                        Custom web solutions
+                        {t.customWebSolutions}
                       </Link>
                       <Link
                         href="/services#qa"
@@ -1659,7 +1702,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
-                        Manual and Automation QA
+                        {t.qaAutomation}
                       </Link>
                       <Link
                         href="/services#mobile-applications"
@@ -1694,7 +1737,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
-                        Mobile aplications
+                        {t.mobileApplications}
                       </Link>
                       <Link
                         href="/services#devops"
@@ -1729,7 +1772,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
-                        DevOps
+                        {t.devops}
                       </Link>
                       <Link
                         href="/services#ux-ui-design"
@@ -1764,7 +1807,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
-                        UI/UX and Graphic Design
+                        {t.uiUxDesign}
                       </Link>
                       <Link
                         href="/services#data-analytics"
@@ -1799,7 +1842,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
-                        Data Analytics
+                        {t.dataAnalytics}
                       </Link>
                     </div>
 
@@ -1892,7 +1935,7 @@ export function Navigation() {
                   color: isDark ? "#FFFFFF" : "#212121",
                 }}
               >
-                Projects
+                {t.projects}
                 {mobileProjectsOpen ? (
                   <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 ) : (
@@ -2276,7 +2319,7 @@ export function Navigation() {
                 e.currentTarget.style.background = "transparent"
               }}
             >
-              Careers
+              {t.careers}
             </Link>
 
             {/* Contact us button */}

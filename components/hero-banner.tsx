@@ -4,14 +4,12 @@ import { useTheme } from "@/lib/theme-context"
 import { useState } from "react"
 import RateCalculatorPopout from "./rate-calculator-popout"
 import CalculatorModal from "./calculator-modal"
+import LiquidEther from "./liquid-ether"
 
 export function HeroBanner() {
   const { theme } = useTheme()
   const [isPopoutOpen, setIsPopoutOpen] = useState(false)
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false)
-
-  const darkBg = "/images/abbed7cf7d0bf82d9639274da7f0f3933a121818.png"
-  const lightBg = "/images/1a42622a102e482b667a86696a3685a125ab0eea.png"
 
   const handleCalculateClick = () => {
     setIsPopoutOpen(false)
@@ -22,14 +20,16 @@ export function HeroBanner() {
 
   return (
     <>
-      <section
-        className="hero-banner relative w-full mx-auto min-h-screen flex flex-col items-center justify-center"
-        style={{
-          backgroundImage: `url(${theme === "dark" ? darkBg : lightBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section className="hero-banner relative w-full mx-auto min-h-screen flex flex-col items-center justify-center">
+        <div className="absolute inset-0 w-full h-full">
+          <LiquidEther
+            colors={theme === "dark" ? ["#FF6200", "#FFFFFF", "#FFB43F"] : ["#FF6200", "#000000", "#FFA57D"]}
+            autoIntensity={2.4}
+            autoDemo={true}
+            autoSpeed={0.5}
+          />
+        </div>
+
         <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px] flex flex-col justify-center py-8 md:py-12 items-center h-max">
           <h1
             className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto lg:mt-20 xl:mt-24 leading-4 mt-40 px-2"

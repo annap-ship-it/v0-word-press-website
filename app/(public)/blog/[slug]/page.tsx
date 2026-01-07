@@ -381,7 +381,6 @@ export default function BlogPostPage() {
       console.log("[v0] Related posts:", relatedData)
 
       if (relatedData) {
-        // Fetch categories for related posts
         const relatedWithCategories = await Promise.all(
           relatedData.map(async (post) => {
             let cat = null
@@ -393,7 +392,18 @@ export default function BlogPostPage() {
                 .single()
               cat = catData
             }
-            return { ...post, category: cat } as RelatedPost
+
+            let profile = null
+            if (post.author_id) {
+              const { data: profileData } = await supabase
+                .from("profiles")
+                .select("display_name, avatar_url")
+                .eq("id", post.author_id)
+                .single()
+              profile = profileData
+            }
+
+            return { ...post, category: cat, profiles: profile } as RelatedPost
           }),
         )
         setRelated(relatedWithCategories)
