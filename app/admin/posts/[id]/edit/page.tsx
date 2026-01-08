@@ -1,9 +1,9 @@
 import { PostEditor } from "@/components/admin/post-editor"
-import { createServerClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { notFound } from "next/navigation"
 
 async function getPost(id: string) {
-  const supabase = await createServerClient()
+  const supabase = createAdminClient()
 
   const { data: post, error } = await supabase.from("posts").select("*").eq("id", id).single()
 

@@ -1,17 +1,17 @@
 import { PostsTable } from "@/components/admin/posts-table"
-import { createServerClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 
 async function getPosts() {
-  const supabase = await createServerClient()
+  const supabase = createAdminClient()
 
   const { data: posts, error } = await supabase
     .from("posts")
-    .select("id, title, slug, status, category, created_at")
+    .select("id, title, slug, status, category_id, author_id, created_at, updated_at")
     .order("created_at", { ascending: false })
 
   if (error) {
-    console.error("[v0] Error fetching posts:", error)
+    console.error("[v0] Error fetching posts:", error.message)
     return []
   }
 

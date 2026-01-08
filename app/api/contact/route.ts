@@ -111,25 +111,41 @@ export async function POST(request: NextRequest) {
           : [],
     }
 
-    // Check if Resend API key is available
     const resendApiKey = process.env.RESEND_API_KEY
 
-    if (resendApiKey) {
-      // Send via Resend
-      const resendPayload: Record<string, unknown> = {
-        from: "Contact Form <onboarding@resend.dev>",
-        to: emailContent.to,
-        subject: emailContent.subject,
-        html: emailContent.html,
-      }
+    if (!resendApiKey || resendApiKey.trim() === "") {
+      console.warn("[v0] RESEND_API_KEY is not configured. Email will not be sent.")
+      console.log("[v0] To enable emails, add RESEND_API_KEY to your environment variables")
+      console.log("=== EMAIL WOULD BE SENT ===")
+      console.log("To:", emailContent.to)
+      console.log("Subject:", emailContent.subject)
+      console.log("From:", name, `<${email}>`)
+      console.log("Message:", message)
+      console.log("Attachment:", attachmentInfo)
+      console.log("===========================")
 
-      if (emailContent.attachments.length > 0) {
-        resendPayload.attachments = emailContent.attachments.map((att) => ({
-          filename: att.filename,
-          content: att.content,
-        }))
-      }
+      return NextResponse.json({
+        success: true,
+        message: "Form submitted successfully (email service not configured)",
+      })
+    }
 
+    const resendPayload: Record<string, unknown> = {
+      from: "Contact Form <onboarding@resend.dev>",
+      to: emailContent.to,
+      subject: emailContent.subject,
+      html: emailContent.html,
+      reply_to: email, // Add reply-to for proper email threading
+    }
+
+    if (emailContent.attachments.length > 0) {
+      resendPayload.attachments = emailContent.attachments.map((att) => ({
+        filename: att.filename,
+        content: att.content,
+      }))
+    }
+
+    try {
       const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -139,31 +155,25 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify(resendPayload),
       })
 
+      const responseData = await response.json()
+
       if (!response.ok) {
-        const error = await response.text()
-        console.error("Resend API error:", error)
-        return NextResponse.json({ error: "Failed to send email" }, { status: 500 })
+        console.error("[v0] Resend API error:", responseData)
+        return NextResponse.json(
+          { error: `Failed to send email: ${responseData.message || "Unknown error"}` },
+          { status: 500 },
+        )
       }
 
+      console.log("[v0] Email sent successfully via Resend:", responseData.id)
       return NextResponse.json({
         success: true,
         message: "Email sent successfully",
+        id: responseData.id,
       })
-    } else {
-      // Fallback: Log to console (for development)
-      console.log("=== EMAIL WOULD BE SENT ===")
-      console.log("To:", emailContent.to)
-      console.log("Subject:", emailContent.subject)
-      console.log("From:", name, `<${email}>`)
-      console.log("Message:", message)
-      console.log("Attachment:", attachmentInfo)
-      console.log("===========================")
-
-      // In development, still return success
-      return NextResponse.json({
-        success: true,
-        message: "Form submitted successfully (email service not configured)",
-      })
+    } catch (fetchError) {
+      console.error("[v0] Resend API fetch error:", fetchError)
+      return NextResponse.json({ error: "Failed to send email. Please try again later." }, { status: 500 })
     }
   } catch (error) {
     console.error("Contact form error:", error)

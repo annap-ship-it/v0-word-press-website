@@ -163,7 +163,7 @@ export function Navigation() {
             <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <button
                 onClick={() => setCompanyOpen(!companyOpen)}
-                className="flex items-center gap-1 transition-all ease-out h-10 px-4 rounded-[50px] whitespace-nowrap"
+                className="flex items-center gap-1 transition-colors whitespace-nowrap"
                 style={{
                   fontFamily: "Onest",
                   fontWeight: 400,
@@ -171,17 +171,6 @@ export function Navigation() {
                   lineHeight: "100%",
                   letterSpacing: "0.02em",
                   color: textColor,
-                  background: companyOpen
-                    ? isDark
-                      ? "rgba(255, 255, 255, 0.15)"
-                      : "rgba(255, 255, 255, 0.15)"
-                    : "transparent",
-                  border: companyOpen
-                    ? isDark
-                      ? "1px solid rgba(255, 255, 255, 0.1)"
-                      : "1px solid rgba(0, 0, 0, 0.1)"
-                    : "1px solid transparent",
-                  transitionDuration: "300ms",
                 }}
               >
                 {t.company}
@@ -491,7 +480,7 @@ export function Navigation() {
             <div className="relative" onMouseEnter={handleServicesMouseEnter} onMouseLeave={handleServicesMouseLeave}>
               <button
                 onClick={() => setServicesOpen(!servicesOpen)}
-                className="flex items-center gap-1 transition-all ease-out h-10 px-4 rounded-[50px] whitespace-nowrap"
+                className="flex items-center gap-1 transition-colors whitespace-nowrap"
                 style={{
                   fontFamily: "Onest",
                   fontWeight: 400,
@@ -499,17 +488,6 @@ export function Navigation() {
                   lineHeight: "100%",
                   letterSpacing: "0.02em",
                   color: textColor,
-                  background: servicesOpen
-                    ? isDark
-                      ? "rgba(255, 255, 255, 0.15)"
-                      : "rgba(255, 255, 255, 0.15)"
-                    : "transparent",
-                  border: servicesOpen
-                    ? isDark
-                      ? "1px solid rgba(255, 255, 255, 0.1)"
-                      : "1px solid rgba(0, 0, 0, 0.1)"
-                    : "1px solid transparent",
-                  transitionDuration: "300ms",
                 }}
               >
                 {t.services}

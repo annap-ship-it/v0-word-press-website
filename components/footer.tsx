@@ -161,12 +161,7 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-2">
-            <Link
-              href="/projects"
-              className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
-            >
-              Projects
-            </Link>
+            <h4 className="text-white font-semibold text-base mb-4">Projects</h4>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -263,12 +258,7 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-2">
-            <Link
-              href="/blog"
-              className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
-            >
-              Blog
-            </Link>
+            <h4 className="text-white font-semibold text-base mb-4">Blog</h4>
             <ul className="space-y-3">
               {latestPosts.length > 0 ? (
                 latestPosts.map((post) => (
@@ -448,99 +438,162 @@ export function Footer() {
             {/* Sortlist Badge */}
             <a
               href="#"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border border-[#444444] rounded hover:border-[#555555] transition-colors cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              style={{ borderColor: "#444444" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#FFFFFF"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#444444"
+              }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M24 0V24H0V0H24ZM17.4667 6H15.4133V18H17.4667V6ZM9.94107 8.72773C8.27147 8.84267 6.80027 9.90053 6.9336 11.7195C7.096 13.936 9.84747 13.848 11.316 14.5637C12.3515 15.0683 12.0515 16.1029 11.0091 16.3291C9.8248 16.5859 8.37893 15.9891 7.4264 15.3091L6.536 16.676C8.11227 18 11.2568 18.6037 12.9459 17.2259C13.7581 16.5635 14.0835 15.4736 13.7936 14.4597C13.3245 12.8195 11.0613 12.6259 9.71947 12.1072C9.20693 11.9091 8.71307 11.6739 8.92587 11.0192C9.05893 10.6101 9.5192 10.4184 9.9144 10.3544C10.916 10.1923 12.0029 10.6965 12.8405 11.1971L13.6467 9.79973C12.6059 9.0752 11.2181 8.64 9.94107 8.728V8.72773Z" fill="black"/>
-<path d="M9.94108 8.72999C11.2181 8.64199 12.6059 9.07719 13.6467 9.80173L12.8405 11.1991C12.0029 10.6985 10.916 10.1945 9.91441 10.3564C9.51921 10.4204 9.05894 10.6121 8.92588 11.0212C8.71308 11.6756 9.20694 11.9111 9.71948 12.1092C11.0611 12.6279 13.3245 12.8215 13.7936 14.4617C14.0835 15.4756 13.7581 16.5655 12.9459 17.2279C11.2568 18.6057 8.11228 18.002 6.53601 16.678L7.42641 15.3111C8.37894 15.9911 9.82481 16.5879 11.0091 16.3311C12.0515 16.1049 12.3515 15.0703 11.316 14.5657C9.84721 13.85 7.09601 13.9383 6.93361 11.7215C6.80028 9.90253 8.27148 8.84466 9.94108 8.72973V8.72999Z" fill="white"/>
-<path d="M17.4664 6H15.4131V18H17.4664V6Z" fill="white"/>
-</svg>
-              <div>
-                <div className="font-semibold text-white text-sm">Sortlist</div>
-                <div className="text-xs text-[#999999]">5.0 rating</div>
+                <path
+                  d="M24 0V24H0V0H24ZM17.4667 6H15.4133V18H17.4667V6ZM9.94107 8.72773C8.27147 8.84267 6.80027 9.90053 6.9336 11.7195C7.096 13.936 9.84747 13.848 11.316 14.5637C12.3515 15.0683 12.0515 16.1029 11.0091 16.3291C9.8248 16.5859 8.37893 15.9891 7.4264 15.3091L6.536 16.676C8.11227 18 11.2568 18.6037 12.9459 17.2259C13.7581 16.5635 13.4177 15.4736 13.7936 14.4597C13.3245 12.8195 11.0613 12.6259 9.71947 12.1072C9.20693 11.9091 8.71307 11.6739 8.92587 11.0192C9.05893 10.6101 9.5192 10.4184 9.9144 10.3544C10.916 10.1923 12.0029 10.6965 12.8405 11.1971L13.6467 9.79973C12.6059 9.0752 11.2181 8.64 9.94107 8.728V8.72773Z"
+                  fill="black"
+                />
+                <path
+                  d="M9.94108 8.72999C11.2181 8.64199 12.6059 9.07719 13.6467 9.80173L12.8405 11.1991C12.0029 10.6985 10.916 10.1945 9.91441 10.3564C9.51921 10.4204 9.05894 10.6121 8.92588 11.0212C8.71308 11.6756 9.20694 11.9111 9.71948 12.1092C11.0611 12.6279 13.3245 12.8215 13.7936 14.4617C14.0835 15.4756 13.7581 16.5655 12.9459 17.2279C11.2568 18.6057 8.11228 18.002 6.53601 16.678L7.42641 15.3111C8.37894 15.9911 10.5304 16.5879 11.0091 16.3311C12.0515 16.1049 12.3515 15.0703 11.316 14.5657C9.84721 13.85 7.09601 13.9383 6.93361 11.7215C6.80028 9.90253 8.27148 8.84466 9.94108 8.72973V8.72999Z"
+                  fill="white"
+                />
+                <path d="M17.4664 6H15.4131V18H17.4664V6Z" fill="white" />
+              </svg>
+              <div className="text-left">
+                <p className="text-white text-sm font-medium">Sortlist</p>
+                <p className="text-[#CCCCCC] text-xs">5.0 rating</p>
               </div>
             </a>
 
             {/* Clutch Badge */}
             <a
               href="#"
-              className="flex items-center gap-2 px-4 py-3 bg-transparent border border-[#444444] rounded hover:border-[#555555] transition-colors cursor-pointer text-sm"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              style={{ borderColor: "#444444" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#FFFFFF"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#444444"
+              }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1126_7077)">
-<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#EF4335"/>
-<path d="M14.4616 14.5846C13.8402 15.083 12.9686 15.4562 12.097 15.4562C10.1057 15.4562 8.73783 13.9632 8.73783 11.9719C8.73783 9.98056 10.1057 8.61271 12.097 8.61271C12.9686 8.61271 13.8381 8.86083 14.4616 9.48432L14.8348 9.85756L16.8262 7.99134L16.3278 7.6181C15.2081 6.62349 13.7151 6 12.097 6C8.61271 6 6 8.61271 6 12.097C6 15.5813 8.61271 18.194 12.097 18.194C13.7151 18.194 15.2081 17.5727 16.3278 16.5759L16.8262 16.2027L14.8348 14.2114L14.4616 14.5846Z" fill="white"/>
-<path d="M11.9718 14.0881C13.0703 14.0881 13.9631 13.1975 13.9631 12.0968C13.9631 10.9962 13.0725 10.1055 11.9718 10.1055C10.8712 10.1055 9.98047 10.9962 9.98047 12.0968C9.98047 13.1975 10.8712 14.0881 11.9718 14.0881Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_1126_7077">
-<rect width="24" height="24" fill="white"/>
-</clipPath>
-</defs>
-</svg>
-              <div>
-                <div className="font-semibold text-white">Clutch</div>
-                <div className="text-xs text-[#999999]">4.9 rating</div>
+                <g clipPath="url(#clip0_clutch)">
+                  <rect width="24" height="24" rx="12" fill="black" />
+                  <path
+                    d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z"
+                    fill="#EF4335"
+                  />
+                  <path
+                    d="M14.4616 14.5846C13.8402 15.083 12.9686 15.4562 12.097 15.4562C10.1057 15.4562 8.73783 13.9632 8.73783 11.9719C8.73783 9.98056 10.1057 8.61271 12.097 8.61271C12.9686 8.61271 13.8381 8.86083 14.4616 9.48432L14.8348 9.85756L16.8262 7.99134L16.3278 7.6181C15.2081 6.62349 13.7151 6 12.097 6C8.61271 6 6 8.61271 6 12.097C6 15.5813 8.61271 18.194 12.097 18.194C13.7151 18.194 15.2081 17.5727 16.3278 16.5759L16.8262 16.2027L14.8348 14.2114L14.4616 14.5846Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M11.9718 14.0881C13.0703 14.0881 13.9631 13.1975 13.9631 12.0968C13.9631 10.9962 13.0725 10.1055 11.9718 10.1055C10.8712 10.1055 9.98047 10.9962 9.98047 12.0968C9.98047 13.1975 10.8712 14.0881 11.9718 14.0881Z"
+                    fill="white"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_clutch">
+                    <rect width="24" height="24" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div className="text-left">
+                <p className="text-white text-sm font-medium">Clutch</p>
+                <p className="text-[#CCCCCC] text-xs">4.9 rating</p>
               </div>
             </a>
 
             {/* Google Badge */}
             <a
               href="#"
-              className="flex items-center gap-2 px-4 py-3 bg-transparent border border-[#444444] rounded hover:border-[#555555] transition-colors cursor-pointer text-sm"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              style={{ borderColor: "#444444" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#FFFFFF"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#444444"
+              }}
             >
-              <div className="w-6 h-6 flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.79 15.71 17.57V20.34H19.28C21.36 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"/>
-<path d="M11.9997 23.0016C14.9697 23.0016 17.4597 22.0216 19.2797 20.3416L15.7097 17.5716C14.7297 18.2316 13.4797 18.6316 11.9997 18.6316C9.13969 18.6316 6.70969 16.7016 5.83969 14.1016H2.17969V16.9416C3.98969 20.5316 7.69969 23.0016 11.9997 23.0016Z" fill="#34A853"/>
-<path d="M5.84 14.0903C5.62 13.4303 5.49 12.7303 5.49 12.0003C5.49 11.2703 5.62 10.5703 5.84 9.91031V7.07031H2.18C1.43 8.55031 1 10.2203 1 12.0003C1 13.7803 1.43 15.4503 2.18 16.9303L5.03 14.7103L5.84 14.0903Z" fill="#FBBC05"/>
-<path d="M11.9997 5.38C13.6197 5.38 15.0597 5.94 16.2097 7.02L19.3597 3.87C17.4497 2.09 14.9697 1 11.9997 1C7.69969 1 3.98969 3.47 2.17969 7.07L5.83969 9.91C6.70969 7.31 9.13969 5.38 11.9997 5.38Z" fill="#EA4335"/>
-</svg>
-              </div>
-              <div>
-                <div className="font-semibold text-white">Google</div>
-                <div className="text-xs text-[#999999]">4.9 rating</div>
+              <img src="/images/google-g-logo-201.png" alt="Google" width="24" height="24" className="w-6 h-6" />
+              <div className="text-left">
+                <p className="text-white text-sm font-medium">Google</p>
+                <p className="text-[#CCCCCC] text-xs">4.9 rating</p>
               </div>
             </a>
 
             {/* G2 Badge */}
             <a
               href="#"
-              className="flex items-center gap-2 px-4 py-3 bg-transparent border border-[#444444] rounded hover:border-[#555555] transition-colors cursor-pointer text-sm"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              style={{ borderColor: "#444444" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#FFFFFF"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#444444"
+              }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="24" height="24" rx="12" fill="#FF492C"/>
-<path d="M13.6512 5.14845L12.2761 7.99721C10.3893 8.08662 8.66179 9.2552 8.24854 11.0994C7.40281 14.8781 11.8517 17.405 14.8862 14.99L16.4391 17.653C12.4988 20.5243 6.64358 18.5728 5.29491 13.9995C3.78366 8.87578 8.3094 4.08871 13.6512 5.14845Z" fill="white"/>
-<path d="M11.8957 13.9832L13.6504 10.9984H17.2432L18.9651 13.8261C19.0339 13.9661 18.9883 14.0633 18.937 14.1939C18.7336 14.7078 17.7421 16.2939 17.3889 16.7993C17.3521 16.8521 17.2095 17.0395 17.1639 17.0053L15.3675 13.9832H11.8957Z" fill="white"/>
-<path d="M15.4068 9.10048H17.5611V10.0304H14.2095C14.2295 9.12613 14.4177 8.46293 15.1737 7.90546C15.5117 7.65666 16.4559 7.35033 16.524 6.96469C16.6401 6.31159 15.8072 6.31392 15.3771 6.55261C15.1809 6.66146 14.9711 7.11474 14.8157 7.08209L14.2903 6.42821C14.9567 4.89809 17.9479 5.27984 17.5427 7.18394C17.3161 8.24756 15.8304 8.21879 15.4068 9.0997V9.10048Z" fill="white"/>
-</svg>
-              <div>
-                <div className="font-semibold text-white">G2</div>
-                <div className="text-xs text-[#999999]">5.0 rating</div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect width="24" height="24" rx="12" fill="#FF492C" />
+                <path
+                  d="M13.6512 5.14845L12.2761 7.99721C10.3893 8.08662 8.66179 9.2552 8.24854 11.0994C7.40281 14.8781 11.8517 17.405 14.8862 14.99L16.4391 17.653C12.4988 20.5243 6.64358 18.5728 5.29491 13.9995C3.78366 8.87578 8.3094 4.08871 13.6512 5.14845Z"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M11.8957 13.9832L13.6504 10.9984H17.2432L18.9651 13.8261C19.0339 13.9661 18.9883 14.0633 18.937 14.1939C18.7336 14.7078 17.7421 16.2939 17.3889 16.7993C17.3521 16.8521 17.2095 17.0395 17.1639 17.0053L15.3675 13.9832H11.8957Z"
+                  fill="white"
+                />
+                <path
+                  d="M15.4068 9.10048H17.5611V10.0304H14.2095C14.2295 9.12613 14.4177 8.46293 15.1737 7.90546C15.5117 7.65666 16.4559 7.35033 16.524 6.96469C16.6401 6.31159 15.8072 6.31392 15.3771 6.55261C15.1809 6.66146 14.9711 7.11474 14.8157 7.08209L14.2903 6.42821C14.9567 4.89809 17.9479 5.27984 17.5427 7.18394C17.3161 8.24756 15.8304 8.21879 15.4068 9.0997V9.10048Z"
+                  fill="white"
+                />
+              </svg>
+              <div className="text-left">
+                <div className="text-white text-sm font-medium">G2</div>
+                <div className="text-[#CCCCCC] text-xs">5.0 rating</div>
               </div>
             </a>
 
             {/* DOU Badge */}
             <a
               href="#"
-              className="flex items-center gap-2 px-4 py-3 bg-transparent border border-[#444444] rounded hover:border-[#555555] transition-colors cursor-pointer text-sm"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              style={{ borderColor: "#444444" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#FFFFFF"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#444444"
+              }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1126_7102)">
-<rect width="24" height="24" rx="12" fill="black"/>
-<path d="M6.05784 9.4C6.66051 9.4 7.18051 9.51733 7.61784 9.752C8.06051 9.98667 8.40184 10.3147 8.64184 10.736C8.88718 11.1573 9.00984 11.6453 9.00984 12.2C9.00984 12.7493 8.88718 13.2347 8.64184 13.656C8.40184 14.0773 8.06051 14.408 7.61784 14.648C7.18051 14.8827 6.66051 15 6.05784 15H3.76984V9.4H6.05784ZM5.96984 13.832C6.47651 13.832 6.87384 13.6853 7.16184 13.392C7.44984 13.0987 7.59384 12.7013 7.59384 12.2C7.59384 11.6933 7.44984 11.296 7.16184 11.008C6.87384 10.7147 6.47651 10.568 5.96984 10.568H5.16184V13.832H5.96984ZM12.1001 15.056C11.7001 15.056 11.3268 14.9867 10.9801 14.848C10.6334 14.7093 10.3268 14.5147 10.0601 14.264C9.79876 14.008 9.59343 13.7067 9.44409 13.36C9.29476 13.008 9.22009 12.6213 9.22009 12.2C9.22009 11.7787 9.29476 11.3947 9.44409 11.048C9.59343 10.696 9.79876 10.3947 10.0601 10.144C10.3268 9.888 10.6334 9.69067 10.9801 9.552C11.3268 9.41333 11.7001 9.344 12.1001 9.344C12.5001 9.344 12.8734 9.41333 13.2201 9.552C13.5721 9.69067 13.8788 9.888 14.1401 10.144C14.4014 10.3947 14.6068 10.696 14.7561 11.048C14.9054 11.3947 14.9801 11.7787 14.9801 12.2C14.9801 12.6213 14.9054 13.008 14.7561 13.36C14.6068 13.7067 14.3988 14.008 14.1321 14.264C13.8708 14.5147 13.5668 14.7093 13.2201 14.848C12.8734 14.9867 12.5001 15.056 12.1001 15.056ZM12.1001 13.864C12.3934 13.864 12.6494 13.792 12.8681 13.648C13.0868 13.504 13.2574 13.3067 13.3801 13.056C13.5028 12.8053 13.5641 12.52 13.5641 12.2C13.5641 11.8747 13.5028 11.5893 13.3801 11.344C13.2574 11.0933 13.0868 10.896 12.8681 10.752C12.6494 10.608 12.3934 10.536 12.1001 10.536C11.8014 10.536 11.5428 10.608 11.3241 10.752C11.1054 10.896 10.9348 11.0933 10.8121 11.344C10.6948 11.5893 10.6361 11.8747 10.6361 12.2C10.6361 12.52 10.6948 12.8053 10.8121 13.056C10.9348 13.3067 11.1054 13.504 11.3241 13.648C11.5428 13.792 11.8014 13.864 12.1001 13.864ZM15.3752 9.4H16.7672V12.856C16.7672 13.0693 16.8099 13.2533 16.8952 13.408C16.9806 13.5573 17.1006 13.672 17.2552 13.752C17.4099 13.8267 17.5912 13.864 17.7992 13.864C18.0126 13.864 18.1992 13.8267 18.3592 13.752C18.5192 13.672 18.6419 13.5573 18.7272 13.408C18.8179 13.2533 18.8632 13.0693 18.8632 12.856V9.4H20.2552V12.728C20.2552 13.1173 20.1886 13.4587 20.0552 13.752C19.9219 14.04 19.7379 14.2827 19.5032 14.48C19.2739 14.672 19.0099 14.816 18.7112 14.912C18.4126 15.008 18.1006 15.056 17.7752 15.056C17.3379 15.056 16.9379 14.9707 16.5752 14.8C16.2126 14.624 15.9219 14.3653 15.7032 14.024C15.4846 13.6773 15.3752 13.2453 15.3752 12.728V9.4Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_1126_7102">
-<rect width="24" height="24" rx="12" fill="white"/>
-</clipPath>
-</defs>
-</svg>
-              <div>
-                <div className="font-semibold text-white">DOU</div>
-                <div className="text-xs text-[#999999]">5.0 rating</div>
+              <img src="/images/raiting-logos.png" alt="DOU" width="24" height="24" className="w-6 h-6" />
+              <div className="text-left">
+                <div className="text-white text-sm font-medium">DOU</div>
+                <div className="text-[#CCCCCC] text-xs">5.0 rating</div>
               </div>
             </a>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
+          <p>© Idea Team 2024. All Rights Reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms of Use
+            </Link>
+            <span className="text-[#3A3A3A]">|</span>
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-[#3A3A3A]">|</span>
+            <Link href="/cookie-policy" className="hover:text-white transition-colors">
+              Cookie Policy
+            </Link>
           </div>
         </div>
       </div>
