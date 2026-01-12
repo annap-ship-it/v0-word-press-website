@@ -1,6 +1,7 @@
 "use client"
 
 import { useTheme } from "@/lib/theme-context"
+import { useLocale } from "@/lib/locale-context"
 import { useState } from "react"
 import RateCalculatorPopout from "./rate-calculator-popout"
 import CalculatorModal from "./calculator-modal"
@@ -8,8 +9,40 @@ import LiquidEther from "./liquid-ether"
 
 export function HeroBanner() {
   const { theme } = useTheme()
+  const { locale } = useLocale()
   const [isPopoutOpen, setIsPopoutOpen] = useState(false)
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false)
+
+  const content = {
+    en: {
+      mainTitle: "Turning your idea into",
+      mainTitleGradient: "a tech solution",
+      subtitle1: "You don't need better developers.",
+      subtitle2: "You need the right ones at the right time.",
+      buttonText: "Developer Test Drive",
+      buttonDescription1: "Get 10 hours of free tech expertise.",
+      buttonDescription2: "Test the fit from day one.",
+      estimations: "Estimations",
+      totalProjects: "Total Projects",
+      successfulClients: "Successful Clients",
+      professionals: "Professionals",
+    },
+    uk: {
+      mainTitle: "Перетворюємо вашу ідею в",
+      mainTitleGradient: "технічне рішення",
+      subtitle1: "Вам не потрібні кращі розробники.",
+      subtitle2: "Вам потрібні правильні розробники у правильний час.",
+      buttonText: "Тест розробника",
+      buttonDescription1: "Отримайте 10 годин безкоштовної технічної експертизи.",
+      buttonDescription2: "Перевірте відповідність з першого дня.",
+      estimations: "Кошторисів",
+      totalProjects: "Всього проектів",
+      successfulClients: "Успішних клієнтів",
+      professionals: "Професіоналів",
+    },
+  }
+
+  const t = content[locale]
 
   const handleCalculateClick = () => {
     setIsPopoutOpen(false)
@@ -42,7 +75,7 @@ export function HeroBanner() {
               marginTop: "197px",
             }}
           >
-            Turning your idea into
+            {t.mainTitle}
             <br />a{" "}
             <span
               style={{
@@ -55,7 +88,7 @@ export function HeroBanner() {
                 backgroundClip: "text",
               }}
             >
-              tech solution
+              {t.mainTitleGradient}
             </span>
           </h1>
 
@@ -69,9 +102,9 @@ export function HeroBanner() {
               color: theme === "light" ? "#000000" : "#FFFFFF",
             }}
           >
-            You don&apos;t need better developers.
+            {t.subtitle1}
             <br />
-            You need the right ones at the right time.
+            {t.subtitle2}
           </p>
 
           <div className="flex flex-col items-center gap-3 mt-8 md:mt-12">
@@ -113,7 +146,7 @@ export function HeroBanner() {
               }}
               disabled={false}
             >
-              Developer Test Drive
+              {t.buttonText}
             </button>
 
             <p
@@ -126,9 +159,9 @@ export function HeroBanner() {
                 color: theme === "light" ? "#000000" : "#FFFFFF",
               }}
             >
-              Get 10 hours of free tech expertise.
+              {t.buttonDescription1}
               <br />
-              Test the fit from day one.
+              {t.buttonDescription2}
             </p>
           </div>
 
@@ -152,7 +185,7 @@ export function HeroBanner() {
                   className="block mt-0"
                   style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
                 >
-                  Estimations
+                  {t.estimations}
                 </span>
               </div>
 
@@ -182,7 +215,7 @@ export function HeroBanner() {
                   className="block mt-0"
                   style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
                 >
-                  Total Projects
+                  {t.totalProjects}
                 </span>
               </div>
             </div>
@@ -204,7 +237,7 @@ export function HeroBanner() {
                   className="block mt-0"
                   style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
                 >
-                  Successful Clients
+                  {t.successfulClients}
                 </span>
               </div>
 
@@ -224,7 +257,7 @@ export function HeroBanner() {
                   className="block mt-0"
                   style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
                 >
-                  Professionals
+                  {t.professionals}
                 </span>
               </div>
             </div>

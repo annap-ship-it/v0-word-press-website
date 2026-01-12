@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useLocale } from "@/lib/locale-context"
 
 // --- Иконки с fill="currentColor" ---
 function LinkedInIcon({ className }: { className?: string }) {
@@ -49,6 +50,29 @@ function SocialLinks() {
 
 // --- Основной компонент ---
 export function QuoteSection() {
+  const { locale } = useLocale()
+
+  const content = {
+    en: {
+      quote:
+        "When I started Idea Team, it was more than only about technology, it also was about giving ideas a chance to grow. And I began by giving my own idea that chance. I've seen how the right people, with expertise and persistence, can transform potential into impact. That's why I brought together specialists who don't just execute but challenge and propose, closing the loop by turning our main goal into our mission and positioning Idea Team exists to support ideas in their technical implementation.\n\nWe may not claim to be the key to success, but we strive to be the partner that helps unlock it",
+      name: "Oleksandr Romanov",
+      title1: "CEO at Idea Team",
+      title2: "CEO & Founder, Devea Team",
+      buttonText: "Schedule a Call",
+    },
+    uk: {
+      quote:
+        "Коли я починав Idea Team, це було більше ніж просто про технологію, це також було про надання ідеям шансу розвиватися. Я почав з того, що дав шанс своїй ідеї. Я бачив, як правильні люди, з експертизою та наполегливістю, можуть трансформувати потенціал в вплив. Саме тому я зібрав фахівців, які не просто виконують, а й кидають виклик та пропонують рішення, замикаючи цикл, перетворюючи нашу головну мету в нашу місію і позиціонуючи Idea Team як помічника в технічній реалізації ідей.\n\nМи не можемо претендувати на те, що ми ключ до успіху, але ми прагнемо бути партнером, який допомагає його розпочаткувати",
+      name: "Олександр Романов",
+      title1: "CEO компанії Idea Team",
+      title2: "CEO та засновник Devea Team",
+      buttonText: "Записатися на розмову",
+    },
+  }
+
+  const t = content[locale as "en" | "uk"] || content.en
+
   return (
     <section className="py-16 px-4 md:py-24 bg-card">
       <div className="max-w-7xl mx-auto">
@@ -57,35 +81,23 @@ export function QuoteSection() {
           <div className="order-2 lg:order-1 flex justify-center lg:justify-end">
             <div className="relative rounded-3xl overflow-hidden w-full max-w-md aspect-[3/4]">
               <div className="absolute inset-0 bg-gradient-to-t from-orange-500/40 via-transparent to-transparent z-0" />
-              <Image
-                src="/images/oleksandr-romanov.svg"
-                alt="Oleksandr Romanov"
-                fill
-                className="object-cover relative z-10"
-              />
+              <Image src="/images/oleksandr-romanov.svg" alt={t.name} fill className="object-cover relative z-10" />
             </div>
           </div>
 
           {/* Цитата */}
           <div className="order-1 lg:order-2 space-y-8">
-            <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">“</span>
+            <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">"</span>
 
-            <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground">
-              When I started Idea Team, it was more than only about technology, it also was about giving ideas a chance
-              to grow. And I began by giving my own idea that chance. I’ve seen how the right people, with expertise and
-              persistence, can transform potential into impact. That’s why I brought together specialists who don’t just
-              execute but challenge and propose, closing the loop by turning our main goal into our mission and
-              positioning Idea Team exists to support ideas in their technical implementation.
-              <br />
-              <br />
-              We may not claim to be the key to success, but we strive to be the partner that helps unlock it
+            <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground whitespace-pre-line">
+              {t.quote}
             </blockquote>
 
             {/* Подпись */}
             <div className="space-y-1">
-              <p className="text-xl font-semibold text-foreground">Oleksandr Romanov</p>
-              <p className="text-foreground/60">CEO at Idea Team</p>
-              <p className="text-foreground/60">CEO & Founder, Devea Team</p>
+              <p className="text-xl font-semibold text-foreground">{t.name}</p>
+              <p className="text-foreground/60">{t.title1}</p>
+              <p className="text-foreground/60">{t.title2}</p>
             </div>
 
             {/* Соцсети */}
@@ -98,7 +110,7 @@ export function QuoteSection() {
               rel="noopener noreferrer"
             >
               <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-orange-600 dark:bg-orange-600 text-primary-foreground dark:text-black font-semibold hover:bg-primary/60 transition-colors">
-                Schedule a Call
+                {t.buttonText}
               </button>
             </Link>
           </div>

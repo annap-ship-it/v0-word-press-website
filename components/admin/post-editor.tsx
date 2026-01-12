@@ -30,6 +30,7 @@ export function PostEditor({ post }: PostEditorProps) {
   const [metaDescription, setMetaDescription] = useState(post?.meta_description || "")
   const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(post?.content || [])
   const [saving, setSaving] = useState(false)
+  const [locale, setLocale] = useState<"en" | "uk">(post?.locale || "en")
 
   const [categories, setCategories] = useState<any[]>([])
   const [showMediaPicker, setShowMediaPicker] = useState(false)
@@ -97,6 +98,7 @@ export function PostEditor({ post }: PostEditorProps) {
       author_id: user.id,
       meta_title: metaTitle || title,
       meta_description: metaDescription || excerpt,
+      locale, // Save the selected locale (en or uk)
     }
 
     console.log("[v0] Post data being saved:", postData)
@@ -233,6 +235,19 @@ export function PostEditor({ post }: PostEditorProps) {
           </div>
 
           <div className="space-y-6">
+            <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
+              <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Language</h3>
+              <Select value={locale} onValueChange={(value) => setLocale(value as "en" | "uk")}>
+                <SelectTrigger className="rounded-[4px]">
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="uk">Українська</SelectItem>
+                </SelectContent>
+              </Select>
+            </Card>
+
             <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Featured Image</h3>
               <div className="flex gap-2 mb-3">

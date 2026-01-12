@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import Image from "next/image"
+import { useLocale } from "@/lib/locale-context"
 import {
   ArrowLeft,
   Clock,
@@ -22,6 +23,7 @@ import {
   Check,
 } from "lucide-react"
 import type { JSX } from "react"
+import { useTranslations } from "next-intl"
 
 interface ContentBlock {
   type: string
@@ -48,6 +50,7 @@ interface Post {
   author_id: string
   category?: { name: string; slug: string } | null
   profiles?: { display_name: string; avatar_url: string | null } | null
+  locale?: string
 }
 
 interface RelatedPost {
@@ -62,9 +65,13 @@ interface RelatedPost {
   profiles?: { display_name: string; avatar_url: string | null } | null
 }
 
-function formatDate(dateString: string): string {
+function formatDate(dateString: string, locale = "en-US"): string {
   const date = new Date(dateString)
-  return date.toLocaleDateString("en-US", {
+  const localeMap = {
+    uk: "uk-UA",
+    en: "en-US",
+  }
+  return date.toLocaleDateString(localeMap[locale as keyof typeof localeMap] || "en-US", {
     month: "long",
     day: "2-digit",
     year: "numeric",
@@ -304,6 +311,9 @@ export default function BlogPostPage() {
   const [isDark, setIsDark] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  const { locale } = useLocale()
+  const t = useTranslations("BlogPost")
+
   useEffect(() => {
     const checkDark = () => {
       setIsDark(document.documentElement.classList.contains("dark"))
@@ -318,7 +328,7 @@ export default function BlogPostPage() {
     async function fetchPost() {
       if (!slug) return
 
-      console.log("[v0] Fetching post with slug:", slug)
+      console.log("[v0] Fetching post with slug:", slug, "locale:", locale)
 
       const supabase = createBrowserClient()
 
@@ -326,9 +336,10 @@ export default function BlogPostPage() {
         .from("posts")
         .select(`
           id, title, slug, content, excerpt, featured_image, 
-          category_id, created_at, author_id
+          category_id, created_at, author_id, locale
         `)
         .eq("slug", slug)
+        .eq("locale", locale)
         .eq("status", "published")
         .single()
 
@@ -413,7 +424,7 @@ export default function BlogPostPage() {
     }
 
     fetchPost()
-  }, [slug])
+  }, [slug, locale])
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href)
@@ -449,10 +460,10 @@ export default function BlogPostPage() {
         style={{ background: "var(--background)" }}
       >
         <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
-          Article not found
+          {t.articleNotFound}
         </h1>
         <Link href="/blog" className="text-[#FF6200] hover:underline">
-          Back to Blog
+          {t.backToBlog}
         </Link>
       </div>
     )
@@ -478,7 +489,7 @@ export default function BlogPostPage() {
           className="inline-flex items-center gap-2 text-[#787877] hover:text-[#FF6200] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Blog</span>
+          <span>{t.backToBlog}</span>
         </Link>
       </AnimatedSection>
 
@@ -534,18 +545,20 @@ export default function BlogPostPage() {
                   <p className="font-medium" style={{ color: "var(--foreground)" }}>
                     {authorName}
                   </p>
-                  <p className="text-sm text-[#787877]">Author</p>
+                  <p className="text-sm text-[#787877]">{t.author}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2" style={{ color: "var(--foreground)" }}>
                 <Calendar className="w-4 h-4" />
-                <span className="text-sm">{formatDate(post.created_at)}</span>
+                <span className="text-sm">{formatDate(post.created_at || post.published_at, locale)}</span>
               </div>
 
               <div className="flex items-center gap-2 text-[#787877]">
                 <Clock className="w-4 h-4" />
-                <span className="text-sm">{estimateReadTime(post.content)} min read</span>
+                <span className="text-sm">
+                  {estimateReadTime(post.content)} {t.minRead}
+                </span>
               </div>
             </div>
           </AnimatedSection>
@@ -577,7 +590,7 @@ export default function BlogPostPage() {
                 <div className="flex items-center gap-2">
                   <Share2 className="w-5 h-5 text-[#787877]" />
                   <span className="font-medium" style={{ color: "var(--foreground)" }}>
-                    Share this article
+                    {t.shareThisArticle}
                   </span>
                 </div>
 
@@ -627,7 +640,7 @@ export default function BlogPostPage() {
           <div className="max-w-[1280px] mx-auto px-4 md:px-6">
             <AnimatedSection>
               <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "var(--foreground)" }}>
-                Related Articles
+                {t.relatedArticles}
               </h2>
             </AnimatedSection>
 
@@ -654,7 +667,7 @@ export default function BlogPostPage() {
                       {/* Content */}
                       <div className="p-5">
                         <p className="text-sm mb-2" style={{ color: "var(--foreground)" }}>
-                          {formatDate(article.created_at)}
+                          {formatDate(article.created_at, locale)}
                         </p>
                         <h3
                           className="font-semibold text-lg mb-3 line-clamp-2 group-hover:text-[#FF6200] transition-colors"

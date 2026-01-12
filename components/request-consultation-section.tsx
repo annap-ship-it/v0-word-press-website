@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { X, Loader2, Paperclip } from "lucide-react"
 import Link from "next/link"
+import { useLocale } from "@/lib/locale-context"
 
 declare global {
   interface Window {
@@ -16,7 +17,49 @@ declare global {
   }
 }
 
+// Localization content for Ukrainian translations
+const content = {
+  en: {
+    title: "Request Free Consultation",
+    processTitle: "What's the process?",
+    step1: "Our specialist will reach out after reviewing your message",
+    step2: "If needed we'll sign an NDA to ensure trust, after what you provide us with the project details",
+    step3: "You'll receive a detailed proposal including estimates, timelines, and expert profiles",
+    namePlaceholder: "*Type your Name",
+    emailPlaceholder: "*Type your Email",
+    messagePlaceholder: "*Type your Message",
+    attachFile: "Attach file (optional)",
+    fileHelp: "No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.",
+    send: "Send",
+    sending: "Sending...",
+    acceptTerms:
+      "I Accept Terms and Conditions. By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails.",
+    termsLink: "Terms and Conditions",
+  },
+  uk: {
+    title: "Запит на безкоштовну консультацію",
+    processTitle: "Який подальший процес?",
+    step1: "Наш спеціаліст зв'яжеться з вами після ознайомлення з вашим запитом.",
+    step2: "За потреби ми підпишемо NDA для забезпечення конфіденційності після отримання деталей проєкту.",
+    step3: "Ви отримаєте детальну комерційну пропозицію з оцінками, термінами та профілями експертів.",
+    namePlaceholder: "*Введіть ваше ім'я",
+    emailPlaceholder: "*Введіть вашу електронну пошту",
+    messagePlaceholder: "*Введіть ваше повідомлення",
+    attachFile: "Додати файл (необов'язково)",
+    fileHelp: "Можна додати до 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
+    send: "Надіслати",
+    sending: "Надсилання...",
+    acceptTerms:
+      "Я приймаю Умови та положення. Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи.",
+    termsLink: "Умови та положення",
+  },
+}
+
 export function RequestConsultationSection() {
+  const { locale } = useLocale()
+  const currentLocale = (locale as keyof typeof content) || "en"
+  const t = content[currentLocale]
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -197,7 +240,7 @@ export function RequestConsultationSection() {
             color: isDark ? "#FFFFFF" : "#212121",
           }}
         >
-          Request Free Consultation
+          {t.title}
         </h2>
 
         <div
@@ -216,7 +259,7 @@ export function RequestConsultationSection() {
               color: "#FFFFFF",
             }}
           >
-            What's the process?
+            {t.processTitle}
           </h3>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -250,7 +293,7 @@ export function RequestConsultationSection() {
                   color: "rgba(255, 255, 255, 0.8)",
                 }}
               >
-                Our specialist will reach out after reviewing your message
+                {t.step1}
               </p>
             </div>
 
@@ -297,7 +340,7 @@ export function RequestConsultationSection() {
                   color: "rgba(255, 255, 255, 0.8)",
                 }}
               >
-                If needed we'll sign an NDA to ensure trust, after what you provide us with the project details
+                {t.step2}
               </p>
             </div>
 
@@ -330,7 +373,7 @@ export function RequestConsultationSection() {
                   color: "rgba(255, 255, 255, 0.8)",
                 }}
               >
-                You'll receive a detailed proposal including estimates, timelines, and expert profiles
+                {t.step3}
               </p>
             </div>
           </div>
@@ -346,7 +389,7 @@ export function RequestConsultationSection() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="*Type your Name"
+                  placeholder={t.namePlaceholder}
                   required
                   style={{
                     width: "100%",
@@ -371,7 +414,7 @@ export function RequestConsultationSection() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="*Type your Email"
+                  placeholder={t.emailPlaceholder}
                   required
                   style={{
                     width: "100%",
@@ -395,7 +438,7 @@ export function RequestConsultationSection() {
                 <textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="*Type your Message"
+                  placeholder={t.messagePlaceholder}
                   required
                   rows={3}
                   style={{
@@ -445,7 +488,7 @@ export function RequestConsultationSection() {
                   }}
                 >
                   <Paperclip size={14} color="#FF6200" />
-                  Attach file (optional)
+                  {t.attachFile}
                 </button>
                 <p
                   className="mt-2"
@@ -456,7 +499,7 @@ export function RequestConsultationSection() {
                     color: "#A8A8A8",
                   }}
                 >
-                  No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.
+                  {t.fileHelp}
                 </p>
 
                 {/* Attached Files */}
@@ -509,10 +552,10 @@ export function RequestConsultationSection() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Sending...
+                    {t.sending}
                   </>
                 ) : (
-                  "Send"
+                  t.send
                 )}
               </button>
 
@@ -540,6 +583,7 @@ export function RequestConsultationSection() {
                     style={{
                       width: "14px",
                       height: "14px",
+                      background: isDark ? "#161515" : "transparent",
                       border: "1px solid #A8A8A8",
                       borderRadius: "2px",
                       marginTop: "2px",
@@ -555,12 +599,14 @@ export function RequestConsultationSection() {
                       color: "#A8A8A8",
                     }}
                   >
-                    I Accept{" "}
+                    {currentLocale === "uk" ? "Я приймаю" : "I Accept"}{" "}
                     <Link href="/terms" className="underline" style={{ color: "#FF6200" }}>
-                      Terms and Conditions
+                      {t.termsLink}
                     </Link>
-                    . By submitting your email, you accept terms and conditions. We may send you occasionally marketing
-                    emails.
+                    .{" "}
+                    {currentLocale === "uk"
+                      ? "Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи."
+                      : "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails."}
                   </label>
                 </div>
 

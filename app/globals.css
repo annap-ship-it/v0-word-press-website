@@ -39,6 +39,8 @@
   --sidebar-ring: oklch(0.708 0 0);
   --tech-card: #f6f6f6;
   --tech-card-border: rgba(0, 0, 0, 0.1);
+  --darkgrey1: #323130;
+  --black_bg: #161515;
 }
 
 .dark {
@@ -76,6 +78,8 @@
   --sidebar-ring: oklch(0.439 0 0);
   --tech-card: #252525;
   --tech-card-border: rgba(255, 255, 255, 0.2);
+  --darkgrey1: #323130;
+  --black_bg: #161515;
 }
 
 @theme inline {

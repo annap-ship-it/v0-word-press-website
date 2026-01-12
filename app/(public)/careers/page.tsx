@@ -10,8 +10,89 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Loader2 } from "lucide-react"
+import { useLocale } from "@/lib/locale-context"
+
+const content = {
+  en: {
+    introText1: "At Idea Team, we ",
+    introHighlight1: "value people",
+    introText2: " above all. They are our core, our most important resource, one that cannot be overestimated.",
+    introText3: "That's why we're always happy to hear from ",
+    introHighlight2: "talented individuals",
+    introText4: ", even if there's no open position at the moment.",
+    introText5: "Leave your contact details and a few words about yourself and ",
+    introHighlight3: "your experience",
+    introText6: ", and we'll get in touch with you.",
+    formTitle: "Apply to Join our Team:",
+    nameLabel: "Name",
+    namePlaceholder: "Type your Name",
+    emailLabel: "Email",
+    emailPlaceholder: "Type your email",
+    roleLabel: "Role",
+    rolePlaceholder: "Type your Role",
+    experienceLabel: "Experience",
+    experiencePlaceholder: "Type your Experience",
+    messageLabel: "Message",
+    messagePlaceholder:
+      "Tell us a bit about your background: how long you've been in the field, why you chose it, and what keeps you inspired. No need for formalities, we'd just love to get to know you.",
+    fileText: "Attach file (CV)",
+    fileHint: "No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.",
+    sendButton: "Send",
+    sendingButton: "Sending...",
+    termsLabel: "I Accept ",
+    termsLink: "Terms and Conditions",
+    termsHint:
+      "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails.",
+    thankYouTitle: "Thank you for your application!",
+    thankYouText: "We've received your information and will review it carefully. Our team will get back to you soon.",
+    backButton: "Back to Home",
+    errorTerms: "Please accept Terms and Conditions",
+    errorRecaptcha: "Please complete the reCAPTCHA",
+    errorSubmit: "Failed to submit application. Please try again.",
+  },
+  uk: {
+    introText1: "У Idea Team ми ",
+    introHighlight1: "цінуємо людей",
+    introText2: " понад усе. Вони — наша основа, наш найцінніший ресурс, який неможливо переоцінити.",
+    introText3: "Тому ми завжди раді чути від ",
+    introHighlight2: "талановитих фахівців",
+    introText4: ", навіть якщо в нас немає вільних вакансій.",
+    introText5: "Залишіть свої контактні дані та кілька слів про себе та ",
+    introHighlight3: "ваш досвід",
+    introText6: ", і ми з вами зв'яжемось.",
+    formTitle: "Приєднайтеся до нашої команди:",
+    nameLabel: "Ім'я",
+    namePlaceholder: "Введіть ваше ім'я",
+    emailLabel: "Електронна пошта",
+    emailPlaceholder: "Введіть вашу електронну пошту",
+    roleLabel: "Посада",
+    rolePlaceholder: "Введіть вашу посаду",
+    experienceLabel: "Досвід",
+    experiencePlaceholder: "Введіть ваш досвід",
+    messageLabel: "Повідомлення",
+    messagePlaceholder:
+      "Розповідайте нам про себе: скільки часу ви працюєте в цій галузі, чому ви обрали цю професію та що вас надихає. Без формальностей, ми просто хочемо вас краще пізнати.",
+    fileText: "Прикріпити файл (CV)",
+    fileHint: "Можна прикріпити до 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
+    sendButton: "Надіслати",
+    sendingButton: "Надсилання...",
+    termsLabel: "Я приймаю ",
+    termsLink: "Умови та положення",
+    termsHint:
+      "Надсилаючи вашу пошту, ви приймаєте умови та положення. Ми можемо періодично надсилати вам маркетингові листи.",
+    thankYouTitle: "Дякуємо за вашу заявку!",
+    thankYouText: "Ми отримали вашу інформацію і ретельно її переглянемо. Наша команда з вами незабаром зв'яжеться.",
+    backButton: "Повернутися на головну",
+    errorTerms: "Будь ласка, прийміть Умови та положення",
+    errorRecaptcha: "Будь ласка, виконайте reCAPTCHA",
+    errorSubmit: "Помилка при надсиланні заявки. Спробуйте ще раз.",
+  },
+}
 
 export default function CareersPage() {
+  const { locale } = useLocale()
+  const t = content[locale as keyof typeof content] || content.en
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -85,14 +166,14 @@ export default function CareersPage() {
     e.preventDefault()
 
     if (!termsAccepted) {
-      setError("Please accept Terms and Conditions")
+      setError(t.errorTerms)
       return
     }
 
     const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
 
     if (!recaptchaResponse) {
-      setError("Please complete the reCAPTCHA")
+      setError(t.errorRecaptcha)
       return
     }
 
@@ -124,7 +205,7 @@ export default function CareersPage() {
 
       setIsSubmitted(true)
     } catch (err) {
-      setError("Failed to submit application. Please try again.")
+      setError(t.errorSubmit)
     } finally {
       setIsSubmitting(false)
     }
@@ -148,15 +229,13 @@ export default function CareersPage() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Thank you for your application!
+                {t.thankYouTitle}
               </h1>
-              <p className="text-lg text-muted-foreground max-w-md mx-auto lg:mx-0">
-                We've received your information and will review it carefully. Our team will get back to you soon.
-              </p>
+              <p className="text-lg text-muted-foreground max-w-md mx-auto lg:mx-0">{t.thankYouText}</p>
               <div className="pt-4">
                 <Link href="/">
                   <Button className="bg-[#FF6200] hover:bg-[#e55a00] text-white rounded-full px-8 h-12">
-                    Back to Home
+                    {t.backButton}
                   </Button>
                 </Link>
               </div>
@@ -186,18 +265,19 @@ export default function CareersPage() {
           <div className="space-y-6">
             <div className="space-y-6 text-lg text-foreground">
               <p className="mt-52">
-                At Idea Team, we <span className="text-[#FF6200] font-medium">value people</span> above all. They are
-                our core, our most important resource, one that cannot be overestimated.
+                {t.introText1}
+                <span className="text-[#FF6200] font-medium">{t.introHighlight1}</span>
+                {t.introText2}
               </p>
               <p>
-                That's why we're always happy to hear from{" "}
-                <span className="text-[#FF6200] font-medium underline">talented individuals</span>, even if there's no
-                open position at the moment.
+                {t.introText3}
+                <span className="text-[#FF6200] font-medium underline">{t.introHighlight2}</span>
+                {t.introText4}
               </p>
               <p>
-                Leave your contact details and a few words about yourself and{" "}
-                <span className="text-[#FF6200] font-medium underline">your experience</span>, and we'll get in touch
-                with you.
+                {t.introText5}
+                <span className="text-[#FF6200] font-medium underline">{t.introHighlight3}</span>
+                {t.introText6}
               </p>
             </div>
 
@@ -232,18 +312,20 @@ export default function CareersPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Apply to Join our Team:
+              {t.formTitle}
             </h1>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name */}
               <div>
-                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>Name</label>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.nameLabel}
+                </label>
                 <Input
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Type your Name"
+                  placeholder={t.namePlaceholder}
                   required
                   className={`rounded-[4px] h-11 ${
                     isDarkTheme
@@ -255,13 +337,15 @@ export default function CareersPage() {
 
               {/* Email */}
               <div>
-                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>Email</label>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.emailLabel}
+                </label>
                 <Input
                   name="email"
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="Type your email"
+                  placeholder={t.emailPlaceholder}
                   required
                   className={`rounded-[4px] h-11 ${
                     isDarkTheme
@@ -273,12 +357,14 @@ export default function CareersPage() {
 
               {/* Role */}
               <div>
-                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>Role</label>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.roleLabel}
+                </label>
                 <Input
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
-                  placeholder="Type your Role"
+                  placeholder={t.rolePlaceholder}
                   required
                   className={`rounded-[4px] h-11 ${
                     isDarkTheme
@@ -291,13 +377,13 @@ export default function CareersPage() {
               {/* Experience */}
               <div>
                 <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
-                  Experience
+                  {t.experienceLabel}
                 </label>
                 <Input
                   name="experience"
                   value={formData.experience}
                   onChange={handleInputChange}
-                  placeholder="Type your Experience"
+                  placeholder={t.experiencePlaceholder}
                   required
                   className={`rounded-[4px] h-11 ${
                     isDarkTheme
@@ -309,12 +395,14 @@ export default function CareersPage() {
 
               {/* Message */}
               <div>
-                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>Message</label>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.messageLabel}
+                </label>
                 <Textarea
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Tell us a bit about your background: how long you've been in the field, why you chose it, and what keeps you inspired. No need for formalities, we'd just love to get to know you."
+                  placeholder={t.messagePlaceholder}
                   rows={5}
                   className={`rounded-[4px] resize-none ${
                     isDarkTheme
@@ -342,11 +430,12 @@ export default function CareersPage() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
                     <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                   </svg>
-                  <span className="underline">Attach file (CV)</span>
+                  <span className="underline">
+                    {/* Added localized file text */}
+                    {t.fileText}
+                  </span>
                 </button>
-                <span className={`text-sm ${isDarkTheme ? "text-gray-500" : "text-gray-500"}`}>
-                  No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.
-                </span>
+                <span className={`text-sm ${isDarkTheme ? "text-gray-500" : "text-gray-500"}`}>{t.fileHint}</span>
               </div>
 
               {/* Attached Files */}
@@ -389,10 +478,11 @@ export default function CareersPage() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Sending...
+                    {t.sendingButton}
                   </>
                 ) : (
-                  "Send"
+                  /* Added localized send button text */
+                  t.sendButton
                 )}
               </Button>
 
@@ -406,17 +496,14 @@ export default function CareersPage() {
                     className={`mt-1 data-[state=checked]:bg-[#FF6200] data-[state=checked]:border-[#FF6200] ${isDarkTheme ? "border-gray-500" : "border-gray-300"}`}
                   />
                   <label htmlFor="terms" className={`text-sm ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
-                    I Accept{" "}
+                    {t.termsLabel}
                     <Link href="/terms" className="text-[#FF6200] underline">
-                      Terms and Conditions
+                      {t.termsLink}
                     </Link>
                     .
                   </label>
                 </div>
-                <p className={`text-xs pl-6 ${isDarkTheme ? "text-gray-500" : "text-gray-500"}`}>
-                  By submitting your email, you accept terms and conditions. We may send you occasionally marketing
-                  emails.
-                </p>
+                <p className={`text-xs pl-6 ${isDarkTheme ? "text-gray-500" : "text-gray-500"}`}>{t.termsHint}</p>
               </div>
             </form>
           </div>

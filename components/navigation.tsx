@@ -9,45 +9,10 @@ import { useState, useRef, useEffect } from "react"
 import { ChevronDown, ChevronUp, Building2, Award, Briefcase, Menu } from "lucide-react"
 
 export function Navigation() {
-  const { locale } = useLocale()
+  const { locale, t } = useLocale()
   const { theme } = useTheme()
 
-  const translations = {
-    en: {
-      company: "Company",
-      aboutUs: "About us",
-      ourExperience: "Our experience",
-      careers: "Careers",
-      differentCountries: "Different Countries",
-      readAllReviews: "Read All Reviews",
-      services: "Services",
-      customWebSolutions: "Custom web solutions",
-      mobileApplications: "Mobile aplications",
-      uiUxDesign: "UI/UX and Graphic Design",
-      qaAutomation: "Manual and Automation QA",
-      devops: "DevOps",
-      dataAnalytics: "Data Analytics",
-      projects: "Projects",
-    },
-    uk: {
-      company: "Компанія",
-      aboutUs: "Про нас",
-      ourExperience: "Наш досвід",
-      careers: "Кар'єра",
-      differentCountries: "Різних країн",
-      readAllReviews: "Прочитати всі відгуки",
-      services: "Послуги",
-      customWebSolutions: "Індивідуальні веб-рішення",
-      mobileApplications: "Мобільні додатки",
-      uiUxDesign: "UI/UX та графічний дизайн",
-      qaAutomation: "Ручне та автоматизоване тестування",
-      devops: "DevOps",
-      dataAnalytics: "Аналітика даних",
-      projects: "Проекти",
-    },
-  }
-
-  const t = translations[locale]
+  // The useLocale hook already provides the correct translated strings
 
   const [companyOpen, setCompanyOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
@@ -91,7 +56,7 @@ export function Navigation() {
   const handleMouseLeave = () => {
     closeTimerRef.current = setTimeout(() => {
       setCompanyOpen(false)
-    }, 200) // 200ms delay before closing
+    }, 200)
   }
 
   const handleServicesMouseEnter = () => {
@@ -119,7 +84,7 @@ export function Navigation() {
   const handleProjectsMouseLeave = () => {
     closeTimerRefProjects.current = setTimeout(() => {
       setProjectsOpen(false)
-    }, 200) // Increased delay from 100ms to 200ms to match other dropdowns
+    }, 200)
   }
 
   const handleProjectHover = (index: number, state: string) => {
@@ -270,6 +235,7 @@ export function Navigation() {
                           >
                             <Building2 className="h-4 w-4 text-white" />
                           </div>
+                          {/* Using t.aboutUs from useLocale hook instead of currentTranslations */}
                           <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.aboutUs}</span>
                         </Link>
 
@@ -310,6 +276,7 @@ export function Navigation() {
                           >
                             <Award className="h-4 w-4 text-white" />
                           </div>
+                          {/* Using t.ourExperience from useLocale hook instead of currentTranslations */}
                           <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.ourExperience}</span>
                         </Link>
 
@@ -350,6 +317,7 @@ export function Navigation() {
                           >
                             <Briefcase className="h-4 w-4 text-white" />
                           </div>
+                          {/* Using t.careers from useLocale hook instead of currentTranslations */}
                           <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.careers}</span>
                         </Link>
                       </div>
@@ -426,6 +394,7 @@ export function Navigation() {
                             whiteSpace: "nowrap",
                           }}
                         >
+                          {/* Using t.differentCountries from useLocale hook instead of currentTranslations */}
                           {t.differentCountries}
                         </div>
 
@@ -467,6 +436,7 @@ export function Navigation() {
                             e.currentTarget.style.background = "#FF62001A"
                           }}
                         >
+                          {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                           {t.readAllReviews}
                         </button>
                       </div>
@@ -490,6 +460,7 @@ export function Navigation() {
                   color: textColor,
                 }}
               >
+                {/* Using t.services from useLocale hook instead of currentTranslations */}
                 {t.services}
                 {servicesOpen ? (
                   <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
@@ -578,6 +549,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
+                          {/* Using t.customWebSolutions from useLocale hook instead of currentTranslations */}
                           {t.customWebSolutions}
                         </Link>
                         <Link
@@ -608,6 +580,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
+                          {/* Using t.mobileApplications from useLocale hook instead of currentTranslations */}
                           {t.mobileApplications}
                         </Link>
                         <Link
@@ -638,6 +611,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
+                          {/* Using t.uiUxDesign from useLocale hook instead of currentTranslations */}
                           {t.uiUxDesign}
                         </Link>
                       </div>
@@ -672,6 +646,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
+                          {/* Using t.qaAutomation from useLocale hook instead of currentTranslations */}
                           {t.qaAutomation}
                         </Link>
                         <Link
@@ -702,6 +677,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
+                          {/* Using t.devops from useLocale hook instead of currentTranslations */}
                           {t.devops}
                         </Link>
                         <Link
@@ -732,6 +708,7 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
+                          {/* Using t.dataAnalytics from useLocale hook instead of currentTranslations */}
                           {t.dataAnalytics}
                         </Link>
                       </div>
@@ -772,7 +749,8 @@ export function Navigation() {
                                 color: "#FFFFFF",
                               }}
                             >
-                              All Services
+                              {/* Using t.allServices from useLocale hook instead of currentTranslations */}
+                              {t.allServices}
                             </h3>
                           </div>
                           <button
@@ -787,12 +765,12 @@ export function Navigation() {
                               paddingBottom: "4px",
                               paddingLeft: "14px",
                               backdropFilter: "blur(4px)",
+                              background: "transparent",
                               fontFamily: "Onest",
                               fontWeight: 400,
                               fontSize: "16px",
                               lineHeight: "100%",
                               color: "#FFFFFF",
-                              background: "transparent",
                             }}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.background = "#FF62001A"
@@ -807,7 +785,8 @@ export function Navigation() {
                               e.currentTarget.style.background = "#FF62001A"
                             }}
                           >
-                            View All
+                            {/* Using t.viewAll from useLocale hook instead of currentTranslations */}
+                            {t.viewAll}
                           </button>
                         </Link>
                       </div>
@@ -831,6 +810,7 @@ export function Navigation() {
                   color: textColor,
                 }}
               >
+                {/* Using t.projects from useLocale hook instead of currentTranslations */}
                 {t.projects}
                 {projectsOpen ? (
                   <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
@@ -952,7 +932,8 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Multi-brand eCommerce Landing Pages
+                          {/* Using t.multibrandEcommerce from useLocale hook instead of currentTranslations */}
+                          {t.multibrandEcommerce}
                         </Link>
                         <Link
                           href="/projects"
@@ -984,7 +965,8 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Statistics Platform
+                          {/* Using t.statisticsPlatform from useLocale hook instead of currentTranslations */}
+                          {t.statisticsPlatform}
                         </Link>
                         <Link
                           href="/projects"
@@ -1016,7 +998,8 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          Sensor Infobox
+                          {/* Using t.sensorInfobox from useLocale hook instead of currentTranslations */}
+                          {t.sensorInfobox}
                         </Link>
                         <Link
                           href="/projects"
@@ -1048,7 +1031,8 @@ export function Navigation() {
                             e.currentTarget.style.border = "none"
                           }}
                         >
-                          High-performance eCommerce platform
+                          {/* Using t.ecommercePlatform from useLocale hook instead of currentTranslations */}
+                          {t.ecommercePlatform}
                         </Link>
                       </div>
 
@@ -1071,7 +1055,8 @@ export function Navigation() {
                             margin: 0,
                           }}
                         >
-                          A Portfolio of Our Flagship Projects
+                          {/* Using t.portfolioHeading from useLocale hook instead of currentTranslations */}
+                          {t.portfolioHeading}
                         </h3>
                         <Link
                           href="/projects"
@@ -1107,7 +1092,8 @@ export function Navigation() {
                             lineHeight: "22px",
                           }}
                         >
-                          Explore All Portfolio
+                          {/* Using t.exploreAllPortfolio from useLocale hook instead of currentTranslations */}
+                          {t.exploreAllPortfolio}
                         </Link>
                       </div>
                     </div>
@@ -1128,7 +1114,8 @@ export function Navigation() {
                 color: textColor,
               }}
             >
-              Blog
+              {/* Using t.blog from useLocale hook instead of currentTranslations */}
+              {t.blog}
             </Link>
 
             <Link
@@ -1143,6 +1130,7 @@ export function Navigation() {
                 color: textColor,
               }}
             >
+              {/* Using t.careers from useLocale hook instead of currentTranslations */}
               {t.careers}
             </Link>
           </div>
@@ -1168,7 +1156,8 @@ export function Navigation() {
                 color: textColor,
               }}
             >
-              Contact us
+              {/* Using t.contactUs from useLocale hook instead of currentTranslations */}
+              {t.contactUs}
             </button>
           </div>
         </div>
@@ -1304,6 +1293,8 @@ export function Navigation() {
               maxWidth: "720px",
               maxHeight: "calc(100vh - 120px)",
               overflowY: "auto",
+              overflowX: "hidden",
+              WebkitOverflowScrolling: "touch",
               borderRadius: "14px",
               background: isDark ? "#212121" : "#FFFFFF",
               boxShadow: !isDark ? "0px 4px 10px 0px #00000026" : undefined,
@@ -1396,6 +1387,7 @@ export function Navigation() {
                         >
                           <Building2 className="h-4 w-4 text-white" />
                         </div>
+                        {/* Using t.aboutUs from useLocale hook instead of currentTranslations */}
                         <span>{t.aboutUs}</span>
                       </Link>
 
@@ -1428,6 +1420,7 @@ export function Navigation() {
                         >
                           <Award className="h-4 w-4 text-white" />
                         </div>
+                        {/* Using t.ourExperience from useLocale hook instead of currentTranslations */}
                         <span>{t.ourExperience}</span>
                       </Link>
 
@@ -1460,6 +1453,7 @@ export function Navigation() {
                         >
                           <Briefcase className="h-4 w-4 text-white" />
                         </div>
+                        {/* Using t.careers from useLocale hook instead of currentTranslations */}
                         <span>{t.careers}</span>
                       </Link>
                     </div>
@@ -1526,6 +1520,7 @@ export function Navigation() {
                           wordBreak: "break-word",
                         }}
                       >
+                        {/* Using t.differentCountries from useLocale hook instead of currentTranslations */}
                         {t.differentCountries}
                       </div>
 
@@ -1563,6 +1558,7 @@ export function Navigation() {
                           e.currentTarget.style.background = "#FF62001A"
                         }}
                       >
+                        {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                         {t.readAllReviews}
                       </button>
                     </div>
@@ -1592,6 +1588,7 @@ export function Navigation() {
                   color: isDark ? "#FFFFFF" : "#212121",
                 }}
               >
+                {/* Using t.services from useLocale hook instead of currentTranslations */}
                 {t.services}
                 {mobileServicesOpen ? (
                   <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
@@ -1645,6 +1642,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
+                        {/* Using t.customWebSolutions from useLocale hook instead of currentTranslations */}
                         {t.customWebSolutions}
                       </Link>
                       <Link
@@ -1680,6 +1678,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
+                        {/* Using t.qaAutomation from useLocale hook instead of currentTranslations */}
                         {t.qaAutomation}
                       </Link>
                       <Link
@@ -1715,6 +1714,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
+                        {/* Using t.mobileApplications from useLocale hook instead of currentTranslations */}
                         {t.mobileApplications}
                       </Link>
                       <Link
@@ -1750,6 +1750,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
+                        {/* Using t.devops from useLocale hook instead of currentTranslations */}
                         {t.devops}
                       </Link>
                       <Link
@@ -1785,6 +1786,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
+                        {/* Using t.uiUxDesign from useLocale hook instead of currentTranslations */}
                         {t.uiUxDesign}
                       </Link>
                       <Link
@@ -1820,6 +1822,7 @@ export function Navigation() {
                           e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                         }}
                       >
+                        {/* Using t.dataAnalytics from useLocale hook instead of currentTranslations */}
                         {t.dataAnalytics}
                       </Link>
                     </div>
@@ -1854,7 +1857,8 @@ export function Navigation() {
                               color: "#FFFFFF",
                             }}
                           >
-                            All Services
+                            {/* Using t.allServices from useLocale hook instead of currentTranslations */}
+                            {t.allServices}
                           </h3>
                         </div>
                         <button
@@ -1883,7 +1887,8 @@ export function Navigation() {
                             e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"
                           }}
                         >
-                          Read All
+                          {/* Using t.viewAll from useLocale hook instead of currentTranslations */}
+                          {t.viewAll}
                         </button>
                       </Link>
                     </div>
@@ -1913,6 +1918,7 @@ export function Navigation() {
                   color: isDark ? "#FFFFFF" : "#212121",
                 }}
               >
+                {/* Using t.projects from useLocale hook instead of currentTranslations */}
                 {t.projects}
                 {mobileProjectsOpen ? (
                   <ChevronUp className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
@@ -1984,7 +1990,8 @@ export function Navigation() {
                         e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                       }}
                     >
-                      Multi-brand eCommerce Landing Pages
+                      {/* Using t.multibrandEcommerce from useLocale hook instead of currentTranslations */}
+                      {t.multibrandEcommerce}
                     </Link>
                     <Link
                       href="/projects"
@@ -2032,7 +2039,8 @@ export function Navigation() {
                         e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                       }}
                     >
-                      Statistics Platform
+                      {/* Using t.statisticsPlatform from useLocale hook instead of currentTranslations */}
+                      {t.statisticsPlatform}
                     </Link>
                     <Link
                       href="/projects"
@@ -2080,7 +2088,8 @@ export function Navigation() {
                         e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                       }}
                     >
-                      Sensor Infobox
+                      {/* Using t.sensorInfobox from useLocale hook instead of currentTranslations */}
+                      {t.sensorInfobox}
                     </Link>
                     <Link
                       href="/projects"
@@ -2128,7 +2137,8 @@ export function Navigation() {
                         e.currentTarget.style.color = isDark ? "#FFFFFF99" : "#21212199"
                       }}
                     >
-                      High-performance eCommerce platform
+                      {/* Using t.ecommercePlatform from useLocale hook instead of currentTranslations */}
+                      {t.ecommercePlatform}
                     </Link>
                   </div>
 
@@ -2204,7 +2214,8 @@ export function Navigation() {
                         }}
                         className="min-[480px]:text-2xl"
                       >
-                        A Portfolio of Our Flagship Projects
+                        {/* Using t.portfolioHeading from useLocale hook instead of currentTranslations */}
+                        {t.portfolioHeading}
                       </h3>
                       <Link
                         href="/projects"
@@ -2242,7 +2253,8 @@ export function Navigation() {
                         }}
                         className="min-[480px]:text-base"
                       >
-                        Explore All
+                        {/* Using t.exploreAllPortfolio from useLocale hook instead of currentTranslations */}
+                        {t.exploreAllPortfolio}
                       </Link>
                     </div>
                   </div>
@@ -2272,7 +2284,8 @@ export function Navigation() {
                 e.currentTarget.style.background = "transparent"
               }}
             >
-              Blog
+              {/* Using t.blog from useLocale hook instead of currentTranslations */}
+              {t.blog}
             </Link>
 
             {/* Careers Link */}
@@ -2297,6 +2310,7 @@ export function Navigation() {
                 e.currentTarget.style.background = "transparent"
               }}
             >
+              {/* Using t.careers from useLocale hook instead of currentTranslations */}
               {t.careers}
             </Link>
 
@@ -2323,7 +2337,8 @@ export function Navigation() {
                 e.currentTarget.style.background = "#FF6200"
               }}
             >
-              Contact us
+              {/* Using t.contactUs from useLocale hook instead of currentTranslations */}
+              {t.contactUs}
             </button>
           </div>
         )}

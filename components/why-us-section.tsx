@@ -1,235 +1,232 @@
 "use client"
 
+import { useLocale } from "@/lib/locale-context"
+
+const content = {
+  en: {
+    title: "Why Us?",
+    cards: [
+      { label: "We are ", highlighted: "structured" },
+      { label: "We don't ", highlighted: "hide our rates" },
+      { label: "We're keen on ", highlighted: "technologies" },
+      { label: "We take full ", highlighted: "responsibility" },
+    ],
+    transparency: {
+      label: "We are completely transparent in communication and always by your side to ",
+      highlighted1: "maximize",
+      label2: " the efficiency of implementing ",
+      highlighted2: "your idea",
+    },
+  },
+  uk: {
+    title: "Чому ми?",
+    cards: [
+      { label: "Ми ", highlighted: "структурована" },
+      { label: "Ми не ", highlighted: "приховуємо ціни" },
+      { label: "Ми захоплюємось ", highlighted: "технологіями" },
+      { label: "Ми беремо повну ", highlighted: "відповідальність" },
+    ],
+    transparency: {
+      label: "Ми повністю прозорі в спілкуванні та завжди поруч із вами, щоб ",
+      highlighted1: "максимізувати",
+      label2: " ефективність впровадження ",
+      highlighted2: "вашої ідеї",
+    },
+  },
+}
+
 export function WhyUsSection2() {
+  const { locale } = useLocale()
+  const t = content[locale as keyof typeof content]
+
   return (
     <section className="py-16 md:py-24 bg-background relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-4">
         {/* Title */}
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-center mb-16 md:mb-24">
-          Why Us?
+          {t.title}
         </h2>
 
         {/* MOBILE LAYOUT - Separate and independent */}
         <div className="md:hidden space-y-6">
           {/* 2x2 grid of cards */}
           <div className="grid grid-cols-2 gap-3">
-            {/* We are structured */}
-            <div
-              className="rounded-lg p-4 flex flex-col gap-2"
-              style={{
-                background: "linear-gradient(180deg, #FFFFFF 0%, #FAF9F8 97.02%)",
-                border: "1px solid #E0E0E0",
-              }}
-            >
-              <svg
-                className="w-5 h-5 text-[#212121]"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            {t.cards.map((card, idx) => (
+              <div
+                key={idx}
+                className="rounded-lg p-4 flex flex-col gap-2"
+                style={{
+                  background: "linear-gradient(180deg, #FFFFFF 0%, #FAF9F8 97.02%)",
+                  border: "1px solid #E0E0E0",
+                }}
               >
-                <path
-                  d="M6.81962 22L6.81966 19.143C6.66381 17.592 5.6343 16.4165 4.6836 15M14.456 22L14.456 20.2858C19.365 20.2858 18.8197 14.5717 18.8197 14.5717C18.8197 14.5717 21.0014 14.5717 21.0014 12.286L18.8197 8.8576C18.8197 4.28632 15.1109 2.04169 11.1833 2.00068C8.98285 1.97771 7.22624 2.53124 5.91347 3.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M13 7L15 9.5L13 12"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5 7L3 9.5L5 12"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M10 6L8 13"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <p className="text-xs font-medium text-[#212121]">
-                We are <span className="text-[#FF6200]">structured</span>
-              </p>
-            </div>
-
-            {/* We don't hide our rates */}
-            <div
-              className="rounded-lg p-4 flex flex-col gap-2"
-              style={{
-                background: "linear-gradient(180deg, #FFFFFF 0%, #FAF9F8 97.02%)",
-                border: "1px solid #E0E0E0",
-              }}
-            >
-              <svg
-                className="w-5 h-5 text-[#212121]"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8 10H16M8 6H12M8 14H11"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <p className="text-xs font-medium text-[#212121]">
-                We don't <span className="text-[#FF6200]">hide our rates</span>
-              </p>
-            </div>
-
-            {/* We're keen on technologies */}
-            <div
-              className="rounded-lg p-4 flex flex-col gap-2"
-              style={{
-                background: "linear-gradient(180deg, #FFFFFF 0%, #FAF9F8 97.02%)",
-                border: "1px solid #E0E0E0",
-              }}
-            >
-              <svg
-                className="w-5 h-5 text-[#212121]"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 14V18.4C4 18.7314 4.26863 19 4.6 19H10"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19 14V18.4C19 18.7314 18.7314 19 18.4 19H14"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14 5H18.4C18.7314 5 19 5.26863 19 5.6V10"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M4 10V5.6C4 5.26863 4.26863 5 4.6 5H10"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14 19V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M4 10H5C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14H4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19 10H20C21.1046 10 22 10.8954 22 12C22 13.1046 21.1046 14 20 14H19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14 5V4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4V5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <p className="text-xs font-medium text-[#212121]">
-                We're keen on <span className="text-[#FF6200]">technologies</span>
-              </p>
-            </div>
-
-            {/* We take full responsibility */}
-            <div
-              className="rounded-lg p-4 flex flex-col gap-2"
-              style={{
-                background: "linear-gradient(180deg, #FFFFFF 0%, #FAF9F8 97.02%)",
-                border: "1px solid #E0E0E0",
-              }}
-            >
-              <svg
-                className="w-5 h-5 text-[#212121]"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.2 14.2222V4C3.2 2.89543 4.09543 2 5.2 2H18.8C19.9046 2 20.8 2.89543 20.8 4V14.2222M3.2 14.2222H20.8M3.2 14.2222L1.71969 19.4556C1.35863 20.7321 2.31762 22 3.64418 22H20.3558C21.6824 22 22.6414 20.7321 22.2803 19.4556L20.8 14.2222"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M11 19L13 19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14 6L16 8L14 10"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M10 6L8 8L10 10"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <p className="text-xs font-medium text-[#212121]">
-                We take full <span className="text-[#FF6200]">responsibility</span>
-              </p>
-            </div>
+                <svg
+                  className="w-5 h-5 text-[#212121]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {idx === 0 && (
+                    <>
+                      <path
+                        d="M6.81962 22L6.81966 19.143C6.66381 17.592 5.6343 16.4165 4.6836 15M14.456 22L14.456 20.2858C19.365 20.2858 18.8197 14.5717 18.8197 14.5717C18.8197 14.5717 21.0014 14.5717 21.0014 12.286L18.8197 8.8576C18.8197 4.28632 15.1109 2.04169 11.1833 2.00068C8.98285 1.97771 7.22624 2.53124 5.91347 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13 7L15 9.5L13 12"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M5 7L3 9.5L5 12"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10 6L8 13"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </>
+                  )}
+                  {idx === 1 && (
+                    <>
+                      <path
+                        d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M8 10H16M8 6H12M8 14H11"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </>
+                  )}
+                  {idx === 2 && (
+                    <>
+                      <path
+                        d="M4 14V18.4C4 18.7314 4.26863 19 4.6 19H10"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M19 14V18.4C19 18.7314 18.7314 19 18.4 19H14"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14 5H18.4C18.7314 5 19 5.26863 19 5.6V10"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M4 10V5.6C4 5.26863 4.26863 5 4.6 5H10"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14 19V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V19"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M4 10H5C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14H4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M19 10H20C21.1046 10 22 10.8954 22 12C22 13.1046 21.1046 14 20 14H19"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14 5V4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4V5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </>
+                  )}
+                  {idx === 3 && (
+                    <>
+                      <path
+                        d="M3.2 14.2222V4C3.2 2.89543 4.09543 2 5.2 2H18.8C19.9046 2 20.8 2.89543 20.8 4V14.2222M3.2 14.2222H20.8M3.2 14.2222L1.71969 19.4556C1.35863 20.7321 2.31762 22 3.64418 22H20.3558C21.6824 22 22.6414 20.7321 22.2803 19.4556L20.8 14.2222"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      />
+                      <path
+                        d="M11 19L13 19"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14 6L16 8L14 10"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10 6L8 8L10 10"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </>
+                  )}
+                </svg>
+                <p className="text-xs font-medium text-[#212121]">
+                  {card.label}
+                  <span className="text-[#FF6200]">{card.highlighted}</span>
+                </p>
+              </div>
+            ))}
           </div>
 
           {/* Large transparent card */}
@@ -252,9 +249,10 @@ export function WhyUsSection2() {
               <circle cx="5" cy="12" r="1"></circle>
             </svg>
             <p className="text-sm font-medium text-[#212121] leading-relaxed">
-              We are completely transparent in communication and always by your side to{" "}
-              <span className="text-[#FF6200]">maximize</span> the efficiency of implementing{" "}
-              <span className="text-[#FF6200]">your idea</span>
+              {t.transparency.label}
+              <span className="text-[#FF6200]">{t.transparency.highlighted1}</span>
+              {t.transparency.label2}
+              <span className="text-[#FF6200]">{t.transparency.highlighted2}</span>
             </p>
           </div>
 
@@ -319,7 +317,8 @@ export function WhyUsSection2() {
                   />
                 </svg>
                 <p className="text-sm font-medium text-[#212121]">
-                  We are <span className="text-[#FF6200]">structured</span>
+                  {t.cards[0].label}
+                  <span className="text-[#FF6200]">{t.cards[0].highlighted}</span>
                 </p>
               </div>
 
@@ -395,7 +394,8 @@ export function WhyUsSection2() {
                   />
                 </svg>
                 <p className="text-sm font-medium text-[#212121]">
-                  We're keen on <span className="text-[#FF6200]">technologies</span>
+                  {t.cards[2].label}
+                  <span className="text-[#FF6200]">{t.cards[2].highlighted}</span>
                 </p>
               </div>
             </div>
@@ -458,7 +458,8 @@ export function WhyUsSection2() {
                   />
                 </svg>
                 <p className="text-sm font-medium text-[#212121]">
-                  We don't <span className="text-[#FF6200]">hide our rates</span>
+                  {t.cards[1].label}
+                  <span className="text-[#FF6200]">{t.cards[1].highlighted}</span>
                 </p>
               </div>
 
@@ -504,7 +505,8 @@ export function WhyUsSection2() {
                   />
                 </svg>
                 <p className="text-sm font-medium text-[#212121]">
-                  We take full <span className="text-[#FF6200]">responsibility</span>
+                  {t.cards[3].label}
+                  <span className="text-[#FF6200]">{t.cards[3].highlighted}</span>
                 </p>
               </div>
             </div>
@@ -531,9 +533,10 @@ export function WhyUsSection2() {
                 <circle cx="5" cy="12" r="1"></circle>
               </svg>
               <p className="text-base font-medium text-[#212121] leading-relaxed">
-                We are completely transparent in communication and always by your side to{" "}
-                <span className="text-[#FF6200]">maximize</span> the efficiency of implementing{" "}
-                <span className="text-[#FF6200]">your idea</span>
+                {t.transparency.label}
+                <span className="text-[#FF6200]">{t.transparency.highlighted1}</span>
+                {t.transparency.label2}
+                <span className="text-[#FF6200]">{t.transparency.highlighted2}</span>
               </p>
             </div>
           </div>

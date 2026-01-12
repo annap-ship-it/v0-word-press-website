@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useState } from "react"
+import { useLocale } from "@/lib/locale-context"
 
 const technologies = [
   { name: "Express", logo: "/images/express.svg", label: "Express" },
@@ -19,6 +20,22 @@ const rows = [technologies.slice(0, 3), technologies.slice(3, 6), technologies.s
 
 export function TechnologiesSection() {
   const [hovered, setHovered] = useState<string | null>(null)
+  const { locale } = useLocale()
+
+  const content = {
+    en: {
+      title: "Technologies",
+      description:
+        "Our technological proficiency gives us the opportunity to create strategic solutions that are both robust and scalable across all products.",
+    },
+    uk: {
+      title: "Технології",
+      description:
+        "Наша технологічна компетентність дає нам можливість створювати стратегічні рішення, які є як надійними, так і масштабованими на всі продукти.",
+    },
+  }
+
+  const t = content[locale as "en" | "uk"] || content.en
 
   return (
     <section className="py-16 px-4 md:py-24 bg-background">
@@ -26,11 +43,8 @@ export function TechnologiesSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-16 items-start">
           {/* Текст слева */}
           <div className="space-y-6 max-w-sm lg:max-w-md xl:max-w-lg">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">Technologies</h2>
-            <p className="text-lg md:text-xl leading-relaxed text-foreground/80">
-              Our technological proficiency gives us the opportunity to create strategic solutions that are both robust
-              and scalable across all products.
-            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">{t.title}</h2>
+            <p className="text-lg md:text-xl leading-relaxed text-foreground/80">{t.description}</p>
           </div>
 
           {/* Десктоп */}

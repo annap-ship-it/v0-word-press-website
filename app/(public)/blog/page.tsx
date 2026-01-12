@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useLocale } from "@/lib/locale-context" // Import useLocale hook
 
 import Link from "next/link"
 import Image from "next/image"
@@ -13,10 +14,12 @@ interface Post {
   slug: string
   excerpt: string
   featured_image: string | null
-  category: { name: string; slug: string } | null
+  category_id: string
+  categories: { name: string; slug: string }[]
   created_at: string
   published_at: string | null
   author_id: string
+  locale?: string
   author?: {
     display_name: string | null
     avatar_url: string | null
@@ -51,6 +54,9 @@ function getCategoryColor(category: string): string {
     New: "bg-[#FF6200]",
     "Most Readed": "bg-[#FF6200]",
     News: "bg-[#FF6200]",
+    Автоматизація: "bg-[#FF6200]",
+    Новини: "bg-[#FF6200]",
+    Популярне: "bg-[#FF6200]",
   }
   return colors[category] || "bg-[#FF6200]"
 }
@@ -95,18 +101,44 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
 
+  const translations = {
+    en: {
+      blog: "Blog",
+      lastNews: "Last news",
+      author: "Author",
+      viewAllPosts: "View All Posts",
+    },
+    uk: {
+      blog: "Блог",
+      lastNews: "Останні новини",
+      author: "Автор",
+      viewAllPosts: "Переглянути всі статті",
+    },
+  }
+
+  const { locale } = useLocale()
+  const t = translations[locale]
+
   useEffect(() => {
     async function fetchPosts() {
       const supabase = createBrowserClient()
 
+      console.log("[v0] Fetching posts for locale:", locale)
+
       const { data: postsData, error } = await supabase
         .from("posts")
         .select(
-          "id, title, slug, excerpt, featured_image, category:categories(name, slug), created_at, published_at, author_id",
+          `id, title, slug, excerpt, featured_image, 
+           category_id,
+           categories(name, slug),
+           created_at, published_at, author_id, locale`,
         )
         .eq("status", "published")
-        .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79")
+        .eq("locale", locale)
         .order("published_at", { ascending: false, nullsFirst: false })
+
+      console.log("[v0] Query error:", error)
+      console.log("[v0] Fetched posts:", postsData)
 
       if (!error && postsData && postsData.length > 0) {
         const authorIds = [...new Set(postsData.map((p) => p.author_id).filter(Boolean))]
@@ -136,120 +168,120 @@ export default function BlogPage() {
         }))
 
         setPosts(postsWithAuthors)
+        console.log("[v0] Posts set successfully:", postsWithAuthors)
+      } else {
+        console.log("[v0] No posts found for locale:", locale, "- will use default posts")
       }
       setLoading(false)
     }
     fetchPosts()
-  }, [])
+  }, [locale])
 
-  // Default posts for when database is empty
+  // Default posts for when database is empty or posts don't match current locale
   const defaultPosts: Post[] = [
     {
       id: "1",
-      title: "The Ultimate Guide to IT Personnel Outsourcing in 2024",
+      title:
+        locale === "uk"
+          ? "Повний посібник з аутсорсингу IT-персоналу в 2024 році"
+          : "The Ultimate Guide to IT Personnel Outsourcing in 2024",
       slug: "it-personnel-outsourcing-guide-2024",
       excerpt:
-        "Learn how IT personnel outsourcing can transform your business operations, reduce costs, and give you access to global talent pools.",
+        locale === "uk"
+          ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції, зменшити витрати та надати вам доступ до глобального таланту."
+          : "Learn how IT personnel outsourcing can transform your business operations, reduce costs, and give you access to global talent pools.",
       featured_image: "/it-team-working-remotely-on-computers.jpg",
-      category: { name: "Automation", slug: "automation" },
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
+      locale: locale,
       author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "2",
-      title: "5 Benefits of Outsourcing Your Development Team",
+      title:
+        locale === "uk"
+          ? "5 переваг аутсорсингу вашої команди розробників"
+          : "5 Benefits of Outsourcing Your Development Team",
       slug: "benefits-outsourcing-development-team",
       excerpt:
-        "Discover the key advantages of working with an outsourced development team and how it can accelerate your project delivery.",
+        locale === "uk"
+          ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників та як це може прискорити доставку вашого проекту."
+          : "Discover the key advantages of working with an outsourced development team and how it can accelerate your project delivery.",
       featured_image: "/developers-collaborating-on-project.jpg",
-      category: { name: "New", slug: "new" },
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
+      locale: locale,
       author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "3",
-      title: "How to Choose the Right IT Outsourcing Partner",
+      title:
+        locale === "uk"
+          ? "Як вибрати правильного IT-партнера для аутсорсингу"
+          : "How to Choose the Right IT Outsourcing Partner",
       slug: "choose-right-it-outsourcing-partner",
       excerpt:
-        "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner for your business needs.",
+        locale === "uk"
+          ? "Комплексний контрольний список для оцінки та вибору ідеального партнера з IT-аутсорсингу для ваших потреб."
+          : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner for your business needs.",
       featured_image: "/business-meeting-handshake-partnership.jpg",
-      category: { name: "Most Readed", slug: "most-readed" },
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Популярне" : "Most Readed", slug: "most-readed" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
+      locale: locale,
       author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "4",
-      title: "Staff Augmentation vs. Project Outsourcing: What is Right for You?",
+      title:
+        locale === "uk"
+          ? "Розширення штату vs. Аутсорсинг проектів: Що підходить вам?"
+          : "Staff Augmentation vs. Project Outsourcing: What is Right for You?",
       slug: "staff-augmentation-vs-project-outsourcing",
       excerpt:
-        "Compare staff augmentation and project outsourcing models to determine which approach best fits your organization goals.",
+        locale === "uk"
+          ? "Порівняйте моделі розширення штату та аутсорсингу проектів, щоб визначити, який підхід найкраще підходить для цілей вашої організації."
+          : "Compare staff augmentation and project outsourcing models to determine which approach best fits your organization goals.",
       featured_image: "/team-planning-strategy-whiteboard.jpg",
-      category: { name: "Automation", slug: "automation" },
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
+      locale: locale,
       author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "5",
-      title: "Managing Remote Development Teams: Best Practices",
+      title:
+        locale === "uk"
+          ? "Управління віддаленими командами розробників: Найкращі практики"
+          : "Managing Remote Development Teams: Best Practices",
       slug: "managing-remote-development-teams",
       excerpt:
-        "Essential tips and tools for effectively managing distributed development teams across different time zones.",
+        locale === "uk"
+          ? "Важливі поради та інструменти для ефективного управління розподіленими командами розробників у різних часових поясах."
+          : "Essential tips and tools for effectively managing distributed development teams across different time zones.",
       featured_image: "/video-call-remote-team-meeting.jpg",
-      category: { name: "New", slug: "new" },
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
-      author: { display_name: "Author", avatar_url: null },
-    },
-    {
-      id: "6",
-      title: "Cost Analysis: In-House vs Outsourced IT Teams",
-      slug: "cost-analysis-in-house-vs-outsourced",
-      excerpt:
-        "A detailed breakdown of the true costs of maintaining in-house IT teams versus outsourcing to specialized partners.",
-      featured_image: "/financial-charts-data-analysis.jpg",
-      category: { name: "Most Readed", slug: "most-readed" },
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      author: { display_name: "Author", avatar_url: null },
-    },
-    {
-      id: "7",
-      title: "Building a Successful Offshore Development Center",
-      slug: "building-offshore-development-center",
-      excerpt:
-        "Step-by-step guide to establishing and scaling your own offshore development center for long-term success.",
-      featured_image: "/modern-office-space-developers.jpg",
-      category: { name: "Automation", slug: "automation" },
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      author: { display_name: "Author", avatar_url: null },
-    },
-    {
-      id: "8",
-      title: "Top Technologies to Outsource in 2024",
-      slug: "top-technologies-outsource-2024",
-      excerpt: "Explore the most in-demand technologies and skills that companies are outsourcing this year.",
-      featured_image: "/ai-machine-learning-technology.jpg",
-      category: { name: "New", slug: "new" },
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
+      locale: locale,
       author: { display_name: "Author", avatar_url: null },
     },
   ]
 
-  const displayPosts = posts.length > 0 ? posts : defaultPosts
+  const displayPosts = posts.length > 0 && posts.every((post) => post.locale === locale) ? posts : defaultPosts
   const displayFeatured = displayPosts[0]
   const displayLatestNews = displayPosts.slice(1, 3)
   const displayRegular = displayPosts.slice(3)
@@ -278,7 +310,7 @@ export default function BlogPage() {
                 backgroundClip: "text",
               }}
             >
-              Blog
+              {t.blog}
             </h1>
           </AnimatedCard>
 
@@ -291,14 +323,14 @@ export default function BlogPage() {
                   <div className="relative">
                     {/* Image - Added zoom effect on hover */}
                     <div className="relative h-[300px] md:h-[400px] rounded-[14px] overflow-hidden mb-6">
-                      {displayFeatured.category?.name && (
+                      {displayFeatured.categories[0]?.name && (
                         <div className="absolute top-4 left-4 z-10">
                           <span
                             className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(
-                              displayFeatured.category.name,
+                              displayFeatured.categories[0].name,
                             )}`}
                           >
-                            {displayFeatured.category.name}
+                            {displayFeatured.categories[0].name}
                           </span>
                         </div>
                       )}
@@ -341,7 +373,7 @@ export default function BlogPage() {
               <AnimatedCard delay={200}>
                 <div>
                   <h3 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: "var(--foreground)" }}>
-                    Last news
+                    {t.lastNews}
                   </h3>
                   <div className="space-y-6">
                     {displayLatestNews.map((post, index) => (
@@ -384,12 +416,12 @@ export default function BlogPage() {
                 <AnimatedCard key={post.id} delay={100 * (index + 1)}>
                   <Link href={`/blog/${post.slug}`} className="group block">
                     <div className="relative h-[200px] md:h-[250px] rounded-[14px] overflow-hidden mb-4">
-                      {post.category?.name && (
+                      {post.categories[0]?.name && (
                         <div className="absolute top-4 left-4 z-10">
                           <span
-                            className={`px-3 py-1.5 rounded-[4px] text-xs font-medium text-white ${getCategoryColor(post.category.name)}`}
+                            className={`px-3 py-1.5 rounded-[4px] text-xs font-medium text-white ${getCategoryColor(post.categories[0].name)}`}
                           >
-                            {post.category.name}
+                            {post.categories[0].name}
                           </span>
                         </div>
                       )}
@@ -425,6 +457,16 @@ export default function BlogPage() {
               ))}
             </div>
           )}
+
+          {/* View All Posts Link */}
+          <div className="text-center mt-12">
+            <Link
+              href="/blog"
+              className="inline-block px-8 py-3 border-2 border-[#FF6200] text-[#FF6200] font-semibold rounded-lg hover:bg-[#FF6200] hover:text-white transition-all"
+            >
+              {t.viewAllPosts}
+            </Link>
+          </div>
         </div>
       </section>
     </div>

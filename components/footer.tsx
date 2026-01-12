@@ -4,33 +4,108 @@ import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { createBrowserClient } from "@/lib/supabase/client"
+import { useLocale } from "@/lib/locale-context"
 
 interface BlogPost {
   slug: string
   title: string
+  locale?: string
+}
+
+const footerContent = {
+  en: {
+    company: "Company",
+    projects: "Projects",
+    services: "Services",
+    blog: "Blog",
+    aboutUs: "About us",
+    ourExperience: "Our experience",
+    careers: "Careers",
+    multibrande: "Multi-brand eCommerce Landing Pages",
+    statisticsPlatform: "Statistics Platform",
+    sensorInfobox: "Sensor Infobox",
+    ecommercePlatform: "High-performance eCommerce platform",
+    customWeb: "Custom web solutions",
+    mobileApps: "Mobile applications",
+    uxui: "UI/UX and Graphic Design",
+    qa: "Manual and Automation QA",
+    devops: "DevOps",
+    dataAnalytics: "Data Analytics",
+    viewAllPosts: "View all posts",
+    address: "Ukraine, Chernihiv,",
+    street: "Instrumentalna Street, 24",
+    termsOfUse: "Terms of Use",
+    privacyPolicy: "Privacy Policy",
+    cookiePolicy: "Cookie Policy",
+  },
+  uk: {
+    company: "Компанія",
+    projects: "Проекти",
+    services: "Послуги",
+    blog: "Блог",
+    aboutUs: "Про нас",
+    ourExperience: "Наш досвід",
+    careers: "Кар'єра",
+    multibrande: "Мультибрендові сторінки eLands",
+    statisticsPlatform: "Платформа статистики",
+    sensorInfobox: "Sensor Infobox",
+    ecommercePlatform: "Високопродуктивна платформа eCommerce",
+    customWeb: "Кастомні веб-рішення",
+    mobileApps: "Мобільні додатки",
+    uxui: "Дизайн UI/UX та графіка",
+    qa: "Ручне тестування та автоматизація QA",
+    devops: "DevOps",
+    dataAnalytics: "Аналітика даних",
+    viewAllPosts: "Переглянути всі статті",
+    address: "Україна, Чернігів,",
+    street: "вул. Інструментальна, 24",
+    termsOfUse: "Умови використання",
+    privacyPolicy: "Політика конфіденційності",
+    cookiePolicy: "Політика щодо cookies",
+  },
 }
 
 export function Footer() {
+  const { locale } = useLocale()
+  const currentLocale = (locale === "uk" ? "uk" : "en") as keyof typeof footerContent
+  const t = footerContent[currentLocale]
   const [latestPosts, setLatestPosts] = useState<BlogPost[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchLatestPosts = async () => {
-      const supabase = createBrowserClient()
+      try {
+        const supabase = createBrowserClient()
+        if (!supabase) {
+          setLatestPosts([])
+          return
+        }
 
-      const { data, error } = await supabase
-        .from("posts")
-        .select("slug, title")
-        .eq("status", "published")
-        .order("created_at", { ascending: false })
-        .limit(3)
+        const { data, error: supabaseError } = await supabase
+          .from("posts")
+          .select("slug, title, locale")
+          .eq("status", "published")
+          .eq("locale", currentLocale)
+          .order("created_at", { ascending: false })
+          .limit(5)
 
-      if (!error && data) {
-        setLatestPosts(data)
+        if (supabaseError) {
+          console.warn("[v0] Failed to fetch blog posts:", supabaseError.message)
+          setError(supabaseError.message)
+          return
+        }
+
+        if (data) {
+          setLatestPosts(data)
+        }
+      } catch (err) {
+        console.warn("[v0] Error fetching blog posts:", err instanceof Error ? err.message : "Unknown error")
+        setLatestPosts([])
       }
     }
 
     fetchLatestPosts()
-  }, [])
+  }, [currentLocale])
 
   return (
     <footer
@@ -94,14 +169,12 @@ export function Footer() {
                     d="M16.25 8.75C16.25 14.375 10 18.125 10 18.125C10 18.125 3.75 14.375 3.75 8.75C3.75 7.09239 4.40848 5.50268 5.58058 4.33058C6.75268 3.15848 8.34239 2.5 10 2.5C11.6576 2.5 13.2473 3.15848 14.4194 4.33058C15.5915 5.50268 16.25 7.09239 16.25 8.75V8.75Z"
                     stroke="white"
                     strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
                   />
                 </svg>
                 <p className="text-[#CCCCCC] text-sm leading-[140%]">
-                  Ukraine, Chernihiv,
+                  {t.address}
                   <br />
-                  Instrumentalna Street, 24
+                  {t.street}
                 </p>
               </div>
 
@@ -131,14 +204,14 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-2 lg:col-start-5">
-            <h4 className="text-white font-semibold text-base mb-4">Company</h4>
+            <h4 className="text-white font-semibold text-base mb-4">{t.company}</h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/about"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  About us
+                  {t.aboutUs}
                 </Link>
               </li>
               <li>
@@ -146,7 +219,7 @@ export function Footer() {
                   href="/experience"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Our experience
+                  {t.ourExperience}
                 </Link>
               </li>
               <li>
@@ -154,21 +227,26 @@ export function Footer() {
                   href="/careers"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Careers
+                  {t.careers}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-base mb-4">Projects</h4>
+            <Link
+              href="/projects"
+              className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
+            >
+              {t.projects}
+            </Link>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/projects/multi-brand-ecommerce"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Multi-brand eCommerce Landing Pages
+                  {t.multibrande}
                 </Link>
               </li>
               <li>
@@ -176,7 +254,7 @@ export function Footer() {
                   href="/projects/statistics-platform"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Statistics Platform
+                  {t.statisticsPlatform}
                 </Link>
               </li>
               <li>
@@ -184,7 +262,7 @@ export function Footer() {
                   href="/projects/sensor-infobox"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Sensor Infobox
+                  {t.sensorInfobox}
                 </Link>
               </li>
               <li>
@@ -192,7 +270,7 @@ export function Footer() {
                   href="/projects/ecommerce-platform"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  High-performance eCommerce platform
+                  {t.ecommercePlatform}
                 </Link>
               </li>
             </ul>
@@ -203,7 +281,7 @@ export function Footer() {
               href="/services"
               className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
             >
-              Services
+              {t.services}
             </Link>
             <ul className="space-y-3">
               <li>
@@ -211,7 +289,7 @@ export function Footer() {
                   href="/services#custom-web-solutions"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Custom web solutions
+                  {t.customWeb}
                 </Link>
               </li>
               <li>
@@ -219,7 +297,7 @@ export function Footer() {
                   href="/services#mobile-applications"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Mobile applications
+                  {t.mobileApps}
                 </Link>
               </li>
               <li>
@@ -227,7 +305,7 @@ export function Footer() {
                   href="/services#ux-ui-design"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  UI/UX and Graphic Design
+                  {t.uxui}
                 </Link>
               </li>
               <li>
@@ -235,7 +313,7 @@ export function Footer() {
                   href="/services#qa"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Manual and Automation QA
+                  {t.qa}
                 </Link>
               </li>
               <li>
@@ -243,7 +321,7 @@ export function Footer() {
                   href="/services#devops"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  DevOps
+                  {t.devops}
                 </Link>
               </li>
               <li>
@@ -251,14 +329,19 @@ export function Footer() {
                   href="/services#data-analytics"
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
-                  Data Analytics
+                  {t.dataAnalytics}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-base mb-4">Blog</h4>
+            <Link
+              href="/blog"
+              className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
+            >
+              {t.blog}
+            </Link>
             <ul className="space-y-3">
               {latestPosts.length > 0 ? (
                 latestPosts.map((post) => (
@@ -277,7 +360,7 @@ export function Footer() {
                     href="/blog"
                     className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                   >
-                    View all posts
+                    {t.viewAllPosts}
                   </Link>
                 </li>
               )}
@@ -583,16 +666,28 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
           <p>© Idea Team 2024. All Rights Reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/terms" className="hover:text-white transition-colors">
-              Terms of Use
+            <Link
+              href="/terms"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-[#999999] dark:text-[#FFFFFF99] text-sm hover:text-[#FF6200] transition-colors duration-300"
+            >
+              {t.termsOfUse}
             </Link>
             <span className="text-[#3A3A3A]">|</span>
-            <Link href="/privacy" className="hover:text-white transition-colors">
-              Privacy Policy
+            <Link
+              href="/privacy"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-[#999999] dark:text-[#FFFFFF99] text-sm hover:text-[#FF6200] transition-colors duration-300"
+            >
+              {t.privacyPolicy}
             </Link>
             <span className="text-[#3A3A3A]">|</span>
-            <Link href="/cookie-policy" className="hover:text-white transition-colors">
-              Cookie Policy
+            <Link
+              href="/cookie-policy"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-[#999999] dark:text-[#FFFFFF99] text-sm hover:text-[#FF6200] transition-colors duration-300"
+            >
+              {t.cookiePolicy}
             </Link>
           </div>
         </div>

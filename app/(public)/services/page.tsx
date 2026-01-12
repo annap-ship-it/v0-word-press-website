@@ -1,12 +1,13 @@
 "use client"
 
 import type React from "react"
-
+import { useLocale } from "@/lib/locale-context"
 import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
 export default function ServicesPage() {
+  const { t } = useLocale()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -124,55 +125,49 @@ export default function ServicesPage() {
   const services = [
     {
       id: "custom-web-solutions",
-      title: "Custom web solutions",
-      description:
-        "We specialize in crafting bespoke websites and web applications tailored to your unique requirements and objectives. Whether you need a corporate website, an eCommerce platform, or a custom web-based software solution, our team of experienced developers works closely with you to understand your goals and objectives, ensuring that our designs align perfectly with your brand identity and objectives.",
+      title: t.customWebSolutions,
+      description: t.customWebSolutionsDesc,
       image: "/images/3f00f5531b4c18a10739177bfb9caed239f86ebd.jpg",
       imageAlt: "Custom web solutions - laptop with code",
       reverse: false,
     },
     {
       id: "ux-ui-design",
-      title: "UX/UI and Graphic Design",
-      description:
-        "We specialize in crafting intuitive user interfaces (UI) and engaging user experiences (UX) that captivate your audience and drive conversions. Our talented designers combine creativity with evolving best practices. Whether you need a website redesign, mobile app interface, or custom graphics, we work closely with you to understand your brand identity and objectives, ensuring that our designs align perfectly with your goals.",
+      title: t.uiUxDesign,
+      description: t.uiUxDesignDesc,
       image: "/images/8d64c3f21c11f588925bab77e415bd557cad385b.jpg",
       imageAlt: "UX/UI and Graphic Design workspace",
       reverse: true,
     },
     {
       id: "qa",
-      title: "Manual and Automation QA",
-      titleHighlight: "Manual and",
-      description:
-        "Our skilled QA team conducts thorough manual testing to identify issues and ensure functionality, usability, and compatibility across various platforms and browsers. Additionally, we leverage automation testing tools and frameworks to streamline repetitive testing tasks, accelerate test cycles, and ensure faster time-to-market without compromising quality.",
+      title: t.qaAutomation,
+      titleHighlight: t.locale === "uk" ? "Ручне та" : "Manual and",
+      description: t.qaAutomationDesc,
       image: "/images/d99f7180c4bf0265069aa1c177dc0143e37e4d79.jpg",
       imageAlt: "Manual and Automation QA - testing screens",
       reverse: false,
     },
     {
       id: "devops",
-      title: "DevOps",
-      description:
-        "We provide end-to-end DevOps solutions, including continuous integration, continuous delivery, infrastructure automation, and cloud deployment. With our DevOps services, you can accelerate time-to-market, improve product quality, and increase efficiency.",
+      title: t.devops,
+      description: t.devopsDesc,
       image: "/images/45fc920cb000857538e44a289f252b1506456ab8.jpg",
       imageAlt: "DevOps - keyboard and development",
       reverse: true,
     },
     {
       id: "data-analytics",
-      title: "Data Analytics",
-      description:
-        "We leverage advanced analytics techniques and cutting-edge tools to uncover valuable patterns, trends, and correlations within your data. From business intelligence and predictive analytics to data visualization and reporting, our team helps you transform raw data into strategic assets and drive data-driven growth.",
+      title: t.dataAnalytics,
+      description: t.dataAnalyticsDesc,
       image: "/images/ee788060a2aeeb43a086780a10e052075317f0cd.jpg",
       imageAlt: "Data Analytics - graphs and charts",
       reverse: false,
     },
     {
       id: "mobile-applications",
-      title: "Mobile Applications",
-      description:
-        "We leverage cutting-edge technologies and industry best practices to create intuitive, feature-rich mobile solutions tailored to your specific business needs. From concept and design to development and deployment, we ensure a seamless and efficient process, delivering mobile applications that meet your objectives and exceed your expectations.",
+      title: t.mobileApplications,
+      description: t.mobileApplicationsDesc,
       image: "/images/d00b7db9fb79ecd79b7d95fa7eecf2e662529ebe.jpg",
       imageAlt: "Mobile Applications - app icons",
       reverse: true,
@@ -198,7 +193,7 @@ export default function ServicesPage() {
               backgroundClip: "text",
             }}
           >
-            Services
+            {t.servicesTitle}
           </h1>
         </div>
       </section>
@@ -292,8 +287,9 @@ export default function ServicesPage() {
                     lineHeight: "1.3",
                   }}
                 >
-                  Send us a note with your idea, and we'll get in touch to provide guidance on implementation
+                  {t.getConsultation}
                 </h2>
+                <p className="text-white/80 mb-6">{t.sendUsMessage}</p>
 
                 <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                   <div>
@@ -306,14 +302,14 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      Name
+                      {t.name}
                     </label>
                     <input
                       type="text"
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Type your Name"
+                      placeholder={t.typeYourName}
                       required
                       className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50"
                       style={{
@@ -334,14 +330,14 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      Email
+                      {t.email}
                     </label>
                     <input
                       type="email"
                       id="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="Type your email"
+                      placeholder={t.typeYourEmail}
                       required
                       className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50"
                       style={{
@@ -362,14 +358,14 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      Message
+                      {t.message}
                     </label>
                     <textarea
                       id="message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Type your message"
+                      placeholder={t.typeYourMessage}
                       required
                       className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none"
                       style={{
@@ -397,7 +393,7 @@ export default function ServicesPage() {
                         borderRadius: "50px",
                       }}
                     >
-                      {isSubmitting ? "Sending..." : "Send"}
+                      {isSubmitting ? t.sending : t.send}
                     </Button>
 
                     <input
@@ -433,7 +429,7 @@ export default function ServicesPage() {
                           </clipPath>
                         </defs>
                       </svg>
-                      Attach file (optional)
+                      {t.attachFile}
                     </button>
                   </div>
 
@@ -472,15 +468,12 @@ export default function ServicesPage() {
                       className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
                     />
                     <label htmlFor="terms" className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
-                      I Accept{" "}
+                      {t.iAccept}{" "}
                       <a href="/terms" className="underline text-white hover:text-[#FF6200]">
-                        Terms and Conditions
+                        {t.termsAndConditions}
                       </a>
                       .<br />
-                      <span className="text-white/60">
-                        By submitting your email, you accept terms and conditions. We may send you occasionally
-                        marketing emails.
-                      </span>
+                      <span className="text-white/60">{t.bySubmittingEmail}</span>
                     </label>
                   </div>
 

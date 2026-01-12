@@ -1,0 +1,368 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { useLocale } from "@/lib/locale-context"
+import { Star, ChevronLeft, ChevronRight } from "lucide-react"
+
+interface Testimonial {
+  id: number
+  locale: "en" | "uk"
+  name: string
+  position: string
+  company: string
+  rating: number
+  text: string
+  avatarUrl: string
+}
+
+const content = {
+  en: {
+    title: "Clients Feedbacks",
+    subtitle: "We do our very best to bring your idea to life just as it was envisioned",
+  },
+  uk: {
+    title: "Відгуки клієнтів",
+    subtitle: "Ми робимо все можливе, щоб втілити вашу ідею в життя саме так, як ви її уявляли",
+  },
+}
+
+const testimonials: Testimonial[] = [
+  // Ukrainian
+  {
+    id: 1,
+    locale: "uk",
+    name: "Микита Ткачов",
+    position: "Chief Delivery Officer",
+    company: "Beetroot",
+    rating: 5,
+    text: "Наша співпраця з Idea Team була повним успіхом. Вони ефективно впоралися з усіма завданнями в рамках проекту, доставляючи високоякісні результати вчасно. Їх увага до деталей, професіоналізм та здатність швидко вирішувати складні питання дійсно виділялися.",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
+  },
+  {
+    id: 2,
+    locale: "uk",
+    name: "Ростик Жук",
+    position: "CEO",
+    company: "Appexoft",
+    rating: 5,
+    text: "Idea Team стала нашим надійним партнером: їх гнучкість, вдосконалені процеси та сильний менеджмент зробили спільну роботу гладкою. Вони швидко вирішували складні питання інноваційними рішеннями.",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+  },
+  // English
+  {
+    id: 3,
+    locale: "en",
+    name: "Mykyta Tkachov",
+    position: "Chief Delivery Officer",
+    company: "Beetroot",
+    rating: 5,
+    text: "Our collaboration with Idea Team was a complete success. They efficiently handled all the tasks within the project, delivering high-quality results on time. Their attention to detail, professionalism, and ability to solve complex issues quickly truly stood out.",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
+  },
+  {
+    id: 4,
+    locale: "en",
+    name: "Rostyk Zhuk",
+    position: "CEO",
+    company: "Appexoft",
+    rating: 5,
+    text: "Idea Team became our reliable partner: their flexibility, refined processes, and strong management made collaborative work smooth. We were impressed by how quickly they solved complex issues with innovative solutions.",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+  },
+]
+
+export function FeedbackSection() {
+  const { locale } = useLocale()
+  const [isDark, setIsDark] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    const html = document.documentElement
+    const checkDark = () => setIsDark(html.classList.contains("dark"))
+
+    checkDark()
+    const observer = new MutationObserver(checkDark)
+    observer.observe(html, { attributes: true, attributeFilter: ["class"] })
+
+    return () => observer.disconnect()
+  }, [])
+
+  const filteredTestimonials = testimonials.filter((t) => t.locale === locale)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length)
+    }, 8000)
+    return () => clearInterval(interval)
+  }, [filteredTestimonials.length])
+
+  if (!mounted || !filteredTestimonials.length) return null
+
+  const current = filteredTestimonials[currentIndex]
+  const bgColor = isDark ? "var(--darkgrey1, #323130)" : "#FAF9F8"
+  const cardBg = isDark ? "var(--black_bg, #161515)" : "#FFFFFF"
+  const textColor = isDark ? "#FFFFFF" : "#212121"
+  const textSecondary = isDark ? "#A8A4A0" : "#999999"
+  const borderColor = isDark ? "rgba(22, 21, 21, 0.3)" : "#F1F0F0"
+
+  return (
+    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
+      {/* Background Logo */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute"
+          style={{
+            width: "1011px",
+            height: "auto",
+            top: "-110px",
+            left: "-10.89px",
+            bottom: "-110px",
+            transform: "rotate(-0.78deg)",
+            opacity: isDark ? 1 : 0.3,
+          }}
+        >
+          <svg viewBox="0 0 946 741" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path
+              d="M931.741 653.204C964.313 706.846 924.457 774.667 859.818 775.09L857.315 775.107L857.385 775.171L773.363 775.743L664.302 596.243L774.936 395.05L931.741 653.204Z"
+              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              strokeWidth="2"
+              strokeOpacity={isDark ? 1 : 0.3}
+            />
+            <path
+              d="M310.915 559.917L189.954 779.855L95.353 780.489L95.352 780.489C30.6476 780.979 -10.0345 713.737 21.8818 659.605L194.036 367.558L310.915 559.917Z"
+              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              strokeWidth="2"
+              strokeOpacity={isDark ? 1 : 0.3}
+            />
+            <path
+              d="M428.4 346.314L350.923 487.234L235.482 297.23L315.786 161.02L428.4 346.314Z"
+              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              strokeWidth="2"
+              strokeOpacity={isDark ? 1 : 0.3}
+            />
+            <path
+              d="M399.962 18.2893C431.853 -35.9117 512.671 -36.4911 545.357 17.288L545.357 17.287L731.849 324.243L620.382 526.95L581.486 597.591L581.486 597.592L502.896 740.467L482.398 777.77L477.62 777.835L445.218 778.012L445.216 778.012L272.397 779.255L354.837 629.368L354.837 629.367L393.663 558.661L393.663 558.66L472.253 415.786L511.148 345.146L511.427 344.639L511.126 344.144L357.234 90.8457L399.962 18.2893Z"
+              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              strokeWidth="2"
+              strokeOpacity={isDark ? 1 : 0.3}
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-[1200px] mx-auto px-4 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-12 md:mb-20">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ color: textColor }}>
+            {content[locale as keyof typeof content].title}
+          </h2>
+          <p className="text-lg md:text-xl max-w-2xl mx-auto" style={{ color: textSecondary }}>
+            {content[locale as keyof typeof content].subtitle}
+          </p>
+        </div>
+
+        {/* Desktop Layout (hidden on mobile) */}
+        <div className="hidden md:flex justify-center relative min-h-[400px]">
+          <div className="relative w-full max-w-4xl">
+            {/* Avatar - positioned outside card */}
+            <div
+              className="absolute w-32 h-32 rounded-full overflow-hidden flex-shrink-0 z-20"
+              style={{
+                backgroundColor: "#FF6200",
+                border: "4px solid #FF6200",
+                left: "0",
+                top: "50px",
+              }}
+            >
+              <img
+                src={current.avatarUrl || "/placeholder.svg"}
+                alt={current.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Polygon Connector */}
+            <img
+              src={isDark ? "/images/polygon-arrow-dark.svg" : "/images/polygon-arrow-light.svg"}
+              alt=""
+              className="absolute z-20"
+              style={{
+                width: "37px",
+                height: "41px",
+                left: "124px",
+                top: "76px",
+              }}
+            />
+
+            {/* Feedback Card */}
+            <div
+              className="rounded-2xl p-8 ml-40"
+              style={{
+                backgroundColor: cardBg,
+                border: `0px solid ${borderColor}`,
+                minHeight: "306px",
+                color: textColor,
+              }}
+            >
+              <div className="flex flex-col h-full">
+                {/* Top Row: Name/Position on Left, Stars on Right */}
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-xl font-semibold" style={{ color: textColor }}>
+                      {current.name}
+                    </h3>
+                    <p className="text-sm" style={{ color: textSecondary }}>
+                      {current.position}, {current.company}
+                    </p>
+                  </div>
+
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-5 h-5"
+                        style={{
+                          fill: i < current.rating ? "#FF6200" : "#D9D9D9",
+                          stroke: i < current.rating ? "#FF6200" : "#D9D9D9",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Middle: Testimonial Text */}
+                <p className="text-base leading-relaxed flex-1 line-clamp-4" style={{ color: textColor }}>
+                  {current.text}
+                </p>
+
+                <div className="flex justify-end gap-6 mt-6">
+                  <button
+                    onClick={() =>
+                      setCurrentIndex((prev) => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length)
+                    }
+                    className="flex items-center justify-center transition-colors"
+                    style={{ color: textSecondary }}
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+
+                  <button
+                    onClick={() => setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length)}
+                    className="flex items-center justify-center transition-colors"
+                    style={{ color: "#FF6200" }}
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Layout (visible only on mobile) */}
+        <div className="md:hidden flex justify-center">
+          <div className="w-full max-w-xs">
+            <div
+              className="mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden flex-shrink-0"
+              style={{
+                backgroundColor: "#FF6200",
+                border: "4px solid #FF6200",
+              }}
+            >
+              <img
+                src={current.avatarUrl || "/placeholder.svg"}
+                alt={current.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Feedback Card Mobile */}
+            <div
+              className="rounded-2xl p-6"
+              style={{
+                backgroundColor: cardBg,
+                border: `2px solid ${borderColor}`,
+                color: textColor,
+              }}
+            >
+              <div className="flex flex-col gap-4">
+                {/* Top: Name/Position and Stars */}
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold" style={{ color: textColor }}>
+                      {current.name}
+                    </h3>
+                    <p className="text-sm" style={{ color: textSecondary }}>
+                      {current.position}, {current.company}
+                    </p>
+                  </div>
+
+                  {/* Stars on right */}
+                  <div className="flex gap-0.5 flex-shrink-0">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-4 h-4"
+                        style={{
+                          fill: i < current.rating ? "#FF6200" : "#D9D9D9",
+                          stroke: i < current.rating ? "#FF6200" : "#D9D9D9",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Testimonial Text */}
+                <p className="text-sm leading-relaxed" style={{ color: textColor }}>
+                  {current.text}
+                </p>
+
+                {/* Navigation Arrows - Bottom */}
+                <div
+                  className="flex justify-between items-center mt-4 pt-4"
+                  style={{ borderTop: `1px solid ${borderColor}` }}
+                >
+                  <button
+                    onClick={() =>
+                      setCurrentIndex((prev) => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length)
+                    }
+                    className="flex items-center justify-center transition-colors"
+                    style={{ color: textSecondary }}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    onClick={() => setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length)}
+                    className="flex items-center justify-center transition-colors"
+                    style={{ color: "#FF6200" }}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-2 mt-12">
+          {filteredTestimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className="w-2 h-2 rounded-full transition-all"
+              style={{
+                backgroundColor: i === currentIndex ? "#FF6200" : "#D9D9D9",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

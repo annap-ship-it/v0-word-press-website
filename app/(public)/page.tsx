@@ -6,9 +6,11 @@ import { QuoteSection } from "@/components/quote-section"
 import { ExpertiseSection } from "@/components/expertise"
 import { OurServicesSection } from "@/components/our-services-section"
 import { TechnologiesSection } from "@/components/technologies"
-import { RequestConsultationSection } from "@/components/request-consultation-section"
 import { OurProjectsSection } from "@/components/our-projects-section"
 import { WhyUsSection2 } from "@/components/why-us-section"
+import { FeedbackSection } from "@/components/feedback-section"
+import { RequestConsultationSection } from "@/components/request-consultation-section"
+import { FAQSection } from "@/components/faq-section"
 
 export default function HomePage() {
   return (
@@ -22,8 +24,10 @@ export default function HomePage() {
       <OurServicesSection />
       <TechnologiesSection />
       <OurProjectsSection />
-      <WhyUsSection2 />      
+      <WhyUsSection2 />
+      <FeedbackSection />
       <RequestConsultationSection />
+      <FAQSection />     
     </main>
   )
 }

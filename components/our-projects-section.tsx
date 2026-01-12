@@ -22,7 +22,7 @@ function ProjectCard({
   project: Project
   index: number
 }) {
-  const locale = useLocale()
+  const { locale } = useLocale()
 
   const isOrange = index % 2 === 0
   const bgColor = isOrange ? "#FF6200" : "#000000"
@@ -115,7 +115,7 @@ export function OurProjectsSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden bg-var(--background)">
+    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: "var(--background)" }}>
       <div className="max-w-[1200px] mx-auto px-4">
         <div className="text-center mb-16 md:mb-24">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{t.ourProjects}</h2>

@@ -9,12 +9,16 @@ import { createBrowserClient } from "@/lib/supabase/client"
 
 interface Project {
   id: string
-  title: string
+  title: string | { en: string; uk: string }
   slug: string
   excerpt: string
   featured_image: string
   content: any
   created_at: string
+  challenge: string | { en: string; uk: string }
+  solution: string | { en: string; uk: string }
+  result: string | { en: string; uk: string }
+  stack: string[]
 }
 
 // Extract project data from content blocks
@@ -61,47 +65,90 @@ function extractProjectData(content: any) {
 const defaultProjects = [
   {
     id: "1",
-    title: "Internal Monitoring System for Symbotic",
+    title: {
+      en: "Internal Monitoring System for Symbotic",
+      uk: "Система внутрішнього моніторингу для Symbotic",
+    },
     slug: "internal-monitoring-system-symbotic",
     featured_image: "/images/3a8ceacf9a599490d7b40d1ec06dca37f1ea0d31.jpg",
-    challenge: "Develop a scalable internal monitoring tool with real-time data updates.",
-    solution:
-      "Designed full architecture, implemented GraphQL APIs, and built the admin frontend using Vue.js and Vuex. Integrated Web Push notifications and Apollo Client for real-time updates.",
-    result: "Efficient, scalable monitoring system with live data delivery.",
+    challenge: {
+      en: "Develop a scalable internal monitoring tool with real-time data updates.",
+      uk: "Розробка масштабованого внутрішнього інструменту моніторингу з оновленням даних у реальному часі.",
+    },
+    solution: {
+      en: "Designed full architecture, implemented GraphQL APIs, and built the admin frontend using Vue.js and Vuex. Integrated Web Push notifications and Apollo Client for real-time updates.",
+      uk: "Проектування архітектури, реалізація GraphQL API, фронтенд адмінки на Vue.js/Vuex, інтеграція Web Push та Apollo Client для live-оновлень.",
+    },
+    result: {
+      en: "Efficient, scalable monitoring system with live data delivery.",
+      uk: "Ефективна та масштабована система моніторингу з доставкою даних у реальному часі.",
+    },
     stack: ["Vue.js", "GraphQL", "MongoDB", "Node.js", "Apollo Client"],
   },
   {
     id: "2",
-    title: "Intertop Sensor Infobox",
+    title: {
+      en: "Intertop Sensor Infobox",
+      uk: "Intertop Sensor Infobox",
+    },
     slug: "intertop-sensor-infobox",
     featured_image: "/images/a4b670ec7fa05f0d5a4c674af059268a7f9bb862.jpg",
-    challenge: "Provide real-time product availability across online and offline channels.",
-    solution:
-      "Developed an interactive in-store sensor infobox using Node.js, integrated with offline 1C and MSSQL databases to sync inventory data seamlessly.",
-    result: "Improved customer experience with accurate, up-to-date product information in-store.",
-    stack: ["PHP", "MySQL", "Node.js", "MSSQL", "jQuery", "Backbone"],
+    challenge: {
+      en: "Provide real-time product availability across online and offline channels.",
+      uk: "Надати актуальну інформацію про наявність товарів онлайн та офлайн.",
+    },
+    solution: {
+      en: "Developed an interactive in-store sensor infobox using Node.js, integrated with offline 1C and MSSQL databases to sync inventory data seamlessly.",
+      uk: "Розробка інтерактивного сенсорного інфобоксу, інтеграція з офлайн 1C та MSSQL для синхронізації запасів.",
+    },
+    result: {
+      en: "Improved customer experience with accurate, up-to-date product information in-store.",
+      uk: "Покращений клієнтський досвід завдяки точній інформації про товари в магазині.",
+    },
+    stack: ["Node.js", "PHP", "MySQL", "MSSQL", "jQuery", "Backbone"],
   },
   {
     id: "3",
-    title: "Multi-brand E-commerce Landing Pages",
+    title: {
+      en: "Multi-brand E-commerce Landing Pages",
+      uk: "Багатобрендові лендинги електронної комерції",
+    },
     slug: "multi-brand-ecommerce-landing-pages",
     featured_image: "/images/684e917a1465786de030e274e2232ff33cd056fe.png",
-    challenge: "Create high-performance, SEO-friendly landing pages for major tech brands.",
-    solution:
-      "Developed multiple SPA landing pages (Lenovo, Samsung, Nokia, Panasonic) focusing on SEO, responsive design, and cross-browser compatibility. Optimized performance for high-traffic campaigns.",
-    result: "Enhanced user engagement and increased visibility for marketing efforts.",
+    challenge: {
+      en: "Create high-performance, SEO-friendly landing pages for major tech brands.",
+      uk: "Створення високопродуктивних SEO-оптимізованих лендингів для великих технічних брендів.",
+    },
+    solution: {
+      en: "Developed multiple SPA landing pages (Lenovo, Samsung, Nokia, Panasonic) focusing on SEO, responsive design, and cross-browser compatibility. Optimized performance for high-traffic campaigns.",
+      uk: "Розробка SPA лендингів (Lenovo, Samsung, Nokia, Panasonic) з акцентом на SEO, адаптивний дизайн та кросбраузерність. Оптимізація продуктивності для високого трафіку.",
+    },
+    result: {
+      en: "Enhanced user engagement and increased visibility for marketing efforts.",
+      uk: "Підвищена взаємодія користувачів та видимість маркетингових кампаній.",
+    },
     stack: ["HTML", "CSS", "RequireJS", "Grunt", "jQuery", "Backbone"],
   },
   {
     id: "4",
-    title: "Testing Expertise for a Sports Social Platform",
+    title: {
+      en: "Testing Expertise for a Sports Social Platform",
+      uk: "Тестування експертизи для спортивної соціальної платформи",
+    },
     slug: "testing-expertise-sports-social-platform",
     featured_image: "/images/56951b6f749b0c1c24e1b24aab787192b5cc65e2.jpg",
-    challenge:
-      "Ensure high product quality and stability during rapid development of an NBA-focused sports social platform.",
-    solution:
-      "Provided manual QA support covering 170+ tickets, tested new and existing features, identified critical bugs, collaborated with developers, and recommended Android devices.",
-    result: "Improved release stability, higher product quality, and smoother QA processes.",
+    challenge: {
+      en: "Ensure high product quality and stability during rapid development of an NBA-focused sports social platform.",
+      uk: "Забезпечити високу якість продукту та стабільність при швидкій розробці соцплатформи для NBA.",
+    },
+    solution: {
+      en: "Provided manual QA support covering 170+ tickets, tested new and existing features, identified critical bugs, collaborated with developers, and recommended Android devices.",
+      uk: "Ручне QA-покриття понад 170 задач, тестування нових та існуючих функцій, виявлення критичних багів, співпраця з розробниками, рекомендації Android-пристроїв.",
+    },
+    result: {
+      en: "Improved release stability, higher product quality, and smoother QA processes.",
+      uk: "Підвищена стабільність релізів, краща якість продукту, оптимізація QA-процесів.",
+    },
     stack: ["Manual Testing", "Team Collaboration Tools"],
   },
 ]
@@ -262,7 +309,7 @@ export default function ProjectsPage() {
       if (file && file.size <= 3 * 1024 * 1024) {
         setAttachedFile(file)
       } else {
-        alert("File must be less than 3MB")
+        alert(t.fileSizeError)
       }
     }
     input.click()
@@ -271,14 +318,14 @@ export default function ProjectsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!termsAccepted) {
-      alert("Please accept Terms and Conditions")
+      alert(t.termsRequiredAlert)
       return
     }
 
     const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
 
     if (!recaptchaResponse) {
-      alert("Please complete the reCAPTCHA")
+      alert(t.recaptchaRequiredAlert)
       return
     }
 
@@ -326,6 +373,19 @@ export default function ProjectsPage() {
       submitButton: "Send Request",
       successMessage: "Thank you! We'll be in touch soon.",
       errorMessage: "Error submitting form. Please try again.",
+      challengeLabel: "Challenge:",
+      solutionLabel: "Solution:",
+      resultLabel: "Result:",
+      stackLabel: "Stack:",
+      fileSizeError: "File must be less than 3MB",
+      termsRequiredAlert: "Please accept Terms and Conditions",
+      recaptchaRequiredAlert: "Please complete the reCAPTCHA",
+      receivedMessage: "We've received your message and will get back to you soon.",
+      fileAttachInfo: "No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.",
+      sendingButton: "Sending...",
+      termsAndConditions: "Terms and Conditions",
+      emailDisclaimer:
+        "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails.",
     },
     uk: {
       title: "Проекти",
@@ -342,6 +402,19 @@ export default function ProjectsPage() {
       submitButton: "Надіслати запит",
       successMessage: "Дякуємо! Ми скоро з вами зв'яжемося.",
       errorMessage: "Помилка при відправленні форми. Спробуйте ще раз.",
+      challengeLabel: "Завдання:",
+      solutionLabel: "Рішення:",
+      resultLabel: "Результат:",
+      stackLabel: "Стек:",
+      fileSizeError: "Файл повинен бути менше за 3 МБ",
+      termsRequiredAlert: "Будь ласка, прийміть Умови та положення",
+      recaptchaRequiredAlert: "Будь ласка, завершіть reCAPTCHA",
+      receivedMessage: "Ми отримали ваше повідомлення і скоро з вами зв'яжемося.",
+      fileAttachInfo: "Можна додати не більше 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
+      sendingButton: "Надсилання...",
+      termsAndConditions: "Умови та положення",
+      emailDisclaimer:
+        "Надсилаючи свою електронну пошту, ви приймаєте умови та положення. Ми можемо периодично надсилати вам маркетингові листи.",
     },
   }
 
@@ -375,7 +448,7 @@ export default function ProjectsPage() {
                 lineHeight: "1.2",
               }}
             >
-              {t.title}
+              {typeof t.title === "string" ? t.title : t.title[locale]}
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.subtitle}</p>
           </AnimatedCard>
@@ -412,7 +485,7 @@ export default function ProjectsPage() {
                         <div className="relative w-full aspect-[16/10] rounded-[14px] overflow-hidden">
                           <Image
                             src={project.featured_image || "/placeholder.svg"}
-                            alt={project.title}
+                            alt={typeof project.title === "string" ? project.title : project.title[locale]}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
@@ -425,33 +498,48 @@ export default function ProjectsPage() {
                           className="text-xl md:text-2xl font-bold mb-4"
                           style={{ color: isDark ? "#FFFFFF" : "#000000" }}
                         >
-                          {project.title}
+                          {typeof project.title === "string" ? project.title : project.title[locale]}
                         </h2>
 
                         <div className="space-y-3 text-sm">
-                          {project.challenge && (
+                          {typeof project.challenge === "string" ? (
                             <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Challenge:</span>
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.challengeLabel}</span>
                               <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge}</span>
                             </div>
-                          )}
-                          {project.solution && (
+                          ) : (
                             <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Solution:</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</span>
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.challengeLabel}</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge[locale]}</span>
                             </div>
                           )}
-                          {project.result && (
+                          {typeof project.solution === "string" ? (
                             <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Result:</span>
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.solutionLabel}</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</span>
+                            </div>
+                          ) : (
+                            <div className="flex gap-3">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.solutionLabel}</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution[locale]}</span>
+                            </div>
+                          )}
+                          {typeof project.result === "string" ? (
+                            <div className="flex gap-3">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.resultLabel}</span>
                               <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result}</span>
+                            </div>
+                          ) : (
+                            <div className="flex gap-3">
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.resultLabel}</span>
+                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result[locale]}</span>
                             </div>
                           )}
 
                           {/* Stack */}
                           {project.stack && project.stack.length > 0 && (
                             <div className="flex gap-3 items-start pt-2">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">Stack:</span>
+                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.stackLabel}</span>
                               <div className="flex flex-wrap gap-2">
                                 {project.stack.map((tech: string, i: number) => {
                                   const iconPath = techIcons[tech]
@@ -560,9 +648,7 @@ export default function ProjectsPage() {
                 <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
                   {t.successMessage}
                 </h3>
-                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                  We've received your message and will get back to you soon.
-                </p>
+                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{t.receivedMessage}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -628,7 +714,7 @@ export default function ProjectsPage() {
                       {t.attachLabel}
                     </button>
                     <span className="text-xs" style={{ color: isDark ? "#666666" : "#999999" }}>
-                      No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.
+                      {t.fileAttachInfo}
                     </span>
                   </div>
 
@@ -651,7 +737,7 @@ export default function ProjectsPage() {
                     disabled={isSubmitting}
                     className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
                   >
-                    {isSubmitting ? "Sending..." : t.submitButton}
+                    {isSubmitting ? t.sendingButton : t.submitButton}
                   </button>
 
                   {/* Terms */}
@@ -670,14 +756,11 @@ export default function ProjectsPage() {
                     >
                       {t.termsLabel}{" "}
                       <Link href="/terms" className="text-[#FF6200] underline">
-                        Terms and Conditions
+                        {t.termsAndConditions}
                       </Link>
                       .
                       <br />
-                      <span className="text-xs">
-                        By submitting your email, you accept terms and conditions. We may send you occasionally
-                        marketing emails.
-                      </span>
+                      <span className="text-xs">{t.emailDisclaimer}</span>
                     </label>
                   </div>
 

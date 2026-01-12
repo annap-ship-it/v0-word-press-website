@@ -4,6 +4,9 @@ import { Onest } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/lib/theme-context"
 import { LocaleProvider } from "@/lib/locale-context"
+import { CookiesConsent } from "@/components/cookies-consent"
+import { CalculatorPopup } from "@/components/calculator-popup"
+import { ScrollToTop } from "@/components/scroll-to-top"
 import "./globals.css"
 
 const onest = Onest({
@@ -50,6 +53,9 @@ export default function RootLayout({
           <LocaleProvider>
             {children}
             <Analytics />
+            <CookiesConsent />
+            <CalculatorPopup />
+            <ScrollToTop />
           </LocaleProvider>
         </ThemeProvider>
       </body>

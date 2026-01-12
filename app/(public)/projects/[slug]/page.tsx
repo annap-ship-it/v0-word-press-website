@@ -56,104 +56,252 @@ const translations = {
 // Default project data for fallback
 const defaultProjectsData: Record<string, any> = {
   "internal-monitoring-system-symbotic": {
-    title: "Internal Monitoring System for Symbotic",
+    title: {
+      en: "Internal Monitoring System for Symbotic",
+      uk: "Система внутрішнього моніторингу для Symbotic",
+    },
     featured_image: "/monitoring-dashboard-with-graphs-and-data-visualiz.jpg",
-    client: "Symbotic",
-    industry: "Robotics & Automation",
-    duration: "6 months",
-    team: "4 developers, 1 designer, 1 QA",
-    overview:
-      "Symbotic needed a scalable internal monitoring tool to track their robotic systems in real-time. The challenge was to create a system that could handle massive amounts of data while providing instant insights to operators.",
-    challenge:
-      "Develop a scalable internal monitoring tool with real-time data updates for tracking robotic warehouse systems. The system needed to handle thousands of data points per second while maintaining a responsive user interface.",
-    solution:
-      "We designed full architecture from scratch, implemented GraphQL APIs for efficient data fetching, and built the admin frontend using Vue.js and Vuex for state management. Integrated Web Push notifications for critical alerts and Apollo Client for real-time data subscriptions.",
-    result:
-      "Delivered an efficient, scalable monitoring system with live data delivery. The system now handles 10,000+ data points per second with sub-100ms latency. Operator response time to critical events improved by 60%.",
+    client: {
+      en: "Symbotic",
+      uk: "Symbotic",
+    },
+    industry: {
+      en: "Robotics & Automation",
+      uk: "Робототехніка та автоматизація",
+    },
+    duration: {
+      en: "6 months",
+      uk: "6 місяців",
+    },
+    team: {
+      en: "4 developers, 1 designer, 1 QA",
+      uk: "4 розробники, 1 дизайнер, 1 QA",
+    },
+    overview: {
+      en: "Symbotic needed a scalable internal monitoring tool to track their robotic systems in real-time. The challenge was to create a system that could handle massive amounts of data while providing instant insights to operators.",
+      uk: "Symbotic потребувала масштабованого внутрішнього інструменту моніторингу для відстеження їх робототехнічних систем у реальному часі. Завдання було створити систему, яка може обробляти величезні обсяги даних, надаючи миттєвий аналіз операторам.",
+    },
+    challenge: {
+      en: "Develop a scalable internal monitoring tool with real-time data updates for tracking robotic warehouse systems. The system needed to handle thousands of data points per second while maintaining a responsive user interface.",
+      uk: "Розробка масштабованого внутрішнього інструменту моніторингу з оновленням даних у реальному часі для відстеження робототехнічних систем складу. Система мала обробляти тисячі точок даних за секунду, зберігаючи оперативний інтерфейс користувача.",
+    },
+    solution: {
+      en: "We designed full architecture from scratch, implemented GraphQL APIs for efficient data fetching, and built the admin frontend using Vue.js and Vuex for state management. Integrated Web Push notifications for critical alerts and Apollo Client for real-time data subscriptions.",
+      uk: "Ми спроектували повну архітектуру з нуля, реалізували GraphQL API для ефективного отримання даних та розробили адмін-фронтенд з Vue.js та Vuex для управління станом. Інтегрували Web Push-сповіщення для критичних сигналів та Apollo Client для підписки на live-дані.",
+    },
+    result: {
+      en: "Delivered an efficient, scalable monitoring system with live data delivery. The system now handles 10,000+ data points per second with sub-100ms latency. Operator response time to critical events improved by 60%.",
+      uk: "Дощенко масштабовану систему моніторингу з live-доставкою даних. Система тепер обробляє 10 000+ точок даних за секунду з затримкою менше 100 мс. Час реакції оператора на критичні события покращився на 60%.",
+    },
     stack: ["Vue.js", "GraphQL", "MongoDB", "Node.js", "Apollo Client", "Redis", "Docker"],
-    features: [
-      "Real-time dashboard with live data updates",
-      "Custom alert system with Web Push notifications",
-      "Historical data analysis and reporting",
-      "Role-based access control",
-      "Mobile-responsive design",
-    ],
+    features: {
+      en: [
+        "Real-time dashboard with live data updates",
+        "Custom alert system with Web Push notifications",
+        "Historical data analysis and reporting",
+        "Role-based access control",
+        "Mobile-responsive design",
+      ],
+      uk: [
+        "Панель керування в реальному часі з live-оновленнями даних",
+        "Спеціалізована система сигналів з Web Push-сповіщеннями",
+        "Аналіз історичних даних та звітування",
+        "Контроль доступу за ролями",
+        "Адаптивний мобільний дизайн",
+      ],
+    },
     gallery: ["/dashboard-overview-screen.jpg", "/analytics-charts-and-graphs.jpg", "/alert-management-interface.jpg"],
+    testimonial: {
+      quote: "Excellent work on the monitoring system!",
+      author: "John Doe",
+      company: "Symbotic",
+    },
   },
   "intertop-sensor-infobox": {
-    title: "Intertop Sensor Infobox",
+    title: {
+      en: "Intertop Sensor Infobox",
+      uk: "Intertop Sensor Infobox",
+    },
     featured_image: "/retail-store-sensor-display-system.jpg",
-    client: "Intertop",
-    industry: "Retail",
-    duration: "4 months",
-    team: "3 developers, 1 QA",
-    overview:
-      "Intertop, a major retail chain, needed a solution to bridge online and offline inventory data, providing customers with real-time product availability information in-store.",
-    challenge:
-      "Provide real-time product availability across online and offline channels. The solution needed to integrate with legacy 1C and MSSQL databases while maintaining data consistency.",
-    solution:
-      "Developed an interactive in-store sensor infobox using Node.js that syncs inventory data from offline 1C and MSSQL databases in real-time. Created a user-friendly touch interface for customers.",
-    result:
-      "Improved customer experience with accurate, up-to-date product information in-store. Customer satisfaction scores increased by 35%, and store staff inquiries about stock reduced by 50%.",
+    client: {
+      en: "Intertop",
+      uk: "Intertop",
+    },
+    industry: {
+      en: "Retail",
+      uk: "Роздріб",
+    },
+    duration: {
+      en: "4 months",
+      uk: "4 місяці",
+    },
+    team: {
+      en: "3 developers, 1 QA",
+      uk: "3 розробники, 1 QA",
+    },
+    overview: {
+      en: "Intertop, a major retail chain, needed a solution to bridge online and offline inventory data, providing customers with real-time product availability information in-store.",
+      uk: "Intertop, великий роздрібний ланцюг, потребував рішення для об'єднання даних інвентарю онлайн та офлайн, надаючи клієнтам інформацію про доступність товарів у реальному часі у магазині.",
+    },
+    challenge: {
+      en: "Provide real-time product availability across online and offline channels. The solution needed to integrate with legacy 1C and MSSQL databases while maintaining data consistency.",
+      uk: "Надати актуальну інформацію про наявність товарів онлайн та офлайн. Рішення мало інтегруватися зі спадковими системами 1C та MSSQL, збереживши узгодженість даних.",
+    },
+    solution: {
+      en: "Developed an interactive in-store sensor infobox using Node.js that syncs inventory data from offline 1C and MSSQL databases in real-time. Created a user-friendly touch interface for customers.",
+      uk: "Розробка інтерактивного сенсорного інфобоксу з Node.js, що синхронізує дані запасів з офлайн-баз даних 1C та MSSQL у реальному часі. Створили зручний сенсорний інтерфейс для клієнтів.",
+    },
+    result: {
+      en: "Improved customer experience with accurate, up-to-date product information in-store. Customer satisfaction scores increased by 35%, and store staff inquiries about stock reduced by 50%.",
+      uk: "Покращений клієнтський досвід завдяки точній інформації про товари в магазині. Оцінки задоволеності клієнтів зросли на 35%, запити персоналу про наявність товарів зменшилися на 50%.",
+    },
     stack: ["PHP", "MySQL", "Node.js", "MSSQL", "jQuery", "Backbone", "1C Integration"],
-    features: [
-      "Touch-screen interface for customers",
-      "Real-time inventory synchronization",
-      "Integration with 1C ERP system",
-      "Offline mode support",
-      "Admin panel for content management",
-    ],
+    features: {
+      en: [
+        "Touch-screen interface for customers",
+        "Real-time inventory synchronization",
+        "Integration with 1C ERP system",
+        "Offline mode support",
+        "Admin panel for content management",
+      ],
+      uk: [
+        "Сенсорний екран для клієнтів",
+        "Синхронізація запасів у реальному часі",
+        "Інтеграція з системою 1C ERP",
+        "Підтримка офлайн-режиму",
+        "Адмін-панель для управління контентом",
+      ],
+    },
     gallery: ["/retail-kiosk-interface.jpg", "/product-information-display.jpg", "/inventory-management-dashboard.png"],
+    testimonial: {
+      quote: "Great job on the sensor infobox!",
+      author: "Jane Smith",
+      company: "Intertop",
+    },
   },
   "multi-brand-ecommerce-landing-pages": {
-    title: "Multi-brand E-commerce Landing Pages",
+    title: {
+      en: "Multi-brand E-commerce Landing Pages",
+      uk: "Багатобрендові лендинги електронної комерції",
+    },
     featured_image: "/ecommerce-landing-page-design-multiple-brands.jpg",
-    client: "Multiple Tech Brands",
-    industry: "E-commerce",
-    duration: "8 months",
-    team: "5 developers, 2 designers",
-    overview:
-      "Major tech brands including Lenovo, Samsung, Nokia, and Panasonic needed high-performance landing pages for their marketing campaigns.",
-    challenge:
-      "Create high-performance, SEO-friendly landing pages for major tech brands. Each brand required unique design while maintaining consistent performance standards.",
-    solution:
-      "Developed multiple SPA landing pages focusing on SEO, responsive design, and cross-browser compatibility. Optimized performance for high-traffic campaigns using code splitting and lazy loading.",
-    result:
-      "Enhanced user engagement and increased visibility for marketing efforts. Page load times reduced to under 2 seconds. Conversion rates improved by 25% across all brands.",
+    client: {
+      en: "Multiple Tech Brands",
+      uk: "Декілька технічних брендів",
+    },
+    industry: {
+      en: "E-commerce",
+      uk: "Електронна комерція",
+    },
+    duration: {
+      en: "8 months",
+      uk: "8 місяців",
+    },
+    team: {
+      en: "5 developers, 2 designers",
+      uk: "5 розробників, 2 дизайнери",
+    },
+    overview: {
+      en: "Major tech brands including Lenovo, Samsung, Nokia, and Panasonic needed high-performance landing pages for their marketing campaigns.",
+      uk: "Великі технічні бренди, включаючи Lenovo, Samsung, Nokia та Panasonic, потребували високопродуктивних лендингів для своїх маркетингових кампаній.",
+    },
+    challenge: {
+      en: "Create high-performance, SEO-friendly landing pages for major tech brands. Each brand required unique design while maintaining consistent performance standards.",
+      uk: "Створення високопродуктивних SEO-оптимізованих лендингів для великих технічних брендів. Кожен бренд вимагав унікального дизайну при збереженні однакових стандартів продуктивності.",
+    },
+    solution: {
+      en: "Developed multiple SPA landing pages focusing on SEO, responsive design, and cross-browser compatibility. Optimized performance for high-traffic campaigns using code splitting and lazy loading.",
+      uk: "Розробка SPA лендингів з акцентом на SEO, адаптивний дизайн та кросбраузерність. Оптимізація продуктивності для високого трафіку з використанням розділення коду та ледачого завантаження.",
+    },
+    result: {
+      en: "Enhanced user engagement and increased visibility for marketing efforts. Page load times reduced to under 2 seconds. Conversion rates improved by 25% across all brands.",
+      uk: "Підвищена взаємодія користувачів та видимість маркетингових кампаній. Час завантаження сторінок скорочено до 2 секунд. Показники конверсії покращилися на 25% у всіх брендів.",
+    },
     stack: ["HTML5", "CSS3", "RequireJS", "Grunt", "jQuery", "Backbone", "SASS"],
-    features: [
-      "SEO-optimized page structure",
-      "Responsive design for all devices",
-      "Cross-browser compatibility",
-      "A/B testing integration",
-      "Analytics tracking",
-    ],
+    features: {
+      en: [
+        "SEO-optimized page structure",
+        "Responsive design for all devices",
+        "Cross-browser compatibility",
+        "A/B testing integration",
+        "Analytics tracking",
+      ],
+      uk: [
+        "SEO-оптимізована структура сторінки",
+        "Адаптивний дизайн для всіх пристроїв",
+        "Сумісність з усіма браузерами",
+        "Інтеграція A/B-тестування",
+        "Відстеження аналітики",
+      ],
+    },
     gallery: ["/lenovo-landing-page-design.jpg", "/samsung-product-showcase.jpg", "/mobile-responsive-design.png"],
+    testimonial: {
+      quote: "Impressive landing pages for the tech brands!",
+      author: "Mike Johnson",
+      company: "Tech Brands Inc.",
+    },
   },
   "testing-expertise-sports-social-platform": {
-    title: "Testing Expertise for a Sports Social Platform",
+    title: {
+      en: "Testing Expertise for a Sports Social Platform",
+      uk: "Тестування експертизи для спортивної соціальної платформи",
+    },
     featured_image: "/sports-social-media-platform-testing-qa.jpg",
-    client: "Sports Social Platform",
-    industry: "Social Media / Sports",
-    duration: "5 months",
-    team: "2 QA engineers",
-    overview:
-      "An NBA-focused sports social platform needed comprehensive QA support during rapid development to ensure stability and quality.",
-    challenge:
-      "Ensure high product quality and stability during rapid development of an NBA-focused sports social platform with frequent releases and new feature additions.",
-    solution:
-      "Provided manual QA support covering 170+ tickets, tested new and existing features, identified critical bugs, collaborated with developers, and recommended Android devices for testing.",
-    result:
-      "Improved release stability, higher product quality, and smoother QA processes. Bug escape rate reduced by 80%. Release cycle time decreased from 2 weeks to 1 week.",
+    client: {
+      en: "Sports Social Platform",
+      uk: "Спортивна соціальна платформа",
+    },
+    industry: {
+      en: "Social Media / Sports",
+      uk: "Соціальні мережі / Спорт",
+    },
+    duration: {
+      en: "5 months",
+      uk: "5 місяців",
+    },
+    team: {
+      en: "2 QA engineers",
+      uk: "2 QA-інженери",
+    },
+    overview: {
+      en: "An NBA-focused sports social platform needed comprehensive QA support during rapid development to ensure stability and quality.",
+      uk: "Спортивна соціальна платформа, орієнтована на NBA, потребувала комплексної підтримки QA під час швидкої розробки для забезпечення стабільності та якості.",
+    },
+    challenge: {
+      en: "Ensure high product quality and stability during rapid development of an NBA-focused sports social platform with frequent releases and new feature additions.",
+      uk: "Забезпечити високу якість продукту та стабільність при швидкій розробці соцплатформи для NBA з частими релізами та додаванням нових функцій.",
+    },
+    solution: {
+      en: "Provided manual QA support covering 170+ tickets, tested new and existing features, identified critical bugs, collaborated with developers, and recommended Android devices for testing.",
+      uk: "Ручне QA-покриття понад 170 задач, тестування нових та існуючих функцій, виявлення критичних багів, співпраця з розробниками, рекомендації Android-пристроїв для тестування.",
+    },
+    result: {
+      en: "Improved release stability, higher product quality, and smoother QA processes. Bug escape rate reduced by 80%. Release cycle time decreased from 2 weeks to 1 week.",
+      uk: "Підвищена стабільність релізів, краща якість продукту, оптимізація QA-процесів. Показник виходу багів зменшено на 80%. Час циклу релізу скорочено з 2 тижнів до 1 тижня.",
+    },
     stack: ["Manual Testing", "Team Collaboration Tools", "JIRA", "TestRail", "Android Testing"],
-    features: [
-      "Comprehensive test case development",
-      "Regression testing automation",
-      "Cross-device compatibility testing",
-      "Performance testing",
-      "User acceptance testing",
-    ],
+    features: {
+      en: [
+        "Comprehensive test case development",
+        "Regression testing automation",
+        "Cross-device compatibility testing",
+        "Performance testing",
+        "User acceptance testing",
+      ],
+      uk: [
+        "Розробка комплексних тестових сценаріїв",
+        "Автоматизація регресійного тестування",
+        "Тестування сумісності на різних пристроях",
+        "Тестування продуктивності",
+        "Користувацьке акцептаційне тестування",
+      ],
+    },
     gallery: ["/qa-testing-dashboard.jpg", "/mobile-app-testing.png", "/bug-tracking-system.jpg"],
+    testimonial: {
+      quote: "Excellent QA work on the sports platform!",
+      author: "Emily White",
+      company: "Sports Social Platform",
+    },
   },
 }
 
@@ -166,6 +314,15 @@ export default function ProjectDetailPage() {
   const [isDark, setIsDark] = useState(false)
 
   const t = translations[locale]
+
+  const getLocalizedText = (text: any): string => {
+    if (!text) return ""
+    if (typeof text === "string") return text
+    if (typeof text === "object" && (text.en || text.uk)) {
+      return text[locale] || text.en || text.uk || ""
+    }
+    return ""
+  }
 
   useEffect(() => {
     const checkTheme = () => {
@@ -212,15 +369,16 @@ export default function ProjectDetailPage() {
 
   function extractProjectDataFromPost(post: any) {
     const data: any = {
-      title: post.title,
+      title: post.title.en || post.title.uk || "Project Title",
       featured_image: post.featured_image || "/project-management-team.png",
-      overview: post.excerpt || "",
+      overview: post.excerpt.en || post.excerpt.uk || "",
       challenge: "",
       solution: "",
       result: "",
       stack: [],
       features: [],
       gallery: [],
+      testimonial: null,
     }
 
     if (post.content && Array.isArray(post.content)) {
@@ -237,6 +395,8 @@ export default function ProjectDetailPage() {
             .replace(/^stack:\s*/i, "")
             .split(",")
             .map((s: string) => s.trim())
+        } else if (text.toLowerCase().startsWith("testimonial:")) {
+          data.testimonial = text.replace(/^testimonial:\s*/i, "")
         }
       })
     }
@@ -267,7 +427,12 @@ export default function ProjectDetailPage() {
       {/* Hero Section */}
       <section className="relative">
         <div className="relative w-full h-[400px] md:h-[500px]">
-          <Image src={project.featured_image || "/placeholder.svg"} alt={project.title} fill className="object-cover" />
+          <Image
+            src={project.featured_image || "/placeholder.svg"}
+            alt={getLocalizedText(project.title)}
+            fill
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         </div>
 
@@ -280,7 +445,7 @@ export default function ProjectDetailPage() {
               <ArrowLeft size={20} />
               {t.backToProjects}
             </Link>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">{project.title}</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">{getLocalizedText(project.title)}</h1>
           </div>
         </div>
       </section>
@@ -297,25 +462,25 @@ export default function ProjectDetailPage() {
               {project.client && (
                 <div>
                   <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.client}</p>
-                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.client}</p>
+                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{getLocalizedText(project.client)}</p>
                 </div>
               )}
               {project.industry && (
                 <div>
                   <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.industry}</p>
-                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.industry}</p>
+                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{getLocalizedText(project.industry)}</p>
                 </div>
               )}
               {project.duration && (
                 <div>
                   <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.duration}</p>
-                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.duration}</p>
+                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{getLocalizedText(project.duration)}</p>
                 </div>
               )}
               {project.team && (
                 <div>
                   <p className="text-[#FF6200] font-semibold text-sm mb-1">{t.team}</p>
-                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{project.team}</p>
+                  <p style={{ color: isDark ? "#FFFFFF" : "#000000" }}>{getLocalizedText(project.team)}</p>
                 </div>
               )}
             </div>
@@ -333,7 +498,7 @@ export default function ProjectDetailPage() {
                 {t.overview}
               </h2>
               <p className="text-lg leading-relaxed" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                {project.overview}
+                {getLocalizedText(project.overview)}
               </p>
             </div>
           )}
@@ -349,7 +514,7 @@ export default function ProjectDetailPage() {
                 }}
               >
                 <h3 className="text-[#FF6200] font-bold text-lg mb-3">{t.challenge}</h3>
-                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge}</p>
+                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{getLocalizedText(project.challenge)}</p>
               </div>
             )}
             {project.solution && (
@@ -361,7 +526,7 @@ export default function ProjectDetailPage() {
                 }}
               >
                 <h3 className="text-[#FF6200] font-bold text-lg mb-3">{t.solution}</h3>
-                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</p>
+                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{getLocalizedText(project.solution)}</p>
               </div>
             )}
             {project.result && (
@@ -373,7 +538,7 @@ export default function ProjectDetailPage() {
                 }}
               >
                 <h3 className="text-[#FF6200] font-bold text-lg mb-3">{t.result}</h3>
-                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result}</p>
+                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{getLocalizedText(project.result)}</p>
               </div>
             )}
           </div>
@@ -426,7 +591,7 @@ export default function ProjectDetailPage() {
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                     </div>
-                    <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{feature}</span>
+                    <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{getLocalizedText(feature)}</span>
                   </li>
                 ))}
               </ul>
@@ -449,7 +614,7 @@ export default function ProjectDetailPage() {
                   <div key={i} className="relative aspect-[3/2] rounded-[4px] overflow-hidden">
                     <Image
                       src={image || "/placeholder.svg"}
-                      alt={`${project.title} screenshot ${i + 1}`}
+                      alt={`${getLocalizedText(project.title)} screenshot ${i + 1}`}
                       fill
                       className="object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -481,7 +646,7 @@ export default function ProjectDetailPage() {
               {t.similarProject}
             </h3>
             <Link
-              href="/contact"
+              href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2DSvfJWDr_AXOWUTxid3bQrwNr4so5STlGytDH-8W1vkXUDJ-nA1VYSW8oeSY2-eKxNHsYpUfY"
               className="inline-block px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors"
             >
               {t.letsTalk}

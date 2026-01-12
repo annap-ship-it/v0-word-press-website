@@ -1,4 +1,5 @@
 "use client"
+import { useLocale } from "@/lib/locale-context"
 import { WorldMapWithHover } from "./world-map-with-hover"
 
 type Pin = {
@@ -16,23 +17,38 @@ const pins: Pin[] = [
   { x: 407, y: 212 }, // Ukraine
 ]
 
+const content = {
+  en: {
+    title: "About Us",
+    description1:
+      "Born in 2023, a young IT studio that expands its operational reach with every project, uniting international talent around your idea.",
+    description2:
+      "Our team of middle+ engineers helps companies launch faster and scale with confidence. We've streamlined every step from request to delivery to cut delays, raise quality, and ensure full accountability.",
+  },
+  uk: {
+    title: "Про нас",
+    description1:
+      "Заснована в 2023 році, молода IT-студія, яка розширює масштаби своєї діяльності з кожним проектом, об'єднуючи міжнародний талант навколо вашої ідеї.",
+    description2:
+      "Наша команда інженерів middle+ допомагає компаніям запускатись швидше та масштабуватись з впевненістю. Ми оптимізували кожний крок від запиту до доставки, щоб скоротити затримки, підвищити якість та забезпечити повну відповідальність.",
+  },
+}
+
 export function AboutUsSection() {
+  const { locale } = useLocale()
+  const currentLocale = (locale as keyof typeof content) || "en"
+  const texts = content[currentLocale]
+
   return (
     <section className="py-20 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">About Us</h2>
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">{texts.title}</h2>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Left: Text Content */}
           <div className="space-y-6">
-            <p className="text-base md:text-lg leading-relaxed text-foreground/80">
-              Born in 2023, a young IT studio that expands its operational reach with every project, uniting
-              international talent around your idea.
-            </p>
-            <p className="text-base md:text-lg leading-relaxed text-foreground/80">
-              Our team of middle+ engineers helps companies launch faster and scale with confidence. We've streamlined
-              every step from request to delivery to cut delays, raise quality, and ensure full accountability.
-            </p>
+            <p className="text-base md:text-lg leading-relaxed text-foreground/80">{texts.description1}</p>
+            <p className="text-base md:text-lg leading-relaxed text-foreground/80">{texts.description2}</p>
           </div>
 
           {/* Right: Interactive Map */}
