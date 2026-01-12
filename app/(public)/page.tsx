@@ -26,8 +26,8 @@ export default function HomePage() {
       <OurProjectsSection />
       <WhyUsSection2 />
       <FeedbackSection />
+      <FAQSection />
       <RequestConsultationSection />
-      <FAQSection />     
     </main>
   )
 }

@@ -23,7 +23,6 @@ import {
   Check,
 } from "lucide-react"
 import type { JSX } from "react"
-import { useTranslations } from "next-intl"
 
 interface ContentBlock {
   type: string
@@ -312,7 +311,6 @@ export default function BlogPostPage() {
   const [copied, setCopied] = useState(false)
 
   const { locale } = useLocale()
-  const t = useTranslations("BlogPost")
 
   useEffect(() => {
     const checkDark = () => {
@@ -328,7 +326,7 @@ export default function BlogPostPage() {
     async function fetchPost() {
       if (!slug) return
 
-      console.log("[v0] Fetching post with slug:", slug, "locale:", locale)
+      console.log("[v0] Fetching post with slug:", slug)
 
       const supabase = createBrowserClient()
 
@@ -339,7 +337,6 @@ export default function BlogPostPage() {
           category_id, created_at, author_id, locale
         `)
         .eq("slug", slug)
-        .eq("locale", locale)
         .eq("status", "published")
         .single()
 
@@ -424,7 +421,7 @@ export default function BlogPostPage() {
     }
 
     fetchPost()
-  }, [slug, locale])
+  }, [slug])
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href)
@@ -460,10 +457,10 @@ export default function BlogPostPage() {
         style={{ background: "var(--background)" }}
       >
         <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
-          {t.articleNotFound}
+          Article not found
         </h1>
         <Link href="/blog" className="text-[#FF6200] hover:underline">
-          {t.backToBlog}
+          Back to Blog
         </Link>
       </div>
     )
@@ -489,7 +486,7 @@ export default function BlogPostPage() {
           className="inline-flex items-center gap-2 text-[#787877] hover:text-[#FF6200] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>{t.backToBlog}</span>
+          <span>Back to Blog</span>
         </Link>
       </AnimatedSection>
 
@@ -545,7 +542,7 @@ export default function BlogPostPage() {
                   <p className="font-medium" style={{ color: "var(--foreground)" }}>
                     {authorName}
                   </p>
-                  <p className="text-sm text-[#787877]">{t.author}</p>
+                  <p className="text-sm text-[#787877]">Author</p>
                 </div>
               </div>
 
@@ -556,9 +553,7 @@ export default function BlogPostPage() {
 
               <div className="flex items-center gap-2 text-[#787877]">
                 <Clock className="w-4 h-4" />
-                <span className="text-sm">
-                  {estimateReadTime(post.content)} {t.minRead}
-                </span>
+                <span className="text-sm">{estimateReadTime(post.content)} min read</span>
               </div>
             </div>
           </AnimatedSection>
@@ -590,7 +585,7 @@ export default function BlogPostPage() {
                 <div className="flex items-center gap-2">
                   <Share2 className="w-5 h-5 text-[#787877]" />
                   <span className="font-medium" style={{ color: "var(--foreground)" }}>
-                    {t.shareThisArticle}
+                    Share this article
                   </span>
                 </div>
 
@@ -640,7 +635,7 @@ export default function BlogPostPage() {
           <div className="max-w-[1280px] mx-auto px-4 md:px-6">
             <AnimatedSection>
               <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "var(--foreground)" }}>
-                {t.relatedArticles}
+                Related Articles
               </h2>
             </AnimatedSection>
 
