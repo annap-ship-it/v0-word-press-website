@@ -40,7 +40,7 @@ export function ExpertiseSection() {
     },
     uk: {
       title: "Наша експертиза",
-      outstaffingTitle: "Ауціль",
+      outstaffingTitle: "Аутстафінг",
       outsourcingTitle: "Аутсорсинг",
       consultationTitle: "Консалтинг",
       outstaff_1: "Розробник під контролем клієнта",

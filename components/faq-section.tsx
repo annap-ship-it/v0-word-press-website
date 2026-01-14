@@ -15,11 +15,11 @@ const faqItems: FAQItem[] = [
   {
     id: 1,
     questionEn: "What is out-staffing?",
-    questionUk: "Що таке аутстаффінг?",
+    questionUk: "Що таке аутстафінг?",
     answerEn:
       "Out-staffing is a model where developers work remotely as part of your team but remain employed by a software development studio. This allows businesses to scale teams quickly without hiring full-time in-house staff.",
     answerUk:
-      "Аустаффінг — це модель, де розробники працюють дистанційно як частина вашої команди, але залишаються працівниками студії розробки програмного забезпечення. Це дозволяє бізнесу швидко масштабувати команди без найму постійного штату на місці.",
+      "Аустафінг — це модель, де розробники працюють дистанційно як частина вашої команди, але залишаються працівниками студії розробки програмного забезпечення. Це дозволяє бізнесу швидко масштабувати команди без найму постійного штату на місці.",
   },
   {
     id: 2,

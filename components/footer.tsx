@@ -397,7 +397,7 @@ export function Footer() {
           {/* Social Icons - Mobile: 3 columns grid, Desktop: horizontal row */}
           <div className="grid grid-cols-3 md:flex md:flex-row md:gap-3 gap-4 justify-items-center">
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=61559195634421"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
@@ -420,7 +420,7 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/company/idea-team-dev/?viewAsMember=true"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
@@ -443,7 +443,7 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href="https://twitter.com"
+              href="https://x.com/IdeaTeamDeV"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
@@ -486,7 +486,7 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href="https://telegram.org"
+              href="https://t.me/OleksandrRomanov777"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
@@ -509,7 +509,7 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href="https://whatsapp.com"
+              href="https://wa.me/380935125038"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
@@ -544,7 +544,7 @@ export function Footer() {
           <div className="grid grid-cols-2 md:flex md:flex-row md:gap-4 gap-4">
             {/* Sortlist Badge */}
             <a
-              href="#"
+              href="https://www.sortlist.com/agency/idea-team?disableCache=true"
               className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
@@ -573,7 +573,7 @@ export function Footer() {
 
             {/* Clutch Badge */}
             <a
-              href="#"
+              href="https://clutch.co/profile/idea-team"
               className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
@@ -613,7 +613,7 @@ export function Footer() {
 
             {/* Google Badge */}
             <a
-              href="#"
+              href="https://ideateam.dev/"
               className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
@@ -632,7 +632,7 @@ export function Footer() {
 
             {/* G2 Badge */}
             <a
-              href="#"
+              href="https://www.g2.com/products/idea-team-dev/reviews"
               className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
@@ -668,7 +668,7 @@ export function Footer() {
 
             {/* DOU Badge */}
             <a
-              href="#"
+              href="https://jobs.dou.ua/companies/idea-team-dev/"
               className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {

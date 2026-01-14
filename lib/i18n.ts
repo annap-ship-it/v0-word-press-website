@@ -172,6 +172,19 @@ export const translations = {
     search: "Search",
     filter: "Filter",
     sort: "Sort",
+
+    // Contact Form Translations
+    letsTalk: "Let's talk",
+    contactFormDesc: "Have any questions or feedback? Send us a message!",
+    enterYourName: "Type Your Name",
+    enterYourEmail: "Type Your Email",
+    enterYourMessage: "Type Your Message",
+    iAccept: "I Accept",
+    bySubmitting: "By submitting your email, you accept terms and conditions.",
+    mayEcho: "We may send you occasionally marketing emails.",
+    attachFileOptional: "Attach file (optional)",
+    caseStudyText:
+      "Proud of our recent work on automating the Admin System where we built a GraphQL API and Vue dashboard with real-time tracking for faster, smarter equipment monitoring.",
   },
   uk: {
     // Navigation
@@ -274,7 +287,7 @@ export const translations = {
     company: "Компанія",
     aboutUs: "Про нас",
     projects: "Проекти",
-    multiChannel: "Багатоканальні посадочні сторінки для електронної комерції",
+    multiChannel: "Багатоканальні лендинги для e-commerce",
     statisticsPlatform: "Платформа статистики",
     sensorInfobox: "Sensor Infobox",
     ecommercePlatform: "Високопродуктивна платформа електронної комерції",
@@ -285,17 +298,8 @@ export const translations = {
 
     // Calculator
     calculatorTitle: "Калькулятор ставок розробників",
-    calculatorSubtitle: "Виберіть спеціаліста, отримайте ставку на місці",
-    calculatorButton: "Розрахувати",
-    testDriveDeveloper: "Тест драйв розробника",
-    freeHours: "Отримайте 10 годин технічної експертизи безкоштовно.",
-    checkFit: "ППеревірте чи наш спеціаліст підходить вашому проєкту з першого дня",
-    noLongCalls: "Жодних довгих передпродажних дзвінків. Ваш запит – наші експерти.",
-    fillForm: "Заповніть коротку форму, і ми надішлемо вам резюме відповідних кандидатів.",
-    yourEmail: "Ваша поштова адреса",
-    yourName: "Ваше ім'я",
-    technologyInterest: "Яка технологія вас цікавить",
-    submitForm: "Відправити",
+    calculatorDescription: "Розраховуйте ідеальні ставки розробників",
+    goToCalculator: "Перейти до калькулятора",
     close: "Закрити",
 
     // Services Page
@@ -355,32 +359,19 @@ export const translations = {
     filter: "Фільтр",
     sort: "Сортування",
 
-    // Calculator Form Labels and Options
-    technology: "Технологія",
-    selectTech: "Виберіть технологію",
-    typeATechnology: "Введіть технологію",
-    noTechnologiesFound: "Технологій не знайдено",
-    experienceLevel: "Рівень досвіду",
-    employmentType: "Тип зайнятості",
-    fullTime: "На повний робочий день",
-    partTime: "На неповний робочий день",
-    projectDuration: "Тривалість проекту",
-    selectItem: "Виберіть елемент...",
-    coreTeam: "Основна команда",
-    calculate: "Розрахувати",
-    yourDeveloperRate: "Ваша ставка розробника становить 20-30$ на годину",
-    matchingCandidates: "У нас є 4 кандидати, які відповідають вашим критеріям",
-    averageMarketRate: "Середня ставка на ринку становить 35-45$ на годину",
-    bookInterview: "Заповнити інтерв'ю, щоб знайти ідеальну відповідність",
-    up2Months: "До 2 місяців",
-    months3To6: "3-6 місяців",
-    months6To1Year: "6 місяців - 1 рік",
-    year1: "1 рік",
-    middle: "Middle",
-    middlePlus: "Middle+",
-    senior: "Senior",
-    solutionArchitect: "Solution Architect",
-    teamLead: "Team Lead",
+    // Contact Form Translations
+    letsTalk: "Поговоримо?",
+    contactFormDesc:
+      "У вас є ідея, у нас є рішення. Надішліть нам ваш запит і давайте обговоримо як ми можемо допомогти.",
+    enterYourName: "Введіть своє ім'я",
+    enterYourEmail: "Введіть свою електронну адресу",
+    enterYourMessage: "Введіть своє повідомлення",
+    iAccept: "Приймаю умови та положення.",
+    bySubmitting: "Надсилаючи свою електронну адресу, ви приймаєте умови та положення.",
+    mayEcho: "Ми можемо час від часу надсилати вам маркетингові листи.",
+    attachFileOptional: "Додати файл (необов'язково)",
+    caseStudyText:
+      "Гордимся нашою недавною роботою з автоматизації системи Admin, де ми створили GraphQL API та Vue dashboard з відстеженням у реальному часі для швидшого та розумнішого моніторингу обладнання.",
   },
 } as const
 

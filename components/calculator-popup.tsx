@@ -1,126 +1,120 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { useTheme } from "@/lib/theme-context"
-import { useLocale } from "@/lib/locale-context"
-import { X } from "lucide-react"
+import { useEffect, useState } from "react"
 
-export function CalculatorPopup() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-  const router = useRouter()
-  const { isDark } = useTheme()
-  const { locale } = useLocale()
+interface RateCalculatorPopoutProps {
+  isOpen: boolean
+  onClose: () => void
+  onCalculateClick: () => void // Added prop to handle calculate button click
+}
 
-  const content = {
-    en: {
-      title: "Developer Rate Calculator",
-      description: "Calculate your ideal developer rates and get insights",
-      calculate: "Go to Calculator",
-      close: "Close",
-    },
-    uk: {
-      title: "Калькулятор ставок розробників",
-      description: "Розраховуйте ідеальні ставки розробників та отримуйте рекомендації",
-      calculate: "Перейти до калькулятора",
-      close: "Закрити",
-    },
-  }
-
-  const t = content[locale as keyof typeof content] || content.en
+function RateCalculatorPopout({ isOpen, onClose, onCalculateClick }: RateCalculatorPopoutProps) {
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true)
-    const dismissed = localStorage.getItem("calculator-dismissed")
-    if (dismissed) return
-
-    const cookiesHandled = localStorage.getItem("cookies-accepted")
-
-    const showCalculator = () => {
-      const timer = setTimeout(() => {
-        setIsVisible(true)
-      }, 3500)
-      return timer
-    }
-
-    // If cookies already handled, show calculator after delay
-    if (cookiesHandled !== null) {
-      const timer = showCalculator()
-      return () => clearTimeout(timer)
-    }
-
-    // Otherwise, wait for cookies to be handled
-    const handleCookiesHandled = () => {
-      const timer = showCalculator()
-      // Store timer reference for cleanup
-      const cleanup = () => clearTimeout(timer)
-      window.addEventListener("beforeunload", cleanup)
-    }
-
-    window.addEventListener("cookies-handled", handleCookiesHandled)
-
-    return () => {
-      window.removeEventListener("cookies-handled", handleCookiesHandled)
-    }
+    setMounted(true)
   }, [])
 
-  const handleClose = () => {
-    setIsVisible(false)
-    localStorage.setItem("calculator-dismissed", "true")
-  }
+  const isLightMode = mounted && theme === "light"
 
-  const handleNavigate = () => {
-    router.push("/calculator")
-    handleClose()
-  }
+  if (!isOpen) return null
 
-  if (!isMounted || !isVisible) return null
+  const handleCalculateClick = () => {
+    onCalculateClick()
+  }
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
-      <div className="fixed inset-0 bg-black/50 pointer-events-auto" onClick={handleClose} />
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-8 pointer-events-none sm:items-center"
+      style={{
+        animation: "fadeIn 0ms ease-out",
+      }}
+    >
       <div
-        className="relative z-50 pointer-events-auto rounded-2xl p-6 md:p-8 max-w-[calc(100vw-32px)] md:max-w-md mx-4 shadow-2xl animate-fade-in"
+        className="relative pointer-events-auto w-full max-w-[360px] mx-auto"
         style={{
-          backgroundColor: isDark ? "var(--black_bg, #161515)" : "#FFFFFF",
-          border: isDark ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid #E8E8E8",
+          borderRadius: "14px",
+          background: isLightMode
+            ? "linear-gradient(131.04deg, #FF6200 -4.14%, #FFFFFF 82.16%)"
+            : "linear-gradient(145.38deg, #FF6200 -45.15%, #161515 77.65%)",
+          boxShadow: "0px 4px 9.2px 0px rgba(0, 0, 0, 0.25)",
+          padding: "clamp(20px, 5vw, 30px)",
         }}
       >
+        {/* Close button */}
         <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 p-2 hover:opacity-70 transition-opacity"
+          onClick={onClose}
+          className="absolute top-[10px] right-[10px] w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity"
           aria-label="Close"
+          style={{
+            filter: isLightMode ? "invert(1)" : "none",
+          }}
         >
-          <X size={20} color={isDark ? "#FFFFFF" : "#212121"} />
+          <Image src="/images/x-square-20-281-29.svg" alt="Close" width={24} height={24} />
         </button>
 
-        <h2 className="text-xl md:text-2xl font-bold mb-3 pr-8" style={{ color: isDark ? "#FFFFFF" : "#212121" }}>
-          {t.title}
+        {/* Title */}
+        <h2
+          className="font-medium mb-3"
+          style={{
+            fontSize: "clamp(28px, 7vw, 36px)",
+            lineHeight: "90%",
+            letterSpacing: "-0.03em",
+            color: isLightMode ? "#000000" : "#FFFFFF",
+          }}
+        >
+          Developer Rate Calculator
         </h2>
-        <p className="mb-6 text-sm md:text-base" style={{ color: isDark ? "#CCCCCC" : "#666666" }}>
-          {t.description}
+
+        {/* Subtitle */}
+        <p
+          className="mb-4"
+          style={{
+            fontSize: "clamp(16px, 4vw, 20px)",
+            lineHeight: "110%",
+            letterSpacing: "-0.03em",
+            color: isLightMode ? "#000000" : "#FFFFFF",
+          }}
+        >
+          Choose a <span style={{ color: "#FF6200" }}>specialist</span>, get the{" "}
+          <span style={{ color: "#FF6200" }}>rate</span> on the spot
         </p>
 
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={handleNavigate}
-            className="w-full px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors text-sm md:text-base"
-          >
-            {t.calculate}
-          </button>
-          <button
-            onClick={handleClose}
-            className="w-full px-6 py-3 rounded-lg font-medium transition-colors text-sm md:text-base"
-            style={{
-              backgroundColor: isDark ? "#333333" : "#F0F0F0",
-              color: isDark ? "#FFFFFF" : "#212121",
-            }}
-          >
-            {t.close}
-          </button>
-        </div>
+        {/* Calculate button */}
+        <button
+          onClick={handleCalculateClick}
+          className="w-full max-w-[300px] h-[30px] rounded-[50px] bg-[#FF6200] text-white font-medium hover:bg-[#E55800] transition-colors"
+          style={{
+            padding: "4px 14px",
+            fontSize: "clamp(14px, 3.5vw, 16px)",
+          }}
+        >
+          Calculate
+        </button>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 479px) {
+          div[class*="pointer-events-auto"] {
+            width: calc(100% - 32px) !important;
+            max-width: 320px !important;
+            padding: 20px !important;
+          }
+        }
+
+        @media (min-width: 480px) and (max-width: 767px) {
+          div[class*="pointer-events-auto"] {
+            width: calc(100% - 48px) !important;
+            max-width: 360px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
+
+export { RateCalculatorPopout as CalculatorPopup }
+export default RateCalculatorPopout

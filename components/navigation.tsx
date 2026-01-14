@@ -7,6 +7,7 @@ import { useLocale } from "@/lib/locale-context"
 import { useTheme } from "@/lib/theme-context"
 import { useState, useRef, useEffect } from "react"
 import { ChevronDown, ChevronUp, Building2, Award, Briefcase, Menu } from "lucide-react"
+import { ContactFormModal } from "@/components/contact-form-modal"
 
 export function Navigation() {
   const { locale, t } = useLocale()
@@ -23,6 +24,7 @@ export function Navigation() {
   const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false)
   const [hoverStates, setHoverStates] = useState<{ [key: number]: string }>({})
   const [isScrolled, setIsScrolled] = useState(false)
+  const [contactFormOpen, setContactFormOpen] = useState(false)
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null)
   const closeTimerRefServices = useRef<NodeJS.Timeout | null>(null)
   const closeTimerRefProjects = useRef<NodeJS.Timeout | null>(null)
@@ -96,6 +98,8 @@ export function Navigation() {
 
   return (
     <>
+      <ContactFormModal isOpen={contactFormOpen} onClose={() => setContactFormOpen(false)} />
+
       {/* Desktop Navigation */}
       <nav className="fixed top-10 left-1/2 -translate-x-1/2 z-50 hidden xl:block">
         <div
@@ -1144,6 +1148,7 @@ export function Navigation() {
             <LocaleToggle />
             <ThemeToggle />
             <button
+              onClick={() => setContactFormOpen(true)}
               className="transition-all ease-out whitespace-nowrap bg-transparent hover:bg-[#FF62001A] active:bg-[#FF62004D] disabled:bg-[#FF62004D] disabled:cursor-not-allowed"
               style={{
                 minWidth: "fit-content",
@@ -1839,7 +1844,7 @@ export function Navigation() {
                     <div className="mt-5 min-[480px]:mt-0 min-[480px]:flex min-[480px]:items-start min-[480px]:justify-center min-[480px]:min-w-[200px]">
                       <Link
                         href="/services"
-                        className="relative overflow-hidden block transition-all duration-300 ease-out"
+                        className="relative overflow-hidden block transition-all duration-300 ease-out hover:scale-105"
                         style={{
                           width: "100%",
                           maxWidth: "280px",
@@ -2344,6 +2349,10 @@ export function Navigation() {
                 letterSpacing: "0.02em",
                 color: "#FFFFFF",
                 padding: "12px 14px",
+              }}
+              onClick={() => {
+                setContactFormOpen(true)
+                setMobileMenuOpen(false)
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "#E55800"

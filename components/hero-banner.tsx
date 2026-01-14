@@ -28,11 +28,11 @@ export function HeroBanner() {
       professionals: "Professionals",
     },
     uk: {
-      mainTitle: "Перетворюємо вашу ідею в",
+      mainTitle: "Перетворюємо вашу ідею на",
       mainTitleGradient: "технічне рішення",
       subtitle1: "Вам не потрібні кращі розробники.",
       subtitle2: "Вам потрібні правильні розробники у правильний час.",
-      buttonText: "Тест розробника",
+      buttonText: "Тест-драйв розробника",
       buttonDescription1: "Отримайте 10 годин безкоштовної технічної експертизи.",
       buttonDescription2: "Перевірте відповідність з першого дня.",
       estimations: "Кошторисів",
