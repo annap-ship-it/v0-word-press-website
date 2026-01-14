@@ -72,6 +72,12 @@ export function Footer() {
   const [latestPosts, setLatestPosts] = useState<BlogPost[]>([])
   const [error, setError] = useState<string | null>(null)
 
+  const handleLinkClick = () => {
+    setTimeout(() => {
+      window.scrollTo(0, 0)
+    }, 0)
+  }
+
   useEffect(() => {
     const fetchLatestPosts = async () => {
       try {
@@ -150,7 +156,7 @@ export function Footer() {
         {/* Top section with logo, contact, and navigation */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12 pb-12">
           <div className="lg:col-span-3">
-            <Link href="/" className="inline-block mb-6">
+            <Link href="/" onClick={handleLinkClick} className="inline-block mb-6">
               <Image src="/images/logo-dark.svg" alt="IdeaTeam" width={140} height={22} />
             </Link>
 
@@ -208,7 +214,8 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/about"
+                  href="/#about-us"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.aboutUs}
@@ -216,7 +223,8 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/experience"
+                  href="/#our-expertise"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.ourExperience}
@@ -225,6 +233,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/careers"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.careers}
@@ -236,6 +245,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link
               href="/projects"
+              onClick={handleLinkClick}
               className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
             >
               {t.projects}
@@ -244,6 +254,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/projects/multi-brand-ecommerce"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.multibrande}
@@ -252,6 +263,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/projects/statistics-platform"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.statisticsPlatform}
@@ -260,6 +272,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/projects/sensor-infobox"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.sensorInfobox}
@@ -268,6 +281,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/projects/ecommerce-platform"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.ecommercePlatform}
@@ -279,6 +293,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link
               href="/services"
+              onClick={handleLinkClick}
               className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
             >
               {t.services}
@@ -287,6 +302,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services#custom-web-solutions"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.customWeb}
@@ -295,6 +311,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services#mobile-applications"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.mobileApps}
@@ -303,6 +320,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services#ux-ui-design"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.uxui}
@@ -311,6 +329,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services#qa"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.qa}
@@ -319,6 +338,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services#devops"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.devops}
@@ -327,6 +347,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services#data-analytics"
+                  onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
                   {t.dataAnalytics}
@@ -338,6 +359,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link
               href="/blog"
+              onClick={handleLinkClick}
               className="text-white font-semibold text-base mb-4 block hover:text-[#FF6200] transition-colors duration-300"
             >
               {t.blog}
@@ -348,6 +370,7 @@ export function Footer() {
                   <li key={post.slug}>
                     <Link
                       href={`/blog/${post.slug}`}
+                      onClick={handleLinkClick}
                       className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300 line-clamp-2"
                     >
                       {post.title}
@@ -358,6 +381,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/blog"
+                    onClick={handleLinkClick}
                     className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                   >
                     {t.viewAllPosts}

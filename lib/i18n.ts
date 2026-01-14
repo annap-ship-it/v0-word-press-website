@@ -66,6 +66,7 @@ export const translations = {
     author: "Author",
     minRead: "min read",
     shareThisArticle: "Share this article",
+    viewAllPosts: "View All Posts",
 
     // About
     aboutTitle: "About Us",
@@ -180,7 +181,7 @@ export const translations = {
     portfolio: "Портфоліо",
     blog: "Блог",
     contact: "Контакти",
-    allServices: "Всі послуги",
+    allServices: "Наші сервіси",
     viewAll: "Переглянути все",
 
     // Hero Banner
@@ -199,7 +200,7 @@ export const translations = {
     customWebSolutions: "Індивідуальні веб-рішення",
     mobileApplications: "Мобільні додатки",
     uiUxDesign: "UI/UX та графічний дизайн",
-    qaAutomation: "Ручне та автоматизоване тестування",
+    qaAutomation: "Ручне та автоматизоване тестування (QA)",
     devops: "DevOps",
     dataAnalytics: "Аналітика даних",
     customWebSolutionsDesc:
@@ -225,9 +226,9 @@ export const translations = {
 
     // Portfolio/Projects
     portfolioTitle: "Наші проекти",
-    viewProject: "Переглянути проект",
-    portfolioHeading: "Портфель наших ключових проектів",
-    exploreAllPortfolio: "Переглянути весь портфель",
+    viewProject: "Детальніше",
+    portfolioHeading: "Портфоліо наших ключових проектів",
+    exploreAllPortfolio: "Детальніше",
 
     // Blog
     blogTitle: "Останні статті",
@@ -238,6 +239,7 @@ export const translations = {
     author: "Автор",
     minRead: "хв читання",
     shareThisArticle: "Поділитися статтею",
+    viewAllPosts: "Переглянути всі статті",
 
     // About
     aboutTitle: "Про нас",
@@ -245,7 +247,7 @@ export const translations = {
     aboutUsNav: "Про нас",
     ourExperience: "Наш досвід",
     careers: "Кар'єра",
-    differentCountries: "Різних країн",
+    differentCountries: "Різних країних",
     readAllReviews: "Прочитати всі відгуки",
 
     // FAQ
@@ -283,8 +285,17 @@ export const translations = {
 
     // Calculator
     calculatorTitle: "Калькулятор ставок розробників",
-    calculatorDescription: "Розраховуйте ідеальні ставки розробників",
-    goToCalculator: "Перейти до калькулятора",
+    calculatorSubtitle: "Виберіть спеціаліста, отримайте ставку на місці",
+    calculatorButton: "Розрахувати",
+    testDriveDeveloper: "Тест драйв розробника",
+    freeHours: "Отримайте 10 годин технічної експертизи безкоштовно.",
+    checkFit: "ППеревірте чи наш спеціаліст підходить вашому проєкту з першого дня",
+    noLongCalls: "Жодних довгих передпродажних дзвінків. Ваш запит – наші експерти.",
+    fillForm: "Заповніть коротку форму, і ми надішлемо вам резюме відповідних кандидатів.",
+    yourEmail: "Ваша поштова адреса",
+    yourName: "Ваше ім'я",
+    technologyInterest: "Яка технологія вас цікавить",
+    submitForm: "Відправити",
     close: "Закрити",
 
     // Services Page
@@ -339,10 +350,37 @@ export const translations = {
     loading: "Завантаження...",
     noData: "Немає доступних даних",
     tryAgain: "Спробувати ще раз",
-    goBack: "Повернутися назад",
+    goBack: "Назад",
     search: "Пошук",
     filter: "Фільтр",
     sort: "Сортування",
+
+    // Calculator Form Labels and Options
+    technology: "Технологія",
+    selectTech: "Виберіть технологію",
+    typeATechnology: "Введіть технологію",
+    noTechnologiesFound: "Технологій не знайдено",
+    experienceLevel: "Рівень досвіду",
+    employmentType: "Тип зайнятості",
+    fullTime: "На повний робочий день",
+    partTime: "На неповний робочий день",
+    projectDuration: "Тривалість проекту",
+    selectItem: "Виберіть елемент...",
+    coreTeam: "Основна команда",
+    calculate: "Розрахувати",
+    yourDeveloperRate: "Ваша ставка розробника становить 20-30$ на годину",
+    matchingCandidates: "У нас є 4 кандидати, які відповідають вашим критеріям",
+    averageMarketRate: "Середня ставка на ринку становить 35-45$ на годину",
+    bookInterview: "Заповнити інтерв'ю, щоб знайти ідеальну відповідність",
+    up2Months: "До 2 місяців",
+    months3To6: "3-6 місяців",
+    months6To1Year: "6 місяців - 1 рік",
+    year1: "1 рік",
+    middle: "Middle",
+    middlePlus: "Middle+",
+    senior: "Senior",
+    solutionArchitect: "Solution Architect",
+    teamLead: "Team Lead",
   },
 } as const
 

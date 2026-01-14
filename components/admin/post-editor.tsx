@@ -19,7 +19,7 @@ interface PostEditorProps {
 export function PostEditor({ post }: PostEditorProps) {
   const router = useRouter()
   const [supabase, setSupabase] = useState<any>(null)
-
+  const [isClient, setIsClient] = useState(false) // track if component is mounted on client
   const [title, setTitle] = useState(post?.title || "")
   const [slug, setSlug] = useState(post?.slug || "")
   const [excerpt, setExcerpt] = useState(post?.excerpt || "")
@@ -36,6 +36,7 @@ export function PostEditor({ post }: PostEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
 
   useEffect(() => {
+    setIsClient(true) // mark component as client-side mounted
     setSupabase(createBrowserClient())
   }, [])
 
@@ -126,7 +127,7 @@ export function PostEditor({ post }: PostEditorProps) {
     }
   }
 
-  if (!supabase) {
+  if (!isClient || !supabase) {
     return (
       <div className="min-h-screen bg-[#f0f0f1] dark:bg-[#1d2327] p-6 flex items-center justify-center">
         <div className="text-[#1d2327] dark:text-[#f0f0f1]">Loading editor...</div>

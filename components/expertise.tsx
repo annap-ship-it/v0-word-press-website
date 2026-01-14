@@ -79,7 +79,7 @@ export function ExpertiseSection() {
   const t = content[locale as "en" | "uk"] || content.en
 
   return (
-    <section className="py-16 px-4 md:py-24 bg-transparent">
+    <section id="our-expertise" className="py-16 px-4 md:py-24 bg-transparent">
       <div className="max-w-7xl mx-auto px-8 py-32 relative overflow-hidden rounded-2xl bg-[#212121]">
         {/* Фоновые векторы */}
         <div className="absolute inset-0 pointer-events-none">

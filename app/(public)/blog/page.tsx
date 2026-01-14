@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useLocale } from "@/lib/locale-context" // Import useLocale hook
+import { translations } from "@/lib/i18n"
 
 import Link from "next/link"
 import Image from "next/image"
@@ -14,8 +15,8 @@ interface Post {
   slug: string
   excerpt: string
   featured_image: string | null
-  category_id: string
-  categories: { name: string; slug: string }[]
+  category_id: string | null // Allow category_id to be null
+  categories: { name: string; slug: string }[] | null // Allow categories to be null
   created_at: string
   published_at: string | null
   author_id: string
@@ -39,9 +40,9 @@ function getAuthorName(author: Post["author"]): string {
   return author?.display_name || "Author"
 }
 
-function formatDate(dateString: string): string {
+function formatDate(dateString: string, locale: string): string {
   const date = new Date(dateString)
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString(locale === "uk" ? "uk-UA" : "en-US", {
     month: "long",
     day: "2-digit",
     year: "numeric",
@@ -100,24 +101,15 @@ function AnimatedCard({ children, delay = 0 }: { children: React.ReactNode; dela
 export default function BlogPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
-
-  const translations = {
-    en: {
-      blog: "Blog",
-      lastNews: "Last news",
-      author: "Author",
-      viewAllPosts: "View All Posts",
-    },
-    uk: {
-      blog: "Блог",
-      lastNews: "Останні новини",
-      author: "Автор",
-      viewAllPosts: "Переглянути всі статті",
-    },
-  }
+  const [displayAllPosts, setDisplayAllPosts] = useState(false) // track if showing all posts
+  const [searchQuery, setSearchQuery] = useState("")
 
   const { locale } = useLocale()
-  const t = translations[locale]
+  const t = translations[locale as "en" | "uk"] || translations.en
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     async function fetchPosts() {
@@ -125,7 +117,7 @@ export default function BlogPage() {
 
       console.log("[v0] Fetching posts for locale:", locale)
 
-      const { data: postsData, error } = await supabase
+      const { data: postsData, error: localeError } = await supabase
         .from("posts")
         .select(
           `id, title, slug, excerpt, featured_image, 
@@ -137,11 +129,28 @@ export default function BlogPage() {
         .eq("locale", locale)
         .order("published_at", { ascending: false, nullsFirst: false })
 
-      console.log("[v0] Query error:", error)
+      console.log("[v0] Query error:", localeError)
       console.log("[v0] Fetched posts:", postsData)
 
-      if (!error && postsData && postsData.length > 0) {
-        const authorIds = [...new Set(postsData.map((p) => p.author_id).filter(Boolean))]
+      let finalPostsData = postsData
+      if ((!localeError && postsData && postsData.length === 0) || (localeError && locale !== "en")) {
+        console.log("[v0] No posts found for locale:", locale, "- falling back to English")
+        const { data: englishPosts, error: englishError } = await supabase
+          .from("posts")
+          .select(
+            `id, title, slug, excerpt, featured_image, 
+             category_id,
+             categories(name, slug),
+             created_at, published_at, author_id, locale`,
+          )
+          .eq("status", "published")
+          .eq("locale", "en")
+          .order("published_at", { ascending: false, nullsFirst: false })
+        finalPostsData = englishPosts
+      }
+
+      if (!localeError && finalPostsData && finalPostsData.length > 0) {
+        const authorIds = [...new Set(finalPostsData.map((p) => p.author_id).filter(Boolean))]
 
         let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
 
@@ -162,7 +171,7 @@ export default function BlogPage() {
           }
         }
 
-        const postsWithAuthors = postsData.map((post) => ({
+        const postsWithAuthors = finalPostsData.map((post) => ({
           ...post,
           author: authorsMap[post.author_id] || null,
         }))
@@ -170,7 +179,7 @@ export default function BlogPage() {
         setPosts(postsWithAuthors)
         console.log("[v0] Posts set successfully:", postsWithAuthors)
       } else {
-        console.log("[v0] No posts found for locale:", locale, "- will use default posts")
+        console.log("[v0] No posts found - will use default posts")
       }
       setLoading(false)
     }
@@ -281,10 +290,22 @@ export default function BlogPage() {
     },
   ]
 
-  const displayPosts = posts.length > 0 && posts.every((post) => post.locale === locale) ? posts : defaultPosts
-  const displayFeatured = displayPosts[0]
-  const displayLatestNews = displayPosts.slice(1, 3)
-  const displayRegular = displayPosts.slice(3)
+  const displayPosts = posts.length > 0 ? posts : defaultPosts
+
+  const filteredPosts = searchQuery.trim()
+    ? displayPosts.filter((post) => {
+        const query = searchQuery.toLowerCase()
+        return post.title.toLowerCase().includes(query) || post.excerpt.toLowerCase().includes(query)
+      })
+    : displayPosts
+
+  const displayFeatured = filteredPosts[0]
+  const displayLatestNews = filteredPosts.slice(1, 3)
+  const displayRegular = displayAllPosts ? filteredPosts.slice(3) : []
+  const totalPosts = filteredPosts.length
+  const visiblePosts = 3
+
+  const showViewAllButton = !displayAllPosts && totalPosts > visiblePosts
 
   if (loading) {
     return (
@@ -296,6 +317,19 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--background)" }}>
+      {/* Search Section - MOVED TO TOP */}
+      <section className="py-8 md:py-12 border-b border-[#E5E5E5] dark:border-[#333]">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <input
+            type="text"
+            placeholder={t.search || "Search articles..."}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-2 rounded border border-[#FF6200] bg-[var(--background)] text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[#FF6200]"
+          />
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
@@ -323,7 +357,7 @@ export default function BlogPage() {
                   <div className="relative">
                     {/* Image - Added zoom effect on hover */}
                     <div className="relative h-[300px] md:h-[400px] rounded-[14px] overflow-hidden mb-6">
-                      {displayFeatured.categories[0]?.name && (
+                      {displayFeatured.categories && displayFeatured.categories[0]?.name && (
                         <div className="absolute top-4 left-4 z-10">
                           <span
                             className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(
@@ -362,7 +396,11 @@ export default function BlogPage() {
                       </span>
                       <span className="text-sm text-[#787877] dark:text-[#CCCCCC]">•</span>
                       <span className="text-sm" style={{ color: "var(--foreground)" }}>
-                        {formatDate(displayFeatured.published_at || displayFeatured.created_at)}
+                        {formatDate(displayFeatured.published_at || displayFeatured.created_at, locale)}
+                      </span>
+                      <span className="text-sm text-[#787877] dark:text-[#CCCCCC]">•</span>
+                      <span className="text-sm" style={{ color: "var(--foreground)" }}>
+                        3 {t.minRead}
                       </span>
                     </div>
                   </div>
@@ -390,15 +428,19 @@ export default function BlogPage() {
                         </h4>
                         <p className="text-sm text-[#787877] dark:text-[#CCCCCC] mb-3 line-clamp-2">{post.excerpt}</p>
                         <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-xs font-medium">
-                            {getAuthorInitials(post.author?.display_name)}
-                          </div>
-                          <span className="text-xs" style={{ color: "var(--foreground)" }}>
-                            {getAuthorName(post.author)}
-                          </span>
+                          {post.author && (
+                            <>
+                              <div className="w-6 h-6 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-xs font-medium">
+                                {getAuthorInitials(post.author.display_name)}
+                              </div>
+                              <span className="text-xs" style={{ color: "var(--foreground)" }}>
+                                {post.author.display_name || "Anonymous"}
+                              </span>
+                            </>
+                          )}
                           <span className="text-xs text-[#787877] dark:text-[#CCCCCC]">•</span>
                           <span className="text-xs" style={{ color: "var(--foreground)" }}>
-                            {formatDate(post.published_at || post.created_at)}
+                            {formatDate(post.published_at || post.created_at, locale)}
                           </span>
                         </div>
                       </Link>
@@ -409,64 +451,55 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Regular Posts Grid */}
+          {/* Regular Posts Grid - Only show when user clicks "View All" */}
           {displayRegular.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {displayRegular.map((post, index) => (
-                <AnimatedCard key={post.id} delay={100 * (index + 1)}>
-                  <Link href={`/blog/${post.slug}`} className="group block">
-                    <div className="relative h-[200px] md:h-[250px] rounded-[14px] overflow-hidden mb-4">
-                      {post.categories[0]?.name && (
-                        <div className="absolute top-4 left-4 z-10">
-                          <span
-                            className={`px-3 py-1.5 rounded-[4px] text-xs font-medium text-white ${getCategoryColor(post.categories[0].name)}`}
-                          >
-                            {post.categories[0].name}
-                          </span>
+            <div className="mb-20">
+              <h3 className="text-3xl font-bold mb-8">{t.blog}</h3>
+              <div className="space-y-8">
+                {displayRegular.map((post, idx) => (
+                  <AnimatedCard key={post.id} delay={idx * 100}>
+                    <Link href={`/blog/${post.slug}`} className="group block">
+                      <div className="flex gap-6 hover:opacity-80 transition">
+                        <Image
+                          src={post.featured_image || "/placeholder.svg"}
+                          alt={post.title}
+                          width={200}
+                          height={150}
+                          className="w-[200px] h-[150px] object-cover rounded-lg flex-shrink-0"
+                        />
+                        <div className="flex-1">
+                          <h4 className="text-xl font-semibold mb-2 group-hover:text-[#FF6200] transition">
+                            {post.title}
+                          </h4>
+                          <p className="text-foreground opacity-70 mb-3">{post.excerpt}</p>
+                          <div className="flex items-center gap-3 text-sm opacity-70">
+                            {post.author && (
+                              <>
+                                <span>{post.author.display_name || "Anonymous"}</span>
+                                <span>•</span>
+                              </>
+                            )}
+                            <span>{formatDate(post.created_at, locale)}</span>
+                          </div>
                         </div>
-                      )}
-                      <Image
-                        src={post.featured_image || "/placeholder.svg?height=250&width=400"}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      />
-                    </div>
-
-                    <p className="text-xs mb-2" style={{ color: "var(--foreground)" }}>
-                      {formatDate(post.published_at || post.created_at)}
-                    </p>
-
-                    <h3
-                      className="text-base md:text-lg font-semibold mb-3 group-hover:text-[#FF6200] transition-colors line-clamp-2"
-                      style={{ color: "var(--foreground)" }}
-                    >
-                      {post.title}
-                    </h3>
-
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-xs font-medium">
-                        {getAuthorInitials(post.author?.display_name)}
                       </div>
-                      <span className="text-xs" style={{ color: "var(--foreground)" }}>
-                        {getAuthorName(post.author)}
-                      </span>
-                    </div>
-                  </Link>
-                </AnimatedCard>
-              ))}
+                    </Link>
+                  </AnimatedCard>
+                ))}
+              </div>
             </div>
           )}
 
-          {/* View All Posts Link */}
-          <div className="text-center mt-12">
-            <Link
-              href="/blog"
-              className="inline-block px-8 py-3 border-2 border-[#FF6200] text-[#FF6200] font-semibold rounded-lg hover:bg-[#FF6200] hover:text-white transition-all"
-            >
-              {t.viewAllPosts}
-            </Link>
-          </div>
+          {showViewAllButton && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setDisplayAllPosts(true)}
+                className="px-8 py-3 border border-[#FF6200] text-[#FF6200] rounded-lg hover:bg-[#FF6200] hover:text-white transition"
+              >
+                {t.viewAllPosts}
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>

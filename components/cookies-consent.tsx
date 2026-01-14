@@ -43,28 +43,30 @@ export function CookiesConsent() {
 
   const handleAccept = () => {
     localStorage.setItem("cookies-accepted", "true")
+    window.dispatchEvent(new CustomEvent("cookies-handled"))
     setIsVisible(false)
   }
 
   const handleDeny = () => {
     localStorage.setItem("cookies-accepted", "false")
+    window.dispatchEvent(new CustomEvent("cookies-handled"))
     setIsVisible(false)
   }
 
   if (!isMounted || !isVisible) return null
 
   return (
-    <div className="fixed bottom-8 left-8 z-50 pointer-events-auto">
-      <div className="flex flex-col items-center gap-4 w-24">
+    <div className="fixed bottom-4 left-4 right-4 md:right-auto md:left-8 md:bottom-8 z-50 pointer-events-auto">
+      <div className="flex flex-col items-center md:items-start gap-4 max-w-sm mx-auto md:mx-0">
         {/* Cookie Icon */}
-        <div className="relative">
+        <div className="relative self-start">
           <svg
             width="101"
             height="101"
             viewBox="0 0 101 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-24 h-24"
+            className="w-16 h-16 md:w-24 md:h-24"
           >
             <g filter="url(#filter0_d_445_2424)">
               <path
@@ -118,16 +120,16 @@ export function CookiesConsent() {
 
         {/* Settings Panel */}
         <div
-          className="rounded-2xl p-6 space-y-4 w-80 animate-fade-in"
+          className="rounded-2xl p-4 md:p-6 space-y-4 w-full max-w-[320px] animate-fade-in"
           style={{
             backgroundColor: isDark ? "var(--black_bg, #161515)" : "#FFFFFF",
             border: isDark ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid #E8E8E8",
           }}
         >
-          <h3 className="text-lg font-bold" style={{ color: isDark ? "#FFFFFF" : "#212121" }}>
+          <h3 className="text-base md:text-lg font-bold" style={{ color: isDark ? "#FFFFFF" : "#212121" }}>
             {t.title}
           </h3>
-          <p className="text-sm" style={{ color: isDark ? "#999999" : "#666666" }}>
+          <p className="text-xs md:text-sm" style={{ color: isDark ? "#999999" : "#666666" }}>
             {t.description}
           </p>
 
@@ -139,11 +141,11 @@ export function CookiesConsent() {
               { label: t.marketing, enabled: false },
             ].map((option) => (
               <div key={option.label} className="flex items-center justify-between">
-                <span className="text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
+                <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
                   {option.label}
                 </span>
                 <div
-                  className="w-10 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer"
+                  className="w-10 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer flex-shrink-0"
                   style={{
                     backgroundColor: option.enabled ? "#FF6200" : "#E0E0E0",
                   }}
@@ -162,7 +164,7 @@ export function CookiesConsent() {
           <div className="flex gap-3 pt-4">
             <button
               onClick={handleDeny}
-              className="flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="flex-1 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-colors"
               style={{
                 backgroundColor: isDark ? "#333333" : "#F0F0F0",
                 color: isDark ? "#FFFFFF" : "#212121",
@@ -172,7 +174,7 @@ export function CookiesConsent() {
             </button>
             <button
               onClick={handleAccept}
-              className="flex-1 px-4 py-2 rounded-lg text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+              className="flex-1 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 transition-colors"
             >
               {t.accept}
             </button>

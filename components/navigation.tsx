@@ -828,7 +828,9 @@ export function Navigation() {
                     top: "46px", // Changed top position to 46px margin from navigation top
                     left: "50%",
                     transform: "translateX(-50%)",
-                    width: "552px",
+                    width: "auto",
+                    minWidth: "600px",
+                    maxWidth: "calc(100vw - 40px)",
                   }}
                 >
                   {/* Triangle pointer */}
@@ -849,8 +851,8 @@ export function Navigation() {
                   {/* Dropdown content */}
                   <div
                     style={{
-                      width: "552px",
-                      height: "315px",
+                      width: "100%",
+                      minHeight: "315px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#F5F5F5",
                       padding: "20px",
@@ -860,7 +862,7 @@ export function Navigation() {
                     }}
                   >
                     {/* Left Column - Image */}
-                    <div style={{ width: "50%" }}>
+                    <div style={{ width: "auto", flexShrink: 0 }}>
                       <Link
                         href="/projects"
                         onClick={() => setProjectsOpen(false)}
@@ -889,10 +891,12 @@ export function Navigation() {
                     {/* Right Column - Project Links */}
                     <div
                       style={{
-                        width: "50%",
+                        width: "auto",
+                        flex: 1,
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
+                        minWidth: "300px",
                       }}
                     >
                       <div
@@ -903,7 +907,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects"
+                          href="/projects/multi-brand-ecommerce"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -936,7 +940,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects"
+                          href="/projects/statistics-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -969,7 +973,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects"
+                          href="/projects/sensor-infobox"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1002,7 +1006,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects"
+                          href="/projects/ecommerce-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1087,7 +1091,8 @@ export function Navigation() {
                             transition: "all 300ms ease-out",
                             textDecoration: "none",
                             display: "inline-block",
-                            width: "193px",
+                            width: "auto",
+                            minWidth: "fit-content",
                             height: "30px",
                             lineHeight: "22px",
                           }}
@@ -1141,11 +1146,12 @@ export function Navigation() {
             <button
               className="transition-all ease-out whitespace-nowrap bg-transparent hover:bg-[#FF62001A] active:bg-[#FF62004D] disabled:bg-[#FF62004D] disabled:cursor-not-allowed"
               style={{
-                width: "120px",
+                minWidth: "fit-content",
+                width: "auto",
                 height: "40px",
                 borderRadius: "50px",
                 border: "1px solid #FF6200",
-                padding: "4px 14px",
+                padding: "4px 16px",
                 fontFamily: "Onest",
                 fontWeight: 400,
                 fontSize: "16px",
@@ -1288,8 +1294,9 @@ export function Navigation() {
             className="fixed z-50 animate-in fade-in"
             style={{
               top: "96px",
-              left: "24px",
-              width: "calc(100vw - 48px)",
+              left: "16px",
+              right: "16px",
+              width: "auto",
               maxWidth: "720px",
               maxHeight: "calc(100vh - 120px)",
               overflowY: "auto",
@@ -1298,15 +1305,16 @@ export function Navigation() {
               borderRadius: "14px",
               background: isDark ? "#212121" : "#FFFFFF",
               boxShadow: !isDark ? "0px 4px 10px 0px #00000026" : undefined,
-              paddingTop: "50px",
-              paddingRight: "36px",
-              paddingBottom: "50px",
-              paddingLeft: "36px",
+              paddingTop: "30px",
+              paddingRight: "20px",
+              paddingBottom: "30px",
+              paddingLeft: "20px",
               gap: "13px",
               display: "flex",
               flexDirection: "column",
               animationTimingFunction: "ease-out",
               animationDuration: "300ms",
+              margin: "0 auto",
             }}
           >
             {/* Company Accordion */}
@@ -1945,7 +1953,7 @@ export function Navigation() {
                     }}
                   >
                     <Link
-                      href="/projects"
+                      href="/projects/multi-brand-ecommerce"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -1994,7 +2002,7 @@ export function Navigation() {
                       {t.multibrandEcommerce}
                     </Link>
                     <Link
-                      href="/projects"
+                      href="/projects/statistics-platform"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2043,7 +2051,7 @@ export function Navigation() {
                       {t.statisticsPlatform}
                     </Link>
                     <Link
-                      href="/projects"
+                      href="/projects/sensor-infobox"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2092,7 +2100,7 @@ export function Navigation() {
                       {t.sensorInfobox}
                     </Link>
                     <Link
-                      href="/projects"
+                      href="/projects/ecommerce-platform"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2179,8 +2187,8 @@ export function Navigation() {
                           className="hidden min-[480px]:block"
                           style={{
                             width: "100%",
-                            maxWidth: "235px",
-                            height: "276px",
+                            maxWidth: "180px",
+                            height: "210px",
                             borderRadius: "6px",
                             background: "#000000",
                             overflow: "hidden",
@@ -2201,20 +2209,22 @@ export function Navigation() {
                     </div>
 
                     {/* Heading and Button - right column */}
-                    <div className="flex flex-col justify-center gap-3 flex-1">
+                    <div className="flex flex-col justify-center gap-3 flex-1 min-w-0">
                       <h3
                         style={{
                           fontFamily: "Onest",
                           fontWeight: 500,
-                          fontSize: "20px",
-                          lineHeight: "110%",
+                          fontSize: "18px",
+                          lineHeight: "120%",
                           letterSpacing: "-0.03em",
                           color: isDark ? "#FFFFFF" : "#000000",
                           margin: 0,
+                          wordWrap: "break-word",
+                          overflowWrap: "break-word",
+                          whiteSpace: "normal",
                         }}
-                        className="min-[480px]:text-2xl"
+                        className="min-[480px]:text-xl"
                       >
-                        {/* Using t.portfolioHeading from useLocale hook instead of currentTranslations */}
                         {t.portfolioHeading}
                       </h3>
                       <Link
@@ -2238,9 +2248,9 @@ export function Navigation() {
                         style={{
                           fontFamily: "Onest",
                           fontWeight: 500,
-                          fontSize: "14px",
+                          fontSize: "13px",
                           color: isDark ? "#FFFFFF" : "#212121",
-                          padding: "8px 16px",
+                          padding: "8px 12px",
                           borderRadius: "50px",
                           border: "1px solid #FF6200",
                           background: "transparent",
@@ -2248,12 +2258,17 @@ export function Navigation() {
                           textAlign: "center",
                           transition: "all 300ms ease-out",
                           textDecoration: "none",
-                          display: "inline-block",
-                          whiteSpace: "nowrap",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          whiteSpace: "normal",
+                          maxWidth: "100%",
+                          wordWrap: "break-word",
+                          overflowWrap: "break-word",
+                          lineHeight: "1.4",
                         }}
-                        className="min-[480px]:text-base"
+                        className="min-[480px]:text-sm self-start"
                       >
-                        {/* Using t.exploreAllPortfolio from useLocale hook instead of currentTranslations */}
                         {t.exploreAllPortfolio}
                       </Link>
                     </div>

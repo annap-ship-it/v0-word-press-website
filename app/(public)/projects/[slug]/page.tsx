@@ -83,7 +83,7 @@ const defaultProjectsData: Record<string, any> = {
     },
     challenge: {
       en: "Develop a scalable internal monitoring tool with real-time data updates for tracking robotic warehouse systems. The system needed to handle thousands of data points per second while maintaining a responsive user interface.",
-      uk: "Розробка масштабованого внутрішнього інструменту моніторингу з оновленням даних у реальному часі для відстеження робототехнічних систем складу. Система мала обробляти тисячі точок даних за секунду, зберігаючи оперативний інтерфейс користувача.",
+      uk: "Розробка масштабованого внутрішнього інструменту моніторингу з live-оновленням даних для відстеження робототехнічних систем складу. Система мала обробляти тисячі точок даних за секунду зберігаючи оперативний інтерфейс користувача.",
     },
     solution: {
       en: "We designed full architecture from scratch, implemented GraphQL APIs for efficient data fetching, and built the admin frontend using Vue.js and Vuex for state management. Integrated Web Push notifications for critical alerts and Apollo Client for real-time data subscriptions.",
@@ -117,7 +117,7 @@ const defaultProjectsData: Record<string, any> = {
       company: "Symbotic",
     },
   },
-  "intertop-sensor-infobox": {
+  "sensor-infobox": {
     title: {
       en: "Intertop Sensor Infobox",
       uk: "Intertop Sensor Infobox",
@@ -179,7 +179,7 @@ const defaultProjectsData: Record<string, any> = {
       company: "Intertop",
     },
   },
-  "multi-brand-ecommerce-landing-pages": {
+  "multi-brand-ecommerce": {
     title: {
       en: "Multi-brand E-commerce Landing Pages",
       uk: "Багатобрендові лендинги електронної комерції",
@@ -241,7 +241,131 @@ const defaultProjectsData: Record<string, any> = {
       company: "Tech Brands Inc.",
     },
   },
-  "testing-expertise-sports-social-platform": {
+  "statistics-platform": {
+    title: {
+      en: "Statistics Platform",
+      uk: "Платформа статистики",
+    },
+    featured_image: "/platform-dashboard-analytics.jpg",
+    client: {
+      en: "Sports Analytics Client",
+      uk: "Клієнт спортивної аналітики",
+    },
+    industry: {
+      en: "Sports Analytics",
+      uk: "Спортивна аналітика",
+    },
+    duration: {
+      en: "6 months",
+      uk: "6 місяців",
+    },
+    team: {
+      en: "4 developers, 1 designer",
+      uk: "4 розробники, 1 дизайнер",
+    },
+    overview: {
+      en: "A comprehensive sports statistics platform for tracking and analyzing athlete performance metrics.",
+      uk: "Комплексна платформа спортивної статистики для відстеження та аналізу метрик продуктивності спортсменів.",
+    },
+    challenge: {
+      en: "Create a scalable platform for processing massive amounts of sports data in real-time.",
+      uk: "Створити масштабовану платформу для обробки великих обсягів спортивних даних у реальному часі.",
+    },
+    solution: {
+      en: "Developed a real-time analytics engine with interactive dashboards for coaches and analysts.",
+      uk: "Розроблено engine реал-тайм аналітики з інтерактивними панелями керування для тренерів та аналітиків.",
+    },
+    result: {
+      en: "Enabled coaches to make data-driven decisions with instant insights into athlete performance.",
+      uk: "Дозволено тренерам приймати рішення на основі даних з миттєвими аналізами продуктивності спортсменів.",
+    },
+    stack: ["React", "Node.js", "PostgreSQL", "Redis", "Chart.js", "WebSocket"],
+    features: {
+      en: [
+        "Real-time analytics dashboard",
+        "Athlete performance tracking",
+        "Data visualization and reporting",
+        "Team management system",
+        "Mobile app integration",
+      ],
+      uk: [
+        "Панель керування реал-тайм аналітики",
+        "Відстеження продуктивності спортсменів",
+        "Візуалізація даних та звітування",
+        "Система управління командою",
+        "Інтеграція мобільного додатка",
+      ],
+    },
+    gallery: ["/analytics-dashboard.jpg", "/performance-charts.jpg", "/athlete-tracking.jpg"],
+    testimonial: {
+      quote: "Excellent analytics platform for our team!",
+      author: "Coach Smith",
+      company: "Sports Team",
+    },
+  },
+  "ecommerce-platform": {
+    title: {
+      en: "High-performance eCommerce Platform",
+      uk: "Високопродуктивна платформа електронної комерції",
+    },
+    featured_image: "/ecommerce-storefront-checkout.jpg",
+    client: {
+      en: "E-commerce Client",
+      uk: "Клієнт електронної комерції",
+    },
+    industry: {
+      en: "E-commerce",
+      uk: "Електронна комерція",
+    },
+    duration: {
+      en: "7 months",
+      uk: "7 місяців",
+    },
+    team: {
+      en: "6 developers, 2 designers",
+      uk: "6 розробників, 2 дизайнери",
+    },
+    overview: {
+      en: "Built a feature-rich e-commerce platform capable of handling millions of transactions with high performance.",
+      uk: "Побудована багатофункціональна платформа електронної комерції, здатна обробляти мільйони транзакцій з високою продуктивністю.",
+    },
+    challenge: {
+      en: "Create a scalable, performant e-commerce platform that handles high traffic and transaction volume.",
+      uk: "Створити масштабовану, продуктивну платформу електронної комерції, яка обробляє високий трафік та обсяг транзакцій.",
+    },
+    solution: {
+      en: "Implemented microservices architecture with advanced caching and database optimization strategies.",
+      uk: "Впроваджено архітектуру мікросервісів з передовими стратегіями кеширування та оптимізації бази даних.",
+    },
+    result: {
+      en: "Achieved sub-second page load times and processed over 10,000 concurrent users without performance degradation.",
+      uk: "Досягнуто часу завантаження сторінки менше секунди та обробки понад 10 000 одночасних користувачів без деградації продуктивності.",
+    },
+    stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe API", "Elasticsearch"],
+    features: {
+      en: [
+        "Advanced product search with filters",
+        "Secure payment processing",
+        "Inventory management system",
+        "Customer analytics and recommendations",
+        "Admin dashboard",
+      ],
+      uk: [
+        "Розширений пошук товарів з фільтрами",
+        "Безпечна обробка платежів",
+        "Система управління запасами",
+        "Аналітика клієнтів та рекомендації",
+        "Адмін-панель",
+      ],
+    },
+    gallery: ["/product-listing.jpg", "/shopping-cart.jpg", "/order-tracking.jpg"],
+    testimonial: {
+      quote: "Outstanding e-commerce platform performance!",
+      author: "Store Owner",
+      company: "E-commerce Business",
+    },
+  },
+  "testing-expertise": {
     title: {
       en: "Testing Expertise for a Sports Social Platform",
       uk: "Тестування експертизи для спортивної соціальної платформи",

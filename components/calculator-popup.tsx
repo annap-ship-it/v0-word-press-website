@@ -33,11 +33,35 @@ export function CalculatorPopup() {
   useEffect(() => {
     setIsMounted(true)
     const dismissed = localStorage.getItem("calculator-dismissed")
-    if (!dismissed) {
+    if (dismissed) return
+
+    const cookiesHandled = localStorage.getItem("cookies-accepted")
+
+    const showCalculator = () => {
       const timer = setTimeout(() => {
         setIsVisible(true)
       }, 3500)
+      return timer
+    }
+
+    // If cookies already handled, show calculator after delay
+    if (cookiesHandled !== null) {
+      const timer = showCalculator()
       return () => clearTimeout(timer)
+    }
+
+    // Otherwise, wait for cookies to be handled
+    const handleCookiesHandled = () => {
+      const timer = showCalculator()
+      // Store timer reference for cleanup
+      const cleanup = () => clearTimeout(timer)
+      window.addEventListener("beforeunload", cleanup)
+    }
+
+    window.addEventListener("cookies-handled", handleCookiesHandled)
+
+    return () => {
+      window.removeEventListener("cookies-handled", handleCookiesHandled)
     }
   }, [])
 
@@ -57,7 +81,7 @@ export function CalculatorPopup() {
     <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
       <div className="fixed inset-0 bg-black/50 pointer-events-auto" onClick={handleClose} />
       <div
-        className="relative z-50 pointer-events-auto rounded-2xl p-8 max-w-md mx-4 shadow-2xl animate-fade-in"
+        className="relative z-50 pointer-events-auto rounded-2xl p-6 md:p-8 max-w-[calc(100vw-32px)] md:max-w-md mx-4 shadow-2xl animate-fade-in"
         style={{
           backgroundColor: isDark ? "var(--black_bg, #161515)" : "#FFFFFF",
           border: isDark ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid #E8E8E8",
@@ -71,23 +95,23 @@ export function CalculatorPopup() {
           <X size={20} color={isDark ? "#FFFFFF" : "#212121"} />
         </button>
 
-        <h2 className="text-2xl font-bold mb-3" style={{ color: isDark ? "#FFFFFF" : "#212121" }}>
+        <h2 className="text-xl md:text-2xl font-bold mb-3 pr-8" style={{ color: isDark ? "#FFFFFF" : "#212121" }}>
           {t.title}
         </h2>
-        <p className="mb-6" style={{ color: isDark ? "#CCCCCC" : "#666666" }}>
+        <p className="mb-6 text-sm md:text-base" style={{ color: isDark ? "#CCCCCC" : "#666666" }}>
           {t.description}
         </p>
 
         <div className="flex flex-col gap-3">
           <button
             onClick={handleNavigate}
-            className="w-full px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors"
+            className="w-full px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors text-sm md:text-base"
           >
             {t.calculate}
           </button>
           <button
             onClick={handleClose}
-            className="w-full px-6 py-3 rounded-lg font-medium transition-colors"
+            className="w-full px-6 py-3 rounded-lg font-medium transition-colors text-sm md:text-base"
             style={{
               backgroundColor: isDark ? "#333333" : "#F0F0F0",
               color: isDark ? "#FFFFFF" : "#212121",

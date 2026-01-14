@@ -1,6 +1,8 @@
 "use client"
 
 import { useTheme } from "@/lib/theme-context"
+import { useLocale } from "@/lib/locale-context"
+import { translations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import CalculatorResults from "./calculator-results"
@@ -12,9 +14,12 @@ interface CalculatorModalProps {
 
 export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
   const { theme } = useTheme()
+  const { locale } = useLocale()
   const isDark = theme === "dark"
   const [mounted, setMounted] = useState(false)
   const [showResults, setShowResults] = useState(false)
+
+  const t = translations[locale as keyof typeof translations] || translations.en
 
   const [selectedTech, setSelectedTech] = useState("")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -69,8 +74,8 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
 
   const techOptions = ["JavaScript", "TypeScript", "HTML", "CSS", "React", "Node.js", "Python", "Java"]
   const filteredTechOptions = techOptions.filter((tech) => tech.toLowerCase().includes(searchQuery.toLowerCase()))
-  const levelOptions = ["Middle", "Middle+", "Senior", "Solution Architect", "Team Lead"]
-  const durationOptions = ["Up to 2 months", "3 months to 6 months", "6 months to 1 year", "1 year"]
+  const levelOptions = [t.middle, t.middlePlus, t.senior, t.solutionArchitect, t.teamLead]
+  const durationOptions = [t.up2Months, t.months3To6, t.months6To1Year, t.year1]
 
   if (showResults) {
     return <CalculatorResults onClose={onClose} />
@@ -121,7 +126,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
             color: isDark ? "#FFFFFF" : "#000000",
           }}
         >
-          Developer Rate Calculator
+          {t.calculatorTitle}
         </h2>
 
         <div className="flex flex-col md:flex-row md:gap-8">
@@ -138,7 +143,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   color: isDark ? "#FFFFFF" : "#000000",
                 }}
               >
-                1. Technologie:
+                1. {t.technology}:
               </label>
               <div className="relative">
                 <button
@@ -152,7 +157,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     color: selectedTech ? (isDark ? "#FFFFFF" : "#000000") : isDark ? "#FFFFFF80" : "#00000080",
                   }}
                 >
-                  {selectedTech || "Select a Tech Stack"}
+                  {selectedTech || t.selectTech}
                   <svg
                     width="16"
                     height="16"
@@ -180,7 +185,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                       color: "#EF4444",
                     }}
                   >
-                    Select Item...
+                    {t.selectItem}
                   </p>
                 )}
 
@@ -197,7 +202,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                       <div className="relative">
                         <input
                           type="text"
-                          placeholder="Type a technology"
+                          placeholder={t.typeATechnology}
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           className="w-full px-4 py-2 pr-10 rounded border outline-none transition-all"
@@ -285,7 +290,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                             color: isDark ? "#FFFFFF80" : "#00000080",
                           }}
                         >
-                          No technologies found
+                          {t.noTechnologiesFound}
                         </div>
                       )}
                     </div>
@@ -305,7 +310,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   color: isDark ? "#FFFFFF" : "#000000",
                 }}
               >
-                2. Experience Level:
+                2. {t.experienceLevel}:
               </label>
               <div className="space-y-3">
                 {levelOptions.map((level) => (
@@ -354,7 +359,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     color: "#EF4444",
                   }}
                 >
-                  Select Item...
+                  {t.selectItem}
                 </p>
               )}
             </div>
@@ -370,42 +375,42 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   color: isDark ? "#FFFFFF" : "#000000",
                 }}
               >
-                3. Employment Type:
+                3. {t.employmentType}:
               </label>
               <div className="flex gap-3">
                 <button
                   onClick={() => {
-                    setEmploymentType("Full-time")
+                    setEmploymentType(t.fullTime)
                     setErrors((prev) => ({ ...prev, employment: false }))
                   }}
                   className="px-4 py-2 transition-all"
                   style={{
                     borderRadius: "4px",
-                    backgroundColor: employmentType === "Full-time" ? "#FF6200" : isDark ? "#2A2A2A" : "#F5F5F5",
-                    color: employmentType === "Full-time" ? "#FFFFFF" : isDark ? "#FFFFFF80" : "#00000080",
+                    backgroundColor: employmentType === t.fullTime ? "#FF6200" : isDark ? "#2A2A2A" : "#F5F5F5",
+                    color: employmentType === t.fullTime ? "#FFFFFF" : isDark ? "#FFFFFF80" : "#00000080",
                     fontFamily: "Onest, sans-serif",
                     fontSize: "16px",
                     border: errors.employment ? "1px solid #EF4444" : "none",
                   }}
                 >
-                  Full-time
+                  {t.fullTime}
                 </button>
                 <button
                   onClick={() => {
-                    setEmploymentType("Part-time")
+                    setEmploymentType(t.partTime)
                     setErrors((prev) => ({ ...prev, employment: false }))
                   }}
                   className="px-4 py-2 transition-all"
                   style={{
                     borderRadius: "4px",
-                    backgroundColor: employmentType === "Part-time" ? "#FF6200" : isDark ? "#2A2A2A" : "#F5F5F5",
-                    color: employmentType === "Part-time" ? "#FFFFFF" : isDark ? "#FFFFFF80" : "#00000080",
+                    backgroundColor: employmentType === t.partTime ? "#FF6200" : isDark ? "#2A2A2A" : "#F5F5F5",
+                    color: employmentType === t.partTime ? "#FFFFFF" : isDark ? "#FFFFFF80" : "#00000080",
                     fontFamily: "Onest, sans-serif",
                     fontSize: "16px",
                     border: errors.employment ? "1px solid #EF4444" : "none",
                   }}
                 >
-                  Part-time
+                  {t.partTime}
                 </button>
               </div>
               {errors.employment && (
@@ -417,7 +422,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     color: "#EF4444",
                   }}
                 >
-                  Select Item...
+                  {t.selectItem}
                 </p>
               )}
             </div>
@@ -433,7 +438,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                   color: isDark ? "#FFFFFF" : "#000000",
                 }}
               >
-                4. Project Duration:
+                4. {t.projectDuration}:
               </label>
               <div className="space-y-3">
                 {durationOptions.map((duration) => (
@@ -482,7 +487,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                     color: "#EF4444",
                   }}
                 >
-                  Select Item...
+                  {t.selectItem}
                 </p>
               )}
             </div>
@@ -499,7 +504,7 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
                 color: isDark ? "#FFFFFF" : "#000000",
               }}
             >
-              Core Team:
+              {t.coreTeam}:
             </h3>
             <div className="flex flex-col">
               <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-300">
@@ -534,31 +539,18 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
         </div>
 
         {/* Calculate button */}
-        <button
-          className="w-full mt-8 py-3 rounded-full transition-all"
-          style={{
-            background: "linear-gradient(180deg, #FF6200 0%, #FF6200 100%)",
-            color: "#FFFFFF",
-            fontFamily: "Onest, sans-serif",
-            fontSize: "16px",
-            fontWeight: 500,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "linear-gradient(180deg, #FF6200 0%, #CC4E00 100%)"
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "linear-gradient(180deg, #FF6200 0%, #FF6200 100%)"
-          }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.background = "linear-gradient(180deg, #CC4E00 0%, #994000 100%)"
-          }}
-          onMouseUp={(e) => {
-            e.currentTarget.style.background = "linear-gradient(180deg, #FF6200 0%, #CC4E00 100%)"
-          }}
-          onClick={handleCalculate}
-        >
-          Calculate
-        </button>
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={handleCalculate}
+            className="px-8 py-3 rounded-[50px] bg-[#FF6200] text-white font-medium transition-all hover:bg-[#FF7A2E]"
+            style={{
+              fontFamily: "Onest, sans-serif",
+              fontSize: "16px",
+            }}
+          >
+            {t.calculate}
+          </button>
+        </div>
       </div>
     </div>
   )

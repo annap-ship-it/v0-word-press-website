@@ -2,16 +2,20 @@
 
 import Image from "next/image"
 import { useTheme } from "@/lib/theme-context"
+import { useLocale } from "@/lib/locale-context"
 import { useEffect, useState } from "react"
+import { getTranslations } from "@/lib/i18n"
 
 interface RateCalculatorPopoutProps {
   isOpen: boolean
   onClose: () => void
-  onCalculateClick: () => void // Added prop to handle calculate button click
+  onCalculateClick: () => void
 }
 
 export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick }: RateCalculatorPopoutProps) {
   const { theme } = useTheme()
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -48,15 +52,14 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
         <button
           onClick={onClose}
           className="absolute top-[10px] right-[10px] w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity"
-          aria-label="Close"
+          aria-label={t.close}
           style={{
             filter: isLightMode ? "invert(1)" : "none",
           }}
         >
-          <Image src="/images/x-square-20-281-29.svg" alt="Close" width={24} height={24} />
+          <Image src="/images/x-square-20-281-29.svg" alt={t.close} width={24} height={24} />
         </button>
 
-        {/* Title */}
         <h2
           className="font-medium mb-3"
           style={{
@@ -66,10 +69,9 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
             color: isLightMode ? "#000000" : "#FFFFFF",
           }}
         >
-          Developer Rate Calculator
+          {t.calculatorTitle}
         </h2>
 
-        {/* Subtitle */}
         <p
           className="mb-4"
           style={{
@@ -79,8 +81,7 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
             color: isLightMode ? "#000000" : "#FFFFFF",
           }}
         >
-          Choose a <span style={{ color: "#FF6200" }}>specialist</span>, get the{" "}
-          <span style={{ color: "#FF6200" }}>rate</span> on the spot
+          {t.calculatorSubtitle}
         </p>
 
         {/* Calculate button */}
@@ -92,7 +93,7 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
             fontSize: "clamp(14px, 3.5vw, 16px)",
           }}
         >
-          Calculate
+          {t.calculatorButton}
         </button>
       </div>
 
