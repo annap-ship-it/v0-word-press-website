@@ -8,11 +8,11 @@ import ScrollStack, { ScrollStackItem } from "./scroll-stack"
 
 interface Project {
   id: string
-  title: { en: string; uk: string }
+  title: { en: string; uk: string } | string
   slug: string
   image: string
-  shortDescription: { en: string; uk: string }
-  fullDescription?: { en: string; uk: string }
+  shortDescription: { en: string; uk: string } | string
+  fullDescription?: { en: string; uk: string } | string
 }
 
 function ProjectCard({
@@ -26,45 +26,66 @@ function ProjectCard({
 
   const isOrange = index % 2 === 0
   const bgColor = isOrange ? "#FF6200" : "#000000"
-
   const textColor = "text-white"
-
   const boxShadow = !isOrange ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "none"
 
-  const title = project.title[locale as "en" | "uk"] || project.title.en
-  const solution =
-    project.fullDescription?.[locale as "en" | "uk"] ||
-    project.fullDescription?.en ||
-    project.shortDescription[locale as "en" | "uk"] ||
-    project.shortDescription.en
+  // Handle title as string or object
+  let title: string
+  if (typeof project.title === "string") {
+    title = project.title
+  } else {
+    title = project.title[locale as "en" | "uk"] || project.title.en || ""
+  }
+
+  // Handle shortDescription as string or object
+  let shortDesc: string
+  if (typeof project.shortDescription === "string") {
+    shortDesc = project.shortDescription
+  } else {
+    shortDesc = project.shortDescription[locale as "en" | "uk"] || project.shortDescription.en || ""
+  }
+
+  // Handle fullDescription as string or object (optional)
+  let fullDesc: string | undefined
+  if (typeof project.fullDescription === "string") {
+    fullDesc = project.fullDescription
+  } else if (project.fullDescription) {
+    fullDesc = project.fullDescription[locale as "en" | "uk"] || project.fullDescription.en
+  }
+
+  const solution = fullDesc || shortDesc
 
   return (
     <Link href={`/projects/${project.slug}`} className="block w-full">
       <div
-        className={`flex rounded-[14px] overflow-hidden transition-all duration-300 w-full aspect-[3.8/1] ${textColor}`}
+        className={`flex flex-col md:flex-row rounded-[14px] overflow-hidden transition-all duration-300 w-full md:aspect-[3.8/1] ${textColor}`}
         style={{
           backgroundColor: bgColor,
           boxShadow,
           border: "1px solid rgba(255, 255, 255, 0.1)",
         }}
       >
-        <div className="w-1/2 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+        <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-between order-1 md:order-none">
           <div>
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 leading-tight">{title}</h3>
-            <p className="text-xs md:text-sm lg:text-base leading-relaxed opacity-90 line-clamp-3">{solution}</p>
+            <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight">
+              {title}
+            </h3>
+            <p className="text-xs sm:text-sm md:text-base leading-relaxed opacity-90 line-clamp-3">
+              {solution}
+            </p>
           </div>
-          <span className="text-xs md:text-sm opacity-75 flex-shrink-0 mt-2">
+          <span className="text-xs sm:text-sm opacity-75 flex-shrink-0 mt-2">
             {locale === "uk" ? "Читати повний кейс →" : "Read the full case →"}
           </span>
         </div>
 
-        <div className="w-1/2 relative">
+        <div className="w-full md:w-1/2 relative h-48 sm:h-64 md:h-auto order-2 md:order-none">
           <Image
             src={project.image || "/placeholder.svg"}
             alt={title}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 50vw, 45vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
             priority={index === 0}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/10" />
@@ -97,8 +118,6 @@ export function OurProjectsSection() {
 
     fetchProjects()
   }, [])
-
-  // dark mode детектор можно оставить или убрать — он больше не нужен для цвета текста
 
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % projects.length)
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length)
@@ -145,8 +164,50 @@ export function OurProjectsSection() {
           </ScrollStack>
         </div>
 
-        {/* Mobile carousel остаётся без изменений */}
-        <div className="lg:hidden">{/* ... твой существующий код карусели ... */}</div>
+        {/* Mobile/Tablet Carousel */}
+        <div className="lg:hidden">
+          <div className="relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              >
+                {projects.map((project, index) => (
+                  <div key={project.id} className="min-w-full flex-shrink-0 px-2">
+                    <ProjectCard project={project} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+              aria-label="Previous"
+            >
+              &lt;
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+              aria-label="Next"
+            >
+              &gt;
+            </button>
+            {/* Pagination Dots */}
+            <div className="flex justify-center mt-4 space-x-2">
+              {projects.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goToSlide(idx)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    idx === currentIndex ? "bg-[#FF6200]" : "bg-gray-500"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

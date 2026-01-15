@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
-import { getTranslations } from "@/lib/i18n"
+import { translations } from "@/lib/i18n"
 import { useEffect, useState } from "react"
 
 interface RateCalculatorPopoutProps {
@@ -14,8 +14,8 @@ interface RateCalculatorPopoutProps {
 
 export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick }: RateCalculatorPopoutProps) {
   const { theme } = useTheme()
-  const locale = useLocale()
-  const t = getTranslations(locale || "en")
+  const { locale } = useLocale()
+  const t = translations[locale as keyof typeof translations] || translations.en
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
             color: isLightMode ? "#161515" : "#FFFFFF",
           }}
         >
-          {t?.calculatorTitle || "Developer Rate Calculator"}
+          {t.calculatorTitle}
         </h3>
 
         <p
@@ -99,7 +99,7 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
             fontSize: "clamp(14px, 3.5vw, 16px)",
           }}
         >
-          {t?.calculate || "Calculate"}
+          {t.calculate}
         </button>
       </div>
 
