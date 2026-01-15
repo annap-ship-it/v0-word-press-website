@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
-import type { Metadata } from "next"
 
 interface Project {
   id: string
@@ -22,30 +21,6 @@ interface Project {
   stack: string[]
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = "en"
-  const translations = {
-    en: {
-      title: "Software Projects | Portfolio | Scalable Web & Mobile Solutions",
-      description:
-        "Explore our portfolio of successful software development projects. From e-commerce platforms to real-time monitoring systems built with Vue.js, Node.js, GraphQL, and AWS.",
-    },
-    uk: {
-      title: "Проекти | Портфоліо | Масштабовані веб і мобільні рішення",
-      description:
-        "Дослідіть наше портфоліо успішних проектів розробки програмного забезпечення. Від платформ електронної комерції до систем моніторингу в реальному часі, побудованих на Vue.js, Node.js, GraphQL та AWS.",
-    },
-  }
-
-  return {
-    title: translations[locale as keyof typeof translations]?.title || translations.en.title,
-    description: translations[locale as keyof typeof translations]?.description || translations.en.description,
-    openGraph: {
-      title: translations[locale as keyof typeof translations]?.title || translations.en.title,
-      description: translations[locale as keyof typeof translations]?.description || translations.en.description,
-    },
-  }
-}
 // Extract project data from content blocks
 function extractProjectData(content: any) {
   const data = {
