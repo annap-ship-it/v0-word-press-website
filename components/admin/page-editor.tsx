@@ -38,25 +38,41 @@ export function PageEditor({ page }: PageEditorProps) {
     return Array.isArray(page.content) ? page.content : []
   })
   const [saving, setSaving] = useState(false)
+  const [successMessage, setSuccessMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     setSupabase(createBrowserClient())
   }, [])
 
   const handleSave = async () => {
+    if (!title.trim()) {
+      setErrorMessage("Please enter a page title")
+      return
+    }
+
+    if (!slug.trim()) {
+      setErrorMessage("Please enter a URL slug")
+      return
+    }
+
     if (!supabase) {
-      alert("Loading...")
+      setErrorMessage("System not ready. Please refresh the page.")
       return
     }
 
     setSaving(true)
+    setErrorMessage("")
+    setSuccessMessage("")
+
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser()
 
       if (!user) {
-        alert("You must be logged in")
+        setErrorMessage("You must be logged in to save pages")
+        setSaving(false)
         return
       }
 
@@ -65,28 +81,43 @@ export function PageEditor({ page }: PageEditorProps) {
         slug,
         content: gutenbergBlocks,
         status,
-        meta_title: metaTitle,
-        meta_description: metaDescription,
+        meta_title: metaTitle || title,
+        meta_description: metaDescription || "",
         redirect_url: redirectUrl || null,
         metafields,
         updated_at: new Date().toISOString(),
       }
 
       if (page) {
-        const { error } = await supabase.from("pages").update(pageData).eq("id", page.id)
-        if (error) throw error
-        alert("Page updated successfully!")
+        const { data, error } = await supabase.from("pages").update(pageData).eq("id", page.id).select()
+
+        if (error) {
+          throw error
+        }
+
+        setSuccessMessage("Page updated successfully!")
+        console.log("[v0] Page updated:", data)
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from("pages")
           .insert({ ...pageData, author_id: user.id, created_at: new Date().toISOString() })
-        if (error) throw error
-        alert("Page created successfully!")
-        router.push("/admin/pages")
+          .select()
+
+        if (error) {
+          throw error
+        }
+
+        setSuccessMessage("Page created successfully!")
+        console.log("[v0] Page created:", data)
+
+        setTimeout(() => {
+          router.refresh()
+          router.push("/admin/pages")
+        }, 1500)
       }
-    } catch (error) {
-      console.error("Error saving page:", error)
-      alert("Failed to save page")
+    } catch (error: any) {
+      console.error("[v0] Error saving page:", error)
+      setErrorMessage(`Failed to save page: ${error?.message || "Unknown error"}`)
     } finally {
       setSaving(false)
     }
@@ -131,6 +162,15 @@ export function PageEditor({ page }: PageEditorProps) {
             </Button>
           </div>
         </div>
+
+        {successMessage && (
+          <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-800 rounded-[4px]">
+            {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-800 rounded-[4px]">{errorMessage}</div>
+        )}
 
         <Tabs defaultValue="content" className="space-y-6">
           <TabsList className="bg-white dark:bg-gray-800 rounded-[4px]">

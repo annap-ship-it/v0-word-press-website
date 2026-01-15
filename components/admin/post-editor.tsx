@@ -19,7 +19,7 @@ interface PostEditorProps {
 export function PostEditor({ post }: PostEditorProps) {
   const router = useRouter()
   const [supabase, setSupabase] = useState<any>(null)
-  const [isClient, setIsClient] = useState(false) // track if component is mounted on client
+  const [isClient, setIsClient] = useState(false)
   const [title, setTitle] = useState(post?.title || "")
   const [slug, setSlug] = useState(post?.slug || "")
   const [excerpt, setExcerpt] = useState(post?.excerpt || "")
@@ -33,12 +33,14 @@ export function PostEditor({ post }: PostEditorProps) {
   )
   const [saving, setSaving] = useState(false)
   const [locale, setLocale] = useState<"en" | "uk">((post?.locale as "en" | "uk") || "en")
+  const [successMessage, setSuccessMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const [categories, setCategories] = useState<any[]>([])
   const [showMediaPicker, setShowMediaPicker] = useState(false)
 
   useEffect(() => {
-    setIsClient(true) // mark component as client-side mounted
+    setIsClient(true)
     setSupabase(createBrowserClient())
   }, [])
 
@@ -67,24 +69,31 @@ export function PostEditor({ post }: PostEditorProps) {
 
   const handleSave = async (publishStatus: "draft" | "published") => {
     if (!title.trim()) {
-      alert("Please enter a title")
+      setErrorMessage("Please enter a post title")
+      return
+    }
+
+    if (!slug.trim()) {
+      setErrorMessage("Please enter a URL slug")
       return
     }
 
     if (!supabase) {
       console.error("[v0] Supabase not initialized")
-      alert("System not ready. Please refresh the page.")
+      setErrorMessage("System not ready. Please refresh the page.")
       return
     }
 
     setSaving(true)
+    setErrorMessage("")
+    setSuccessMessage("")
 
     const {
       data: { user },
     } = await supabase.auth.getUser()
 
     if (!user) {
-      alert("You must be logged in to save posts")
+      setErrorMessage("You must be logged in to save posts")
       setSaving(false)
       return
     }
@@ -102,37 +111,38 @@ export function PostEditor({ post }: PostEditorProps) {
       author_id: user.id,
       meta_title: metaTitle && metaTitle.trim() ? metaTitle : title,
       meta_description: metaDescription && metaDescription.trim() ? metaDescription : excerpt || "",
-      locale, // Save the selected locale (en or uk)
+      locale,
     }
 
     console.log("[v0] Post data being saved:", postData)
 
-    let error
-
     try {
+      let result
       if (post) {
-        const result = await supabase.from("posts").update(postData).eq("id", post.id)
-        error = result.error
-        console.log("[v0] Update result:", result)
+        result = await supabase.from("posts").update(postData).eq("id", post.id)
       } else {
-        const result = await supabase.from("posts").insert([postData])
-        error = result.error
-        console.log("[v0] Insert result:", result)
+        result = await supabase.from("posts").insert([postData])
       }
 
-      setSaving(false)
+      const { error } = result
 
       if (error) {
         console.error("[v0] Error saving post:", error)
-        alert("Failed to save post: " + error.message)
+        setErrorMessage(`Failed to save post: ${error.message}`)
+        setSaving(false)
       } else {
-        router.push("/admin/posts")
-        router.refresh()
+        console.log("[v0] Post saved successfully")
+        setSuccessMessage(post ? "Post updated successfully!" : "Post created successfully!")
+        setSaving(false)
+        setTimeout(() => {
+          router.refresh()
+          router.push("/admin/posts")
+        }, 1000)
       }
     } catch (err: any) {
       console.error("[v0] Exception while saving:", err)
       setSaving(false)
-      alert("Error saving post: " + (err?.message || "Unknown error"))
+      setErrorMessage(`Error saving post: ${err?.message || "Unknown error"}`)
     }
   }
 
@@ -147,6 +157,15 @@ export function PostEditor({ post }: PostEditorProps) {
   return (
     <div className="min-h-screen bg-[#f0f0f1] dark:bg-[#1d2327] p-6">
       <div className="max-w-[900px] mx-auto">
+        {successMessage && (
+          <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-800 rounded-[4px]">
+            {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-800 rounded-[4px]">{errorMessage}</div>
+        )}
+
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-normal text-[#1d2327] dark:text-[#f0f0f1]">
             {post ? "Edit Post" : "Add New Post"}
