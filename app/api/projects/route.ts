@@ -32,7 +32,10 @@ export async function GET() {
     const defaultProjects = [
       {
         id: "1",
-        title: "Internal Monitoring System for Symbotic",
+        title: {
+          en: "Internal Monitoring System for Symbotic",
+          uk: "Система внутрішнього моніторингу для Symbotic",
+        },
         slug: "internal-monitoring-system-symbotic",
         image: "/images/3a8ceacf9a599490d7b40d1ec06dca37f1ea0d31.jpg",
         shortDescription: {
@@ -42,7 +45,10 @@ export async function GET() {
       },
       {
         id: "2",
-        title: "Intertop Sensor Infobox",
+        title: {
+          en: "Intertop Sensor Infobox",
+          uk: "Інформаційна панель датчиків Intertop",
+        },
         slug: "intertop-sensor-infobox",
         image: "/images/a4b670ec7fa05f0d5a4c674af059268a7f9bb862.jpg",
         shortDescription: {
@@ -52,7 +58,10 @@ export async function GET() {
       },
       {
         id: "3",
-        title: "Multi-brand E-commerce Landing Pages",
+        title: {
+          en: "Multi-brand E-commerce Landing Pages",
+          uk: "Багатобрендові сторінки e-commerce",
+        },
         slug: "multi-brand-ecommerce-landing-pages",
         image: "/images/684e917a1465786de030e274e2232ff33cd056fe.png",
         shortDescription: {
@@ -62,7 +71,10 @@ export async function GET() {
       },
       {
         id: "4",
-        title: "Testing Expertise for a Sports Social Platform",
+        title: {
+          en: "Testing Expertise for a Sports Social Platform",
+          uk: "Тестування експертизи для спортивної соціальної платформи",
+        },
         slug: "testing-expertise-sports-social-platform",
         image: "/images/56951b6f749b0c1c24e1b24aab787192b5cc65e2.jpg",
         shortDescription: {
@@ -79,7 +91,7 @@ export async function GET() {
             id: post.id,
             title: {
               en: post.title,
-              uk: post.title, // TODO: Add Ukrainian titles from translations
+              uk: post.title, // Database posts use same title - add UK translations in admin if needed
             },
             slug: post.slug,
             image: post.featured_image || "/placeholder.svg",
@@ -93,7 +105,7 @@ export async function GET() {
     return NextResponse.json(projects)
   } catch (error) {
     console.error("[v0] Error fetching projects:", error)
-    // Return default projects on error
+    // Return default projects on error - these have proper { en, uk } structure
     const defaultProjects = [
       {
         id: "1",
@@ -112,7 +124,7 @@ export async function GET() {
         id: "2",
         title: {
           en: "Intertop Sensor Infobox",
-          uk: "Intertop Sensor Infobox",
+          uk: "Інформаційна панель датчиків Intertop",
         },
         slug: "intertop-sensor-infobox",
         image: "/images/a4b670ec7fa05f0d5a4c674af059268a7f9bb862.jpg",
