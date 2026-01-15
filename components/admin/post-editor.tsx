@@ -28,9 +28,11 @@ export function PostEditor({ post }: PostEditorProps) {
   const [status, setStatus] = useState(post?.status || "draft")
   const [metaTitle, setMetaTitle] = useState(post?.meta_title || "")
   const [metaDescription, setMetaDescription] = useState(post?.meta_description || "")
-  const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(post?.content || [])
+  const [gutenbergBlocks, setGutenbergBlocks] = useState<GutenbergBlock[]>(
+    (post?.content && Array.isArray(post.content) ? post.content : []) || [],
+  )
   const [saving, setSaving] = useState(false)
-  const [locale, setLocale] = useState<"en" | "uk">(post?.locale || "en")
+  const [locale, setLocale] = useState<"en" | "uk">((post?.locale as "en" | "uk") || "en")
 
   const [categories, setCategories] = useState<any[]>([])
   const [showMediaPicker, setShowMediaPicker] = useState(false)
@@ -70,7 +72,8 @@ export function PostEditor({ post }: PostEditorProps) {
     }
 
     if (!supabase) {
-      alert("Loading...")
+      console.error("[v0] Supabase not initialized")
+      alert("System not ready. Please refresh the page.")
       return
     }
 
@@ -90,15 +93,15 @@ export function PostEditor({ post }: PostEditorProps) {
 
     const postData = {
       title,
-      slug,
-      excerpt,
-      content: gutenbergBlocks,
-      featured_image: featuredImage || null,
-      category_id: categoryId || null,
+      slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      excerpt: excerpt || "",
+      content: gutenbergBlocks && gutenbergBlocks.length > 0 ? gutenbergBlocks : [],
+      featured_image: featuredImage && featuredImage.trim() ? featuredImage : null,
+      category_id: categoryId && categoryId.trim() ? categoryId : null,
       status: publishStatus,
       author_id: user.id,
-      meta_title: metaTitle || title,
-      meta_description: metaDescription || excerpt,
+      meta_title: metaTitle && metaTitle.trim() ? metaTitle : title,
+      meta_description: metaDescription && metaDescription.trim() ? metaDescription : excerpt || "",
       locale, // Save the selected locale (en or uk)
     }
 
@@ -106,24 +109,30 @@ export function PostEditor({ post }: PostEditorProps) {
 
     let error
 
-    if (post) {
-      const result = await supabase.from("posts").update(postData).eq("id", post.id)
-      error = result.error
-      console.log("[v0] Update result:", result)
-    } else {
-      const result = await supabase.from("posts").insert([postData])
-      error = result.error
-      console.log("[v0] Insert result:", result)
-    }
+    try {
+      if (post) {
+        const result = await supabase.from("posts").update(postData).eq("id", post.id)
+        error = result.error
+        console.log("[v0] Update result:", result)
+      } else {
+        const result = await supabase.from("posts").insert([postData])
+        error = result.error
+        console.log("[v0] Insert result:", result)
+      }
 
-    setSaving(false)
+      setSaving(false)
 
-    if (error) {
-      console.error("[v0] Error saving post:", error)
-      alert("Failed to save post: " + error.message)
-    } else {
-      router.push("/admin/posts")
-      router.refresh()
+      if (error) {
+        console.error("[v0] Error saving post:", error)
+        alert("Failed to save post: " + error.message)
+      } else {
+        router.push("/admin/posts")
+        router.refresh()
+      }
+    } catch (err: any) {
+      console.error("[v0] Exception while saving:", err)
+      setSaving(false)
+      alert("Error saving post: " + (err?.message || "Unknown error"))
     }
   }
 

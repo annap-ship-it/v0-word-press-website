@@ -318,7 +318,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen" style={{ background: "var(--background)" }}>
       {/* Search Section - MOVED TO TOP */}
-      <section className="py-8 md:py-12 border-b border-[#E5E5E5] dark:border-[#333]">
+      <section className="py-8 md:py-12 border-b border-[#E5E5E5] dark:border-[#333] mt-20 sm:mt-24 lg:mt-28">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
           <input
             type="text"

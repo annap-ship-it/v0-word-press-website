@@ -4,6 +4,7 @@ import { Onest } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/lib/theme-context"
 import { LocaleProvider } from "@/lib/locale-context"
+import { ScrollAnimationProvider } from "@/components/scroll-animation-provider"
 import { CookiesConsent } from "@/components/cookies-consent"
 import { CalculatorPopup } from "@/components/calculator-popup"
 import { ScrollToTop } from "@/components/scroll-to-top"
@@ -51,7 +52,7 @@ export default function RootLayout({
       <body className={`${onest.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LocaleProvider>
-            {children}
+            <ScrollAnimationProvider>{children}</ScrollAnimationProvider>
             <Analytics />
             <CookiesConsent />
             <CalculatorPopup />
