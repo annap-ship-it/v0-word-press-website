@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import CookiePolicyPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "Cookie Policy | Website Cookies | Data Management | Idea Team Dev",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function CookiePolicyPage() {
-  return <CookiePolicyPageClient />
+  return <div className="min-h-screen" style={{ background: "var(--background)" }} />
 }

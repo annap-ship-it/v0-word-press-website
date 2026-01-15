@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import TermsPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "Terms of Use | Service Agreement | Idea Team Dev",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function TermsPage() {
-  return <TermsPageClient />
+  return <div className="min-h-screen" style={{ background: "var(--background)" }} />
 }

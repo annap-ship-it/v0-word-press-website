@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import CareersPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "Join Our Team | Software Development Careers | Hire Developers",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function CareersPage() {
-  return <CareersPageClient />
+  return <div className="min-h-screen" style={{ background: "var(--background)" }} />
 }

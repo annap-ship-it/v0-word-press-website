@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import AboutPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "About Us | Software Development Company | Team & Mission",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
-  return <AboutPageClient />
+  return <div>About Us Page Content</div>
 }

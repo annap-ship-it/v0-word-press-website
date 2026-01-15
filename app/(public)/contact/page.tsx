@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import ContactPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "Contact Us | Get in Touch | Software Development Company",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
-  return <ContactPageClient />
+  return <div className="min-h-screen" style={{ background: "var(--background)" }} />
 }

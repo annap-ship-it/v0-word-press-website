@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import PrivacyPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Data Protection | Idea Team Dev",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function PrivacyPage() {
-  return <PrivacyPageClient />
+  return <div className="min-h-screen" style={{ background: "var(--background)" }} />
 }

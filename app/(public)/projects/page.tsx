@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import ProjectsPageClient from "./page.client"
 
 export const metadata: Metadata = {
   title: "Software Projects | Portfolio | Scalable Web & Mobile Solutions",
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function ProjectsPage() {
-  return <ProjectsPageClient />
+  return <div className="min-h-screen" style={{ background: "var(--background)" }} />
 }
