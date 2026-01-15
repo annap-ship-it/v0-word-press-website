@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 "use client"
 
 import type React from "react"
@@ -7,6 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
+import type { Metadata } from "next"
 
 interface Project {
   id: string
@@ -46,7 +46,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   }
 }
-
 // Extract project data from content blocks
 function extractProjectData(content: any) {
   const data = {
@@ -813,8 +812,5 @@ export default function ProjectsPage() {
         </div>
       </section>
     </main>
-  )
-}
-
   )
 }
