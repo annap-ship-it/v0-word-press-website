@@ -313,20 +313,14 @@ export default function BlogPostPage() {
   const { locale } = useLocale()
 
   useEffect(() => {
-    const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains("dark"))
-    }
-    checkDark()
-    const observer = new MutationObserver(checkDark)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-    return () => observer.disconnect()
-  }, [])
+    window.scrollTo(0, 0)
+  }, [slug])
 
   useEffect(() => {
     async function fetchPost() {
       if (!slug) return
 
-      console.log("[v0] Fetching post with slug:", slug)
+      console.log("[v0] Fetching post with slug:", slug, "locale:", locale)
 
       const supabase = createBrowserClient()
 
@@ -337,6 +331,7 @@ export default function BlogPostPage() {
           category_id, created_at, author_id, locale
         `)
         .eq("slug", slug)
+        .eq("locale", locale || "en")
         .eq("status", "published")
         .single()
 
@@ -381,6 +376,7 @@ export default function BlogPostPage() {
         .from("posts")
         .select(`id, title, slug, excerpt, featured_image, category_id, created_at, author_id`)
         .eq("status", "published")
+        .eq("locale", locale || "en")
         .neq("slug", slug)
         .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79")
         .order("created_at", { ascending: false })
@@ -421,7 +417,7 @@ export default function BlogPostPage() {
     }
 
     fetchPost()
-  }, [slug])
+  }, [slug, locale])
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href)
@@ -440,6 +436,10 @@ export default function BlogPostPage() {
     }
 
     window.open(shareUrls[platform], "_blank", "width=600,height=400")
+  }
+
+  const getRelatedArticlesText = () => {
+    return locale === "uk" ? "Пов'язані статті" : "Related Articles"
   }
 
   if (loading) {
@@ -474,7 +474,7 @@ export default function BlogPostPage() {
     .toUpperCase()
 
   const titleGradient = isDark
-    ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
+    ? "linear-gradient(90.39deg, #FFFFFF 34.5%, #FF6200 66.76%)"
     : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)"
 
   return (
@@ -635,7 +635,7 @@ export default function BlogPostPage() {
           <div className="max-w-[1280px] mx-auto px-4 md:px-6">
             <AnimatedSection>
               <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "var(--foreground)" }}>
-                Related Articles
+                {getRelatedArticlesText()}
               </h2>
             </AnimatedSection>
 

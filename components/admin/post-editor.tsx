@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GutenbergBlockEditor, type GutenbergBlock } from "./gutenberg-blocks"
 import { MediaPickerDialog } from "./media-picker-dialog"
+import { Upload, X } from "lucide-react"
 
 interface PostEditorProps {
   post?: any
@@ -35,6 +36,7 @@ export function PostEditor({ post }: PostEditorProps) {
   const [locale, setLocale] = useState<"en" | "uk">((post?.locale as "en" | "uk") || "en")
   const [successMessage, setSuccessMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+  const [uploading, setUploading] = useState(false)
 
   const [categories, setCategories] = useState<any[]>([])
   const [showMediaPicker, setShowMediaPicker] = useState(false)
@@ -143,6 +145,45 @@ export function PostEditor({ post }: PostEditorProps) {
       console.error("[v0] Exception while saving:", err)
       setSaving(false)
       setErrorMessage(`Error saving post: ${err?.message || "Unknown error"}`)
+    }
+  }
+
+  const handleImageUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      setErrorMessage("Please select an image file")
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMessage("Image must be smaller than 5MB")
+      return
+    }
+
+    setUploading(true)
+    setErrorMessage("")
+
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || "Upload failed")
+      }
+
+      const { url } = await response.json()
+      setFeaturedImage(url)
+      setSuccessMessage("Image uploaded successfully")
+    } catch (error: any) {
+      console.error("[v0] Image upload error:", error)
+      setErrorMessage(`Upload failed: ${error.message}`)
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -279,28 +320,41 @@ export function PostEditor({ post }: PostEditorProps) {
 
             <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">
               <h3 className="text-lg font-semibold mb-4 text-[#1d2327] dark:text-[#f0f0f1]">Featured Image</h3>
-              <div className="flex gap-2 mb-3">
-                <Input
-                  value={featuredImage}
-                  onChange={(e) => setFeaturedImage(e.target.value)}
-                  placeholder="Image URL"
-                  className="rounded-[4px] flex-1"
-                />
-                <Button
-                  type="button"
-                  onClick={() => setShowMediaPicker(true)}
-                  variant="outline"
-                  size="sm"
-                  className="rounded-[4px]"
-                >
-                  Library
-                </Button>
-              </div>
-              {featuredImage && (
-                <div className="mt-3 rounded-[4px] overflow-hidden border border-gray-200">
-                  <img src={featuredImage || "/placeholder.svg"} alt="Featured" className="w-full h-auto" />
+              <div className="space-y-4">
+                {featuredImage && (
+                  <div className="relative w-full h-48 rounded-lg overflow-hidden border border-input">
+                    <img
+                      src={featuredImage || "/placeholder.svg"}
+                      alt="Featured"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFeaturedImage("")}
+                      className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded hover:bg-red-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
+                <div className="border-2 border-dashed rounded-lg p-6 cursor-pointer hover:border-orange-500 transition-colors">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => e.target.files && handleImageUpload(e.target.files[0])}
+                    disabled={uploading}
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  <label htmlFor="image-upload" className="flex flex-col items-center gap-2 cursor-pointer">
+                    <Upload className="w-6 h-6 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      {uploading ? "Uploading..." : "Click to upload image or drag and drop"}
+                    </span>
+                  </label>
                 </div>
-              )}
+              </div>
             </Card>
 
             <Card className="p-6 bg-white dark:bg-[#1d2327] border-[#c3c4c7] dark:border-[#3c434a] rounded-[4px]">

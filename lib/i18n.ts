@@ -50,6 +50,7 @@ export const translations = {
     acceptTerms: "I accept Terms and Conditions",
     agreeToTerms: "By submitting your request, you agree to the terms and conditions",
     marketingEmails: "We may periodically send you marketing emails",
+    relatedArticles: "Related Articles",
 
     // Portfolio/Projects
     portfolioTitle: "Our Projects",
@@ -262,6 +263,7 @@ export const translations = {
     acceptTerms: "Я приймаю Умови та положення",
     agreeToTerms: "Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями",
     marketingEmails: "Ми можемо періодично надсилати вам маркетингові листи",
+    relatedArticles: "Пов'язані статті",
 
     // Portfolio/Projects
     portfolioTitle: "Наші проекти",
