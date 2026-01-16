@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useLocale } from "@/lib/locale-context" // Import useLocale hook
+import { useLocale } from "@/lib/locale-context"
 import { translations } from "@/lib/i18n"
 import Link from "next/link"
 import Image from "next/image"
@@ -14,8 +14,8 @@ interface Post {
   slug: string
   excerpt: string
   featured_image: string | null
-  category_id: string | null // Allow category_id to be null
-  categories: { name: string; slug: string }[] | null // Allow categories to be null
+  category_id: string | null
+  categories: { name: string; slug: string }[] | null
   created_at: string
   published_at: string | null
   author_id: string
@@ -75,11 +75,7 @@ function AnimatedCard({ children, delay = 0 }: { children: React.ReactNode; dela
       },
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
     )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [delay])
 
@@ -97,10 +93,10 @@ function AnimatedCard({ children, delay = 0 }: { children: React.ReactNode; dela
   )
 }
 
-export default function BlogPageClient() {
+export default function BlogContent() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
-  const [displayAllPosts, setDisplayAllPosts] = useState(false) // track if showing all posts
+  const [displayAllPosts, setDisplayAllPosts] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
 
   const { locale } = useLocale()
@@ -113,34 +109,21 @@ export default function BlogPageClient() {
   useEffect(() => {
     async function fetchPosts() {
       const supabase = createBrowserClient()
-
-      console.log("[v0] Fetching posts for locale:", locale)
-
       const { data: postsData, error: localeError } = await supabase
         .from("posts")
         .select(
-          `id, title, slug, excerpt, featured_image, 
-           category_id,
-           categories(name, slug),
-           created_at, published_at, author_id, locale`,
+          `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
         )
         .eq("status", "published")
         .eq("locale", locale)
         .order("published_at", { ascending: false, nullsFirst: false })
 
-      console.log("[v0] Query error:", localeError)
-      console.log("[v0] Fetched posts:", postsData)
-
       let finalPostsData = postsData
       if ((!localeError && postsData && postsData.length === 0) || (localeError && locale !== "en")) {
-        console.log("[v0] No posts found for locale:", locale, "- falling back to English")
-        const { data: englishPosts, error: englishError } = await supabase
+        const { data: englishPosts } = await supabase
           .from("posts")
           .select(
-            `id, title, slug, excerpt, featured_image, 
-             category_id,
-             categories(name, slug),
-             created_at, published_at, author_id, locale`,
+            `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
           )
           .eq("status", "published")
           .eq("locale", "en")
@@ -150,7 +133,6 @@ export default function BlogPageClient() {
 
       if (!localeError && finalPostsData && finalPostsData.length > 0) {
         const authorIds = [...new Set(finalPostsData.map((p) => p.author_id).filter(Boolean))]
-
         let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
 
         if (authorIds.length > 0) {
@@ -174,18 +156,13 @@ export default function BlogPageClient() {
           ...post,
           author: authorsMap[post.author_id] || null,
         }))
-
         setPosts(postsWithAuthors)
-        console.log("[v0] Posts set successfully:", postsWithAuthors)
-      } else {
-        console.log("[v0] No posts found - will use default posts")
       }
       setLoading(false)
     }
     fetchPosts()
   }, [locale])
 
-  // Default posts for when database is empty or posts don't match current locale
   const defaultPosts: Post[] = [
     {
       id: "1",
@@ -196,8 +173,8 @@ export default function BlogPageClient() {
       slug: "it-personnel-outsourcing-guide-2024",
       excerpt:
         locale === "uk"
-          ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції, зменшити витрати та надати вам доступ до глобального таланту."
-          : "Learn how IT personnel outsourcing can transform your business operations, reduce costs, and give you access to global talent pools.",
+          ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції."
+          : "Learn how IT personnel outsourcing can transform your business operations.",
       featured_image: "/it-team-working-remotely-on-computers.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
@@ -216,8 +193,8 @@ export default function BlogPageClient() {
       slug: "benefits-outsourcing-development-team",
       excerpt:
         locale === "uk"
-          ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників та як це може прискорити доставку вашого проекту."
-          : "Discover the key advantages of working with an outsourced development team and how it can accelerate your project delivery.",
+          ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників."
+          : "Discover the key advantages of working with an outsourced development team.",
       featured_image: "/developers-collaborating-on-project.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
@@ -236,8 +213,8 @@ export default function BlogPageClient() {
       slug: "choose-right-it-outsourcing-partner",
       excerpt:
         locale === "uk"
-          ? "Комплексний контрольний список для оцінки та вибору ідеального партнера з IT-аутсорсингу для ваших потреб."
-          : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner for your business needs.",
+          ? "Комплексний контрольний список для оцінки та вибору ідеального партнера."
+          : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
       featured_image: "/business-meeting-handshake-partnership.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Популярне" : "Most Readed", slug: "most-readed" }],
@@ -247,50 +224,9 @@ export default function BlogPageClient() {
       locale: locale,
       author: { display_name: "Author", avatar_url: null },
     },
-    {
-      id: "4",
-      title:
-        locale === "uk"
-          ? "Розширення штату vs. Аутсорсинг проектів: Що підходить вам?"
-          : "Staff Augmentation vs. Project Outsourcing: What is Right for You?",
-      slug: "staff-augmentation-vs-project-outsourcing",
-      excerpt:
-        locale === "uk"
-          ? "Порівняйте моделі розширення штату та аутсорсингу проектів, щоб визначити, який підхід найкраще підходить для цілей вашої організації."
-          : "Compare staff augmentation and project outsourcing models to determine which approach best fits your organization goals.",
-      featured_image: "/team-planning-strategy-whiteboard.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      locale: locale,
-      author: { display_name: "Author", avatar_url: null },
-    },
-    {
-      id: "5",
-      title:
-        locale === "uk"
-          ? "Управління віддаленими командами розробників: Найкращі практики"
-          : "Managing Remote Development Teams: Best Practices",
-      slug: "managing-remote-development-teams",
-      excerpt:
-        locale === "uk"
-          ? "Важливі поради та інструменти для ефективного управління розподіленими командами розробників у різних часових поясах."
-          : "Essential tips and tools for effectively managing distributed development teams across different time zones.",
-      featured_image: "/video-call-remote-team-meeting.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      locale: locale,
-      author: { display_name: "Author", avatar_url: null },
-    },
   ]
 
   const displayPosts = posts.length > 0 ? posts : defaultPosts
-
   const filteredPosts = searchQuery.trim()
     ? displayPosts.filter((post) => {
         const query = searchQuery.toLowerCase()
@@ -301,10 +237,7 @@ export default function BlogPageClient() {
   const displayFeatured = filteredPosts[0]
   const displayLatestNews = filteredPosts.slice(1, 3)
   const displayRegular = displayAllPosts ? filteredPosts.slice(3) : []
-  const totalPosts = filteredPosts.length
-  const visiblePosts = 3
-
-  const showViewAllButton = !displayAllPosts && totalPosts > visiblePosts
+  const showViewAllButton = !displayAllPosts && filteredPosts.length > 3
 
   if (loading) {
     return (
@@ -316,7 +249,6 @@ export default function BlogPageClient() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--background)" }}>
-      {/* Search Section - MOVED TO TOP */}
       <section className="py-8 md:py-12 border-b border-[#E5E5E5] dark:border-[#333] mt-20 sm:mt-24 lg:mt-28">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
           <input
@@ -329,10 +261,8 @@ export default function BlogPageClient() {
         </div>
       </section>
 
-      {/* Hero Section */}
       <section className="py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          {/* Title with gradient */}
           <AnimatedCard>
             <h1
               className="text-4xl md:text-6xl font-bold text-center mt-[47px] mb-11 leading-[5rem]"
@@ -347,21 +277,16 @@ export default function BlogPageClient() {
             </h1>
           </AnimatedCard>
 
-          {/* Featured Post + Latest News - Desktop Layout */}
           {displayFeatured && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-              {/* Featured Post */}
               <AnimatedCard delay={100}>
                 <Link href={`/blog/${displayFeatured.slug}`} className="group block">
                   <div className="relative">
-                    {/* Image - Added zoom effect on hover */}
                     <div className="relative h-[300px] md:h-[400px] rounded-[14px] overflow-hidden mb-6">
                       {displayFeatured.categories && displayFeatured.categories[0]?.name && (
                         <div className="absolute top-4 left-4 z-10">
                           <span
-                            className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(
-                              displayFeatured.categories[0].name,
-                            )}`}
+                            className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(displayFeatured.categories[0].name)}`}
                           >
                             {displayFeatured.categories[0].name}
                           </span>
@@ -374,8 +299,6 @@ export default function BlogPageClient() {
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       />
                     </div>
-
-                    {/* Content */}
                     <h2
                       className="text-xl md:text-2xl font-bold mb-4 group-hover:text-[#FF6200] transition-colors"
                       style={{ color: "var(--foreground)" }}
@@ -385,7 +308,6 @@ export default function BlogPageClient() {
                     <p className="text-[#787877] dark:text-[#CCCCCC] mb-6 line-clamp-3 text-sm md:text-base">
                       {displayFeatured.excerpt}
                     </p>
-
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#FF6200] flex items-center justify-center text-white text-sm font-medium">
                         {getAuthorInitials(displayFeatured.author?.display_name)}
@@ -406,14 +328,13 @@ export default function BlogPageClient() {
                 </Link>
               </AnimatedCard>
 
-              {/* Latest News */}
               <AnimatedCard delay={200}>
                 <div>
                   <h3 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: "var(--foreground)" }}>
                     {t.lastNews}
                   </h3>
                   <div className="space-y-6">
-                    {displayLatestNews.map((post, index) => (
+                    {displayLatestNews.map((post) => (
                       <Link
                         key={post.id}
                         href={`/blog/${post.slug}`}
@@ -450,7 +371,6 @@ export default function BlogPageClient() {
             </div>
           )}
 
-          {/* Regular Posts Grid - Only show when user clicks "View All" */}
           {displayRegular.length > 0 && (
             <div className="mb-20">
               <h3 className="text-3xl font-bold mb-8">{t.blog}</h3>

@@ -117,7 +117,7 @@ const defaultProjectsData: Record<string, any> = {
       company: "Symbotic",
     },
   },
-  "sensor-infobox": {
+  "intertop-sensor-infobox": {
     title: {
       en: "Intertop Sensor Infobox",
       uk: "Intertop Sensor Infobox",
@@ -179,7 +179,7 @@ const defaultProjectsData: Record<string, any> = {
       company: "Intertop",
     },
   },
-  "multi-brand-ecommerce": {
+  "multi-brand-ecommerce-landing-pages": {
     title: {
       en: "Multi-brand E-commerce Landing Pages",
       uk: "Багатобрендові лендинги електронної комерції",
@@ -365,7 +365,7 @@ const defaultProjectsData: Record<string, any> = {
       company: "E-commerce Business",
     },
   },
-  "testing-expertise": {
+  "testing-expertise-sports-social-platform": {
     title: {
       en: "Testing Expertise for a Sports Social Platform",
       uk: "Тестування експертизи для спортивної соціальної платформи",

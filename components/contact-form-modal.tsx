@@ -35,11 +35,27 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   const recaptchaRef = useRef<HTMLDivElement>(null)
   const [recaptchaWidgetId, setRecaptchaWidgetId] = useState<number | null>(null)
   const recaptchaRendered = useRef(false)
+  const [recaptchaSiteKey, setRecaptchaSiteKey] = useState<string | null>(null)
 
   const isDark = theme === "dark"
 
   useEffect(() => {
-    if (!isOpen || recaptchaRendered.current) return
+    async function fetchRecaptchaKey() {
+      try {
+        const response = await fetch("/api/recaptcha-key")
+        const data = await response.json()
+        if (data.siteKey) {
+          setRecaptchaSiteKey(data.siteKey)
+        }
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA key:", error)
+      }
+    }
+    fetchRecaptchaKey()
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen || recaptchaRendered.current || !recaptchaSiteKey) return
 
     const script = document.querySelector('script[src*="recaptcha"]')
     if (!script) {
@@ -54,7 +70,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         if (recaptchaRef.current && window.grecaptcha && !recaptchaRendered.current) {
           try {
             const widgetId = window.grecaptcha.render(recaptchaRef.current, {
-              sitekey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+              sitekey: recaptchaSiteKey,
               theme: isDark ? "dark" : "light",
             })
             setRecaptchaWidgetId(widgetId)
@@ -67,7 +83,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
     } else if (window.grecaptcha && !recaptchaRendered.current && recaptchaRef.current) {
       try {
         const widgetId = window.grecaptcha.render(recaptchaRef.current, {
-          sitekey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+          sitekey: recaptchaSiteKey,
           theme: isDark ? "dark" : "light",
         })
         setRecaptchaWidgetId(widgetId)
@@ -76,7 +92,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         console.error("[v0] Failed to render reCAPTCHA:", error)
       }
     }
-  }, [isOpen, isDark])
+  }, [isOpen, isDark, recaptchaSiteKey])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
