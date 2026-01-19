@@ -47,7 +47,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL,
+      connectionString: process.env.NEON_DATABASE_URL || process.env.NEON_POSTGRES_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL,
     },
     schemaName: "payload",
     push: true,
