@@ -1,5 +1,3 @@
-import { withPayload } from "@payloadcms/next/withPayload"
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -8,9 +6,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    reactCompiler: false,
-  },
 }
 
-export default withPayload(nextConfig)
+export default nextConfig

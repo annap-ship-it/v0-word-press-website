@@ -1,322 +1,514 @@
 "use client"
 
+import type React from "react"
+
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { X, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
-import { useTheme } from "@/lib/theme-context"
-import { PolicyBanner } from "@/components/policy-banner"
-import { RequestConsultationSection } from "@/components/request-consultation-section"
-import { useState } from "react"
-import { ContactFormModal } from "@/components/contact-form-modal"
 
 const content = {
   en: {
-    title: "Careers",
-    heroTitle: "Join Our Team",
-    heroSubtitle: "Build the future with us",
-    description: "We're looking for talented developers, designers, and project managers who are passionate about creating exceptional digital products.",
-    whyJoin: "Why Join IdeaTeam?",
-    benefits: [
-      {
-        icon: "/images/wallet-icon.svg",
-        title: "Competitive Salary",
-        description: "We offer market-rate compensation based on your skills and experience"
-      },
-      {
-        icon: "/images/team-icon.svg",
-        title: "Remote Work",
-        description: "Work from anywhere in the world with flexible hours"
-      },
-      {
-        icon: "/images/trending-icon.svg",
-        title: "Growth Opportunities",
-        description: "Continuous learning and career advancement paths"
-      },
-      {
-        icon: "/images/market-rate-icon.svg",
-        title: "Exciting Projects",
-        description: "Work on diverse projects for clients worldwide"
-      }
-    ],
-    openPositions: "Open Positions",
-    positions: [
-      {
-        title: "Senior Frontend Developer",
-        type: "Full-time",
-        location: "Remote",
-        skills: ["React", "TypeScript", "Next.js"]
-      },
-      {
-        title: "Backend Developer",
-        type: "Full-time",
-        location: "Remote",
-        skills: ["Node.js", "PostgreSQL", "AWS"]
-      },
-      {
-        title: "UI/UX Designer",
-        type: "Full-time",
-        location: "Remote",
-        skills: ["Figma", "User Research", "Prototyping"]
-      },
-      {
-        title: "QA Engineer",
-        type: "Full-time",
-        location: "Remote",
-        skills: ["Manual Testing", "Automation", "Selenium"]
-      }
-    ],
-    applyNow: "Apply Now",
-    noOpenPositions: "No open positions at the moment",
-    generalApplication: "Don't see a position that fits? Send us your resume anyway!",
-    sendResume: "Send Resume"
+    introText1: "At Idea Team, we ",
+    introHighlight1: "value people",
+    introText2: " above all. They are our core, our most important resource, one that cannot be overestimated.",
+    introText3: "That's why we're always happy to hear from ",
+    introHighlight2: "talented individuals",
+    introText4: ", even if there's no open position at the moment.",
+    introText5: "Leave your contact details and a few words about yourself and ",
+    introHighlight3: "your experience",
+    introText6: ", and we'll get in touch with you.",
+    formTitle: "Apply to Join our Team:",
+    nameLabel: "Name",
+    namePlaceholder: "Type your Name",
+    emailLabel: "Email",
+    emailPlaceholder: "Type your email",
+    roleLabel: "Role",
+    rolePlaceholder: "Type your Role",
+    experienceLabel: "Experience",
+    experiencePlaceholder: "Type your Experience",
+    messageLabel: "Message",
+    messagePlaceholder:
+      "Tell us a bit about your background: how long you've been in the field, why you chose it, and what keeps you inspired. No need for formalities, we'd just love to get to know you.",
+    fileText: "Attach file (CV)",
+    fileHint: "No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.",
+    sendButton: "Send",
+    sendingButton: "Sending...",
+    termsLabel: "I Accept ",
+    termsLink: "Terms and Conditions",
+    termsHint:
+      "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails.",
+    thankYouTitle: "Thank you for your application!",
+    thankYouText: "We've received your information and will review it carefully. Our team will get back to you soon.",
+    backButton: "Back to Home",
+    errorTerms: "Please accept Terms and Conditions",
+    errorRecaptcha: "Please complete the reCAPTCHA",
+    errorSubmit: "Failed to submit application. Please try again.",
   },
   uk: {
-    title: "Кар'єра",
-    heroTitle: "Приєднуйтесь до нашої команди",
-    heroSubtitle: "Будуйте майбутнє разом з нами",
-    description: "Ми шукаємо талановитих розробників, дизайнерів та проектних менеджерів, які захоплені створенням виняткових цифрових продуктів.",
-    whyJoin: "Чому варто приєднатися до IdeaTeam?",
-    benefits: [
-      {
-        icon: "/images/wallet-icon.svg",
-        title: "Конкурентна зарплата",
-        description: "Ми пропонуємо ринкову компенсацію на основі ваших навичок та досвіду"
-      },
-      {
-        icon: "/images/team-icon.svg",
-        title: "Віддалена робота",
-        description: "Працюйте з будь-якої точки світу з гнучким графіком"
-      },
-      {
-        icon: "/images/trending-icon.svg",
-        title: "Можливості розвитку",
-        description: "Безперервне навчання та шляхи кар'єрного росту"
-      },
-      {
-        icon: "/images/market-rate-icon.svg",
-        title: "Цікаві проєкти",
-        description: "Працюйте над різноманітними проєктами для клієнтів з усього світу"
-      }
-    ],
-    openPositions: "Відкриті вакансії",
-    positions: [
-      {
-        title: "Senior Frontend Developer",
-        type: "Повна зайнятість",
-        location: "Віддалено",
-        skills: ["React", "TypeScript", "Next.js"]
-      },
-      {
-        title: "Backend Developer",
-        type: "Повна зайнятість",
-        location: "Віддалено",
-        skills: ["Node.js", "PostgreSQL", "AWS"]
-      },
-      {
-        title: "UI/UX Designer",
-        type: "Повна зайнятість",
-        location: "Віддалено",
-        skills: ["Figma", "User Research", "Prototyping"]
-      },
-      {
-        title: "QA Engineer",
-        type: "Повна зайнятість",
-        location: "Віддалено",
-        skills: ["Manual Testing", "Automation", "Selenium"]
-      }
-    ],
-    applyNow: "Подати заявку",
-    noOpenPositions: "Наразі немає відкритих вакансій",
-    generalApplication: "Не бачите підходящої позиції? Надішліть нам своє резюме!",
-    sendResume: "Надіслати резюме"
-  }
+    introText1: "У Idea Team ми ",
+    introHighlight1: "цінуємо людей",
+    introText2: " понад усе. Вони — наша основа, наш найцінніший ресурс, який неможливо переоцінити.",
+    introText3: "Тому ми завжди раді чути від ",
+    introHighlight2: "талановитих фахівців",
+    introText4: ", навіть якщо в нас немає вільних вакансій.",
+    introText5: "Залишіть свої контактні дані та кілька слів про себе та ",
+    introHighlight3: "ваш досвід",
+    introText6: ", і ми з вами зв'яжемось.",
+    formTitle: "Приєднайтеся до нашої команди:",
+    nameLabel: "Ім'я",
+    namePlaceholder: "Введіть ваше ім'я",
+    emailLabel: "Електронна пошта",
+    emailPlaceholder: "Введіть вашу електронну пошту",
+    roleLabel: "Посада",
+    rolePlaceholder: "Введіть вашу посаду",
+    experienceLabel: "Досвід",
+    experiencePlaceholder: "Введіть ваш досвід",
+    messageLabel: "Повідомлення",
+    messagePlaceholder:
+      "Розповідайте нам про себе: скільки часу ви працюєте в цій галузі, чому ви обрали цю професію та що вас надихає. Без формальностей, ми просто хочемо вас краще пізнати.",
+    fileText: "Прикріпити файл (CV)",
+    fileHint: "Можна прикріпити до 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
+    sendButton: "Надіслати",
+    sendingButton: "Надсилання...",
+    termsLabel: "Я приймаю ",
+    termsLink: "Умови та положення",
+    termsHint:
+      "Надсилаючи вашу пошту, ви приймаєте умови та положення. Ми можемо періодично надсилати вам маркетингові листи.",
+    thankYouTitle: "Дякуємо за вашу заявку!",
+    thankYouText: "Ми отримали вашу інформацію і ретельно її переглянемо. Наша команда з вами незабаром зв'яжеться.",
+    backButton: "Повернутися на головну",
+    errorTerms: "Будь ласка, прийміть Умови та положення",
+    errorRecaptcha: "Будь ласка, виконайте reCAPTCHA",
+    errorSubmit: "Помилка при надсиланні заявки. Спробуйте ще раз.",
+  },
 }
 
 export default function CareersPage() {
   const { locale } = useLocale()
-  const { isDark } = useTheme()
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const t = content[locale as keyof typeof content] || content.en
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    role: "",
+    experience: "",
+    message: "",
+  })
+  const [files, setFiles] = useState<File[]>([])
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const recaptchaRef = useRef<HTMLDivElement>(null)
+
+  // Theme detection for styling
+  const [isDarkTheme, setIsDarkTheme] = useState(false)
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDarkTheme(document.documentElement.classList.contains("dark"))
+    }
+    checkTheme()
+    const observer = new MutationObserver(checkTheme)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/api.js"
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || [])
+    const validExtensions = [".doc", ".docx", ".pdf", ".ppt", ".pptx"]
+    const maxSize = 3 * 1024 * 1024 // 3MB
+    const maxFiles = 3
+
+    const validFiles = selectedFiles.filter((file) => {
+      const ext = "." + file.name.split(".").pop()?.toLowerCase()
+      return validExtensions.includes(ext) && file.size <= maxSize
+    })
+
+    if (files.length + validFiles.length > maxFiles) {
+      setError(`Maximum ${maxFiles} files allowed`)
+      return
+    }
+
+    setFiles((prev) => [...prev, ...validFiles].slice(0, maxFiles))
+    setError("")
+  }
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!termsAccepted) {
+      setError(t.errorTerms)
+      return
+    }
+
+    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
+
+    if (!recaptchaResponse) {
+      setError(t.errorRecaptcha)
+      return
+    }
+
+    setIsSubmitting(true)
+    setError("")
+
+    try {
+      const formDataToSend = new FormData()
+      formDataToSend.append("name", formData.name)
+      formDataToSend.append("email", formData.email)
+      formDataToSend.append("role", formData.role)
+      formDataToSend.append("experience", formData.experience)
+      formDataToSend.append("message", formData.message)
+      formDataToSend.append("type", "career")
+      formDataToSend.append("recaptchaToken", recaptchaResponse)
+
+      files.forEach((file) => {
+        formDataToSend.append("files", file)
+      })
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: formDataToSend,
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to submit application")
+      }
+
+      setIsSubmitted(true)
+    } catch (err) {
+      setError(t.errorSubmit)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  if (isSubmitted) {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="max-w-[1280px] mx-auto px-6 py-12 md:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[70vh]">
+            {/* Left Column - Thank You Message */}
+            <div className="space-y-6 text-center lg:text-left">
+              <h1
+                className="text-3xl md:text-4xl lg:text-5xl font-bold"
+                style={{
+                  backgroundImage: isDarkTheme
+                    ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
+                    : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                {t.thankYouTitle}
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-md mx-auto lg:mx-0">{t.thankYouText}</p>
+              <div className="pt-4">
+                <Link href="/">
+                  <Button className="bg-[#FF6200] hover:bg-[#e55a00] text-white rounded-full px-8 h-12">
+                    {t.backButton}
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column - Illustration */}
+            <div className="relative w-full max-w-[500px] aspect-square mx-auto">
+              <Image
+                src="/images/thank-you-illustration.svg"
+                alt="Thank you illustration"
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </main>
+    )
+  }
+
   return (
-    <main className="min-h-screen" style={{ background: "var(--background)" }}>
-      <PolicyBanner
-        title={t.title}
-        lightBanner="/images/banner-light.png"
-        darkBanner="/images/banner-dark.png"
-      />
+    <main className="min-h-screen bg-background">
+      <div className="max-w-[1280px] mx-auto px-6 py-12 md:py-20">
+        {/* Two column layout on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left Column - Text Content */}
+          <div className="space-y-6">
+            <div className="space-y-6 text-lg text-foreground">
+              <p className="mt-52">
+                {t.introText1}
+                <span className="text-[#FF6200] font-medium">{t.introHighlight1}</span>
+                {t.introText2}
+              </p>
+              <p>
+                {t.introText3}
+                <span className="text-[#FF6200] font-medium underline">{t.introHighlight2}</span>
+                {t.introText4}
+              </p>
+              <p>
+                {t.introText5}
+                <span className="text-[#FF6200] font-medium underline">{t.introHighlight3}</span>
+                {t.introText6}
+              </p>
+            </div>
 
-      {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 
-            className="text-4xl md:text-5xl font-bold mb-4"
-            style={{ color: "var(--foreground)" }}
-          >
-            {t.heroTitle}
-          </h2>
-          <p 
-            className="text-xl mb-6"
-            style={{ color: "#FF6200" }}
-          >
-            {t.heroSubtitle}
-          </p>
-          <p 
-            className="text-lg max-w-2xl mx-auto"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            {t.description}
-          </p>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
-        <div className="max-w-6xl mx-auto">
-          <h2 
-            className="text-3xl font-bold text-center mb-12"
-            style={{ color: "var(--foreground)" }}
-          >
-            {t.whyJoin}
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {t.benefits.map((benefit, index) => (
-              <div 
-                key={index}
-                className="p-6 rounded-2xl text-center"
-                style={{ 
-                  background: isDark ? "rgba(255,255,255,0.05)" : "#FFFFFF",
-                  border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #E8E8E8"
-                }}
-              >
-                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <Image 
-                    src={benefit.icon || "/placeholder.svg"} 
-                    alt={benefit.title}
-                    width={48}
-                    height={48}
-                  />
-                </div>
-                <h3 
-                  className="text-lg font-semibold mb-2"
-                  style={{ color: "var(--foreground)" }}
-                >
-                  {benefit.title}
-                </h3>
-                <p 
-                  className="text-sm"
-                  style={{ color: "var(--muted-foreground)" }}
-                >
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Open Positions Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h2 
-            className="text-3xl font-bold text-center mb-12"
-            style={{ color: "var(--foreground)" }}
-          >
-            {t.openPositions}
-          </h2>
-          
-          <div className="space-y-4">
-            {t.positions.map((position, index) => (
-              <div 
-                key={index}
-                className="p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4"
-                style={{ 
-                  background: isDark ? "rgba(255,255,255,0.05)" : "#FFFFFF",
-                  border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #E8E8E8"
-                }}
-              >
-                <div className="flex-1">
-                  <h3 
-                    className="text-xl font-semibold mb-2"
-                    style={{ color: "var(--foreground)" }}
-                  >
-                    {position.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    <span 
-                      className="px-3 py-1 rounded-full text-xs"
-                      style={{ 
-                        background: isDark ? "rgba(255,98,0,0.2)" : "rgba(255,98,0,0.1)",
-                        color: "#FF6200"
-                      }}
-                    >
-                      {position.type}
-                    </span>
-                    <span 
-                      className="px-3 py-1 rounded-full text-xs"
-                      style={{ 
-                        background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
-                        color: "var(--muted-foreground)"
-                      }}
-                    >
-                      {position.location}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {position.skills.map((skill, skillIndex) => (
-                      <span 
-                        key={skillIndex}
-                        className="px-2 py-1 rounded text-xs"
-                        style={{ 
-                          background: isDark ? "rgba(255,255,255,0.05)" : "#F5F5F5",
-                          color: "var(--muted-foreground)"
-                        }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <button
-                  onClick={() => setIsContactModalOpen(true)}
-                  className="px-6 py-3 rounded-full font-medium text-white bg-[#FF6200] hover:bg-[#E55800] transition-colors whitespace-nowrap"
-                >
-                  {t.applyNow}
-                </button>
-              </div>
-            ))}
+            {/* Puzzle Illustration */}
+            <div className="relative w-full max-w-[400px] aspect-square mt-8">
+              <Image
+                src="/images/careers-puzzle.svg"
+                alt="Team collaboration illustration"
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
 
-          {/* General Application */}
-          <div 
-            className="mt-12 p-8 rounded-2xl text-center"
-            style={{ 
-              background: isDark ? "rgba(255,98,0,0.1)" : "rgba(255,98,0,0.05)",
-              border: "1px solid rgba(255,98,0,0.2)"
+          {/* Right Column - Application Form */}
+          <div
+            className="p-8 md:p-10 mt-14"
+            style={{
+              backgroundColor: isDarkTheme ? "#1E1E1E" : "#FFFFFF",
+              boxShadow: isDarkTheme ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
+              borderRadius: "14px",
             }}
           >
-            <p 
-              className="text-lg mb-4"
-              style={{ color: "var(--foreground)" }}
+            <h1
+              className="text-2xl md:text-3xl font-bold mb-8 text-center"
+              style={{
+                backgroundImage: isDarkTheme
+                  ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
+                  : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
             >
-              {t.generalApplication}
-            </p>
-            <button
-              onClick={() => setIsContactModalOpen(true)}
-              className="px-8 py-3 rounded-full font-medium text-white bg-[#FF6200] hover:bg-[#E55800] transition-colors"
-            >
-              {t.sendResume}
-            </button>
+              {t.formTitle}
+            </h1>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Name */}
+              <div>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.nameLabel}
+                </label>
+                <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder={t.namePlaceholder}
+                  required
+                  className={`rounded-[4px] h-11 ${
+                    isDarkTheme
+                      ? "bg-[#2A2A2A] border-[#3A3A3A] text-white placeholder:text-gray-500"
+                      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
+                  }`}
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.emailLabel}
+                </label>
+                <Input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder={t.emailPlaceholder}
+                  required
+                  className={`rounded-[4px] h-11 ${
+                    isDarkTheme
+                      ? "bg-[#2A2A2A] border-[#3A3A3A] text-white placeholder:text-gray-500"
+                      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
+                  }`}
+                />
+              </div>
+
+              {/* Role */}
+              <div>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.roleLabel}
+                </label>
+                <Input
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  placeholder={t.rolePlaceholder}
+                  required
+                  className={`rounded-[4px] h-11 ${
+                    isDarkTheme
+                      ? "bg-[#2A2A2A] border-[#3A3A3A] text-white placeholder:text-gray-500"
+                      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
+                  }`}
+                />
+              </div>
+
+              {/* Experience */}
+              <div>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.experienceLabel}
+                </label>
+                <Input
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleInputChange}
+                  placeholder={t.experiencePlaceholder}
+                  required
+                  className={`rounded-[4px] h-11 ${
+                    isDarkTheme
+                      ? "bg-[#2A2A2A] border-[#3A3A3A] text-white placeholder:text-gray-500"
+                      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
+                  }`}
+                />
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className={`block text-sm mb-2 ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                  {t.messageLabel}
+                </label>
+                <Textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder={t.messagePlaceholder}
+                  rows={5}
+                  className={`rounded-[4px] resize-none ${
+                    isDarkTheme
+                      ? "bg-[#2A2A2A] border-[#3A3A3A] text-white placeholder:text-gray-500"
+                      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
+                  }`}
+                />
+              </div>
+
+              {/* File Upload */}
+              <div className="flex flex-wrap items-center gap-4">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".doc,.docx,.pdf,.ppt,.pptx"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`flex items-center gap-2 hover:text-[#FF6200] transition-colors ${isDarkTheme ? "text-white" : "text-gray-700"}`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                  </svg>
+                  <span className="underline">
+                    {/* Added localized file text */}
+                    {t.fileText}
+                  </span>
+                </button>
+                <span className={`text-sm ${isDarkTheme ? "text-gray-500" : "text-gray-500"}`}>{t.fileHint}</span>
+              </div>
+
+              {/* Attached Files */}
+              {files.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {files.map((file, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-[4px] ${isDarkTheme ? "bg-[#2A2A2A]" : "bg-gray-100"}`}
+                    >
+                      <span
+                        className={`text-sm truncate max-w-[150px] ${isDarkTheme ? "text-white" : "text-gray-700"}`}
+                      >
+                        {file.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className={`${isDarkTheme ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-gray-700"}`}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* reCAPTCHA */}
+              <div ref={recaptchaRef} className="g-recaptcha" data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT" />
+
+              {/* Error Message */}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
+              {/* Send Button */}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#FF6200] hover:bg-[#e55a00] text-white rounded-full h-12 text-base font-medium"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    {t.sendingButton}
+                  </>
+                ) : (
+                  /* Added localized send button text */
+                  t.sendButton
+                )}
+              </Button>
+
+              {/* Terms Checkbox */}
+              <div className="space-y-2">
+                <div className="flex items-start gap-3">
+                  <Checkbox
+                    id="terms"
+                    checked={termsAccepted}
+                    onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
+                    className={`mt-1 data-[state=checked]:bg-[#FF6200] data-[state=checked]:border-[#FF6200] ${isDarkTheme ? "border-gray-500" : "border-gray-300"}`}
+                  />
+                  <label htmlFor="terms" className={`text-sm ${isDarkTheme ? "text-white" : "text-gray-700"}`}>
+                    {t.termsLabel}
+                    <Link href="/terms" className="text-[#FF6200] underline">
+                      {t.termsLink}
+                    </Link>
+                    .
+                  </label>
+                </div>
+                <p className={`text-xs pl-6 ${isDarkTheme ? "text-gray-500" : "text-gray-500"}`}>{t.termsHint}</p>
+              </div>
+            </form>
           </div>
         </div>
-      </section>
-
-      <RequestConsultationSection />
-      
-      <ContactFormModal 
-        isOpen={isContactModalOpen} 
-        onClose={() => setIsContactModalOpen(false)} 
-      />
+      </div>
     </main>
   )
 }
