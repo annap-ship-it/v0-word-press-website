@@ -175,7 +175,7 @@ export default function BlogContent() {
         locale === "uk"
           ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції."
           : "Learn how IT personnel outsourcing can transform your business operations.",
-      featured_image: "/it-team-working-remotely-on-computers.jpg",
+      featured_image: "https://www.sourceofasia.com/wp-content/uploads/2022/02/Article-05.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
       created_at: new Date().toISOString(),
