@@ -313,8 +313,13 @@ export default function BlogPostPage() {
   const { locale } = useLocale()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [slug])
+    setIsDark(document.documentElement.classList.contains("dark"))
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"))
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     async function fetchPost() {
@@ -473,10 +478,6 @@ export default function BlogPostPage() {
     .join("")
     .toUpperCase()
 
-  const titleGradient = isDark
-    ? "linear-gradient(90.39deg, #FFFFFF 34.5%, #FF6200 66.76%)"
-    : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)"
-
   return (
     <div className="min-h-screen" style={{ background: "var(--background)" }}>
       {/* Back Button */}
@@ -509,9 +510,11 @@ export default function BlogPostPage() {
           {/* Title - H1 */}
           <AnimatedSection delay={200}>
             <h1
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight relative inline-block w-full"
               style={{
-                backgroundImage: titleGradient,
+                background: isDark
+                  ? "linear-gradient(90.39deg, #FFFFFF 34.5%, #FF6200 66.76%)"
+                  : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
