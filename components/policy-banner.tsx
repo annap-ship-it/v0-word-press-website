@@ -40,8 +40,6 @@ export function PolicyBanner({ title, lightBanner, darkBanner }: PolicyBannerPro
     }
   }, [])
 
-  console.log("[v0] PolicyBanner - isDark:", isDark, "title:", title)
-
   return (
     <div className="relative w-full h-[393px] flex items-center justify-center overflow-hidden">
       <Image

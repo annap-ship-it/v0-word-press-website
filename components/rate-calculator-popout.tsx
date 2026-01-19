@@ -32,13 +32,13 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-8 pointer-events-none sm:items-center"
+      className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 pointer-events-none"
       style={{
-        animation: "fadeIn 0ms ease-out",
+        animation: "fadeIn 300ms ease-out",
       }}
     >
       <div
-        className="relative pointer-events-auto w-full max-w-[360px] mx-auto"
+        className="relative pointer-events-auto w-full max-w-[360px]"
         style={{
           borderRadius: "14px",
           background: isLightMode
@@ -104,18 +104,14 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
       </div>
 
       <style jsx>{`
-        @media (max-width: 479px) {
-          div[class*="pointer-events-auto"] {
-            width: calc(100% - 32px) !important;
-            max-width: 320px !important;
-            padding: 20px !important;
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
           }
-        }
-
-        @media (min-width: 480px) and (max-width: 767px) {
-          div[class*="pointer-events-auto"] {
-            width: calc(100% - 48px) !important;
-            max-width: 360px !important;
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
       `}</style>

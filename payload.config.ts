@@ -21,10 +21,27 @@ export default buildConfig({
     meta: {
       titleSuffix: "- IdeaTeam Admin",
     },
+    importMap: {
+      baseDir: path.resolve(dirname),
+    },
+  },
+  localization: {
+    locales: [
+      {
+        label: "English",
+        code: "en",
+      },
+      {
+        label: "Ukrainian", 
+        code: "uk",
+      },
+    ],
+    defaultLocale: "en",
+    fallback: true,
   },
   collections: [Posts, Pages, Media, Users, Categories],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || "your-secret-key-change-in-production",
+  secret: process.env.PAYLOAD_SECRET || "default-secret-please-change-in-production-123456789",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
@@ -32,11 +49,12 @@ export default buildConfig({
     pool: {
       connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL,
     },
-    push: process.env.NODE_ENV === "development",
+    schemaName: "payload",
+    push: true,
   }),
   plugins: [
     vercelBlobStorage({
-      enabled: true,
+      enabled: !!process.env.BLOB_READ_WRITE_TOKEN,
       collections: {
         media: true,
       },

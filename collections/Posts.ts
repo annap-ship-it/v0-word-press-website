@@ -4,7 +4,7 @@ export const Posts: CollectionConfig = {
   slug: "posts",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "status", "locale", "publishedAt"],
+    defaultColumns: ["title", "status", "publishedAt"],
     group: "Content",
   },
   access: {
@@ -24,12 +24,16 @@ export const Posts: CollectionConfig = {
       unique: true,
       admin: {
         position: "sidebar",
+        description: "URL-friendly identifier (same for all locales)",
       },
     },
     {
       name: "excerpt",
       type: "textarea",
       localized: true,
+      admin: {
+        description: "Short summary of the post",
+      },
     },
     {
       name: "content",
@@ -63,18 +67,6 @@ export const Posts: CollectionConfig = {
         { label: "Published", value: "published" },
       ],
       defaultValue: "draft",
-      admin: {
-        position: "sidebar",
-      },
-    },
-    {
-      name: "locale",
-      type: "select",
-      options: [
-        { label: "English", value: "en" },
-        { label: "Ukrainian", value: "uk" },
-      ],
-      defaultValue: "en",
       admin: {
         position: "sidebar",
       },
