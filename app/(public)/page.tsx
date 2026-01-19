@@ -38,8 +38,8 @@ export default function HomePage() {
       <OurProjectsSection />
       <WhyUsSection2 />
       <FeedbackSection />
+      <RequestConsultationSection />      
       <FAQSection />
-      <RequestConsultationSection />
     </main>
   )
 }

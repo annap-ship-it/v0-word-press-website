@@ -5,10 +5,22 @@ import { createServerClient } from "@/lib/supabase/server"
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   try {
     const supabase = await createServerClient()
+    
+    // Extract locale from slug suffix if present (e.g., "slug-uk" -> "uk")
+    let baseSlug = params.slug
+    let locale = "en"
+    
+    const localeMatch = params.slug.match(/-([a-z]{2})$/)
+    if (localeMatch) {
+      baseSlug = params.slug.replace(localeMatch[0], "")
+      locale = localeMatch[1]
+    }
+    
     const { data: post } = await supabase
       .from("posts")
       .select("title, excerpt, featured_image, created_at")
-      .eq("slug", params.slug)
+      .eq("slug", baseSlug)
+      .eq("locale", locale)
       .eq("status", "published")
       .single()
 

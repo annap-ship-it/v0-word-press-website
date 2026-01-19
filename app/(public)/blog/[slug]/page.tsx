@@ -328,6 +328,17 @@ export default function BlogPostPage() {
       console.log("[v0] Fetching post with slug:", slug, "locale:", locale)
 
       const supabase = createBrowserClient()
+      
+      // Extract locale from slug suffix if present (e.g., "slug-uk" -> "uk")
+      let baseSlug = slug
+      let slugLocale = locale || "en"
+      
+      // Check if slug ends with -uk, -en, etc.
+      const localeMatch = slug.match(/-([a-z]{2})$/)
+      if (localeMatch) {
+        baseSlug = slug.replace(localeMatch[0], "")
+        slugLocale = localeMatch[1]
+      }
 
       const { data, error } = await supabase
         .from("posts")
@@ -335,8 +346,8 @@ export default function BlogPostPage() {
           id, title, slug, content, excerpt, featured_image, 
           category_id, created_at, author_id, locale
         `)
-        .eq("slug", slug)
-        .eq("locale", locale || "en")
+        .eq("slug", baseSlug)
+        .eq("locale", slugLocale)
         .eq("status", "published")
         .single()
 
