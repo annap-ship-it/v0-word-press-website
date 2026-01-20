@@ -123,7 +123,7 @@ export function FeedbackSection() {
             left: "-10.89px",
             bottom: "-110px",
             transform: "rotate(-0.78deg)",
-            opacity: isDark ? 1 : 0.3,
+            opacity: 0.5,
           }}
         >
           <svg viewBox="0 0 946 741" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -131,25 +131,21 @@ export function FeedbackSection() {
               d="M931.741 653.204C964.313 706.846 924.457 774.667 859.818 775.09L857.315 775.107L857.385 775.171L773.363 775.743L664.302 596.243L774.936 395.05L931.741 653.204Z"
               stroke={isDark ? "#1615154D" : "#F1F0F0"}
               strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
             />
             <path
               d="M310.915 559.917L189.954 779.855L95.353 780.489L95.352 780.489C30.6476 780.979 -10.0345 713.737 21.8818 659.605L194.036 367.558L310.915 559.917Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              stroke={isDark ? "#1615154D" : "#A8A4A0"}
               strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
             />
             <path
               d="M428.4 346.314L350.923 487.234L235.482 297.23L315.786 161.02L428.4 346.314Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              stroke={isDark ? "#1615154D" : "#A8A4A0"}
               strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
             />
             <path
               d="M399.962 18.2893C431.853 -35.9117 512.671 -36.4911 545.357 17.288L545.357 17.287L731.849 324.243L620.382 526.95L581.486 597.591L581.486 597.592L502.896 740.467L482.398 777.77L477.62 777.835L445.218 778.012L445.216 778.012L272.397 779.255L354.837 629.368L354.837 629.367L393.663 558.661L393.663 558.66L472.253 415.786L511.148 345.146L511.427 344.639L511.126 344.144L357.234 90.8457L399.962 18.2893Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
+              stroke={isDark ? "#1615154D" : "#A8A4A0"}
               strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
             />
           </svg>
         </div>

@@ -191,9 +191,7 @@ export default function ServicesPage() {
               fontFamily: "Onest",
               fontSize: "clamp(40px, 5vw, 72px)",
               lineHeight: "1.1",
-              backgroundImage: isDark
-                ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
-                : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
+              backgroundImage: "linear-gradient(90.39deg, #FF6200 34.5%, var(--foreground) 66.76%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",

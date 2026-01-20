@@ -17,25 +17,46 @@ const onest = Onest({
 })
 
 export const metadata: Metadata = {
-  title: "Bilingual Website with WordPress Admin",
-  description: "A modern bilingual website with dark/light themes and WordPress-style admin panel",
+  title: "Idea Team Dev | Expert Software Development Studio",
+  description: "Custom software development solutions including web development, mobile apps, QA automation, DevOps, and data analytics. Expert team delivering high-quality projects.",
   generator: "v0.app",
+  keywords: "software development, web development, mobile apps, outsourcing, DevOps, QA testing",
+  authors: [{ name: "Idea Team Dev" }],
+  openGraph: {
+    title: "Idea Team Dev | Expert Software Development Studio",
+    description: "Custom software development solutions and expert services for your business.",
+    type: "website",
+    url: "https://v0-ideateam.vercel.app",
+    images: [
+      {
+        url: "https://v0-ideateam.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Idea Team Dev - Software Development",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Idea Team Dev | Expert Software Development Studio",
+    description: "Custom software development solutions and expert services.",
+    images: ["https://v0-ideateam.vercel.app/og-image.png"],
+  },
+  alternates: {
+    canonical: "https://v0-ideateam.vercel.app",
+    languages: {
+      en: "https://v0-ideateam.vercel.app",
+      uk: "https://v0-ideateam.vercel.app/uk",
+    },
+  },
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
+        url: "/favicon.svg",
         type: "image/svg+xml",
       },
     ],
-    apple: "/apple-icon.png",
+    apple: "/apple-touch-icon.png",
   },
 }
 
@@ -48,6 +69,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="dark" data-theme="dark">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+        <link rel="alternate" hrefLang="en" href="https://v0-ideateam.vercel.app" />
+        <link rel="alternate" hrefLang="uk" href="https://v0-ideateam.vercel.app/uk" />
+        <link rel="alternate" hrefLang="x-default" href="https://v0-ideateam.vercel.app" />
         <script
           dangerouslySetInnerHTML={{
             __html: `

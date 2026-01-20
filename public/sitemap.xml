@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- English Pages -->
+  <url>
+    <loc>https://v0-ideateam.vercel.app/</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://v0-ideateam.vercel.app/uk" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/services</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://v0-ideateam.vercel.app/uk/services" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/blog</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://v0-ideateam.vercel.app/uk/blog" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/projects</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://v0-ideateam.vercel.app/uk/projects" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/about</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://v0-ideateam.vercel.app/uk/about" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/contact</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://v0-ideateam.vercel.app/uk/contact" />
+  </url>
+
+  <!-- Ukrainian Pages -->
+  <url>
+    <loc>https://v0-ideateam.vercel.app/uk</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://v0-ideateam.vercel.app/" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/uk/services</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://v0-ideateam.vercel.app/services" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/uk/blog</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://v0-ideateam.vercel.app/blog" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/uk/projects</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://v0-ideateam.vercel.app/projects" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/uk/about</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://v0-ideateam.vercel.app/about" />
+  </url>
+  <url>
+    <loc>https://v0-ideateam.vercel.app/uk/contact</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://v0-ideateam.vercel.app/contact" />
+  </url>
+</urlset>

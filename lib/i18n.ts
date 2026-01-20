@@ -147,6 +147,12 @@ export const translations = {
     ourServicesTitle: "Our Services",
     ourServicesSubtitle: "Comprehensive solutions for your business needs",
     servicesDescription: "We offer a wide range of professional services tailored to your requirements",
+    sending: "Sending...",
+    typeYourName: "Type Your Name",
+    typeYourEmail: "Type Your Email",
+    typeYourMessage: "Type Your Message",
+    termsAndConditions: "Terms and Conditions",
+    bySubmittingEmail: "By submitting your email, you accept terms and conditions.",
 
     // Projects Page
     ourProjectsTitle: "Our Projects",
@@ -360,6 +366,12 @@ export const translations = {
     ourServicesTitle: "Наші послуги",
     ourServicesSubtitle: "Комплексні рішення для ваших потреб",
     servicesDescription: "Ми пропонуємо широкий спектр професійних послуг, адаптованих до ваших вимог",
+    sending: "Відправлення...",
+    typeYourName: "Введіть своє ім'я",
+    typeYourEmail: "Введіть свою електронну адресу",
+    typeYourMessage: "Введіть своє повідомлення",
+    termsAndConditions: "Умови та положення",
+    bySubmittingEmail: "Надсилаючи свою електронну адресу, ви приймаєте умови та положення.",
 
     // Projects Page
     ourProjectsTitle: "Наші проекти",
