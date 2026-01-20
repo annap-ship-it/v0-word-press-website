@@ -36,7 +36,7 @@ const testimonials: Testimonial[] = [
     company: "Beetroot",
     rating: 5,
     text: "Наша співпраця з Idea Team була повним успіхом. Вони ефективно впоралися з усіма завданнями в рамках проекту, доставляючи високоякісні результати вчасно. Їх увага до деталей, професіоналізм та здатність швидко вирішувати складні питання дійсно виділялися.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
+    avatarUrl: "/images/avatar-male-1.svg",
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ const testimonials: Testimonial[] = [
     company: "Appexoft",
     rating: 5,
     text: "Idea Team стала нашим надійним партнером: їх гнучкість, вдосконалені процеси та сильний менеджмент зробили спільну роботу гладкою. Вони швидко вирішували складні питання інноваційними рішеннями.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+    avatarUrl: "/images/avatar-male-2.svg",
   },
   // English
   {
@@ -57,7 +57,7 @@ const testimonials: Testimonial[] = [
     company: "Beetroot",
     rating: 5,
     text: "Our collaboration with Idea Team was a complete success. They efficiently handled all the tasks within the project, delivering high-quality results on time. Their attention to detail, professionalism, and ability to solve complex issues quickly truly stood out.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
+    avatarUrl: "/images/avatar-male-1.svg",
   },
   {
     id: 4,
@@ -67,7 +67,7 @@ const testimonials: Testimonial[] = [
     company: "Appexoft",
     rating: 5,
     text: "Idea Team became our reliable partner: their flexibility, refined processes, and strong management made collaborative work smooth. We were impressed by how quickly they solved complex issues with innovative solutions.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+    avatarUrl: "/images/avatar-male-2.svg",
   },
 ]
 
@@ -111,7 +111,7 @@ export function FeedbackSection() {
   const borderColor = isDark ? "rgba(22, 21, 21, 0.3)" : "#F1F0F0"
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
+    <section id="feedback" className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
       {/* Background Logo */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div

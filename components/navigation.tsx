@@ -203,7 +203,7 @@ export function Navigation() {
                       {/* Left column - Menu items */}
                       <div className="flex-1 p-6 flex flex-col justify-center gap-4">
                         <Link
-                          href="/about"
+                          href="/#about-us"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -244,7 +244,7 @@ export function Navigation() {
                         </Link>
 
                         <Link
-                          href="/experience"
+                          href="/#our-expertise"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -403,8 +403,10 @@ export function Navigation() {
                         </div>
 
                         {/* Read All Reviews button */}
-                        <button
-                          className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                        <Link
+                          href="/#feedback"
+                          onClick={() => setCompanyOpen(false)}
+                          className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out inline-block"
                           style={{
                             width: "auto",
                             minWidth: "140px",
@@ -442,7 +444,7 @@ export function Navigation() {
                         >
                           {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                           {t.readAllReviews}
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -911,7 +913,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects/multi-brand-ecommerce"
+                          href="/projects#multi-brand-ecommerce"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -944,7 +946,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects/statistics-platform"
+                          href="/projects#statistics-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -977,7 +979,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects/sensor-infobox"
+                          href="/projects#sensor-infobox"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1010,7 +1012,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects/ecommerce-platform"
+                          href="/projects#ecommerce-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1538,8 +1540,10 @@ export function Navigation() {
                       </div>
 
                       {/* Read All Reviews button */}
-                      <button
-                        className="absolute transition-all duration-300 ease-out"
+                      <Link
+                        href="/#feedback"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="absolute transition-all duration-300 ease-out inline-block"
                         style={{
                           bottom: "min(14px, 8%)",
                           left: "min(14px, 5%)",
@@ -1573,7 +1577,7 @@ export function Navigation() {
                       >
                         {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                         {t.readAllReviews}
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -1958,7 +1962,7 @@ export function Navigation() {
                     }}
                   >
                     <Link
-                      href="/projects/multi-brand-ecommerce"
+                      href="/projects#multi-brand-ecommerce"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2007,7 +2011,7 @@ export function Navigation() {
                       {t.multibrandEcommerce}
                     </Link>
                     <Link
-                      href="/projects/statistics-platform"
+                      href="/projects#statistics-platform"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2056,7 +2060,7 @@ export function Navigation() {
                       {t.statisticsPlatform}
                     </Link>
                     <Link
-                      href="/projects/sensor-infobox"
+                      href="/projects#sensor-infobox"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2105,7 +2109,7 @@ export function Navigation() {
                       {t.sensorInfobox}
                     </Link>
                     <Link
-                      href="/projects/ecommerce-platform"
+                      href="/projects#ecommerce-platform"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
