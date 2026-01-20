@@ -253,7 +253,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/projects/multi-brand-ecommerce"
+                  href="/projects#multi-brand-ecommerce"
                   onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
@@ -262,7 +262,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/projects/statistics-platform"
+                  href="/projects#statistics-platform"
                   onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
@@ -271,7 +271,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/projects/sensor-infobox"
+                  href="/projects#sensor-infobox"
                   onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
@@ -280,7 +280,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/projects/ecommerce-platform"
+                  href="/projects#ecommerce-platform"
                   onClick={handleLinkClick}
                   className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
                 >
