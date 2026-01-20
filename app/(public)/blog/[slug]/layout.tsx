@@ -3,16 +3,26 @@ import type { Metadata } from "next"
 import { createServerClient } from "@/lib/supabase/server"
 import { headers } from "next/headers"
 
+export const dynamic = 'force-dynamic'  // ← Додаємо це, щоб мета не кешувалася
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   try {
-    const headersList = await headers()
-    const pathname = headersList.get("x-pathname") || ""
-    const isUkrainian = pathname.includes("/uk")
+    const headersList = headers()
+    const cookieHeader = headersList.get("cookie") || ""
+
+    // Витягуємо мову з cookie (preferred_lang або lang — як ти назвеш)
+    let locale = "en"
+    const langMatch = cookieHeader.match(/preferred_lang=([^;]+)/) || cookieHeader.match(/lang=([^;]+)/)
+    if (langMatch) {
+      const langValue = langMatch[1].trim()
+      locale = langValue === "uk" ? "uk" : "en"
+    }
+
+    const isUkrainian = locale === "uk"
 
     const supabase = await createServerClient()
-    const locale = isUkrainian ? "uk" : "en"
 
-    // Try to fetch post in the requested locale first
+    // Спочатку намагаємось знайти пост у потрібній мові
     let { data: post } = await supabase
       .from("posts")
       .select("title, excerpt, featured_image, created_at, locale, meta_title, meta_description")
@@ -21,8 +31,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       .eq("status", "published")
       .single()
 
-    // If requested Ukrainian but not found, fall back to English
-    if (!post && locale === "uk") {
+    // Якщо українською не знайшли — fallback на англійську
+    if (!post && isUkrainian) {
       const { data: enPost } = await supabase
         .from("posts")
         .select("title, excerpt, featured_image, created_at, locale, meta_title, meta_description")
@@ -33,27 +43,26 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       post = enPost
     }
 
+    // Якщо посту взагалі немає
     if (!post) {
       return {
         title: isUkrainian 
-          ? "Стаття | Блог IdeaTeam" 
-          : "Blog | Idea Team Dev",
+          ? "Стаття не знайдена | Блог IdeaTeam" 
+          : "Post Not Found | Idea Team Blog",
         description: isUkrainian
-          ? "Читайте наші найновіші статті про розробку ПЗ, веб та мобільні додатки."
-          : "Read our latest blog posts on software development, web, mobile, and SaaS.",
+          ? "Стаття ще не перекладена або недоступна."
+          : "The article is not available or has been removed.",
       }
     }
 
     const baseUrl = "https://v0-ideateam.vercel.app"
-    const currentUrl = isUkrainian 
-      ? `${baseUrl}/uk/blog/${params.slug}`
-      : `${baseUrl}/blog/${params.slug}`
+    const currentUrl = `${baseUrl}${isUkrainian ? '/uk' : ''}/blog/${params.slug}`
 
     return {
       title: post.meta_title || `${post.title} | ${isUkrainian ? "Блог IdeaTeam" : "Blog | Idea Team Dev"}`,
       description: post.meta_description || post.excerpt || (isUkrainian 
-        ? "Прочитайте цю статтю на нашому блозі."
-        : "Read this article on our blog."),
+        ? "Детальна стаття про розробку ПЗ від команди IdeaTeam."
+        : "In-depth article on software development from Idea Team."),
       alternates: {
         canonical: currentUrl,
         languages: {
@@ -64,9 +73,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       },
       openGraph: {
         title: post.meta_title || post.title,
-        description: post.meta_description || post.excerpt || (isUkrainian 
-          ? "Прочитайте цю статтю на нашому блозі."
-          : "Read this article on our blog."),
+        description: post.meta_description || post.excerpt,
         images: post.featured_image ? [{ url: post.featured_image, width: 1200, height: 630 }] : [],
         type: "article",
         publishedTime: post.created_at,
@@ -80,6 +87,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       },
     }
   } catch (error) {
+    console.error("Metadata error:", error)
     return {
       title: "Blog | Idea Team Dev",
       description: "Read our latest blog posts on software development.",
