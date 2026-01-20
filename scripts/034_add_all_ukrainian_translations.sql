@@ -1,0 +1,120 @@
+-- Delete existing incomplete Ukrainian posts
+DELETE FROM posts WHERE locale = 'uk' AND status = 'published';
+
+-- Add complete Ukrainian translations for ALL 7 English blog posts
+INSERT INTO posts (id, title, slug, excerpt, content, featured_image, category_id, author_id, locale, status, meta_title, meta_description, created_at, published_at) VALUES
+
+-- 1. Benefits of Outsourcing Development Team
+(gen_random_uuid(), 
+'5 переваг аутсорсингу команди розробки',
+'benefits-outsourcing-development-team',
+'Дізнайтеся про основні переваги залучення зовнішної команди розробки та як це може прискорити ваш проект.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"5 основних переваг аутсорсингу"}]},{"type":"paragraph","content":[{"type":"text","text":"Аутсорсинг команди розробки став стратегічним рішенням для компаній, які хочуть залишатися конкурентоспроможними. Коли ви працюєте з досвідченою командою, можете зосередитися на стратегічних цілях вашого бізнесу та забезпечити швидший розвиток продукту."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Ключові переваги"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Вартість - зменшення видатків на внутрішню команду на 40-60% без втрати якості"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Гнучкість - легко масштабувати команду під ваші поточні потреби проекту"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Час на ринку - запустити проект швидше завдяки досвідченим розробникам"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Якість - доступ до спеціалістів найвищого рівня та сучасних технологій"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Управління ризиками - професійна гарантія якості та повна документація"}]}]}]}]}'::jsonb,
+'/outsourcing-team-development.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'5 переваг аутсорсингу команди розробки | IdeoTeam',
+'Дізнайтеся про основні переваги залучення зовнішної команди розробки та як це може прискорити ваш проект.',
+NOW(),
+NOW()),
+
+-- 2. Cost Analysis Inhouse vs Outsourced IT Teams
+(gen_random_uuid(),
+'Аналіз вартості: Внутрішня команда vs. Аутсорсинг IT-фахівців',
+'cost-analysis-inhouse-vs-outsourced-it-teams',
+'Детальний порівняльний аналіз вартості утримання внутрішної IT-команди проти аутсорсингу та розрахунки ROI.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Аналіз загальної вартості володіння"}]},{"type":"paragraph","content":[{"type":"text","text":"При виборі між внутрішньою командою та аутсорсингом необхідно розглянути всі витрати: зарплата, податки, обладнання, навчання та управління. Аутсорсинг часто забезпечує краще значення за гроші для стартапів та середніх компаній."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Порівняння витрат"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Внутрішня команда: 5000-8000 USD/місяць на розробника (з усіма витратами)"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Аутсорсинг: 2000-4000 USD/місяць за розробника з тією ж кваліфікацією"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Економія: 50-60% від загальних витрат при збереженні якості"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"ROI: повернення інвестицій в 3-4 місяці для більшості проектів"}]}]}]}]}'::jsonb,
+'/cost-analysis.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'Аналіз вартості: Внутрішня команда vs. Аутсорсинг IT-фахівців',
+'Детальний порівняльний аналіз вартості утримання внутрішної IT-команди проти аутсорсингу.',
+NOW(),
+NOW()),
+
+-- 3. Choose Right IT Outsourcing Partner
+(gen_random_uuid(),
+'Як вибрати правильного IT-партнера для аутсорсингу',
+'choose-right-it-outsourcing-partner',
+'Поетапний контрольний список для оцінки та вибору ідеального IT-партнера для вашого аутсорсингу.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Критерії вибору правильного партнера"}]},{"type":"paragraph","content":[{"type":"text","text":"Вибір правильного партнера аутсорсингу - це одне з найважливіших рішень для успіху вашого проекту. Необхідно ретельно оцінити портфоліо, досвід, культуру компанії та рівень комунікації."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Контрольний список для оцінки"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Портфоліо - перевірте успішні проекти в вашій індустрії та отримайте рекомендації"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Команда - оцініть кваліфікацію та досвід розробників та їх сертифікації"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Комунікація - переконайтеся в якості та прозорості спілкування та час відповіді"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Гарантії якості - дізнайтеся про їх процес QA та тестування"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Вартість - порівняйте ціни та визначте ROI та умови контракту"}]}]}]}]}'::jsonb,
+'/choosing-it-partner.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'Як вибрати правильного IT-партнера для аутсорсингу',
+'Поетапний контрольний список для оцінки та вибору ідеального IT-партнера для аутсорсингу.',
+NOW(),
+NOW()),
+
+-- 4. Managing Remote Development Teams
+(gen_random_uuid(),
+'Управління віддаленими командами розробки: найкращі практики',
+'managing-remote-development-teams',
+'Набір найефективніших стратегій та інструментів для успішного управління віддаленою командою розробників.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Виклики управління віддаленою розробкою"}]},{"type":"paragraph","content":[{"type":"text","text":"Управління віддаленою командою вимагає різного підходу та звичаїв. Потрібно створити чітку комунікацію, встановити чіткі процеси та забезпечити мотивацію членів команди. Успіх залежить від інструментів та культури, яку ви створюєте."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Ключові стратегії управління"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Встановіть чіткі цілі та очікування для кожного члена команди та періодично перевіряйте прогрес"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Проводіть регулярні синхронізаційні мітинги та зберігайте документацію проектів"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Використовуйте спеціалізовані інструменти для управління проектами та комунікації"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Цінуйте результати та доставлені цінності, а не час, проведений на роботі"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Забезпечуйте постійне навчання, розвиток та професійне зростання членів команди"}]}]}]}]}'::jsonb,
+'/remote-team-management.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'Управління віддаленими командами розробки: найкращі практики',
+'Набір найефективніших стратегій та інструментів для успішного управління віддаленою командою розробників.',
+NOW(),
+NOW()),
+
+-- 5. Security Best Practices Outsourcing IT Development
+(gen_random_uuid(),
+'Найкращі практики безпеки при аутсорсингу розробки IT',
+'security-best-practices-outsourcing-it-development',
+'Рекомендації та підходи до забезпечення безпеки даних та інтелектуальної власності при аутсорсингу розробки.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Захист безпеки при аутсорсингу"}]},{"type":"paragraph","content":[{"type":"text","text":"Безпека даних та інтелектуальної власності - це критичні аспекти при виборі партнера аутсорсингу. Необхідно встановити чіткі протоколи, контракти та процеси для захисту конфіденційної інформації."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Ключові заходи безпеки"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Підпишіть строгу угоду про конфіденційність та захист інтелектуальної власності"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Вимагайте шифрування та безпечні канали для всіх комунікацій та обміну файлами"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Перевіряйте сертифікації безпеки партнера та його відповідність стандартам ISO/SOC2"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Встановіть правила доступу та контролю версій для кодової бази проекту"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Проводьте регулярні аудити безпеки та тестування на уразливості"}]}]}]}]}'::jsonb,
+'/security-best-practices.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'Найкращі практики безпеки при аутсорсингу розробки IT',
+'Рекомендації та підходи до забезпечення безпеки даних та інтелектуальної власності при аутсорсингу розробки.',
+NOW(),
+NOW()),
+
+-- 6. Staff Augmentation vs Project Outsourcing
+(gen_random_uuid(),
+'Розширення штату vs. Аутсорсинг проектів: Що підходить вам?',
+'staff-augmentation-vs-project-outsourcing',
+'Порівняння двох основних моделей аутсорсингу та рекомендації щодо вибору найбільш придатного для вашої організації.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Розуміння різних моделей аутсорсингу"}]},{"type":"paragraph","content":[{"type":"text","text":"Розширення штату та проектний аутсорсинг - це дві різні моделі співпраці, кожна з власними перевагами та недоліками. Вибір залежить від вашої організаційної структури та цілей проекту."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Розширення штату (Staff Augmentation)"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Ідеально для: поточної розробки та довгострокових проектів з мінливими вимогами"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Управління: ви контролюєте процес розробки та командою розробників"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Вартість: більш передбачувана на місяць, але загальна може бути дорожча за час"}]}]}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Проектний аутсорсинг (Project-based)"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Ідеально для: дискретних проектів з чіткими цілями та строком виконання"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Управління: партнер відповідає за результат та якість доставки"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Вартість: може бути більш ефективною за бюджетом з фіксованою ціною"}]}]}]}]}'::jsonb,
+'/staff-augmentation.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'Розширення штату vs. Аутсорсинг проектів: Що підходить вам?',
+'Порівняння двох основних моделей аутсорсингу та рекомендації щодо вибору найбільш придатного для вашої організації.',
+NOW(),
+NOW()),
+
+-- 7. Ultimate Guide to IT Personnel Outsourcing in 2024
+(gen_random_uuid(),
+'Повний посібник IT-персоналу аутсорсингу на 2024-2025 рік',
+'ultimate-guide-it-personnel-outsourcing-2024',
+'Всебічний путівник по аутсорсингу IT-персоналу з практичними рекомендаціями та стратегіями для успіху.',
+'{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Комплексний путівник по IT-аутсорсингу"}]},{"type":"paragraph","content":[{"type":"text","text":"У 2024-2025 році аутсорсинг IT-персоналу став стандартною практикою для компаній світу. Цей посібник охоплює все, що вам потрібно знати для успішного впровадження аутсорсингу в вашій організації."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"Основні етапи впровадження"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"1. Оцінка потреб - визначте, які завдання та компетенції потребують аутсорсингу"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"2. Пошук партнера - дослідіть ринок та оцініть кандидатів за вашими критеріями"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"3. Підписання контракту - узгодьте терміни, ціни та умови оплати"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"4. Onboarding - впровадьте процес інтеграції нової команди та встановіть комунікацію"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"5. Управління - проводьте регулярні огляди та коригуйте процеси за потребою"}]}]}]}]}'::jsonb,
+'/ultimate-guide-outsourcing.jpg',
+'b881f1a5-eaeb-4235-b16e-89b1314f1cc7',
+'977f0f43-ae71-4894-9551-bdb8a29078f7',
+'uk',
+'published',
+'Повний посібник IT-персоналу аутсорсингу на 2024-2025 рік',
+'Всебічний путівник по аутсорсингу IT-персоналу з практичними рекомендаціями та стратегіями для успіху.',
+NOW(),
+NOW());
+
+-- Verify all 7 Ukrainian posts added
+SELECT slug, locale, COUNT(*) FROM posts WHERE locale IN ('en', 'uk') GROUP BY slug, locale ORDER BY slug, locale;

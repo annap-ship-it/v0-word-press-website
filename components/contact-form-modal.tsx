@@ -4,6 +4,7 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 import { X } from "lucide-react"
 
 interface ContactFormModalProps {
@@ -40,12 +41,12 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   const isDark = theme === "dark"
 
   useEffect(() => {
+    // Fetch reCAPTCHA site key from server action
     async function fetchRecaptchaKey() {
       try {
-        const response = await fetch("/api/recaptcha-key")
-        const data = await response.json()
-        if (data.siteKey) {
-          setRecaptchaSiteKey(data.siteKey)
+        const siteKey = await getRecaptchaSiteKey()
+        if (siteKey) {
+          setRecaptchaSiteKey(siteKey)
         }
       } catch (error) {
         console.error("[v0] Failed to fetch reCAPTCHA key:", error)

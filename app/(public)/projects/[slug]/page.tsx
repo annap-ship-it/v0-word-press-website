@@ -463,27 +463,20 @@ export default function ProjectDetailPage() {
   useEffect(() => {
     async function fetchProject() {
       try {
-        const supabase = createBrowserClient()
-
-        const { data: post } = await supabase.from("posts").select("*").eq("slug", slug).single()
-
-        if (post) {
-          // Parse content for project data
-          setProject({
-            ...post,
-            ...extractProjectDataFromPost(post),
-          })
-        } else if (defaultProjectsData[slug]) {
+        // Projects are currently stored as hardcoded data
+        // Check hardcoded data first
+        if (defaultProjectsData[slug]) {
           setProject(defaultProjectsData[slug])
-        } else {
-          // Redirect to projects page if not found
-          window.location.href = "/projects"
+          setLoading(false)
+          return
         }
+
+        // If project not found in hardcoded data, redirect to projects page
+        window.location.href = "/projects"
       } catch (error) {
         if (defaultProjectsData[slug]) {
           setProject(defaultProjectsData[slug])
         }
-      } finally {
         setLoading(false)
       }
     }

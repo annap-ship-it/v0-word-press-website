@@ -102,36 +102,47 @@ export default function BlogContent() {
   const { locale } = useLocale()
   const t = translations[locale as "en" | "uk"] || translations.en
 
+  // ⚠️ IMPORTANT: Scroll to top on page load - DO NOT REMOVE
+  // This ensures pages open from header, not footer, as per design requirements
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+  }, [locale])
 
   useEffect(() => {
     async function fetchPosts() {
       const supabase = createBrowserClient()
+      
+      // IMPORTANT: Always fetch English first (primary language)
+      // Only fetch Ukrainian if explicitly requested AND if it exists
+      const targetLocale = locale === "uk" ? "uk" : "en"
+      
       const { data: postsData, error: localeError } = await supabase
         .from("posts")
         .select(
           `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
         )
         .eq("status", "published")
-        .eq("locale", locale)
+        .eq("locale", targetLocale)
         .order("published_at", { ascending: false, nullsFirst: false })
 
       let finalPostsData = postsData
-      if ((!localeError && postsData && postsData.length === 0) || (localeError && locale !== "en")) {
-        const { data: englishPosts } = await supabase
-          .from("posts")
-          .select(
-            `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
-          )
-          .eq("status", "published")
-          .eq("locale", "en")
-          .order("published_at", { ascending: false, nullsFirst: false })
-        finalPostsData = englishPosts
+
+      if ((!localeError && postsData && postsData.length === 0) || localeError) {
+        // If requested Ukrainian but none found, fall back to English
+        if (targetLocale === "uk") {
+          const { data: englishPosts } = await supabase
+            .from("posts")
+            .select(
+              `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
+            )
+            .eq("status", "published")
+            .eq("locale", "en")
+            .order("published_at", { ascending: false, nullsFirst: false })
+          finalPostsData = englishPosts
+        }
       }
 
-      if (!localeError && finalPostsData && finalPostsData.length > 0) {
+      if (finalPostsData && finalPostsData.length > 0) {
         const authorIds = [...new Set(finalPostsData.map((p) => p.author_id).filter(Boolean))]
         let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
 
@@ -175,7 +186,7 @@ export default function BlogContent() {
         locale === "uk"
           ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції."
           : "Learn how IT personnel outsourcing can transform your business operations.",
-      featured_image: "https://www.sourceofasia.com/wp-content/uploads/2022/02/Article-05.jpg",
+      featured_image: "/it-team-working-remotely-on-computers.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
       created_at: new Date().toISOString(),

@@ -243,6 +243,12 @@ export default function ProjectsPage() {
     return () => observer.disconnect()
   }, [])
 
+  // ⚠️ IMPORTANT: Scroll to top on page load - DO NOT REMOVE
+  // This ensures pages open from header, not footer, as per design requirements
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [locale])
+
   useEffect(() => {
     const script = document.createElement("script")
     script.src = "https://www.google.com/recaptcha/api.js"

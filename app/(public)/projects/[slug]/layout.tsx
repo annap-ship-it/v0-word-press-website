@@ -1,40 +1,37 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { createServerClient } from "@/lib/supabase/server"
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  try {
-    const supabase = await createServerClient()
-    const { data: post } = await supabase
-      .from("posts")
-      .select("title, excerpt, featured_image, created_at")
-      .eq("slug", params.slug)
-      .eq("status", "published")
-      .single()
+  // Projects are currently stored as hardcoded data in the component
+  // When projects are added to the database, update this to query from the database
+  const projectsData: Record<string, any> = {
+    "internal-monitoring-system-symbotic": {
+      title: "Internal Monitoring System for Symbotic",
+      excerpt: "Scalable internal monitoring tool for real-time tracking of robotic systems",
+    },
+    "ecommerce-platform": {
+      title: "High-performance eCommerce Platform",
+      excerpt: "Feature-rich e-commerce platform capable of handling millions of transactions",
+    },
+  }
 
-    if (!post) {
-      return {
-        title: "Project | Portfolio | Idea Team Dev",
-        description: "View our software development project portfolio and case studies.",
-      }
-    }
+  const project = projectsData[params.slug]
 
-    return {
-      title: `${post.title} | Project Portfolio | Idea Team Dev`,
-      description: post.excerpt || "Discover how we built this innovative software solution.",
-      openGraph: {
-        title: post.title,
-        description: post.excerpt || "View this project case study from our portfolio.",
-        images: post.featured_image ? [{ url: post.featured_image }] : [],
-        type: "article",
-        publishedTime: post.created_at,
-      },
-    }
-  } catch (error) {
+  if (!project) {
     return {
       title: "Project | Portfolio | Idea Team Dev",
-      description: "Explore our portfolio of successful software development projects.",
+      description: "View our software development project portfolio and case studies.",
     }
+  }
+
+  return {
+    title: `${project.title} | Project Portfolio | Idea Team Dev`,
+    description: project.excerpt || "Discover how we built this innovative software solution.",
+    openGraph: {
+      title: project.title,
+      description: project.excerpt || "View this project case study from our portfolio.",
+      type: "article",
+    },
   }
 }
 

@@ -23,6 +23,8 @@ import {
   Check,
 } from "lucide-react"
 import type { JSX } from "react"
+import { translations } from "@/lib/i18n"
+import { AnimatedSection } from "@/components/AnimatedSection"
 
 interface ContentBlock {
   type: string
@@ -102,43 +104,6 @@ function estimateReadTime(content: PostContent | string | null): number {
 
 function getCategoryColor(category: string): string {
   return "bg-[#FF6200]"
-}
-
-function AnimatedSection({
-  children,
-  className = "",
-  delay = 0,
-}: { children: React.ReactNode; className?: string; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay)
-          observer.unobserve(entry.target)
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-    )
-
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [delay])
-
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${className}`}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "translateY(0)" : "translateY(30px)",
-      }}
-    >
-      {children}
-    </div>
-  )
 }
 
 const benefitIcons = [DollarSign, Users, TrendingUp, Shield]
@@ -305,12 +270,14 @@ export default function BlogPostPage() {
   const params = useParams()
   const slug = params?.slug as string
   const [post, setPost] = useState<Post | null>(null)
-  const [related, setRelated] = useState<RelatedPost[]>([])
+  const [relatedPosts, setRelatedPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
-  const [isDark, setIsDark] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [isDark, setIsDark] = useState(false)
 
   const { locale } = useLocale()
+  const allTranslations = { en: translations.en, uk: translations.uk }
+  const t = allTranslations[locale as "en" | "uk"] || allTranslations.en
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"))
@@ -321,118 +288,144 @@ export default function BlogPostPage() {
     return () => observer.disconnect()
   }, [])
 
+  // ⚠️ IMPORTANT: Scroll to top on page load - DO NOT REMOVE
+  // This ensures pages open from header, not footer, as per design requirements
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [slug])
+
   useEffect(() => {
     async function fetchPost() {
-      if (!slug) return
+      try {
+        const supabase = createBrowserClient()
 
-      console.log("[v0] Fetching post with slug:", slug, "locale:", locale)
-
-      const supabase = createBrowserClient()
-      
-      // Extract locale from slug suffix if present (e.g., "slug-uk" -> "uk")
-      let baseSlug = slug
-      let slugLocale = locale || "en"
-      
-      // Check if slug ends with -uk, -en, etc.
-      const localeMatch = slug.match(/-([a-z]{2})$/)
-      if (localeMatch) {
-        baseSlug = slug.replace(localeMatch[0], "")
-        slugLocale = localeMatch[1]
-      }
-
-      const { data, error } = await supabase
-        .from("posts")
-        .select(`
+        // Try to fetch post in the REQUESTED locale first
+        // If not found and locale is Ukrainian, fall back to English
+        let { data, error } = await supabase
+          .from("posts")
+          .select(
+            `
           id, title, slug, content, excerpt, featured_image, 
-          category_id, created_at, author_id, locale
-        `)
-        .eq("slug", baseSlug)
-        .eq("locale", slugLocale)
-        .eq("status", "published")
-        .single()
-
-      console.log("[v0] Post query result:", { data, error })
-
-      if (error || !data) {
-        console.log("[v0] Error fetching post:", error)
-        setPost(null)
-        setLoading(false)
-        return
-      }
-
-      let categoryData = null
-      if (data.category_id) {
-        const { data: cat } = await supabase.from("categories").select("name, slug").eq("id", data.category_id).single()
-        categoryData = cat
-        console.log("[v0] Category data:", cat)
-      }
-
-      let profileData = null
-      if (data.author_id) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("display_name, avatar_url")
-          .eq("id", data.author_id)
+          category_id, created_at, author_id, locale, meta_title, meta_description
+        `,
+          )
+          .eq("slug", slug)
+          .eq("locale", locale === "uk" ? "uk" : "en")
+          .eq("status", "published")
           .single()
-        profileData = profile
-        console.log("[v0] Profile data:", profile)
+
+        // If requested Ukrainian but not found, fall back to English
+        if ((error || !data) && locale === "uk") {
+          const { data: enData, error: enError } = await supabase
+            .from("posts")
+            .select(
+              `
+            id, title, slug, content, excerpt, featured_image, 
+            category_id, created_at, author_id, locale, meta_title, meta_description
+          `,
+            )
+            .eq("slug", slug)
+            .eq("locale", "en")
+            .eq("status", "published")
+            .single()
+
+          data = enData
+          error = enError
+        }
+
+        if (error || !data) {
+          setPost(null)
+          setLoading(false)
+          return
+        }
+
+        // Fetch category data separately
+        let categoryData = null
+        if (data.category_id) {
+          const { data: cat } = await supabase
+            .from("categories")
+            .select("name, slug, id")
+            .eq("id", data.category_id)
+            .single()
+          categoryData = cat
+        }
+
+        // Fetch author profile separately
+        let profileData = null
+        if (data.author_id) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("display_name, avatar_url, id")
+            .eq("id", data.author_id)
+            .single()
+          profileData = profile
+        }
+
+        const postWithRelations = {
+          ...data,
+          category: categoryData,
+          profiles: profileData,
+        } as Post
+
+        setPost(postWithRelations)
+
+        // Fetch related posts - ONLY from current fetched post's locale
+        // This ensures English articles show English related, Ukrainian show Ukrainian related
+        const { data: relatedData } = await supabase
+          .from("posts")
+          .select(`id, title, slug, excerpt, featured_image, category_id, created_at, author_id, locale`)
+          .eq("status", "published")
+          .eq("locale", data.locale)
+          .neq("slug", slug)
+          .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79")
+          .order("created_at", { ascending: false })
+          .limit(3)
+
+        // Fetch author profiles and categories for related posts
+        if (relatedData && relatedData.length > 0) {
+          const enrichedRelatedPosts = await Promise.all(
+            relatedData.map(async (post) => {
+              let author = null
+              let category = null
+
+              if (post.author_id) {
+                const { data: authorData } = await supabase
+                  .from("profiles")
+                  .select("display_name, avatar_url")
+                  .eq("id", post.author_id)
+                  .single()
+                author = authorData
+              }
+
+              if (post.category_id) {
+                const { data: catData } = await supabase
+                  .from("categories")
+                  .select("name, slug")
+                  .eq("id", post.category_id)
+                  .single()
+                category = catData
+              }
+
+              return {
+                ...post,
+                profiles: author,
+                category: category,
+              }
+            }),
+          )
+          setRelatedPosts(enrichedRelatedPosts as Post[])
+        }
+      } catch (err) {
+        console.error("[v0] Error in fetchPost:", err)
+        setPost(null)
+      } finally {
+        setLoading(false)
       }
-
-      const postWithRelations = {
-        ...data,
-        category: categoryData,
-        profiles: profileData,
-      } as Post
-
-      console.log("[v0] Final post data:", postWithRelations)
-      setPost(postWithRelations)
-
-      // Fetch related posts (exclude Projects category)
-      const { data: relatedData } = await supabase
-        .from("posts")
-        .select(`id, title, slug, excerpt, featured_image, category_id, created_at, author_id`)
-        .eq("status", "published")
-        .eq("locale", locale || "en")
-        .neq("slug", slug)
-        .neq("category_id", "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79")
-        .order("created_at", { ascending: false })
-        .limit(3)
-
-      console.log("[v0] Related posts:", relatedData)
-
-      if (relatedData) {
-        const relatedWithCategories = await Promise.all(
-          relatedData.map(async (post) => {
-            let cat = null
-            if (post.category_id) {
-              const { data: catData } = await supabase
-                .from("categories")
-                .select("name")
-                .eq("id", post.category_id)
-                .single()
-              cat = catData
-            }
-
-            let profile = null
-            if (post.author_id) {
-              const { data: profileData } = await supabase
-                .from("profiles")
-                .select("display_name, avatar_url")
-                .eq("id", post.author_id)
-                .single()
-              profile = profileData
-            }
-
-            return { ...post, category: cat, profiles: profile } as RelatedPost
-          }),
-        )
-        setRelated(relatedWithCategories)
-      }
-
-      setLoading(false)
     }
 
-    fetchPost()
+    if (slug && locale) {
+      fetchPost()
+    }
   }, [slug, locale])
 
   const handleCopyLink = () => {
@@ -454,10 +447,6 @@ export default function BlogPostPage() {
     window.open(shareUrls[platform], "_blank", "width=600,height=400")
   }
 
-  const getRelatedArticlesText = () => {
-    return locale === "uk" ? "Пов'язані статті" : "Related Articles"
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--background)" }}>
@@ -473,10 +462,10 @@ export default function BlogPostPage() {
         style={{ background: "var(--background)" }}
       >
         <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
-          Article not found
+          {t.articleNotFound || "Article not found"}
         </h1>
         <Link href="/blog" className="text-[#FF6200] hover:underline">
-          Back to Blog
+          {t.backToBlog}
         </Link>
       </div>
     )
@@ -491,14 +480,14 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--background)" }}>
-      {/* Back Button */}
-      <AnimatedSection className="max-w-[1280px] mx-auto px-4 md:px-6 pt-8">
+      {/* Back Button - IMPORTANT: High margin-top to avoid header overlap on all screen sizes */}
+      <AnimatedSection className="max-w-[1280px] mx-auto px-4 md:px-6 pt-24 md:pt-28 lg:pt-32 pb-2">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-[#787877] hover:text-[#FF6200] transition-colors"
+          className="inline-flex items-center gap-2 text-[#787877] hover:text-[#FF6200] transition-colors text-sm md:text-base"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Blog</span>
+          <span>{t.backToBlog}</span>
         </Link>
       </AnimatedSection>
 
@@ -506,8 +495,8 @@ export default function BlogPostPage() {
       <section className="py-8 md:py-12">
         <div className="max-w-[900px] mx-auto px-4 md:px-6">
           {/* Category */}
-          <AnimatedSection delay={100}>
-            {post.category?.name && (
+          {post.category?.name && (
+            <AnimatedSection delay={100}>
               <div className="mb-4">
                 <span
                   className={`px-4 py-2 rounded-[4px] text-sm font-medium text-white ${getCategoryColor(post.category.name)}`}
@@ -515,8 +504,8 @@ export default function BlogPostPage() {
                   {post.category.name}
                 </span>
               </div>
-            )}
-          </AnimatedSection>
+            </AnimatedSection>
+          )}
 
           {/* Title - H1 */}
           <AnimatedSection delay={200}>
@@ -556,7 +545,7 @@ export default function BlogPostPage() {
                   <p className="font-medium" style={{ color: "var(--foreground)" }}>
                     {authorName}
                   </p>
-                  <p className="text-sm text-[#787877]">Author</p>
+                  <p className="text-sm text-[#787877]">{t.author}</p>
                 </div>
               </div>
 
@@ -567,7 +556,7 @@ export default function BlogPostPage() {
 
               <div className="flex items-center gap-2 text-[#787877]">
                 <Clock className="w-4 h-4" />
-                <span className="text-sm">{estimateReadTime(post.content)} min read</span>
+                <span className="text-sm">{estimateReadTime(post.content)} {t.minRead}</span>
               </div>
             </div>
           </AnimatedSection>
@@ -599,7 +588,7 @@ export default function BlogPostPage() {
                 <div className="flex items-center gap-2">
                   <Share2 className="w-5 h-5 text-[#787877]" />
                   <span className="font-medium" style={{ color: "var(--foreground)" }}>
-                    Share this article
+                    {t.shareThisArticle}
                   </span>
                 </div>
 
@@ -644,17 +633,17 @@ export default function BlogPostPage() {
       </section>
 
       {/* Related Articles */}
-      {related.length > 0 && (
+      {relatedPosts.length > 0 && (
         <section className="py-12 md:py-16">
           <div className="max-w-[1280px] mx-auto px-4 md:px-6">
             <AnimatedSection>
               <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "var(--foreground)" }}>
-                {getRelatedArticlesText()}
+                {t.relatedArticles}
               </h2>
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {related.map((article, index) => (
+              {relatedPosts.map((article, index) => (
                 <AnimatedSection key={article.id} delay={index * 100}>
                   <Link href={`/blog/${article.slug}`} className="block group">
                     <div className="rounded-[14px] overflow-hidden border border-[#E5E5E5] dark:border-[#333] hover:border-[#FF6200] transition-all duration-300">
