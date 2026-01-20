@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
 import ScrollStack, { ScrollStackItem } from "./scroll-stack"
+import "./our-projects-section.css"
 
 interface Project {
   id: string
@@ -18,16 +19,25 @@ interface Project {
 function ProjectCard({
   project,
   index,
+  isMobile = false,
 }: {
   project: Project
   index: number
+  isMobile?: boolean
 }) {
   const { locale } = useLocale()
+  const isDarkTheme = typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark"
 
   const isOrange = index % 2 === 0
   const bgColor = isOrange ? "#FF6200" : "#000000"
   const textColor = "text-white"
-  const boxShadow = !isOrange ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "none"
+  
+  // Shadow only in dark theme for black cards
+  const boxShadow = !isOrange && isDarkTheme ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "none"
+  
+  // Border color based on theme
+  const borderColor = isDarkTheme ? "#FFFFFF" : "#212121"
+  const borderStyle = `1px solid ${borderColor}`
 
   // Handle title as string or object
   let title: string
@@ -55,14 +65,19 @@ function ProjectCard({
 
   const solution = fullDesc || shortDesc
 
+  // Mobile card dimensions based on viewport
+  const mobileCardClass = isMobile 
+    ? "sm:max-w-[368px] md:max-w-[658px] lg:max-w-none min-h-[427px] sm:min-h-[427px] md:min-h-[250px]"
+    : ""
+
   return (
     <Link href={`/projects/${project.slug}`} className="block w-full">
       <div
-        className={`flex flex-col md:flex-row rounded-[14px] overflow-hidden transition-all duration-300 w-full md:aspect-[3.8/1] ${textColor}`}
+        className={`flex flex-col md:flex-row rounded-[14px] overflow-hidden transition-all duration-300 w-full md:aspect-[3.8/1] ${textColor} ${mobileCardClass}`}
         style={{
           backgroundColor: bgColor,
           boxShadow,
-          border: "1px solid rgba(255, 255, 255, 0.1)",
+          border: borderStyle,
         }}
       >
         <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-between order-1 md:order-none">
@@ -166,36 +181,82 @@ export function OurProjectsSection() {
 
         {/* Mobile/Tablet Carousel */}
         <div className="lg:hidden">
-          <div className="relative">
-            <div className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {projects.map((project, index) => (
-                  <div key={project.id} className="min-w-full flex-shrink-0 px-2">
-                    <ProjectCard project={project} index={index} />
-                  </div>
-                ))}
+          <div className="relative w-full">
+            {/* Container with proper padding to prevent cards from overlapping chevrons */}
+            <div className="relative px-14 sm:px-16">
+              {/* Carousel Container */}
+              <div className="overflow-hidden rounded-[14px]">
+                <div
+                  className="flex transition-transform duration-300 ease-in-out"
+                  style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                >
+                  {projects.map((project, index) => (
+                    <div 
+                      key={project.id} 
+                      className="min-w-full flex-shrink-0 flex justify-center"
+                    >
+                      <div className="w-[277px] sm:w-[368px] md:w-[658px]">
+                        <ProjectCard project={project} index={index} isMobile={true} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
+
+              {/* Navigation Chevrons - Outside carousel container */}
+              <button
+                onClick={prevSlide}
+                disabled={currentIndex === 0}
+                className="absolute left-0 top-1/2 -translate-y-1/2 p-2 transition-all"
+                aria-label="Previous"
+              >
+                <svg 
+                  width="56" 
+                  height="56" 
+                  viewBox="0 0 56 56" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+                >
+                  <path 
+                    d="M31 28L25 22L31 16" 
+                    stroke={currentIndex === 0 ? "#E0E0E0" : "#FF6200"} 
+                    strokeOpacity={currentIndex === 0 ? "0.5" : "1"}
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <button
+                onClick={nextSlide}
+                disabled={currentIndex === projects.length - 1}
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-2 transition-all"
+                aria-label="Next"
+              >
+                <svg 
+                  width="54" 
+                  height="56" 
+                  viewBox="0 0 54 56" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+                >
+                  <path 
+                    d="M24 28L30 22L24 16" 
+                    stroke={currentIndex === projects.length - 1 ? "#E0E0E0" : "#FF6200"} 
+                    strokeOpacity={currentIndex === projects.length - 1 ? "0.5" : "1"}
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
             </div>
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
-              aria-label="Previous"
-            >
-              &lt;
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
-              aria-label="Next"
-            >
-              &gt;
-            </button>
+
             {/* Pagination Dots */}
-            <div className="flex justify-center mt-4 space-x-2">
+            <div className="flex justify-center mt-6 space-x-2">
               {projects.map((_, idx) => (
                 <button
                   key={idx}
