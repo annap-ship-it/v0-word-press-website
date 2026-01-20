@@ -14,14 +14,14 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light")
+  const [theme, setTheme] = useState<Theme>("dark")
 
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null
-    if (stored) {
-      setTheme(stored)
-      document.documentElement.classList.toggle("dark", stored === "dark")
-    }
+    const themeToUse = stored || "dark"
+    setTheme(themeToUse)
+    document.documentElement.classList.toggle("dark", themeToUse === "dark")
+    document.documentElement.setAttribute("data-theme", themeToUse)
   }, [])
 
   const toggleTheme = () => {
@@ -29,6 +29,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme)
     localStorage.setItem("theme", newTheme)
     document.documentElement.classList.toggle("dark", newTheme === "dark")
+    document.documentElement.setAttribute("data-theme", newTheme)
   }
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
