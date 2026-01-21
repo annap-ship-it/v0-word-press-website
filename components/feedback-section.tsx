@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useLocale } from "@/lib/locale-context"
-import { Star, ChevronLeft, ChevronRight } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useLocale } from "@/lib/locale-context";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Testimonial {
-  id: number
-  locale: "en" | "uk"
-  name: string
-  position: string
-  company: string
-  rating: number
-  text: string
-  avatarUrl: string
+  id: number;
+  locale: "en" | "uk";
+  name: string;
+  position: string;
+  company: string;
+  rating: number;
+  text: string;
+  avatarUrl: string;
 }
 
 const content = {
@@ -24,7 +24,7 @@ const content = {
     title: "Відгуки клієнтів",
     subtitle: "Ми робимо все можливе, щоб втілити вашу ідею в життя саме так, як ви її уявляли",
   },
-}
+};
 
 const testimonials: Testimonial[] = [
   // Ukrainian
@@ -35,8 +35,8 @@ const testimonials: Testimonial[] = [
     position: "Chief Delivery Officer",
     company: "Beetroot",
     rating: 5,
-    text: "Наша співпраця з Idea Team була повністю успішною. Команда ефективно впоралася з усіма завданнями в межах проєкту, забезпечивши високоякісний результат у визначені строки. Їхня увага до деталей, професіоналізм і здатність швидко вирішувати складні задачі справді вразили. Комунікація протягом усього проєкту була безперебійною, з оперативною підтримкою на кожному етапі. Ми дуже задоволені співпрацею та з нетерпінням чекаємо на нові спільні проєкти. Впевнено рекомендуємо Idea Team як надійну та високопрофесійну команду.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
+    text: `Наша співпраця з Idea Team була повністю успішною. Команда ефективно впоралася з усіма завданнями в межах проєкту, забезпечивши високоякісний результат у визначені строки. Їхня увага до деталей, професіоналізм і здатність швидко вирішувати складні задачі справді вразили. Комунікація протягом усього проєкту була безперебійною, з оперативною підтримкою на кожному етапі. Ми дуже задоволені співпрацею та з нетерпінням чекаємо на нові спільні проєкти. Впевнено рекомендуємо Idea Team як надійну та високопрофесійну команду.`,
+    avatarUrl: "/avatar2.svg",
   },
   {
     id: 2,
@@ -45,8 +45,8 @@ const testimonials: Testimonial[] = [
     position: "Керівниця відділу клієнтської підтримки",
     company: "Amploo",
     rating: 5,
-    text: "Процес роботи з Idea Team був для нас позитивним досвідом із самого початку. Це команда висококваліфікованих фахівців, і співпраця з Олександром на кожному етапі проєкту була справжнім задоволенням. Він ставив правильні запитання, швидко реагував і завжди був готовий допомогти. Складається враження, що Idea Team — це партнер, на якого можна покластися та з яким комфортно працювати в довгостроковій перспективі.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+    text: `Процес роботи з Idea Team був для нас позитивним досвідом із самого початку. Це команда висококваліфікованих фахівців, і співпраця з Олександром на кожному етапі проєкту була справжнім задоволенням. Він ставив правильні запитання, швидко реагував і завжди був готовий допомогти. Складається враження, що Idea Team — це партнер, на якого можна покластися та з яким комфортно працювати в довгостроковій перспективі.`,
+    avatarUrl: "/avatar3.svg",
   },
   {
     id: 3,
@@ -55,8 +55,8 @@ const testimonials: Testimonial[] = [
     position: "Керівниця європейських партнерств",
     company: "Mirko Solutions",
     rating: 5,
-    text: "Співпраця з Idea Team залишила виключно позитивні враження. Проєкт було виконано якісно та у погоджені терміни, що є надзвичайно важливим для нашої команди. Особливо цінуємо оперативну комунікацію з менеджерами компанії — ми швидко отримували відповіді на всі запитання, що дозволяло ефективно рухатися вперед. Дякуємо за професіоналізм і відповідальний підхід до роботи! Рекомендуємо Idea Team як надійного партнера.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+    text: `Співпраця з Idea Team залишила виключно позитивні враження. Проєкт було виконано якісно та у погоджені терміни, що є надзвичайно важливим для нашої команди. Особливо цінуємо оперативну комунікацію з менеджерами компанії — ми швидко отримували відповіді на всі запитання, що дозволяло ефективно рухатися вперед. Дякуємо за професіоналізм і відповідальний підхід до роботи! Рекомендуємо Idea Team як надійного партнера.`,
+    avatarUrl: "/avatar1.svg",
   },
   // English
   {
@@ -66,8 +66,8 @@ const testimonials: Testimonial[] = [
     position: "Chief Delivery Officer",
     company: "Beetroot",
     rating: 5,
-    text: "Our collaboration with Idea Team was a complete success. They efficiently handled all the tasks within the project, delivering high-quality results on time. Their attention to detail, professionalism, and ability to solve complex issues quickly truly stood out.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
+    text: `Our collaboration with Idea Team was a complete success. They efficiently handled all the tasks within the project, delivering high-quality results on time. Their attention to detail, professionalism, and ability to solve complex issues quickly truly stood out.`,
+    avatarUrl: "/avatar2.svg",
   },
   {
     id: 5,
@@ -76,107 +76,72 @@ const testimonials: Testimonial[] = [
     position: "CEO",
     company: "Appexoft",
     rating: 5,
-    text: "Idea Team became our reliable partner: their flexibility, refined processes, and strong management made collaborative work smooth. We were impressed by how quickly they solved complex issues with innovative solutions.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+    text: `Idea Team became our reliable partner: their flexibility, refined processes, and strong management made collaborative work smooth. We were impressed by how quickly they solved complex issues with innovative solutions.`,
+    avatarUrl: "/avatar4.svg",
   },
   {
     id: 6,
     locale: "en",
     name: "Artem Malyi",
-    position: "n/a",
+    position: "CEO",
     company: "IT Svit",
     rating: 5,
-    text: "We turned to the Idea Team to expand the team for our client's project. From the first contact, their structured approach and expertise were clear. The team quickly immersed themselves, offered innovative solutions, ensured transparent communication and on-time delivery. The final product exceeded the end client's expectations in functionality and usability.",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+    text: `We turned to the Idea Team to expand the team for our client's project. From the first contact, their structured approach and expertise were clear. The team quickly immersed themselves, offered innovative solutions, ensured transparent communication and on-time delivery. The final product exceeded the end client's expectations in functionality and usability.`,
+    avatarUrl: "/avatar5.svg",
   },
-]
+];
 
 export function FeedbackSection() {
-  const { locale } = useLocale()
-  const [isDark, setIsDark] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [mounted, setMounted] = useState(false)
+  const { locale } = useLocale();
+  const [isDark, setIsDark] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const html = document.documentElement
-    const checkDark = () => setIsDark(html.classList.contains("dark"))
-
-    checkDark()
-    const observer = new MutationObserver(checkDark)
-    observer.observe(html, { attributes: true, attributeFilter: ["class"] })
-
-    return () => observer.disconnect()
-  }, [])
-
-  const filteredTestimonials = testimonials.filter((t) => t.locale === locale)
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    const html = document.documentElement;
+    const updateTheme = () => setIsDark(html.classList.contains("dark"));
+    updateTheme();
+
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(html, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const filteredTestimonials = testimonials.filter((t) => t.locale === locale);
 
   useEffect(() => {
+    if (filteredTestimonials.length <= 1) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length)
-    }, 8000)
-    return () => clearInterval(interval)
-  }, [filteredTestimonials.length])
+      setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [filteredTestimonials.length]);
 
-  if (!mounted || !filteredTestimonials.length) return null
+  if (!mounted || filteredTestimonials.length === 0) return null;
 
-  const current = filteredTestimonials[currentIndex]
-  const bgColor = isDark ? "var(--darkgrey1, #323130)" : "#FAF9F8"
-  const cardBg = isDark ? "var(--black_bg, #161515)" : "#FFFFFF"
-  const textColor = isDark ? "#FFFFFF" : "#212121"
-  const textSecondary = isDark ? "#A8A4A0" : "#999999"
-  const borderColor = isDark ? "rgba(22, 21, 21, 0.3)" : "#F1F0F0"
+  const current = filteredTestimonials[currentIndex];
+
+  const bgColor = isDark ? "var(--darkgrey1, #323130)" : "#FAF9F8";
+  const cardBg = isDark ? "var(--black_bg, #161515)" : "#FFFFFF";
+  const textColor = isDark ? "#FFFFFF" : "#212121";
+  const textSecondary = isDark ? "#A8A4A0" : "#999999";
+  const borderColor = isDark ? "rgba(22, 21, 21, 0.3)" : "#F1F0F0";
+
+  const goToPrev = () =>
+    setCurrentIndex((prev) => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length);
+
+  const goToNext = () =>
+    setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length);
 
   return (
     <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
-      {/* Background Logo */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute"
-          style={{
-            width: "1011px",
-            height: "auto",
-            top: "-110px",
-            left: "-10.89px",
-            bottom: "-110px",
-            transform: "rotate(-0.78deg)",
-            opacity: isDark ? 1 : 0.3,
-          }}
-        >
-          <svg viewBox="0 0 946 741" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <path
-              d="M931.741 653.204C964.313 706.846 924.457 774.667 859.818 775.09L857.315 775.107L857.385 775.171L773.363 775.743L664.302 596.243L774.936 395.05L931.741 653.204Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
-              strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
-            />
-            <path
-              d="M310.915 559.917L189.954 779.855L95.353 780.489L95.352 780.489C30.6476 780.979 -10.0345 713.737 21.8818 659.605L194.036 367.558L310.915 559.917Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
-              strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
-            />
-            <path
-              d="M428.4 346.314L350.923 487.234L235.482 297.23L315.786 161.02L428.4 346.314Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
-              strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
-            />
-            <path
-              d="M399.962 18.2893C431.853 -35.9117 512.671 -36.4911 545.357 17.288L545.357 17.287L731.849 324.243L620.382 526.95L581.486 597.591L581.486 597.592L502.896 740.467L482.398 777.77L477.62 777.835L445.218 778.012L445.216 778.012L272.397 779.255L354.837 629.368L354.837 629.367L393.663 558.661L393.663 558.66L472.253 415.786L511.148 345.146L511.427 344.639L511.126 344.144L357.234 90.8457L399.962 18.2893Z"
-              stroke={isDark ? "#1615154D" : "#F1F0F0"}
-              strokeWidth="2"
-              strokeOpacity={isDark ? 1 : 0.3}
-            />
-          </svg>
-        </div>
-      </div>
-
       <div className="max-w-[1200px] mx-auto px-4 relative z-10">
-        {/* Header */}
+        {/* Заголовок */}
         <div className="text-center mb-12 md:mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ color: textColor }}>
             {content[locale as keyof typeof content].title}
@@ -186,10 +151,10 @@ export function FeedbackSection() {
           </p>
         </div>
 
-        {/* Desktop Layout (hidden on mobile) */}
+        {/* ==================== DESKTOP ==================== */}
         <div className="hidden md:flex justify-center relative min-h-[400px]">
           <div className="relative w-full max-w-4xl">
-            {/* Avatar - positioned outside card */}
+            {/* Avatar */}
             <div
               className="absolute w-32 h-32 rounded-full overflow-hidden flex-shrink-0 z-20"
               style={{
@@ -205,7 +170,6 @@ export function FeedbackSection() {
                 className="w-full h-full object-cover"
               />
             </div>
-
             {/* Polygon Connector */}
             <img
               src={isDark ? "/images/polygon-arrow-dark.svg" : "/images/polygon-arrow-light.svg"}
@@ -218,7 +182,6 @@ export function FeedbackSection() {
                 top: "76px",
               }}
             />
-
             {/* Feedback Card */}
             <div
               className="rounded-2xl p-8 ml-40"
@@ -240,7 +203,6 @@ export function FeedbackSection() {
                       {current.position}, {current.company}
                     </p>
                   </div>
-
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -254,25 +216,20 @@ export function FeedbackSection() {
                     ))}
                   </div>
                 </div>
-
                 {/* Middle: Testimonial Text */}
                 <p className="text-base leading-relaxed flex-1 line-clamp-4" style={{ color: textColor }}>
                   {current.text}
                 </p>
-
                 <div className="flex justify-end gap-6 mt-6">
                   <button
-                    onClick={() =>
-                      setCurrentIndex((prev) => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length)
-                    }
+                    onClick={goToPrev}
                     className="flex items-center justify-center transition-colors"
                     style={{ color: textSecondary }}
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
-
                   <button
-                    onClick={() => setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length)}
+                    onClick={goToNext}
                     className="flex items-center justify-center transition-colors"
                     style={{ color: "#FF6200" }}
                   >
@@ -283,8 +240,7 @@ export function FeedbackSection() {
             </div>
           </div>
         </div>
-
-        {/* Mobile Layout (visible only on mobile) */}
+        {/* Mobile Layout */}
         <div className="md:hidden flex justify-center">
           <div className="w-full max-w-xs">
             <div
@@ -300,7 +256,6 @@ export function FeedbackSection() {
                 className="w-full h-full object-cover"
               />
             </div>
-
             {/* Feedback Card Mobile */}
             <div
               className="rounded-2xl p-6"
@@ -321,7 +276,6 @@ export function FeedbackSection() {
                       {current.position}, {current.company}
                     </p>
                   </div>
-
                   {/* Stars on right */}
                   <div className="flex gap-0.5 flex-shrink-0">
                     {[...Array(5)].map((_, i) => (
@@ -336,29 +290,24 @@ export function FeedbackSection() {
                     ))}
                   </div>
                 </div>
-
                 {/* Testimonial Text */}
                 <p className="text-sm leading-relaxed" style={{ color: textColor }}>
                   {current.text}
                 </p>
-
                 {/* Navigation Arrows - Bottom */}
                 <div
                   className="flex justify-between items-center mt-4 pt-4"
                   style={{ borderTop: `1px solid ${borderColor}` }}
                 >
                   <button
-                    onClick={() =>
-                      setCurrentIndex((prev) => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length)
-                    }
+                    onClick={goToPrev}
                     className="flex items-center justify-center transition-colors"
                     style={{ color: textSecondary }}
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
-
                   <button
-                    onClick={() => setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length)}
+                    onClick={goToNext}
                     className="flex items-center justify-center transition-colors"
                     style={{ color: "#FF6200" }}
                   >
@@ -369,7 +318,6 @@ export function FeedbackSection() {
             </div>
           </div>
         </div>
-
         <div className="flex justify-center gap-2 mt-12">
           {filteredTestimonials.map((_, i) => (
             <button
@@ -384,5 +332,5 @@ export function FeedbackSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
