@@ -103,41 +103,16 @@ export function QuoteSection() {
             {/* Соцсети */}
             <SocialLinks />
 
- <Link
-  href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <button
-    className="
-      w-full sm:w-auto px-8 py-4 rounded-full 
-      font-semibold text-white
-      transition-all duration-150
-      cursor-pointer
-      active:scale-[0.98]
-    "
-    style={{
-      background: 'linear-gradient(to bottom, #FF6200, #FF8A3D)',
-      border: 'none',
-      cursor: 'pointer',
-      pointerEvents: 'auto',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.background = 'linear-gradient(to bottom, #FF6200, #C2410C)'
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.background = 'linear-gradient(to bottom, #FF6200, #FF8A3D)'
-    }}
-    onMouseDown={(e) => {
-      e.currentTarget.style.background = 'linear-gradient(to bottom, #C2410C, #1A1A1A)'
-    }}
-    onMouseUp={(e) => {
-      e.currentTarget.style.background = 'linear-gradient(to bottom, #FF6200, #C2410C)'
-    }}
-  >
-    {t.buttonText}
-  </button>
-</Link>
+            {/* Кнопка */}
+            <Link
+              href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-orange-600 dark:bg-orange-600 text-primary-foreground dark:text-black font-semibold hover:bg-primary/60 transition-colors">
+                {t.buttonText}
+              </button>
+            </Link>
           </div>
         </div>
       </div>

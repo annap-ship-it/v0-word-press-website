@@ -147,12 +147,6 @@ export const translations = {
     ourServicesTitle: "Our Services",
     ourServicesSubtitle: "Comprehensive solutions for your business needs",
     servicesDescription: "We offer a wide range of professional services tailored to your requirements",
-    sending: "Sending...",
-    typeYourName: "Type Your Name",
-    typeYourEmail: "Type Your Email",
-    typeYourMessage: "Type Your Message",
-    termsAndConditions: "Terms and Conditions",
-    bySubmittingEmail: "By submitting your email, you accept terms and conditions.",
 
     // Projects Page
     ourProjectsTitle: "Our Projects",
@@ -366,12 +360,6 @@ export const translations = {
     ourServicesTitle: "Наші послуги",
     ourServicesSubtitle: "Комплексні рішення для ваших потреб",
     servicesDescription: "Ми пропонуємо широкий спектр професійних послуг, адаптованих до ваших вимог",
-    sending: "Відправлення...",
-    typeYourName: "Введіть своє ім'я",
-    typeYourEmail: "Введіть свою електронну адресу",
-    typeYourMessage: "Введіть своє повідомлення",
-    termsAndConditions: "Умови та положення",
-    bySubmittingEmail: "Надсилаючи свою електронну адресу, ви приймаєте умови та положення.",
 
     // Projects Page
     ourProjectsTitle: "Наші проекти",
@@ -438,6 +426,21 @@ export const translations = {
     attachFileOptional: "Додати файл (необов'язково)",
     caseStudyText:
       "Гордимся нашою недавною роботою з автоматизації системи Admin, де ми створили GraphQL API та Vue dashboard з відстеженням у реальному часі для швидшого та розумнішого моніторингу обладнання.",
+    // lib/i18n.ts (или где у тебя translations)
+export const translations = {
+  en: {
+    // ... твои текущие переводы ...
+    blogMetaTitle: "Blog | Web, Mobile & SaaS Development Insights",
+    blogMetaDescription:
+      "Expert insights, trends, and best practices in web, mobile, and SaaS development. Stay updated on software engineering, product design, and team scaling.",
+  },
+  uk: {
+    // ... твои текущие переводы ...
+    blogMetaTitle: "Блог | Інсайти з веб-, мобільної та SaaS-розробки",
+    blogMetaDescription:
+      "Експертні матеріали, тренди та найкращі практики у веб-, мобільній та SaaS-розробці. Будьте в курсі інженерії ПЗ, дизайну продуктів та зростання команд.",
+  },
+} as const
   },
 } as const
 

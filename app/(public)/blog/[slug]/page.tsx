@@ -512,7 +512,9 @@ export default function BlogPostPage() {
             <h1
               className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight relative inline-block w-full"
               style={{
-                backgroundImage: "linear-gradient(90.39deg, #FF6200 34.5%, var(--foreground) 66.76%)",
+                background: isDark
+                  ? "linear-gradient(90.39deg, #FFFFFF 34.5%, #FF6200 66.76%)"
+                  : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",

@@ -7,11 +7,6 @@ import { useLocale } from "@/lib/locale-context"
 export function CookiesConsent() {
   const [isVisible, setIsVisible] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
-  const [cookies, setCookies] = useState({
-    necessary: true,
-    analytics: false,
-    marketing: false,
-  })
   const { isDark } = useTheme()
   const { locale } = useLocale()
 
@@ -47,22 +42,15 @@ export function CookiesConsent() {
   }, [])
 
   const handleAccept = () => {
-    localStorage.setItem("cookies-accepted", JSON.stringify(cookies))
-    window.dispatchEvent(new CustomEvent("cookies-handled", { detail: cookies }))
+    localStorage.setItem("cookies-accepted", "true")
+    window.dispatchEvent(new CustomEvent("cookies-handled"))
     setIsVisible(false)
   }
 
   const handleDeny = () => {
-    localStorage.setItem("cookies-accepted", JSON.stringify({ necessary: true, analytics: false, marketing: false }))
-    window.dispatchEvent(new CustomEvent("cookies-handled", { detail: { necessary: true, analytics: false, marketing: false } }))
+    localStorage.setItem("cookies-accepted", "false")
+    window.dispatchEvent(new CustomEvent("cookies-handled"))
     setIsVisible(false)
-  }
-
-  const toggleCookie = (type: "analytics" | "marketing") => {
-    setCookies(prev => ({
-      ...prev,
-      [type]: !prev[type]
-    }))
   }
 
   if (!isMounted || !isVisible) return null
@@ -147,64 +135,29 @@ export function CookiesConsent() {
 
           {/* Toggle Options */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
-                {t.necessary}
-              </span>
-              <div
-                className="w-10 h-6 rounded-full flex items-center px-1 transition-colors flex-shrink-0"
-                style={{
-                  backgroundColor: "#FF6200",
-                  cursor: "not-allowed",
-                }}
-              >
+            {[
+              { label: t.necessary, enabled: true },
+              { label: t.analytics, enabled: false },
+              { label: t.marketing, enabled: false },
+            ].map((option) => (
+              <div key={option.label} className="flex items-center justify-between">
+                <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
+                  {option.label}
+                </span>
                 <div
-                  className="w-4 h-4 rounded-full bg-white transition-transform translate-x-4"
-                />
+                  className="w-10 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer flex-shrink-0"
+                  style={{
+                    backgroundColor: option.enabled ? "#FF6200" : "#E0E0E0",
+                  }}
+                >
+                  <div
+                    className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                      option.enabled ? "translate-x-4" : ""
+                    }`}
+                  />
+                </div>
               </div>
-            </div>
-
-            <button
-              onClick={() => toggleCookie("analytics")}
-              className="w-full flex items-center justify-between hover:opacity-80 transition-opacity"
-            >
-              <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
-                {t.analytics}
-              </span>
-              <div
-                className="w-10 h-6 rounded-full flex items-center px-1 transition-colors flex-shrink-0"
-                style={{
-                  backgroundColor: cookies.analytics ? "#FF6200" : "#E0E0E0",
-                }}
-              >
-                <div
-                  className={`w-4 h-4 rounded-full bg-white transition-transform ${
-                    cookies.analytics ? "translate-x-4" : ""
-                  }`}
-                />
-              </div>
-            </button>
-
-            <button
-              onClick={() => toggleCookie("marketing")}
-              className="w-full flex items-center justify-between hover:opacity-80 transition-opacity"
-            >
-              <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
-                {t.marketing}
-              </span>
-              <div
-                className="w-10 h-6 rounded-full flex items-center px-1 transition-colors flex-shrink-0"
-                style={{
-                  backgroundColor: cookies.marketing ? "#FF6200" : "#E0E0E0",
-                }}
-              >
-                <div
-                  className={`w-4 h-4 rounded-full bg-white transition-transform ${
-                    cookies.marketing ? "translate-x-4" : ""
-                  }`}
-                />
-              </div>
-            </button>
+            ))}
           </div>
 
           {/* Action Buttons */}

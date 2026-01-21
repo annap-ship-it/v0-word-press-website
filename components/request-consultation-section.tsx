@@ -548,19 +548,7 @@ export function RequestConsultationSection() {
                   justifyContent: "center",
                   gap: "10px",
                 }}
-                onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(to bottom, #FF6200, #C2410C)'
-                }}
-                onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(to bottom, #FF6200, #FF8A3D)'
-                }}
-                onMouseDown={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(to bottom, #C2410C, #1A1A1A)'
-                }}
-                onMouseUp={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(to bottom, #FF6200, #C2410C)'
-                }}
-                >
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
