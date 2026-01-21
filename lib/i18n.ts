@@ -426,22 +426,12 @@ export const translations = {
     attachFileOptional: "Додати файл (необов'язково)",
     caseStudyText:
       "Гордимся нашою недавною роботою з автоматизації системи Admin, де ми створили GraphQL API та Vue dashboard з відстеженням у реальному часі для швидшого та розумнішого моніторингу обладнання.",
-    // lib/i18n.ts (или где у тебя translations)
-export const translations = {
-  en: {
-    // ... твои текущие переводы ...
-    blogMetaTitle: "Blog | Web, Mobile & SaaS Development Insights",
-    blogMetaDescription:
-      "Expert insights, trends, and best practices in web, mobile, and SaaS development. Stay updated on software engineering, product design, and team scaling.",
-  },
-  uk: {
     // ... твои текущие переводы ...
     blogMetaTitle: "Блог | Інсайти з веб-, мобільної та SaaS-розробки",
     blogMetaDescription:
       "Експертні матеріали, тренди та найкращі практики у веб-, мобільній та SaaS-розробці. Будьте в курсі інженерії ПЗ, дизайну продуктів та зростання команд.",
   },
-} as const
-  },
+
 } as const
 
 export function getTranslations(locale: Locale) {
