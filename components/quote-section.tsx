@@ -108,11 +108,10 @@ export function QuoteSection() {
               href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full sm:w-auto"
             >
              <button
-    type="button"
-    className={`
+             type="button"
+             className={`
       relative overflow-hidden
       flex items-center justify-center
       w-full sm:w-auto px-8 py-4
