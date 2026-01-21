@@ -35,22 +35,32 @@ const testimonials: Testimonial[] = [
     position: "Chief Delivery Officer",
     company: "Beetroot",
     rating: 5,
-    text: "Наша співпраця з Idea Team була повним успіхом. Вони ефективно впоралися з усіма завданнями в рамках проекту, доставляючи високоякісні результати вчасно. Їх увага до деталей, професіоналізм та здатність швидко вирішувати складні питання дійсно виділялися.",
+    text: "Наша співпраця з Idea Team була повністю успішною. Команда ефективно впоралася з усіма завданнями в межах проєкту, забезпечивши високоякісний результат у визначені строки. Їхня увага до деталей, професіоналізм і здатність швидко вирішувати складні задачі справді вразили. Комунікація протягом усього проєкту була безперебійною, з оперативною підтримкою на кожному етапі. Ми дуже задоволені співпрацею та з нетерпінням чекаємо на нові спільні проєкти. Впевнено рекомендуємо Idea Team як надійну та високопрофесійну команду.",
     avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
   },
   {
     id: 2,
     locale: "uk",
-    name: "Ростик Жук",
-    position: "CEO",
-    company: "Appexoft",
+    name: "Галина Борок",
+    position: "Керівниця відділу клієнтської підтримки",
+    company: "Amploo",
     rating: 5,
-    text: "Idea Team стала нашим надійним партнером: їх гнучкість, вдосконалені процеси та сильний менеджмент зробили спільну роботу гладкою. Вони швидко вирішували складні питання інноваційними рішеннями.",
+    text: "Процес роботи з Idea Team був для нас позитивним досвідом із самого початку. Це команда висококваліфікованих фахівців, і співпраця з Олександром на кожному етапі проєкту була справжнім задоволенням. Він ставив правильні запитання, швидко реагував і завжди був готовий допомогти. Складається враження, що Idea Team — це партнер, на якого можна покластися та з яким комфортно працювати в довгостроковій перспективі.",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+  },
+  {
+    id: 3,
+    locale: "uk",
+    name: "Яна Оксенюк",
+    position: "Керівниця європейських партнерств",
+    company: "Mirko Solutions",
+    rating: 5,
+    text: "Співпраця з Idea Team залишила виключно позитивні враження. Проєкт було виконано якісно та у погоджені терміни, що є надзвичайно важливим для нашої команди. Особливо цінуємо оперативну комунікацію з менеджерами компанії — ми швидко отримували відповіді на всі запитання, що дозволяло ефективно рухатися вперед. Дякуємо за професіоналізм і відповідальний підхід до роботи! Рекомендуємо Idea Team як надійного партнера.",
     avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
   },
   // English
   {
-    id: 3,
+    id: 4,
     locale: "en",
     name: "Mykyta Tkachov",
     position: "Chief Delivery Officer",
@@ -60,7 +70,7 @@ const testimonials: Testimonial[] = [
     avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mikyta&scale=80",
   },
   {
-    id: 4,
+    id: 5,
     locale: "en",
     name: "Rostyk Zhuk",
     position: "CEO",
@@ -69,6 +79,20 @@ const testimonials: Testimonial[] = [
     text: "Idea Team became our reliable partner: their flexibility, refined processes, and strong management made collaborative work smooth. We were impressed by how quickly they solved complex issues with innovative solutions.",
     avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
   },
+  {
+    id: 6,
+    locale: "en",
+    name: "Artem Malyi",
+    position: "n/a",
+    company: "IT Svit",
+    rating: 5,
+    text: "We turned to the Idea Team to expand the team for our client’s project. From the first contact, their structured approach and expertise were clear.
+
+The team quickly immersed themselves, offered innovative solutions, ensured transparent communication and on-time delivery.
+
+The final product exceeded the end client’s expectations in functionality and usability.",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rostyk&scale=80",
+  },  
 ]
 
 export function FeedbackSection() {

@@ -528,26 +528,41 @@ export function RequestConsultationSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                style={{
-                  width: "200px",
-                  height: "40px",
-                  background: "#FF6200",
-                  borderRadius: "50px",
-                  fontFamily: "Onest",
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  lineHeight: "20px",
-                  textAlign: "center",
-                  letterSpacing: "0.02em",
-                  color: "#FFFFFF",
-                  border: "none",
-                  cursor: isSubmitting ? "not-allowed" : "pointer",
-                  opacity: isSubmitting ? 0.7 : 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
+                className={`
+    relative overflow-hidden
+    flex items-center justify-center gap-2.5
+    w-[200px] h-10
+    rounded-full
+    font-[Onest] font-normal text-[16px] leading-[100%]
+    text-white
+    transition duration-300 ease-out
+    disabled:cursor-not-allowed
+    bg-[#FF6200]
+    hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+    active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+    active:scale-[0.98]
+    disabled:bg-[#4A4A4A] disabled:text-[#AAAAAA] disabled:opacity-70
+  `}
+  onMouseEnter={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "#FF6200";
+    }
+  }}
+  onMouseDown={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
+    }
+  }}
+  onMouseUp={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+    }
+  }}
               >
                 {isSubmitting ? (
                   <>

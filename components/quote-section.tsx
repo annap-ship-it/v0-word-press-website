@@ -108,8 +108,34 @@ export function QuoteSection() {
               href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
               target="_blank"
               rel="noopener noreferrer"
+              className="block w-full sm:w-auto"
             >
-              <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-orange-600 dark:bg-orange-600 text-primary-foreground dark:text-black font-semibold hover:bg-primary/60 transition-colors">
+             <button
+    type="button"
+    className={`
+      relative overflow-hidden
+      flex items-center justify-center
+      w-full sm:w-auto px-8 py-4
+      rounded-full
+      font-[Onest] font-normal text-base leading-[100%]
+      text-white
+      transition duration-300 ease-out
+      bg-[#FF6200]
+      cursor-pointer
+    `}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.background = "#FF6200";
+    }}
+    onMouseDown={(e) => {
+      e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
+    }}
+    onMouseUp={(e) => {
+      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+    }}
+  >
                 {t.buttonText}
               </button>
             </Link>
