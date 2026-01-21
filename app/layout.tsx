@@ -17,26 +17,26 @@ const onest = Onest({
 })
 
 export const metadata: Metadata = {
-  title: "Bilingual Website with WordPress Admin",
-  description: "A modern bilingual website with dark/light themes and WordPress-style admin panel",
-  generator: "v0.app",
+  title: "Software Development Company | Hire Expert Engineers",
+  description: "Grow your team with skilled developers. Flexible staff augmentation, fast onboarding, custom web & mobile development",
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
+        url: "/icon.svg",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/icon-dark-32x32.png",
+        url: "/icon.svg",
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/favicon.svg",
+        url: "/icon.svg",
         type: "image/svg+xml",
       },
     ],
-    apple: "/apple-icon.png",
+    apple: "/icon.svg",
   },
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
