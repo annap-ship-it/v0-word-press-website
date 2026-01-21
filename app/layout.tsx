@@ -22,19 +22,19 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/icon.svg",
+        url: "/icon2.svg",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/icon.svg",
+        url: "/icon2.svg",
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/icon.svg",
+        url: "/icon2.svg",
         type: "image/svg+xml",
       },
     ],
-    apple: "/icon.svg",
+    apple: "/icon2.svg",
   },
     generator: 'v0.app'
 }
