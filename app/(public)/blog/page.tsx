@@ -3,12 +3,15 @@ import BlogContent from "./blog-content"
 import { translations } from "@/lib/i18n"
 
 export const metadata: Metadata = {
-  title: "Blog | What's happening in web, mobile, and SaaS development",
+  title: translations.uk.blogMetaTitle ?? "Блог | Що відбувається у веб-, мобільній та SaaS-розробці",
   description:
-    "Explore expert insights, trends, and best practices in web, mobile, and SaaS development. Stay updated on software engineering, product design, and team growth strategies.",
+    translations.uk.blogMetaDescription ??
+    "Експертні інсайти, тренди та найкращі практики у веб-, мобільній та SaaS-розробці. Будьте в курсі новин з інженерії ПЗ, дизайну продуктів та стратегій зростання команд.",
   openGraph: {
-    title: "Blog | What's happening in web, mobile, and SaaS development",
-    description: "Explore expert insights, trends, and best practices in web, mobile, and SaaS development.",
+    title: translations.uk.blogMetaTitle ?? "Блог | Що відбувається у веб-, мобільній та SaaS-розробці",
+    description:
+      translations.uk.blogMetaDescription ??
+      "Експертні інсайти, тренди та найкращі практики у веб-, мобільній та SaaS-розробці.",
   },
 }
 
