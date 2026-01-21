@@ -1,46 +1,55 @@
-// app/blog/page.tsx
+import type React from "react"
 import type { Metadata } from "next"
-import { headers } from "next/headers"
-import BlogContent from "./blog-content"
-import { translations } from "@/lib/i18n"
+import { createServerClient } from "@/lib/supabase/server"
 
-export async function generateMetadata(): Promise<Metadata> {
-  const headerList = headers()
-  
-  // Получаем locale из заголовка, который ставит твой middleware
-  // Попробуй эти варианты по порядку (часто встречаются именно такие имена):
-  let locale =
-    headerList.get("x-locale") ||
-    headerList.get("x-dispatch-locale") ||
-    headerList.get("next-locale") ||
-    headerList.get("x-vercel-ip-locale") ||
-    headerList.get("accept-language")?.split(",")[0].split("-")[0] ||
-    "en"
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  try {
+    const supabase = await createServerClient()
+    
+    // Extract locale from slug suffix if present (e.g., "slug-uk" -> "uk")
+    let baseSlug = params.slug
+    let locale = "en"
+    
+    const localeMatch = params.slug.match(/-([a-z]{2})$/)
+    if (localeMatch) {
+      baseSlug = params.slug.replace(localeMatch[0], "")
+      locale = localeMatch[1]
+    }
+    
+    const { data: post } = await supabase
+      .from("posts")
+      .select("title, excerpt, featured_image, created_at")
+      .eq("slug", baseSlug)
+      .eq("locale", locale)
+      .eq("status", "published")
+      .single()
 
-  // Приводим к нужному формату (en / uk)
-  locale = locale.toLowerCase().startsWith("uk") ? "uk" : "en"
+    if (!post) {
+      return {
+        title: "Blog Post | Idea Team Dev",
+        description: "Read our blog post on software development, web, mobile, and SaaS solutions.",
+      }
+    }
 
-  const t = translations[locale as "en" | "uk"] || translations.en
-
-  // ← Здесь можно добавить логирование для дебага (в production закомментировать)
-  // console.log("Locale from headers:", locale)
-
-  return {
-    title: t.blogMetaTitle || "Blog | What's happening in web, mobile, and SaaS development",
-    description:
-      t.blogMetaDescription ||
-      "Explore expert insights, trends, and best practices in web, mobile, and SaaS development. Stay updated on software engineering, product design, and team growth strategies.",
-    openGraph: {
-      title: t.blogMetaTitle,
-      description: t.blogMetaDescription,
-      // locale: locale,                   // полезно для og
-      // type: "website",
-      // url: `/blog`,
-      // images: "/og-blog.jpg",           // добавь, если есть
-    },
+    return {
+      title: `${post.title} | Blog | Idea Team Dev`,
+      description: post.excerpt || "Read this article on software development and technology insights.",
+      openGraph: {
+        title: post.title,
+        description: post.excerpt || "Read this article on our blog.",
+        images: post.featured_image ? [{ url: post.featured_image }] : [],
+        type: "article",
+        publishedTime: post.created_at,
+      },
+    }
+  } catch (error) {
+    return {
+      title: "Blog | Idea Team",
+      description: "Read our latest blog posts on software development.",
+    }
   }
 }
 
-export default function BlogPage() {
-  return <BlogContent />
+export default function BlogPostLayout({ children }: { children: React.ReactNode }) {
+  return children
 }
