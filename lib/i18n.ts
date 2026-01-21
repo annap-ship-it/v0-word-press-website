@@ -426,16 +426,6 @@ export const translations = {
     attachFileOptional: "Додати файл (необов'язково)",
     caseStudyText:
       "Пишаймося нашою недавною роботою з автоматизації системи Admin, де ми створили GraphQL API та Vue dashboard з відстеженням у реальному часі для швидшого та розумнішого моніторингу обладнання.",
-// Додано тут
-    blogMetaTitle: "Blog | What's happening in web, mobile, and SaaS development",
-    blogMetaDescription:
-      "Explore expert insights, trends, and best practices in web, mobile, and SaaS development. Stay updated on software engineering, product design, and team growth strategies.",
-  },
-  uk: {
-// Додано тут
-    blogMetaTitle: "Блог | Що відбувається у веб-, мобільній та SaaS-розробці",
-    blogMetaDescription:
-      "Експертні інсайти, тренди та найкращі практики у веб-, мобільній та SaaS-розробці. Будьте в курсі новин з інженерії ПЗ, дизайну продуктів та стратегій зростання команд.",
   },
 } as const as const
 
