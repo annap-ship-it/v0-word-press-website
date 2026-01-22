@@ -152,10 +152,20 @@ export function RequestConsultationSection() {
       return
     }
 
+    if (!siteKey) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please try again." })
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus(null)
 
     try {
+      // Ensure reCAPTCHA Enterprise script is ready
+      if (!window.grecaptcha || !window.grecaptcha.enterprise) {
+        throw new Error("reCAPTCHA Enterprise not loaded")
+      }
+
       // Execute reCAPTCHA Enterprise to get token
       const recaptchaToken = await window.grecaptcha.enterprise.execute(
         siteKey,
@@ -187,14 +197,11 @@ export function RequestConsultationSection() {
         if (fileInputRef.current) {
           fileInputRef.current.value = ""
         }
-        // Reset reCAPTCHA
-        if (window.grecaptcha && recaptchaWidgetId.current !== null) {
-          window.grecaptcha.reset(recaptchaWidgetId.current)
-        }
       } else {
         setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
       }
     } catch (error) {
+      console.error("[v0] Form submission error:", error)
       setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
     } finally {
       setIsSubmitting(false)

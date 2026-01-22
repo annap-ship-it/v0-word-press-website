@@ -93,11 +93,41 @@ export default function RateCalculatorPopout({ isOpen, onClose, onCalculateClick
 
         <button
           onClick={handleCalculateClick}
-          className="w-full max-w-[300px] h-[30px] rounded-[50px] bg-[#FF6200] text-white font-medium hover:bg-[#E55800] transition-colors"
-          style={{
-            padding: "4px 14px",
-            fontSize: "clamp(14px, 3.5vw, 16px)",
-          }}
+                className={`
+     relative overflow-hidden
+    flex items-center justify-center gap-2.5
+    w-[300px] h-10
+    rounded-full
+    font-[Onest] font-normal text-[16px] leading-[100%]
+    text-white
+    transition duration-300 ease-out
+    disabled:cursor-not-allowed
+    bg-[#FF6200]
+    hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+    active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+    active:scale-[0.98]
+    disabled:bg-[#4A4A4A] disabled:text-[#AAAAAA] disabled:opacity-70
+  `}
+                onMouseEnter={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "#FF6200";
+                  }
+                }}
+                onMouseDown={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
+                  }
+                }}
+                onMouseUp={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+                  }
+                }}
         >
           {t.calculate}
         </button>
