@@ -83,8 +83,7 @@ const faqItems: FAQItem[] = [
     answerEn:
       "The assigned developer works 10 hours on a free dev test drive. If, during the project, the developer does not meet requirements or there are issues in their work, we find a replacement within three days and smoothly integrate the new candidate.",
     answerUk:
-      "Призначений розробник спочатку працює 10 годин на безкоштовному dev test drive.
-Якщо під час проєкту розробник не відповідає вимогам або виникають проблемні питання в роботі, ми знаходимо заміну протягом трьох днів і плавно інтегруємо нового кандидата.",
+      "Призначений розробник спочатку працює 10 годин на безкоштовному dev test drive. Якщо під час проєкту розробник не відповідає вимогам або виникають проблемні питання в роботі, ми знаходимо заміну протягом трьох днів і плавно інтегруємо нового кандидата.",
   },
 ]
 
