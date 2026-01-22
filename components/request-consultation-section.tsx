@@ -6,13 +6,15 @@ import Image from "next/image"
 import { X, Loader2, Paperclip } from "lucide-react"
 import Link from "next/link"
 import { useLocale } from "@/lib/locale-context"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 
 declare global {
   interface Window {
     grecaptcha: {
-      ready: (callback: () => void) => void
-      render: (container: string | HTMLElement, parameters: Record<string, unknown>) => number
-      reset: (widgetId?: number) => void
+      enterprise: {
+        execute: (siteKey: string, options: { action: string }) => Promise<string>
+        ready: (callback: () => void) => void
+      }
     }
   }
 }
@@ -69,12 +71,24 @@ export function RequestConsultationSection() {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
-  const [isDark, setIsDark] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const recaptchaRef = useRef<HTMLDivElement>(null)
-  const [recaptchaWidgetId, setRecaptchaWidgetId] = useState<number | null>(null)
-  const recaptchaRendered = useRef(false)
+  const [siteKey, setSiteKey] = useState<string>("")
   const scriptLoaded = useRef(false)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const recaptchaWidgetId = useRef<number | null>(null)
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    // Fetch the reCAPTCHA site key from server action
+    const fetchSiteKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setSiteKey(key)
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      }
+    }
+    fetchSiteKey()
+  }, [])
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -90,58 +104,21 @@ export function RequestConsultationSection() {
   }, [])
 
   useEffect(() => {
-    // Don't load script if already loaded
-    if (scriptLoaded.current) {
-      // Just update theme if reCAPTCHA is already rendered
-      if (recaptchaWidgetId !== null && window.grecaptcha) {
-        try {
-          window.grecaptcha.reset(recaptchaWidgetId)
-        } catch (e) {
-          console.error("[v0] Failed to reset reCAPTCHA:", e)
-        }
-      }
-      return
-    }
+    if (scriptLoaded.current) return
 
+    // Load reCAPTCHA Enterprise script
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"
+    script.src = "https://www.google.com/recaptcha/enterprise.js"
     script.async = true
     script.defer = true
-
-    // @ts-expect-error - Global callback for reCAPTCHA
-    window.onRecaptchaLoad = () => {
-      // Check if already rendered to prevent duplicate render error
-      if (recaptchaRendered.current) return
-
-      if (recaptchaRef.current && window.grecaptcha) {
-        try {
-          const widgetId = window.grecaptcha.render(recaptchaRef.current, {
-            sitekey: "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT",
-            theme: isDark ? "dark" : "light",
-          })
-          setRecaptchaWidgetId(widgetId)
-          recaptchaRendered.current = true
-        } catch (e) {
-          console.error("[v0] Failed to render reCAPTCHA:", e)
-        }
-      }
-    }
 
     document.head.appendChild(script)
     scriptLoaded.current = true
 
     return () => {
-      // Cleanup: reset widget but don't remove the rendered instance
-      // This prevents re-render errors on component remount
-      if (recaptchaWidgetId !== null && window.grecaptcha) {
-        try {
-          window.grecaptcha.reset(recaptchaWidgetId)
-        } catch (e) {
-          // Ignore cleanup errors
-        }
-      }
+      // Script doesn't need cleanup
     }
-  }, [isDark, recaptchaWidgetId])
+  }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
@@ -175,24 +152,21 @@ export function RequestConsultationSection() {
       return
     }
 
-    const recaptchaResponse = (
-      recaptchaRef.current?.querySelector('[name="g-recaptcha-response"]') as HTMLTextAreaElement
-    )?.value
-
-    if (!recaptchaResponse) {
-      setSubmitStatus({ type: "error", message: "Please complete the reCAPTCHA" })
-      return
-    }
-
     setIsSubmitting(true)
     setSubmitStatus(null)
 
     try {
+      // Execute reCAPTCHA Enterprise to get token
+      const recaptchaToken = await window.grecaptcha.enterprise.execute(
+        siteKey,
+        { action: "CONSULTATION_REQUEST" }
+      )
+
       const submitData = new FormData()
       submitData.append("name", formData.name)
       submitData.append("email", formData.email)
       submitData.append("message", formData.message)
-      submitData.append("recaptchaToken", recaptchaResponse)
+      submitData.append("recaptchaToken", recaptchaToken)
       submitData.append("type", "consultation")
 
       files.forEach((file) => {
@@ -214,8 +188,8 @@ export function RequestConsultationSection() {
           fileInputRef.current.value = ""
         }
         // Reset reCAPTCHA
-        if (window.grecaptcha && recaptchaWidgetId !== null) {
-          window.grecaptcha.reset(recaptchaWidgetId)
+        if (window.grecaptcha && recaptchaWidgetId.current !== null) {
+          window.grecaptcha.reset(recaptchaWidgetId.current)
         }
       } else {
         setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
@@ -543,26 +517,26 @@ export function RequestConsultationSection() {
     active:scale-[0.98]
     disabled:bg-[#4A4A4A] disabled:text-[#AAAAAA] disabled:opacity-70
   `}
-  onMouseEnter={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
-    }
-  }}
-  onMouseLeave={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background = "#FF6200";
-    }
-  }}
-  onMouseDown={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
-    }
-  }}
-  onMouseUp={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
-    }
-  }}
+                onMouseEnter={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "#FF6200";
+                  }
+                }}
+                onMouseDown={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
+                  }
+                }}
+                onMouseUp={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+                  }
+                }}
               >
                 {isSubmitting ? (
                   <>
@@ -623,25 +597,6 @@ export function RequestConsultationSection() {
                       ? "Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи."
                       : "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails."}
                   </label>
-                </div>
-
-                {/* reCAPTCHA */}
-                <div
-                  style={{
-                    width: "264px",
-                    height: "77px",
-                    background: isDark ? "#373737" : "#F9F9F9",
-                    border: isDark ? "1px solid #626262" : "1px solid #D7DBE4",
-                    borderRadius: "4px",
-                    padding: "8px 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    overflow: "hidden"
-                  }}
-                >
-                  <div ref={recaptchaRef} style={{ transform: "scale(0.77)", transformOrigin: "center" }} />
                 </div>
               </div>
             </form>
