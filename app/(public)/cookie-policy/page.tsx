@@ -1,19 +1,8 @@
 "use client"
 
-import type { Metadata } from "next"
 import { useLocale } from "@/lib/locale-context"
 import { PolicyBanner } from "@/components/policy-banner"
 import { RequestConsultationSection } from "@/components/request-consultation-section"
-
-
-export const metadata: Metadata = {
-  title: "Cookie Policy - Idea Team",
-  description:
-    "Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners.",
-  openGraph: {
-    title: "JCookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners.",
-  },
-}
 
 const content = {
   en: {
