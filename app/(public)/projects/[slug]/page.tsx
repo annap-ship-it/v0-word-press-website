@@ -1,6 +1,5 @@
 "use client"
 
-import type { Metadata } from "next"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,15 +16,6 @@ interface ProjectData {
   featured_image: string
   content: any
   created_at: string
-}
-
-export const metadata: Metadata = {
-  title: "Web Application Development | Cloud & DevOps Services",
-  description:
-    "As a trusted software development company, we create custom web applications tailored to your business needs. Agile, reliable, and scalable solutions with expert developers at your service.",
-  openGraph: {
-    title: "As a trusted software development company, we create custom web applications tailored to your business needs. Agile, reliable, and scalable solutions with expert developers at your service.",
-  },
 }
 
 const translations = {

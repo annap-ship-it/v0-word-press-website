@@ -2,7 +2,6 @@
 
 import type React from "react"
 
-import type { Metadata } from "next"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -12,15 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
-
-export const metadata: Metadata = {
-  title: "Work from home software development jobs",
-  description:
-    "Join our software development company and grow your career with expert teams. Explore opportunities in web, mobile, and SaaS development and be part of innovative projects.",
-  openGraph: {
-    title: "Join our software development company and grow your career with expert teams. Explore opportunities in web, mobile, and SaaS development and be part of innovative projects.",
-  },
-}
 
 const content = {
   en: {
