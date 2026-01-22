@@ -6,6 +6,7 @@ declare global {
   interface Window {
     supabaseClient?: SupabaseClient | null
     supabaseListenerInitialized?: boolean
+    supabaseAuthUnsubscribe?: (() => void) | null
   }
 }
 
@@ -42,11 +43,12 @@ export function createBrowserClient() {
     if (!window.supabaseListenerInitialized) {
       window.supabaseListenerInitialized = true
 
-      // Set up single auth state change listener with error handling
-      window.supabaseClient.auth.onAuthStateChange((event, session) => {
-        // Suppress AbortError logs - these are expected during cleanup
+      // Capture the unsubscribe function from onAuthStateChange
+      // This prevents AbortError during component unmounting
+      window.supabaseAuthUnsubscribe = window.supabaseClient.auth.onAuthStateChange((event, session) => {
+        // Auth state changed - listener is active
         if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
-          // Auth state changed successfully
+          // Auth state changes are handled naturally by Supabase
         }
       })
     }
@@ -56,6 +58,14 @@ export function createBrowserClient() {
   }
 
   return window.supabaseClient
+}
+
+// Cleanup function to properly unsubscribe auth listener
+export function cleanupAuthListener() {
+  if (typeof window !== "undefined" && window.supabaseAuthUnsubscribe) {
+    window.supabaseAuthUnsubscribe()
+    window.supabaseAuthUnsubscribe = null
+  }
 }
 
 export const createClient = createBrowserClient

@@ -1,67 +1,81 @@
-// components/autoplayyoutube.tsx
+"use client";
 
-"use client"
+import { useEffect, useRef } from "react";
+import { useInView } from "react-intersection-observer";
 
-import { useState, useEffect, useRef } from "react"   // ← добавлен useState и useRef
+interface AutoPlayYouTubeProps {
+  videoId: string;          // "lfoiSdUgsX0"
+  title?: string;           // "Idea Team Intro"
+  className?: string;
+}
 
-export default function AutoPlayYouTube() {
-  const [isDark, setIsDark] = useState(false)
+function AutoPlayYouTube({
+  videoId,
+  title = "Video",
+  className = "",
+}: AutoPlayYouTubeProps) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const { ref, inView } = useInView({
+    threshold: 0.5,          // 50% видимості → запуск
+    triggerOnce: false,      // можна запускати/паузити багато разів
+    rootMargin: "0px",       // без додаткового відступу
+  });
 
-  // Определяем тёмный режим по классу на <html>
   useEffect(() => {
-    const html = document.documentElement
-    const checkDark = () => setIsDark(html.classList.contains("dark"))
-    
-    checkDark()
-    
-    const observer = new MutationObserver(checkDark)
-    observer.observe(html, { attributes: true, attributeFilter: ["class"] })
-    
-    return () => observer.disconnect()
-  }, [])
+    if (!iframeRef.current) return;
 
-  const iframeRef = useRef<HTMLIFrameElement>(null)
+    const iframe = iframeRef.current;
+    const srcBase = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=1&loop=1&playlist=${videoId}&rel=0&modestbranding=1&controls=1&playsinline=1`;
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!iframeRef.current) return
-
-        const action = entry.isIntersecting ? "playVideo" : "pauseVideo"
-
-        iframeRef.current.contentWindow?.postMessage(
-          JSON.stringify({ event: "command", func: action }),
-          "*"
-        )
-      },
-      { threshold: 0.6 }
-    )
-
-    const current = iframeRef.current
-    if (current) observer.observe(current)
-
-    return () => {
-      if (current) observer.unobserve(current)
+    // Оновлюємо src тільки раз (щоб уникнути перезавантаження)
+    if (!iframe.src) {
+      iframe.src = srcBase;
     }
-  }, [])
+
+    // Функції керування через YouTube IFrame API
+    const playVideo = () => {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func: "playVideo" }),
+          "*"
+        );
+      }
+    };
+
+    const pauseVideo = () => {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func: "pauseVideo" }),
+          "*"
+        );
+      }
+    };
+
+    if (inView) {
+      playVideo();
+    } else {
+      pauseVideo();
+    }
+
+    // Очищення не потрібна, бо ref живий
+  }, [inView, videoId]);
 
   return (
-    <section 
-      className="px-4" 
-      style={{ background: isDark ? "#000000" : "#FFFFFF" }}
+    <div 
+      ref={ref} 
+      className={`relative w-full aspect-video max-w-[975px] mx-auto ${className}`}
     >
-      <div className="max-w-[1200px] mx-auto">
-        <div className="relative w-full aspect-video max-w-[975px] mx-auto rounded-2xl overflow-hidden shadow-2xl">
-          <iframe
-            ref={iframeRef}
-            src="https://www.youtube.com/embed/lfoiSdUgsX0?enablejsapi=1&autoplay=0&mute=1&loop=1&playlist=lfoiSdUgsX0&rel=0&modestbranding=1&controls=1&playsinline=1"
-            title="Idea Team Intro"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="absolute inset-0 w-full h-full"
-          />
-        </div>
-      </div>
-    </section>
-  )
+      <iframe
+        ref={iframeRef}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+        className="absolute inset-0 w-full h-full rounded-xl shadow-2xl"
+      />
+    </div>
+  );
 }
+
+export { AutoPlayYouTube };
+export default AutoPlayYouTube;

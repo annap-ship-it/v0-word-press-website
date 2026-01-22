@@ -638,7 +638,7 @@ export function RequestConsultationSection() {
                     alignItems: "center",
                     justifyContent: "center",
                     flexShrink: 0,
-                    overflow: "hidden",
+                    overflow: "hidden"
                   }}
                 >
                   <div ref={recaptchaRef} style={{ transform: "scale(0.77)", transformOrigin: "center" }} />
