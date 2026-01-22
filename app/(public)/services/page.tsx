@@ -1,10 +1,20 @@
 "use client"
 
+import type { Metadata } from "next"
 import type React from "react"
 import { useLocale } from "@/lib/locale-context"
 import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+
+export const metadata: Metadata = {
+  title: "Web Application Development | Cloud & DevOps Services",
+  description:
+    "Software development company that provides to accelerate delivery through CI/CD, cloud deployment, and infrastructure automation.",
+  openGraph: {
+    title: "Software development company that provides to accelerate delivery through CI/CD, cloud deployment, and infrastructure automation.",
+  },
+}
 
 export default function ServicesPage() {
   const { t } = useLocale()

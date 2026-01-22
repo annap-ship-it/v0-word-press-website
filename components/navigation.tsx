@@ -203,7 +203,7 @@ export function Navigation() {
                       {/* Left column - Menu items */}
                       <div className="flex-1 p-6 flex flex-col justify-center gap-4">
                         <Link
-                          href="/about"
+                          href="/#about-us"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -244,7 +244,7 @@ export function Navigation() {
                         </Link>
 
                         <Link
-                          href="/experience"
+                          href="/#our-expertise"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -911,7 +911,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects/multi-brand-ecommerce"
+                          href="/projects#multi-brand-ecommerce"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -944,7 +944,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects/statistics-platform"
+                          href="/projects#statistics-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -977,7 +977,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects/sensor-infobox"
+                          href="/projects#sensor-infobox"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1010,7 +1010,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects/ecommerce-platform"
+                          href="/projects#ecommerce-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -2336,31 +2336,54 @@ export function Navigation() {
 
             {/* Contact us button */}
             <button
-              className="w-full transition-all duration-300 ease-out"
-              style={{
-                marginTop: "20px",
-                height: "40px",
-                borderRadius: "50px",
-                background: "#FF6200",
-                fontFamily: "Onest",
-                fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "100%",
-                letterSpacing: "0.02em",
-                color: "#FFFFFF",
-                padding: "12px 14px",
-              }}
+              className={`
+    relative overflow-hidden
+    flex items-center justify-center gap-2.5
+    w-full h-10
+    rounded-full                      /* или rounded-[50px] */
+    font-onest font-normal text-base leading-none
+    text-white
+    transition-all duration-300 ease-out
+    disabled:cursor-not-allowed
+    disabled:opacity-70
+    bg-[#FF6200]
+    hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+    active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+    active:scale-[0.98]
+    disabled:bg-[#4A4A4A] disabled:text-[#AAAAAA]
+  `}
+  style={{
+    padding: "12px 14px",
+    letterSpacing: "0.02em",
+  }}
               onClick={() => {
                 setContactFormOpen(true)
                 setMobileMenuOpen(false)
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#E55800"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#FF6200"
-              }}
-            >
+  onMouseEnter={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background =
+        "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "#FF6200";
+    }
+  }}
+  onMouseDown={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background =
+        "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
+    }
+  }}
+  onMouseUp={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background =
+        "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
+    }
+  }}
+>
               {/* Using t.contactUs from useLocale hook instead of currentTranslations */}
               {t.contactUs}
             </button>
