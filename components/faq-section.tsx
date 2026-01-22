@@ -19,44 +19,44 @@ const faqItems: FAQItem[] = [
     answerEn:
       "Out-staffing is a model where developers work remotely as part of your team but remain employed by a software development studio. This allows businesses to scale teams quickly without hiring full-time in-house staff.",
     answerUk:
-      "Аустафінг — це модель, де розробники працюють дистанційно як частина вашої команди, але залишаються працівниками студії розробки програмного забезпечення. Це дозволяє бізнесу швидко масштабувати команди без найму постійного штату на місці.",
+      "Аутстафінг — це модель, коли розробники працюють віддалено як частина вашої команди, але залишаються працівниками студії розробки програмного забезпечення. Це дозволяє бізнесу швидко масштабувати команду без найму штатних співробітників.",
   },
   {
     id: 2,
     questionEn: "Why is it better to hire developers through a software development studio than in-house?",
     questionUk:
-      "Чому краще найняти розробників через студію розробки програмного забезпечення, ніж у штат?",
+      "Чому вигідніше наймати розробників через студію розробки, а не штатно?",
     answerEn:
       "Working with a studio provides immediate access to experienced developers, reduces recruitment and HR overhead, offers flexible team scaling, and ensures a structured development process with proven expertise.",
     answerUk:
-      "Робота зі студією забезпечує миттєвий доступ до досвідчених розробників, зменшує витрати на найм та HR, пропонує гнучке масштабування команди і забезпечує структурований процес розробки з перевіреною експертизою.",
+      "Співпраця зі студією дає миттєвий доступ до досвідчених розробників, зменшує витрати на рекрутинг і HR, забезпечує гнучке масштабування команди та структурований процес розробки з перевіреною експертизою.",
   },
   {
     id: 3,
     questionEn: "What development methodologies do you use?",
-    questionUk: "Які методологій розвитку ви використовуєте?",
+    questionUk: "Якими методологіями розробки ви користуєтеся?",
     answerEn:
       "We primarily use Agile, Scrum, and Kanban to ensure iterative delivery, transparency, predictable timelines, and efficient project management.",
     answerUk:
-      "Ми переважно використовуємо Agile, Scrum і Kanban, щоб забезпечити ітеративну доставку, прозорість, передбачувані строки та ефективне управління проектами.",
+      "Ми переважно використовуємо Agile, Scrum та Kanban, щоб забезпечити ітеративну доставку, прозорість процесів, прогнозовані терміни та ефективне управління проєктом.",
   },
   {
     id: 4,
     questionEn: "How does the onboarding process work?",
-    questionUk: "Як працює процес адаптації?",
+    questionUk: "Як відбувається процес адаптації (onboarding)?",
     answerEn:
       "Our onboarding includes detailed project briefings, access to tools and documentation, integration into your workflows, and alignment on communication and reporting standards. Developers are ready to start work quickly.",
     answerUk:
-      "Наш процес адаптації включає детальні брифінги проекту, доступ до інструментів і документації, інтеграцію у ваші робочі процеси та узгодження стандартів комунікації та звітності. Розробники готові почати роботу швидко.",
+      "Наш onboarding включає детальні брифінги проєкту, доступ до інструментів та документації, інтеграцію у ваші робочі процеси та узгодження стандартів комунікації та звітності. Розробники готові розпочати роботу швидко.",
   },
   {
     id: 5,
     questionEn: "Where are your developers located?",
-    questionUk: "Де розташовані ваші розробники?",
+    questionUk: "Де знаходяться ваші розробники?",
     answerEn:
       "Our developers are distributed globally but operate in coordinated time zones. This ensures smooth collaboration while providing flexibility and access to top talent.",
     answerUk:
-      "Наші розробники розподілені по всьому світу, але працюють у скоординованих часових поясах. Це забезпечує гладку співпрацю, сприяючи гнучкості та доступу до найкращих талантів.",
+      "Наші розробники розташовані по всьому світу, але працюють у координованих часових зонах. Це забезпечує ефективну співпрацю та доступ до найкращих талантів.",
   },
   {
     id: 6,
@@ -65,25 +65,26 @@ const faqItems: FAQItem[] = [
     answerEn:
       "Depending on the technology and project requirements, we can provide a qualified developer within 1–3 weeks.",
     answerUk:
-      "Залежно від технологій та вимог проекту, ми можемо надати кваліфікованого розробника протягом 1-3 тижнів.",
+      "Залежно від технологій та вимог проєкту, ми можемо надати кваліфікованого розробника протягом 1–3 тижнів.",
   },
   {
     id: 7,
     questionEn: "How quickly do you start project implementation?",
-    questionUk: "Як швидко ви починаєте реалізацію проекту?",
+    questionUk: " Як швидко ви починаєте реалізацію проєкту?",
     answerEn:
       "After onboarding and requirement alignment, we can begin implementation immediately, ensuring minimal delays and fast project ramp-up.",
     answerUk:
-      "Після адаптації та узгодження вимог ми можемо розпочати реалізацію негайно, забезпечуючи мінімальні затримки та швидкий запуск проекту.",
+      "Після onboarding та узгодження вимог ми можемо розпочати реалізацію негайно, забезпечуючи мінімальні затримки та швидкий старт проєкту.",
   },
   {
     id: 8,
     questionEn: "What if, after some time, the assigned specialist turns out not to be a good fit?",
-    questionUk: "Що якщо, через деякий час, призначений фахівець виявиться невідповідною особою?",
+    questionUk: "Що робити, якщо через певний час призначений спеціаліст виявиться не підходящим?",
     answerEn:
       "The assigned developer works 10 hours on a free dev test drive. If, during the project, the developer does not meet requirements or there are issues in their work, we find a replacement within three days and smoothly integrate the new candidate.",
     answerUk:
-      "Призначений розробник працює 10 годин на безплатному тестуванні розробника. Якщо під час проекту розробник не відповідає вимогам або виникають проблеми з його роботою, ми знайдемо заміну протягом трьох днів і плавно інтегруємо нового кандидата.",
+      "Призначений розробник спочатку працює 10 годин на безкоштовному dev test drive.
+Якщо під час проєкту розробник не відповідає вимогам або виникають проблемні питання в роботі, ми знаходимо заміну протягом трьох днів і плавно інтегруємо нового кандидата.",
   },
 ]
 

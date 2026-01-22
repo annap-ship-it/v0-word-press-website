@@ -688,7 +688,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
-          <p>© Idea Team 2024. All Rights Reserved.</p>
+          <p>©Idea Team 2024. All Rights Reserved.</p>
           <div className="flex items-center gap-6">
             <Link
               href="/terms"
