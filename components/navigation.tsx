@@ -403,7 +403,8 @@ export function Navigation() {
                         </div>
 
                         {/* Read All Reviews button */}
-                        <button
+                        <Link
+                        href="/#feedbacks"
                           className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
                           style={{
                             width: "auto",
@@ -442,7 +443,7 @@ export function Navigation() {
                         >
                           {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                           {t.readAllReviews}
-                        </button>
+                        </link>
                       </div>
                     </div>
                   </div>
