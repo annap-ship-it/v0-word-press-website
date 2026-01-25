@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
     const name = formData.get("name") as string
     const email = formData.get("email") as string
     const message = formData.get("message") as string
-    const file = formData.get("file") as File | null
     const recaptchaToken = formData.get("recaptchaToken") as string
 
     // Validate required fields
@@ -49,85 +48,80 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
     }
 
-    // Prepare file attachment if exists
-    let attachmentInfo = "No file attached"
-    let fileBase64 = ""
-    let fileName = ""
-    let fileMimeType = ""
+    // Prepare file attachments if exist (handle multiple files)
+    const files = formData.getAll("files") as File[]
+    const attachments: Array<{ filename: string; content: string }> = []
+    let attachmentInfo = "No files attached"
 
-    if (file && file.size > 0) {
-      // Check file size (max 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        return NextResponse.json({ error: "File size must be less than 10MB" }, { status: 400 })
+    // Allowed file types
+    const allowedMimeTypes = [
+      "application/msword", // .doc
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+      "application/pdf", // .pdf
+      "application/vnd.ms-powerpoint", // .ppt
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
+    ]
+
+    const attachmentsList: string[] = []
+
+    if (files && files.length > 0) {
+      for (const file of files) {
+        if (file && file.size > 0) {
+          // Check file size (max 3MB per file)
+          if (file.size > 3 * 1024 * 1024) {
+            return NextResponse.json(
+              { error: `File "${file.name}" exceeds 3MB limit` },
+              { status: 400 },
+            )
+          }
+
+          if (!allowedMimeTypes.includes(file.type)) {
+            return NextResponse.json(
+              { error: `File type for "${file.name}" not allowed. Allowed: doc, docx, pdf, ppt, pptx` },
+              { status: 400 },
+            )
+          }
+
+          const bytes = await file.arrayBuffer()
+          const fileBase64 = Buffer.from(bytes).toString("base64")
+          attachments.push({
+            filename: file.name,
+            content: fileBase64,
+          })
+          attachmentsList.push(`${file.name} (${(file.size / 1024).toFixed(2)} KB)`)
+        }
       }
 
-      // Allowed file types
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "application/pdf",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "video/mp4",
-      ]
-
-      if (!allowedTypes.includes(file.type)) {
-        return NextResponse.json(
-          { error: "File type not allowed. Allowed: jpg, png, pdf, docx, xlsx, mp4" },
-          { status: 400 },
-        )
+      if (attachmentsList.length > 0) {
+        attachmentInfo = `Files attached: ${attachmentsList.join(", ")}`
       }
-
-      const bytes = await file.arrayBuffer()
-      fileBase64 = Buffer.from(bytes).toString("base64")
-      fileName = file.name
-      fileMimeType = file.type
-      attachmentInfo = `File attached: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`
     }
 
-    // Send email using Resend or fallback to console log
-    // For production, you would use Resend, SendGrid, or another email service
+    // Send email using Resend
     const emailContent = {
       to: "oleksandr.r@ideateam.dev",
-      subject: `New Contact Form Submission from ${name}`,
+      subject: `New Consultation Request from ${name}`,
       html: `
-        <h2>New Contact Form Submission</h2>
+        <h2>New Consultation Request</h2>
         <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
+        <blockquote style="padding: 10px; background-color: #f5f5f5; border-left: 3px solid #FF6200;">
+          ${message.replace(/\n/g, "<br>")}
+        </blockquote>
         <hr>
-        <p><strong>Attachment:</strong> ${attachmentInfo}</p>
+        <p><strong>Attachments:</strong> ${attachmentInfo}</p>
       `,
-      attachments:
-        file && file.size > 0
-          ? [
-              {
-                filename: fileName,
-                content: fileBase64,
-                type: fileMimeType,
-              },
-            ]
-          : [],
     }
 
     const resendApiKey = process.env.RESEND_API_KEY
 
     if (!resendApiKey || resendApiKey.trim() === "") {
-      console.warn("[v0] RESEND_API_KEY is not configured. Email will not be sent.")
-      console.log("[v0] To enable emails, add RESEND_API_KEY to your environment variables")
-      console.log("=== EMAIL WOULD BE SENT ===")
-      console.log("To:", emailContent.to)
-      console.log("Subject:", emailContent.subject)
-      console.log("From:", name, `<${email}>`)
-      console.log("Message:", message)
-      console.log("Attachment:", attachmentInfo)
-      console.log("===========================")
-
-      return NextResponse.json({
-        success: true,
-        message: "Form submitted successfully (email service not configured)",
-      })
+      console.error("[v0] RESEND_API_KEY is not configured. Cannot send email.")
+      return NextResponse.json(
+        { error: "Email service is not properly configured" },
+        { status: 500 },
+      )
     }
 
     const resendPayload: Record<string, unknown> = {
@@ -135,11 +129,11 @@ export async function POST(request: NextRequest) {
       to: emailContent.to,
       subject: emailContent.subject,
       html: emailContent.html,
-      reply_to: email, // Add reply-to for proper email threading
+      reply_to: email,
     }
 
-    if (emailContent.attachments.length > 0) {
-      resendPayload.attachments = emailContent.attachments.map((att) => ({
+    if (attachments.length > 0) {
+      resendPayload.attachments = attachments.map((att) => ({
         filename: att.filename,
         content: att.content,
       }))
@@ -160,20 +154,23 @@ export async function POST(request: NextRequest) {
       if (!response.ok) {
         console.error("[v0] Resend API error:", responseData)
         return NextResponse.json(
-          { error: `Failed to send email: ${responseData.message || "Unknown error"}` },
+          { error: "Failed to send email. Please try again." },
           { status: 500 },
         )
       }
 
-      console.log("[v0] Email sent successfully via Resend:", responseData.id)
+      console.log("[v0] Consultation request email sent successfully. ID:", responseData.id)
       return NextResponse.json({
         success: true,
-        message: "Email sent successfully",
+        message: "Your consultation request has been sent successfully!",
         id: responseData.id,
       })
     } catch (fetchError) {
       console.error("[v0] Resend API fetch error:", fetchError)
-      return NextResponse.json({ error: "Failed to send email. Please try again later." }, { status: 500 })
+      return NextResponse.json(
+        { error: "Failed to send email. Please try again later." },
+        { status: 500 },
+      )
     }
   } catch (error) {
     console.error("Contact form error:", error)

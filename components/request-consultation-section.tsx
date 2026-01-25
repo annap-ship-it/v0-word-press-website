@@ -146,6 +146,28 @@ export function RequestConsultationSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // Validate all required fields
+    if (!formData.name.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your name" })
+      return
+    }
+
+    if (!formData.email.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your email" })
+      return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus({ type: "error", message: "Please enter a valid email address" })
+      return
+    }
+
+    if (!formData.message.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your message" })
+      return
+    }
+
     if (!formData.acceptTerms) {
       setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
       return
@@ -168,12 +190,13 @@ export function RequestConsultationSection() {
       )
 
       const submitData = new FormData()
-      submitData.append("name", formData.name)
-      submitData.append("email", formData.email)
-      submitData.append("message", formData.message)
+      submitData.append("name", formData.name.trim())
+      submitData.append("email", formData.email.trim())
+      submitData.append("message", formData.message.trim())
       submitData.append("recaptchaToken", recaptchaToken)
       submitData.append("type", "consultation")
 
+      // Append all files
       files.forEach((file) => {
         submitData.append("files", file)
       })
@@ -186,17 +209,27 @@ export function RequestConsultationSection() {
       const result = await response.json()
 
       if (response.ok) {
-        setSubmitStatus({ type: "success", message: result.message || "Message sent successfully!" })
+        setSubmitStatus({ 
+          type: "success", 
+          message: result.message || "Your consultation request has been sent successfully!" 
+        })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
         setFiles([])
         if (fileInputRef.current) {
           fileInputRef.current.value = ""
         }
       } else {
-        setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
+        setSubmitStatus({ 
+          type: "error", 
+          message: result.error || "Failed to send your request. Please try again." 
+        })
       }
     } catch (error) {
-      setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
+      console.error("[v0] Form submission error:", error)
+      setSubmitStatus({ 
+        type: "error", 
+        message: "Failed to send your request. Please check your connection and try again." 
+      })
     } finally {
       setIsSubmitting(false)
     }
