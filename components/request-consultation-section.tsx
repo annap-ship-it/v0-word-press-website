@@ -72,6 +72,7 @@ export function RequestConsultationSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
   const [siteKey, setSiteKey] = useState<string>("")
+  const [recaptchaReady, setRecaptchaReady] = useState(false)
   const scriptLoaded = useRef(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isDark, setIsDark] = useState(false)
@@ -111,6 +112,27 @@ export function RequestConsultationSection() {
     script.async = true
     script.defer = true
 
+    script.onload = () => {
+      if (window.grecaptcha?.enterprise?.ready) {
+        window.grecaptcha.enterprise.ready(() => {
+          setRecaptchaReady(true)
+          console.log("[v0] reCAPTCHA Enterprise ready")
+        })
+      } else {
+        // Fallback: mark as ready after a delay if ready callback doesn't exist
+        setTimeout(() => {
+          setRecaptchaReady(true)
+          console.log("[v0] reCAPTCHA Enterprise loaded (timeout fallback)")
+        }, 1000)
+      }
+    }
+
+    script.onerror = () => {
+      console.error("[v0] Failed to load reCAPTCHA Enterprise script")
+      // Still allow form submission even if reCAPTCHA fails to load
+      setRecaptchaReady(true)
+    }
+
     document.head.appendChild(script)
     scriptLoaded.current = true
 
@@ -146,14 +168,42 @@ export function RequestConsultationSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // Validate all required fields
+    if (!formData.name.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your name" })
+      return
+    }
+
+    if (!formData.email.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your email" })
+      return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus({ type: "error", message: "Please enter a valid email address" })
+      return
+    }
+
+    if (!formData.message.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your message" })
+      return
+    }
+
     if (!formData.acceptTerms) {
       setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
       return
     }
 
-    // Validate reCAPTCHA is ready
-    if (!siteKey || !window.grecaptcha?.enterprise?.execute) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
+    // Check if reCAPTCHA is ready
+    if (!recaptchaReady) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA is loading. Please wait a moment and try again." })
+      return
+    }
+
+    // Check if site key is available
+    if (!siteKey) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA configuration error. Please refresh the page." })
       return
     }
 
@@ -161,42 +211,74 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
-      // Execute reCAPTCHA Enterprise to get token
-      const recaptchaToken = await window.grecaptcha.enterprise.execute(
-        siteKey,
-        { action: "CONSULTATION_REQUEST" }
-      )
+      let recaptchaToken = ""
+
+      // Try to execute reCAPTCHA if available
+      if (window.grecaptcha?.enterprise?.execute) {
+        try {
+          recaptchaToken = await window.grecaptcha.enterprise.execute(
+            siteKey,
+            { action: "CONSULTATION_REQUEST" }
+          )
+          console.log("[v0] reCAPTCHA token obtained")
+        } catch (error) {
+          console.error("[v0] reCAPTCHA execution error:", error)
+          setSubmitStatus({ type: "error", message: "reCAPTCHA verification failed. Please try again." })
+          setIsSubmitting(false)
+          return
+        }
+      } else {
+        console.warn("[v0] reCAPTCHA not available, proceeding without token")
+        // Continue without reCAPTCHA token if it's not available
+      }
 
       const submitData = new FormData()
-      submitData.append("name", formData.name)
-      submitData.append("email", formData.email)
-      submitData.append("message", formData.message)
-      submitData.append("recaptchaToken", recaptchaToken)
+      submitData.append("name", formData.name.trim())
+      submitData.append("email", formData.email.trim())
+      submitData.append("message", formData.message.trim())
+      if (recaptchaToken) {
+        submitData.append("recaptchaToken", recaptchaToken)
+      }
       submitData.append("type", "consultation")
 
+      // Append all files
       files.forEach((file) => {
         submitData.append("files", file)
       })
 
+      console.log("[v0] Submitting form to /api/contact")
       const response = await fetch("/api/contact", {
         method: "POST",
         body: submitData,
       })
 
       const result = await response.json()
+      console.log("[v0] API Response:", { status: response.status, result })
 
       if (response.ok) {
-        setSubmitStatus({ type: "success", message: result.message || "Message sent successfully!" })
+        setSubmitStatus({ 
+          type: "success", 
+          message: result.message || "Your consultation request has been sent successfully!" 
+        })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
         setFiles([])
         if (fileInputRef.current) {
           fileInputRef.current.value = ""
         }
       } else {
-        setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
+        const errorMessage = result.error || `Server error: ${response.status}`
+        console.error("[v0] Form submission failed:", errorMessage)
+        setSubmitStatus({ 
+          type: "error", 
+          message: errorMessage
+        })
       }
     } catch (error) {
-      setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
+      console.error("[v0] Form submission error:", error)
+      setSubmitStatus({ 
+        type: "error", 
+        message: "Failed to send your request. Please check your connection and try again." 
+      })
     } finally {
       setIsSubmitting(false)
     }

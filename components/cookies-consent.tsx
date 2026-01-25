@@ -6,7 +6,8 @@ import { useLocale } from "@/lib/locale-context"
 
 export function CookiesConsent() {
   const [isVisible, setIsVisible] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false)
+  const [marketingEnabled, setMarketingEnabled] = useState(false)
   const { isDark } = useTheme()
   const { locale } = useLocale()
 
@@ -34,7 +35,6 @@ export function CookiesConsent() {
   const t = content[locale as keyof typeof content] || content.en
 
   useEffect(() => {
-    setIsMounted(true)
     const accepted = localStorage.getItem("cookies-accepted")
     if (!accepted) {
       setIsVisible(true)
@@ -43,17 +43,21 @@ export function CookiesConsent() {
 
   const handleAccept = () => {
     localStorage.setItem("cookies-accepted", "true")
+    localStorage.setItem("cookies-analytics", analyticsEnabled ? "true" : "false")
+    localStorage.setItem("cookies-marketing", marketingEnabled ? "true" : "false")
     window.dispatchEvent(new CustomEvent("cookies-handled"))
     setIsVisible(false)
   }
 
   const handleDeny = () => {
     localStorage.setItem("cookies-accepted", "false")
+    localStorage.setItem("cookies-analytics", "false")
+    localStorage.setItem("cookies-marketing", "false")
     window.dispatchEvent(new CustomEvent("cookies-handled"))
     setIsVisible(false)
   }
 
-  if (!isMounted || !isVisible) return null
+  if (!isVisible) return null
 
   return (
     <div className="fixed bottom-4 left-4 right-4 md:right-auto md:left-8 md:bottom-8 z-50 pointer-events-auto">
@@ -135,29 +139,76 @@ export function CookiesConsent() {
 
           {/* Toggle Options */}
           <div className="space-y-3">
-            {[
-              { label: t.necessary, enabled: true },
-              { label: t.analytics, enabled: false },
-              { label: t.marketing, enabled: false },
-            ].map((option) => (
-              <div key={option.label} className="flex items-center justify-between">
-                <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
-                  {option.label}
-                </span>
-                <div
-                  className="w-10 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer flex-shrink-0"
-                  style={{
-                    backgroundColor: option.enabled ? "#FF6200" : "#E0E0E0",
-                  }}
-                >
-                  <div
-                    className={`w-4 h-4 rounded-full bg-white transition-transform ${
-                      option.enabled ? "translate-x-4" : ""
-                    }`}
-                  />
-                </div>
+            {/* Necessary */}
+            <div className="flex items-center justify-between">
+              <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
+                {t.necessary}
+              </span>
+              <div
+                className="w-10 h-6 rounded-full flex items-center px-1 transition-colors flex-shrink-0"
+                style={{
+                  backgroundColor: "#FF6200",
+                  cursor: "not-allowed",
+                  opacity: 0.6,
+                }}
+              >
+                <div className="w-4 h-4 rounded-full bg-white transition-transform translate-x-4" />
               </div>
-            ))}
+            </div>
+
+            {/* Analytics */}
+            <div className="flex items-center justify-between">
+              <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
+                {t.analytics}
+              </span>
+              <div
+                className="w-10 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer flex-shrink-0"
+                style={{
+                  backgroundColor: analyticsEnabled ? "#FF6200" : "#E0E0E0",
+                }}
+                onClick={() => setAnalyticsEnabled(!analyticsEnabled)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setAnalyticsEnabled(!analyticsEnabled)
+                  }
+                }}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                    analyticsEnabled ? "translate-x-4" : ""
+                  }`}
+                />
+              </div>
+            </div>
+
+            {/* Marketing */}
+            <div className="flex items-center justify-between">
+              <span className="text-xs md:text-sm" style={{ color: isDark ? "#CCCCCC" : "#333333" }}>
+                {t.marketing}
+              </span>
+              <div
+                className="w-10 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer flex-shrink-0"
+                style={{
+                  backgroundColor: marketingEnabled ? "#FF6200" : "#E0E0E0",
+                }}
+                onClick={() => setMarketingEnabled(!marketingEnabled)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setMarketingEnabled(!marketingEnabled)
+                  }
+                }}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                    marketingEnabled ? "translate-x-4" : ""
+                  }`}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Action Buttons */}
