@@ -74,7 +74,6 @@ export function RequestConsultationSection() {
   const [siteKey, setSiteKey] = useState<string>("")
   const scriptLoaded = useRef(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const recaptchaWidgetId = useRef<number | null>(null)
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
@@ -152,8 +151,9 @@ export function RequestConsultationSection() {
       return
     }
 
-    if (!siteKey) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please try again." })
+    // Validate reCAPTCHA is ready
+    if (!siteKey || !window.grecaptcha?.enterprise?.execute) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
       return
     }
 
@@ -161,11 +161,6 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
-      // Ensure reCAPTCHA Enterprise script is ready
-      if (!window.grecaptcha || !window.grecaptcha.enterprise) {
-        throw new Error("reCAPTCHA Enterprise not loaded")
-      }
-
       // Execute reCAPTCHA Enterprise to get token
       const recaptchaToken = await window.grecaptcha.enterprise.execute(
         siteKey,
@@ -201,7 +196,6 @@ export function RequestConsultationSection() {
         setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
       }
     } catch (error) {
-      console.error("[v0] Form submission error:", error)
       setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
     } finally {
       setIsSubmitting(false)

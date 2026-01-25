@@ -1,4 +1,5 @@
 "use client"
+
 import Link from "next/link"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LocaleToggle } from "@/components/locale-toggle"
@@ -7,10 +8,13 @@ import { useTheme } from "@/lib/theme-context"
 import { useState, useRef, useEffect } from "react"
 import { ChevronDown, ChevronUp, Building2, Award, Briefcase, Menu } from "lucide-react"
 import { ContactFormModal } from "@/components/contact-form-modal"
+
 export function Navigation() {
   const { locale, t } = useLocale()
   const { theme } = useTheme()
+
   // The useLocale hook already provides the correct translated strings
+
   const [companyOpen, setCompanyOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [projectsOpen, setProjectsOpen] = useState(false)
@@ -24,10 +28,12 @@ export function Navigation() {
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null)
   const closeTimerRefServices = useRef<NodeJS.Timeout | null>(null)
   const closeTimerRefProjects = useRef<NodeJS.Timeout | null>(null)
+
   const isDark = theme === "dark"
   const navBg = isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0.15)"
   const navBorder = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.5)"
   const textColor = isDark ? "#FFFFFF" : "#000000"
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -36,9 +42,11 @@ export function Navigation() {
         setIsScrolled(false)
       }
     }
+
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
   const handleMouseEnter = () => {
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current)
@@ -46,11 +54,13 @@ export function Navigation() {
     }
     setCompanyOpen(true)
   }
+
   const handleMouseLeave = () => {
     closeTimerRef.current = setTimeout(() => {
       setCompanyOpen(false)
     }, 200)
   }
+
   const handleServicesMouseEnter = () => {
     if (closeTimerRefServices.current) {
       clearTimeout(closeTimerRefServices.current)
@@ -58,11 +68,13 @@ export function Navigation() {
     }
     setServicesOpen(true)
   }
+
   const handleServicesMouseLeave = () => {
     closeTimerRefServices.current = setTimeout(() => {
       setServicesOpen(false)
     }, 200)
   }
+
   const handleProjectsMouseEnter = () => {
     if (closeTimerRefProjects.current) {
       clearTimeout(closeTimerRefProjects.current)
@@ -70,20 +82,24 @@ export function Navigation() {
     }
     setProjectsOpen(true)
   }
+
   const handleProjectsMouseLeave = () => {
     closeTimerRefProjects.current = setTimeout(() => {
       setProjectsOpen(false)
     }, 200)
   }
+
   const handleProjectHover = (index: number, state: string) => {
     setHoverStates((prevStates) => ({
       ...prevStates,
       [index]: state,
     }))
   }
+
   return (
     <>
       <ContactFormModal isOpen={contactFormOpen} onClose={() => setContactFormOpen(false)} />
+
       {/* Desktop Navigation */}
       <nav className="fixed top-10 left-1/2 -translate-x-1/2 z-50 hidden xl:block">
         <div
@@ -110,6 +126,7 @@ export function Navigation() {
               <img src="/images/logo-light.svg" alt="IdeaTeam" width="120" height="19" className="block" />
             )}
           </Link>
+
           <div className="flex items-center flex-shrink min-w-0" style={{ gap: "40px" }}>
             {/* Company Dropdown */}
             <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -132,6 +149,7 @@ export function Navigation() {
                   <ChevronDown className="h-4 w-4" style={{ color: textColor }} />
                 )}
               </button>
+
               {companyOpen && (
                 <div
                   className="absolute left-0 animate-in fade-in"
@@ -168,6 +186,7 @@ export function Navigation() {
                       />
                     </svg>
                   </div>
+
                   {/* Dropdown content */}
                   <div
                     className="relative overflow-hidden"
@@ -184,7 +203,7 @@ export function Navigation() {
                       {/* Left column - Menu items */}
                       <div className="flex-1 p-6 flex flex-col justify-center gap-4">
                         <Link
-                          href="/#about-us"
+                          href="/about"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -223,8 +242,9 @@ export function Navigation() {
                           {/* Using t.aboutUs from useLocale hook instead of currentTranslations */}
                           <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.aboutUs}</span>
                         </Link>
+
                         <Link
-                          href="/#our-expertise"
+                          href="/experience"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -263,6 +283,7 @@ export function Navigation() {
                           {/* Using t.ourExperience from useLocale hook instead of currentTranslations */}
                           <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.ourExperience}</span>
                         </Link>
+
                         <Link
                           href="/careers"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
@@ -304,6 +325,7 @@ export function Navigation() {
                           <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.careers}</span>
                         </Link>
                       </div>
+
                       {/* Right column - World map and stats */}
                       <div
                         className="relative"
@@ -336,6 +358,7 @@ export function Navigation() {
                             }}
                           />
                         </div>
+
                         {/* 20+ text */}
                         <div
                           className="absolute z-10"
@@ -356,6 +379,7 @@ export function Navigation() {
                         >
                           20+
                         </div>
+
                         {/* Different Countries text */}
                         <div
                           className="absolute z-10"
@@ -377,9 +401,9 @@ export function Navigation() {
                           {/* Using t.differentCountries from useLocale hook instead of currentTranslations */}
                           {t.differentCountries}
                         </div>
+
                         {/* Read All Reviews button */}
-                        <Link
-                          href="/#feedbacks"
+                        <button
                           className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
                           style={{
                             width: "auto",
@@ -418,13 +442,14 @@ export function Navigation() {
                         >
                           {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                           {t.readAllReviews}
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
             </div>
+
             {/* Services Dropdown */}
             <div className="relative" onMouseEnter={handleServicesMouseEnter} onMouseLeave={handleServicesMouseLeave}>
               <button
@@ -447,6 +472,7 @@ export function Navigation() {
                   <ChevronDown className="h-4 w-4" style={{ color: textColor }} />
                 )}
               </button>
+
               {servicesOpen && (
                 <div
                   className="absolute left-0 animate-in fade-in"
@@ -483,6 +509,7 @@ export function Navigation() {
                       />
                     </svg>
                   </div>
+
                   {/* Dropdown content */}
                   <div
                     className="relative overflow-hidden"
@@ -592,6 +619,7 @@ export function Navigation() {
                           {t.uiUxDesign}
                         </Link>
                       </div>
+
                       {/* Column 2 - 30% width */}
                       <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                         <Link
@@ -688,6 +716,7 @@ export function Navigation() {
                           {t.dataAnalytics}
                         </Link>
                       </div>
+
                       {/* Column 3 - Blog Article Card - 40% width */}
                       <div
                         className="relative"
@@ -770,6 +799,7 @@ export function Navigation() {
                 </div>
               )}
             </div>
+
             {/* Projects Dropdown */}
             <div className="relative" onMouseEnter={handleProjectsMouseEnter} onMouseLeave={handleProjectsMouseLeave}>
               <button
@@ -792,6 +822,7 @@ export function Navigation() {
                   <ChevronDown className="h-4 w-4" style={{ color: textColor }} />
                 )}
               </button>
+
               {projectsOpen && (
                 <div
                   className="absolute z-50"
@@ -820,6 +851,7 @@ export function Navigation() {
                       borderBottom: `11px solid ${isDark ? "#212121" : "#F5F5F5"}`,
                     }}
                   />
+
                   {/* Dropdown content */}
                   <div
                     style={{
@@ -859,6 +891,7 @@ export function Navigation() {
                         />
                       </Link>
                     </div>
+
                     {/* Right Column - Project Links */}
                     <div
                       style={{
@@ -878,7 +911,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects#multi-brand-ecommerce"
+                          href="/projects/multi-brand-ecommerce"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -911,7 +944,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects#statistics-platform"
+                          href="/projects/statistics-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -944,7 +977,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects#sensor-infobox"
+                          href="/projects/sensor-infobox"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -977,7 +1010,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects#ecommerce-platform"
+                          href="/projects/ecommerce-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1010,6 +1043,7 @@ export function Navigation() {
                           {t.ecommercePlatform}
                         </Link>
                       </div>
+
                       <div
                         style={{
                           display: "flex",
@@ -1076,6 +1110,7 @@ export function Navigation() {
                 </div>
               )}
             </div>
+
             <Link
               href="/blog"
               className="transition-colors whitespace-nowrap"
@@ -1091,6 +1126,7 @@ export function Navigation() {
               {/* Using t.blog from useLocale hook instead of currentTranslations */}
               {t.blog}
             </Link>
+
             <Link
               href="/careers"
               className="transition-colors whitespace-nowrap"
@@ -1107,6 +1143,7 @@ export function Navigation() {
               {t.careers}
             </Link>
           </div>
+
           <div className="flex items-center shrink-0" style={{ gap: "12px" }}>
             <LocaleToggle />
             <ThemeToggle />
@@ -1136,6 +1173,7 @@ export function Navigation() {
           </div>
         </div>
       </nav>
+
       {/* Mobile Navigation */}
       <nav
         className="fixed top-0 left-0 right-0 z-50 xl:hidden"
@@ -1176,6 +1214,7 @@ export function Navigation() {
               />
             )}
           </Link>
+
           <div className="flex items-center" style={{ gap: "0px" }}>
             {/* Language Switcher */}
             <div
@@ -1198,6 +1237,7 @@ export function Navigation() {
             >
               <LocaleToggle />
             </div>
+
             {/* Dark/Light Mode Switcher */}
             <div
               style={{
@@ -1210,6 +1250,7 @@ export function Navigation() {
             >
               <ThemeToggle />
             </div>
+
             {/* Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -1252,6 +1293,7 @@ export function Navigation() {
             </button>
           </div>
         </div>
+
         {mobileMenuOpen && (
           <div
             className="fixed z-50 animate-in fade-in"
@@ -1308,6 +1350,7 @@ export function Navigation() {
                   <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 )}
               </button>
+
               {mobileCompanyOpen && (
                 <div
                   className="animate-in fade-in slide-in-from-top-2"
@@ -1360,6 +1403,7 @@ export function Navigation() {
                         {/* Using t.aboutUs from useLocale hook instead of currentTranslations */}
                         <span>{t.aboutUs}</span>
                       </Link>
+
                       <Link
                         href="/experience"
                         className="flex items-center gap-3 transition-all duration-300 ease-out"
@@ -1392,6 +1436,7 @@ export function Navigation() {
                         {/* Using t.ourExperience from useLocale hook instead of currentTranslations */}
                         <span>{t.ourExperience}</span>
                       </Link>
+
                       <Link
                         href="/careers"
                         className="flex items-center gap-3 transition-all duration-300 ease-out"
@@ -1425,6 +1470,7 @@ export function Navigation() {
                         <span>{t.careers}</span>
                       </Link>
                     </div>
+
                     {/* World map card - Right column on 480px+ */}
                     <div
                       className="relative"
@@ -1450,6 +1496,7 @@ export function Navigation() {
                           borderRadius: "6px",
                         }}
                       />
+
                       {/* 20+ text overlay */}
                       <div
                         className="absolute z-10"
@@ -1467,6 +1514,7 @@ export function Navigation() {
                       >
                         20+
                       </div>
+
                       {/* Different Countries text */}
                       <div
                         className="absolute z-10"
@@ -1488,9 +1536,9 @@ export function Navigation() {
                         {/* Using t.differentCountries from useLocale hook instead of currentTranslations */}
                         {t.differentCountries}
                       </div>
+
                       {/* Read All Reviews button */}
-                      <Link
-                        href="/#feedbacks"
+                      <button
                         className="absolute transition-all duration-300 ease-out"
                         style={{
                           bottom: "min(14px, 8%)",
@@ -1509,23 +1557,29 @@ export function Navigation() {
                           color: isDark ? "#FFFFFF" : "#212121",
                           background: "transparent",
                           whiteSpace: "nowrap",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "#FF62001A" }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent" }}
-                        onMouseDown={(e) => { e.currentTarget.style.background = "#FF620099" }}
-                        onMouseUp={(e) => { e.currentTarget.style.background = "#FF62001A" }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = "#FF620099"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
                       >
                         {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                         {t.readAllReviews}
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>
               )}
             </div>
+
             {/* Services Accordion */}
             <div>
               <button
@@ -1555,6 +1609,7 @@ export function Navigation() {
                   <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 )}
               </button>
+
               {mobileServicesOpen && (
                 <div
                   className="mt-3 animate-in fade-in"
@@ -1784,6 +1839,7 @@ export function Navigation() {
                         {t.dataAnalytics}
                       </Link>
                     </div>
+
                     {/* Blog Article Card */}
                     <div className="mt-5 min-[480px]:mt-0 min-[480px]:flex min-[480px]:items-start min-[480px]:justify-center min-[480px]:min-w-[200px]">
                       <Link
@@ -1853,6 +1909,7 @@ export function Navigation() {
                 </div>
               )}
             </div>
+
             {/* Projects Accordion */}
             <div>
               <button
@@ -1882,6 +1939,7 @@ export function Navigation() {
                   <ChevronDown className="h-5 w-5" style={{ color: isDark ? "#FFFFFF" : "#212121" }} />
                 )}
               </button>
+
               {mobileProjectsOpen && (
                 <div
                   className="mt-4"
@@ -2096,6 +2154,7 @@ export function Navigation() {
                       {t.ecommercePlatform}
                     </Link>
                   </div>
+
                   <div className="flex gap-3 min-[480px]:gap-5">
                     {/* Portfolio Card - left column */}
                     <div className="flex-shrink-0">
@@ -2127,6 +2186,7 @@ export function Navigation() {
                             }}
                           />
                         </div>
+
                         {/* Tablet card (480px+) */}
                         <div
                           className="hidden min-[480px]:block"
@@ -2152,6 +2212,7 @@ export function Navigation() {
                         </div>
                       </Link>
                     </div>
+
                     {/* Heading and Button - right column */}
                     <div className="flex flex-col justify-center gap-3 flex-1 min-w-0">
                       <h3
@@ -2220,6 +2281,7 @@ export function Navigation() {
                 </div>
               )}
             </div>
+
             {/* Blog Link */}
             <Link
               href="/blog"
@@ -2245,6 +2307,7 @@ export function Navigation() {
               {/* Using t.blog from useLocale hook instead of currentTranslations */}
               {t.blog}
             </Link>
+
             {/* Careers Link */}
             <Link
               href="/careers"
@@ -2270,56 +2333,34 @@ export function Navigation() {
               {/* Using t.careers from useLocale hook instead of currentTranslations */}
               {t.careers}
             </Link>
+
             {/* Contact us button */}
             <button
-              className={`
-    relative overflow-hidden
-    flex items-center justify-center gap-2.5
-    w-full h-10
-    rounded-full /* или rounded-[50px] */
-    font-onest font-normal text-base leading-none
-    text-white
-    transition-all duration-300 ease-out
-    disabled:cursor-not-allowed
-    disabled:opacity-70
-    bg-[#FF6200]
-    hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
-    active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
-    active:scale-[0.98]
-    disabled:bg-[#4A4A4A] disabled:text-[#AAAAAA]
-  `}
-  style={{
-    padding: "12px 14px",
-    letterSpacing: "0.02em",
-  }}
+              className="w-full transition-all duration-300 ease-out"
+              style={{
+                marginTop: "20px",
+                height: "40px",
+                borderRadius: "50px",
+                background: "#FF6200",
+                fontFamily: "Onest",
+                fontWeight: 400,
+                fontSize: "16px",
+                lineHeight: "100%",
+                letterSpacing: "0.02em",
+                color: "#FFFFFF",
+                padding: "12px 14px",
+              }}
               onClick={() => {
                 setContactFormOpen(true)
                 setMobileMenuOpen(false)
               }}
-  onMouseEnter={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background =
-        "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
-    }
-  }}
-  onMouseLeave={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background = "#FF6200";
-    }
-  }}
-  onMouseDown={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background =
-        "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
-    }
-  }}
-  onMouseUp={(e) => {
-    if (!e.currentTarget.disabled) {
-      e.currentTarget.style.background =
-        "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
-    }
-  }}
->
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#E55800"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#FF6200"
+              }}
+            >
               {/* Using t.contactUs from useLocale hook instead of currentTranslations */}
               {t.contactUs}
             </button>
@@ -2329,4 +2370,5 @@ export function Navigation() {
     </>
   )
 }
+
 export default Navigation

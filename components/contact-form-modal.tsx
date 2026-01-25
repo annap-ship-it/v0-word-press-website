@@ -15,11 +15,11 @@ interface ContactFormModalProps {
 declare global {
   interface Window {
     grecaptcha: {
-      render: (element: HTMLElement, options: any) => number
-      reset: (widgetId: number) => void
-      getResponse: (widgetId: number) => string
+      enterprise: {
+        execute: (siteKey: string, options: { action: string }) => Promise<string>
+        ready: (callback: () => void) => void
+      }
     }
-    onRecaptchaLoad?: () => void
   }
 }
 
@@ -33,10 +33,11 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null)
-  const recaptchaRef = useRef<HTMLDivElement>(null)
-  const [recaptchaWidgetId, setRecaptchaWidgetId] = useState<number | null>(null)
-  const recaptchaRendered = useRef(false)
   const [recaptchaSiteKey, setRecaptchaSiteKey] = useState<string | null>(null)
+  const scriptLoaded = useRef(false)
+  const recaptchaRendered = useRef(false)
+  const recaptchaRef = useRef<HTMLDivElement | null>(null)
+  const [recaptchaWidgetId, setRecaptchaWidgetId] = useState<number | null>(null)
 
   const isDark = theme === "dark"
 
@@ -56,60 +57,37 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   }, [])
 
   useEffect(() => {
-    if (!isOpen || recaptchaRendered.current || !recaptchaSiteKey) return
+    if (scriptLoaded.current) return
 
-    const script = document.querySelector('script[src*="recaptcha"]')
-    if (!script) {
-      const newScript = document.createElement("script")
-      newScript.src = "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"
-      newScript.async = true
-      newScript.defer = true
-      document.body.appendChild(newScript)
+    // Load reCAPTCHA Enterprise script
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/enterprise.js"
+    script.async = true
+    script.defer = true
 
-      // @ts-expect-error - Global callback for reCAPTCHA
-      window.onRecaptchaLoad = () => {
-        if (recaptchaRef.current && window.grecaptcha && !recaptchaRendered.current) {
-          try {
-            const widgetId = window.grecaptcha.render(recaptchaRef.current, {
-              sitekey: recaptchaSiteKey,
-              theme: isDark ? "dark" : "light",
-            })
-            setRecaptchaWidgetId(widgetId)
-            recaptchaRendered.current = true
-          } catch (error) {
-            console.error("[v0] Failed to render reCAPTCHA:", error)
-          }
-        }
-      }
-    } else if (window.grecaptcha && !recaptchaRendered.current && recaptchaRef.current) {
-      try {
-        const widgetId = window.grecaptcha.render(recaptchaRef.current, {
-          sitekey: recaptchaSiteKey,
-          theme: isDark ? "dark" : "light",
-        })
-        setRecaptchaWidgetId(widgetId)
-        recaptchaRendered.current = true
-      } catch (error) {
-        console.error("[v0] Failed to render reCAPTCHA:", error)
-      }
+    document.head.appendChild(script)
+    scriptLoaded.current = true
+
+    return () => {
+      // Script doesn't need cleanup
     }
-  }, [isOpen, isDark, recaptchaSiteKey])
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (recaptchaWidgetId === null || !window.grecaptcha) {
+    if (!acceptTerms) {
       setSubmitStatus("error")
       return
     }
 
-    const recaptchaToken = window.grecaptcha.getResponse(recaptchaWidgetId)
-    if (!recaptchaToken) {
+    // Validate reCAPTCHA is ready
+    if (!recaptchaSiteKey || !window.grecaptcha?.enterprise?.execute) {
       setSubmitStatus("error")
       return
     }
 
-    if (!name || !email || !message || !acceptTerms) {
+    if (!name || !email || !message) {
       setSubmitStatus("error")
       return
     }
@@ -117,6 +95,12 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
     setIsSubmitting(true)
 
     try {
+      // Execute reCAPTCHA Enterprise to get token
+      const recaptchaToken = await window.grecaptcha.enterprise.execute(
+        recaptchaSiteKey,
+        { action: "CONTACT_FORM" }
+      )
+
       const formData = new FormData()
       formData.append("name", name)
       formData.append("email", email)
@@ -138,9 +122,6 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         setMessage("")
         setAttachedFile(null)
         setAcceptTerms(false)
-        if (window.grecaptcha && recaptchaWidgetId !== null) {
-          window.grecaptcha.reset(recaptchaWidgetId)
-        }
         setTimeout(() => {
           onClose()
           setSubmitStatus(null)
@@ -516,16 +497,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
           </div>
 
           {/* Right Column: reCAPTCHA */}
-          <div
-            ref={recaptchaRef}
-            style={{
-              transformOrigin: "top left",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "flex-start",
-            }}
-            className="w-full lg:w-auto"
-          />
+          <div style={{ display: "none" }} />
         </div>
       </div>
     </div>
