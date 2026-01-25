@@ -6,7 +6,6 @@ import { useLocale } from "@/lib/locale-context"
 
 export function CookiesConsent() {
   const [isVisible, setIsVisible] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false)
   const [marketingEnabled, setMarketingEnabled] = useState(false)
   const { isDark } = useTheme()
@@ -36,7 +35,6 @@ export function CookiesConsent() {
   const t = content[locale as keyof typeof content] || content.en
 
   useEffect(() => {
-    setIsMounted(true)
     const accepted = localStorage.getItem("cookies-accepted")
     if (!accepted) {
       setIsVisible(true)
@@ -59,7 +57,7 @@ export function CookiesConsent() {
     setIsVisible(false)
   }
 
-  if (!isMounted || !isVisible) return null
+  if (!isVisible) return null
 
   return (
     <div className="fixed bottom-4 left-4 right-4 md:right-auto md:left-8 md:bottom-8 z-50 pointer-events-auto">
