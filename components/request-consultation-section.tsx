@@ -72,6 +72,7 @@ export function RequestConsultationSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
   const [siteKey, setSiteKey] = useState<string>("")
+  const [recaptchaReady, setRecaptchaReady] = useState(false)
   const scriptLoaded = useRef(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isDark, setIsDark] = useState(false)
@@ -110,6 +111,27 @@ export function RequestConsultationSection() {
     script.src = "https://www.google.com/recaptcha/enterprise.js"
     script.async = true
     script.defer = true
+
+    script.onload = () => {
+      if (window.grecaptcha?.enterprise?.ready) {
+        window.grecaptcha.enterprise.ready(() => {
+          setRecaptchaReady(true)
+          console.log("[v0] reCAPTCHA Enterprise ready")
+        })
+      } else {
+        // Fallback: mark as ready after a delay if ready callback doesn't exist
+        setTimeout(() => {
+          setRecaptchaReady(true)
+          console.log("[v0] reCAPTCHA Enterprise loaded (timeout fallback)")
+        }, 1000)
+      }
+    }
+
+    script.onerror = () => {
+      console.error("[v0] Failed to load reCAPTCHA Enterprise script")
+      // Still allow form submission even if reCAPTCHA fails to load
+      setRecaptchaReady(true)
+    }
 
     document.head.appendChild(script)
     scriptLoaded.current = true
@@ -173,9 +195,15 @@ export function RequestConsultationSection() {
       return
     }
 
-    // Validate reCAPTCHA is ready
-    if (!siteKey || !window.grecaptcha?.enterprise?.execute) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
+    // Check if reCAPTCHA is ready
+    if (!recaptchaReady) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA is loading. Please wait a moment and try again." })
+      return
+    }
+
+    // Check if site key is available
+    if (!siteKey) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA configuration error. Please refresh the page." })
       return
     }
 
@@ -183,17 +211,34 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
-      // Execute reCAPTCHA Enterprise to get token
-      const recaptchaToken = await window.grecaptcha.enterprise.execute(
-        siteKey,
-        { action: "CONSULTATION_REQUEST" }
-      )
+      let recaptchaToken = ""
+
+      // Try to execute reCAPTCHA if available
+      if (window.grecaptcha?.enterprise?.execute) {
+        try {
+          recaptchaToken = await window.grecaptcha.enterprise.execute(
+            siteKey,
+            { action: "CONSULTATION_REQUEST" }
+          )
+          console.log("[v0] reCAPTCHA token obtained")
+        } catch (error) {
+          console.error("[v0] reCAPTCHA execution error:", error)
+          setSubmitStatus({ type: "error", message: "reCAPTCHA verification failed. Please try again." })
+          setIsSubmitting(false)
+          return
+        }
+      } else {
+        console.warn("[v0] reCAPTCHA not available, proceeding without token")
+        // Continue without reCAPTCHA token if it's not available
+      }
 
       const submitData = new FormData()
       submitData.append("name", formData.name.trim())
       submitData.append("email", formData.email.trim())
       submitData.append("message", formData.message.trim())
-      submitData.append("recaptchaToken", recaptchaToken)
+      if (recaptchaToken) {
+        submitData.append("recaptchaToken", recaptchaToken)
+      }
       submitData.append("type", "consultation")
 
       // Append all files
@@ -201,12 +246,14 @@ export function RequestConsultationSection() {
         submitData.append("files", file)
       })
 
+      console.log("[v0] Submitting form to /api/contact")
       const response = await fetch("/api/contact", {
         method: "POST",
         body: submitData,
       })
 
       const result = await response.json()
+      console.log("[v0] API Response:", { status: response.status, result })
 
       if (response.ok) {
         setSubmitStatus({ 
@@ -219,9 +266,11 @@ export function RequestConsultationSection() {
           fileInputRef.current.value = ""
         }
       } else {
+        const errorMessage = result.error || `Server error: ${response.status}`
+        console.error("[v0] Form submission failed:", errorMessage)
         setSubmitStatus({ 
           type: "error", 
-          message: result.error || "Failed to send your request. Please try again." 
+          message: errorMessage
         })
       }
     } catch (error) {
