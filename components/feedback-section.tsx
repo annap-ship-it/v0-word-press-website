@@ -139,7 +139,7 @@ export function FeedbackSection() {
     setCurrentIndex((prev) => (prev + 1) % filteredTestimonials.length);
 
   return (
-    <section id="feedbacks" className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
+    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
       <div className="max-w-[1200px] mx-auto px-4 relative z-10">
         {/* Заголовок */}
         <div className="text-center mb-12 md:mb-20">
