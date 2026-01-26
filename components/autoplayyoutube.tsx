@@ -48,7 +48,7 @@ export default function AutoPlayYouTube() {
   return (
     <section 
       className="px-4" 
-      style={{ background: isDark ? "#161515" : "#FFFFFF" }}
+      style={{ background: isDark ? "#000" : "#FFFFFF" }}
     >
       <div className="max-w-[1200px] mx-auto">
         <div className="relative w-full aspect-video max-w-[975px] mx-auto rounded-2xl overflow-hidden shadow-2xl">
