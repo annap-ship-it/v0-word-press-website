@@ -6,18 +6,6 @@ import Image from "next/image"
 import { X, Loader2, Paperclip } from "lucide-react"
 import Link from "next/link"
 import { useLocale } from "@/lib/locale-context"
-import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
-
-declare global {
-  interface Window {
-    grecaptcha: {
-      enterprise: {
-        execute: (siteKey: string, options: { action: string }) => Promise<string>
-        ready: (callback: () => void) => void
-      }
-    }
-  }
-}
 
 // Localization content for Ukrainian translations
 const content = {
@@ -71,24 +59,8 @@ export function RequestConsultationSection() {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
-  const [siteKey, setSiteKey] = useState<string>("")
-  const [recaptchaReady, setRecaptchaReady] = useState(false)
-  const scriptLoaded = useRef(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isDark, setIsDark] = useState(false)
-
-  useEffect(() => {
-    // Fetch the reCAPTCHA site key from server action
-    const fetchSiteKey = async () => {
-      try {
-        const key = await getRecaptchaSiteKey()
-        setSiteKey(key)
-      } catch (error) {
-        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
-      }
-    }
-    fetchSiteKey()
-  }, [])
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -101,44 +73,6 @@ export function RequestConsultationSection() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 
     return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (scriptLoaded.current) return
-
-    // Load reCAPTCHA Enterprise script
-    const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/enterprise.js"
-    script.async = true
-    script.defer = true
-
-    script.onload = () => {
-      if (window.grecaptcha?.enterprise?.ready) {
-        window.grecaptcha.enterprise.ready(() => {
-          setRecaptchaReady(true)
-          console.log("[v0] reCAPTCHA Enterprise ready")
-        })
-      } else {
-        // Fallback: mark as ready after a delay if ready callback doesn't exist
-        setTimeout(() => {
-          setRecaptchaReady(true)
-          console.log("[v0] reCAPTCHA Enterprise loaded (timeout fallback)")
-        }, 1000)
-      }
-    }
-
-    script.onerror = () => {
-      console.error("[v0] Failed to load reCAPTCHA Enterprise script")
-      // Still allow form submission even if reCAPTCHA fails to load
-      setRecaptchaReady(true)
-    }
-
-    document.head.appendChild(script)
-    scriptLoaded.current = true
-
-    return () => {
-      // Script doesn't need cleanup
-    }
   }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,50 +129,14 @@ export function RequestConsultationSection() {
       return
     }
 
-    // Check if reCAPTCHA is ready
-    if (!recaptchaReady) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA is loading. Please wait a moment and try again." })
-      return
-    }
-
-    // Check if site key is available
-    if (!siteKey) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA configuration error. Please refresh the page." })
-      return
-    }
-
     setIsSubmitting(true)
     setSubmitStatus(null)
 
     try {
-      let recaptchaToken = ""
-
-      // Try to execute reCAPTCHA if available
-      if (window.grecaptcha?.enterprise?.execute) {
-        try {
-          recaptchaToken = await window.grecaptcha.enterprise.execute(
-            siteKey,
-            { action: "CONSULTATION_REQUEST" }
-          )
-          console.log("[v0] reCAPTCHA token obtained")
-        } catch (error) {
-          console.error("[v0] reCAPTCHA execution error:", error)
-          setSubmitStatus({ type: "error", message: "reCAPTCHA verification failed. Please try again." })
-          setIsSubmitting(false)
-          return
-        }
-      } else {
-        console.warn("[v0] reCAPTCHA not available, proceeding without token")
-        // Continue without reCAPTCHA token if it's not available
-      }
-
       const submitData = new FormData()
       submitData.append("name", formData.name.trim())
       submitData.append("email", formData.email.trim())
       submitData.append("message", formData.message.trim())
-      if (recaptchaToken) {
-        submitData.append("recaptchaToken", recaptchaToken)
-      }
       submitData.append("type", "consultation")
 
       // Append all files
@@ -246,20 +144,12 @@ export function RequestConsultationSection() {
         submitData.append("files", file)
       })
 
-      console.log("[v0] Submitting form to /api/contact with data:", {
-        name: formData.name,
-        email: formData.email,
-        message: formData.message.substring(0, 50) + "...",
-        filesCount: files.length,
-        hasRecaptchaToken: !!recaptchaToken,
-      })
       const response = await fetch("/api/contact", {
         method: "POST",
         body: submitData,
       })
 
       const result = await response.json()
-      console.log("[v0] API Response:", { status: response.status, result })
 
       if (response.ok) {
         setSubmitStatus({ 

@@ -1,26 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Buffer } from "buffer"
 
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY || "6LcKsjksAAAAAKwX5Qjqwh3KPfQL6wpAHZpv78WG"
-
-  try {
-    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `secret=${secretKey}&response=${token}`,
-    })
-
-    const data = await response.json()
-    return data.success === true
-  } catch (error) {
-    console.error("reCAPTCHA verification error:", error)
-    return false
-  }
-}
-
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
@@ -28,18 +8,10 @@ export async function POST(request: NextRequest) {
     const name = formData.get("name") as string
     const email = formData.get("email") as string
     const message = formData.get("message") as string
-    const recaptchaToken = formData.get("recaptchaToken") as string
 
     // Validate required fields
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email, and message are required" }, { status: 400 })
-    }
-
-    if (recaptchaToken) {
-      const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
-      if (!isValidRecaptcha) {
-        return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
-      }
     }
 
     // Validate email format
@@ -117,15 +89,11 @@ export async function POST(request: NextRequest) {
     const resendApiKey = process.env.RESEND_API_KEY
 
     if (!resendApiKey) {
-      console.error("[v0] RESEND_API_KEY is not configured. Available env keys with 'API' or 'RESEND':", 
-        Object.keys(process.env).filter(k => k.includes('API') || k.includes('RESEND')).join(', '))
       return NextResponse.json(
         { error: "Email service is not configured. Please contact the administrator." },
         { status: 500 },
       )
     }
-
-    console.log("[v0] RESEND_API_KEY is configured. Key starts with:", resendApiKey.substring(0, 10) + "...")
 
     const resendPayload: Record<string, unknown> = {
       from: "Contact Form <onboarding@resend.dev>",
