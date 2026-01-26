@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
     }
 
     const resendPayload: Record<string, unknown> = {
-      from: "Contact Form <onboarding@resend.dev>",
+      from: "noreply@ideateam.dev",
       to: emailContent.to,
       subject: emailContent.subject,
       html: emailContent.html,
