@@ -1574,7 +1574,7 @@ export function Navigation() {
                       >
                         {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                         {t.readAllReviews}
-                      </link>
+                      </Link>
                     </div>
                   </div>
                 </div>
