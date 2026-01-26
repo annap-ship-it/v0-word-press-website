@@ -246,7 +246,13 @@ export function RequestConsultationSection() {
         submitData.append("files", file)
       })
 
-      console.log("[v0] Submitting form to /api/contact")
+      console.log("[v0] Submitting form to /api/contact with data:", {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message.substring(0, 50) + "...",
+        filesCount: files.length,
+        hasRecaptchaToken: !!recaptchaToken,
+      })
       const response = await fetch("/api/contact", {
         method: "POST",
         body: submitData,
