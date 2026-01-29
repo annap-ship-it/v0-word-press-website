@@ -299,8 +299,7 @@ export default function BlogPostPage() {
       try {
         const supabase = createBrowserClient()
 
-        // Try to fetch post in the REQUESTED locale first
-        // If not found and locale is Ukrainian, fall back to English
+        // Try multiple slug variations to support both direct and localized slugs
         let { data, error } = await supabase
           .from("posts")
           .select(
@@ -314,7 +313,29 @@ export default function BlogPostPage() {
           .eq("status", "published")
           .single()
 
-        // If requested Ukrainian but not found, fall back to English
+        // If not found and we're looking for Ukrainian, try with -uk suffix on original slug
+        if ((error || !data) && locale === "uk") {
+          const ukSlug = slug.endsWith("-uk") ? slug : `${slug}-uk`
+          const { data: ukData } = await supabase
+            .from("posts")
+            .select(
+              `
+            id, title, slug, content, excerpt, featured_image, 
+            category_id, created_at, author_id, locale, meta_title, meta_description
+          `,
+            )
+            .eq("slug", ukSlug)
+            .eq("locale", "uk")
+            .eq("status", "published")
+            .single()
+
+          if (ukData) {
+            data = ukData
+            error = null
+          }
+        }
+
+        // If requested Ukrainian but still not found, fall back to English
         if ((error || !data) && locale === "uk") {
           const { data: enData, error: enError } = await supabase
             .from("posts")
@@ -338,6 +359,8 @@ export default function BlogPostPage() {
           setLoading(false)
           return
         }
+
+        console.log("[v0] Post loaded:", data.title, "locale:", data.locale)
 
         // Fetch category data separately
         let categoryData = null

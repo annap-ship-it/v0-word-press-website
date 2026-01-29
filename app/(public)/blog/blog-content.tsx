@@ -112,18 +112,18 @@ export default function BlogContent() {
     async function fetchPosts() {
       const supabase = createBrowserClient()
       
-      // IMPORTANT: Always fetch English first (primary language)
-      // Only fetch Ukrainian if explicitly requested AND if it exists
+      // Fetch posts in the current locale
       const targetLocale = locale === "uk" ? "uk" : "en"
       
       const { data: postsData, error: localeError } = await supabase
         .from("posts")
         .select(
-          `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
+          `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
         )
         .eq("status", "published")
         .eq("locale", targetLocale)
         .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(50)
 
       let finalPostsData = postsData
 
@@ -133,11 +133,12 @@ export default function BlogContent() {
           const { data: englishPosts } = await supabase
             .from("posts")
             .select(
-              `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale`,
+              `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
             )
             .eq("status", "published")
             .eq("locale", "en")
             .order("published_at", { ascending: false, nullsFirst: false })
+            .limit(50)
           finalPostsData = englishPosts
         }
       }

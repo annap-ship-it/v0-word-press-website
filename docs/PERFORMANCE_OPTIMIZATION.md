@@ -29,10 +29,10 @@
 
 ### Convert Images to WebP
 Run the optimization script:
-```bash
+\`\`\`bash
 chmod +x scripts/optimize-images.sh
 ./scripts/optimize-images.sh
-```
+\`\`\`
 
 This will convert all JPG/PNG files to WebP format (~25% smaller).
 
@@ -40,12 +40,12 @@ This will convert all JPG/PNG files to WebP format (~25% smaller).
 If you're using `<img>` tags, convert them to use Next.js Image component:
 
 **Before:**
-```tsx
+\`\`\`tsx
 <img src="/image.jpg" alt="description" />
-```
+\`\`\`
 
 **After:**
-```tsx
+\`\`\`tsx
 import Image from 'next/image'
 
 <Image 
@@ -56,7 +56,7 @@ import Image from 'next/image'
   loading="lazy"
   sizes="(max-width: 640px) 100vw, 50vw"
 />
-```
+\`\`\`
 
 ## Core Web Vitals Improvements
 
