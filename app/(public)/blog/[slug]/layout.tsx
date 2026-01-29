@@ -6,47 +6,62 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   try {
     const supabase = await createServerClient()
 
-    // Try to fetch the post by slug in English first (default locale)
-    let { data: post } = await supabase
-      .from("posts")
-      .select("title, excerpt, featured_image, created_at, locale, meta_title, meta_description")
-      .eq("slug", params.slug)
-      .eq("locale", "en")
-      .eq("status", "published")
-      .single()
+    // Try multiple slug variations to find posts (with and without locale suffix)
+    const slugVariations = [
+      params.slug, // original slug
+      `${params.slug}-uk`, // try Ukrainian variant
+      params.slug.replace('-uk', ''), // remove -uk if present
+    ]
 
-    // If no English version, fetch any version
-    if (!post) {
-      const { data: anyPost } = await supabase
+    let post = null
+
+    // Try to find the exact slug first
+    for (const slug of slugVariations) {
+      const { data: foundPost } = await supabase
         .from("posts")
-        .select("title, excerpt, featured_image, created_at, locale, meta_title, meta_description")
-        .eq("slug", params.slug)
+        .select("title, excerpt, featured_image, created_at, locale, meta_title, meta_description, status")
+        .eq("slug", slug)
         .eq("status", "published")
         .single()
-      post = anyPost
+
+      if (foundPost) {
+        post = foundPost
+        break
+      }
     }
 
     if (!post) {
       return {
-        title: "Blog | Idea Team Dev",
+        title: "Blog | IdeaTeam",
         description: "Read our latest blog posts on software development, web, mobile, and SaaS.",
       }
     }
 
+    // Determine the appropriate title and description
+    const title = post.meta_title || `${post.title} | IdeaTeam Blog`
+    const description = post.meta_description || post.excerpt || "Read this article on software development and technology insights."
+
     return {
-      title: post.meta_title || `${post.title} | Blog | Idea Team Dev`,
-      description: post.meta_description || post.excerpt || "Read this article on software development and technology insights.",
+      title,
+      description,
       openGraph: {
-        title: post.meta_title || post.title,
-        description: post.meta_description || post.excerpt || "Read this article on our blog.",
+        title,
+        description,
         images: post.featured_image ? [{ url: post.featured_image }] : [],
         type: "article",
         publishedTime: post.created_at,
       },
+      alternates: {
+        languages: {
+          en: params.slug,
+          uk: `${params.slug}-uk`,
+        },
+      },
     }
   } catch (error) {
+    console.error("Metadata generation error:", error)
     return {
-      title: "Blog | Idea Team Dev",
+      title: "Blog | IdeaTeam",
       description: "Read our latest blog posts on software development.",
     }
   }
