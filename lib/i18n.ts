@@ -212,6 +212,8 @@ export const translations = {
     attachFileOptional: "Attach file (optional)",
     caseStudyText:
       "Proud of our recent work on automating the Admin System where we built a GraphQL API and Vue dashboard with real-time tracking for faster, smarter equipment monitoring.",
+    // Blog Translations
+
   },
   uk: {
     // Navigation

@@ -1,12 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Onest } from "next/font/google"
+import dynamic from "next/dynamic"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/lib/theme-context"
 import { LocaleProvider } from "@/lib/locale-context"
 import { ScrollAnimationProvider } from "@/components/scroll-animation-provider"
 import { CookiesConsent } from "@/components/cookies-consent"
-import { CalculatorPopup } from "@/components/calculator-popup"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import "./globals.css"
 
@@ -14,6 +14,13 @@ const onest = Onest({
   subsets: ["latin"],
   weight: ["400", "500", "800"],
   variable: "--font-onest",
+  display: "swap",
+})
+
+// Dynamic import for calculator popup to reduce initial bundle
+const CalculatorPopup = dynamic(() => import("@/components/calculator-popup").then(mod => ({ default: mod.CalculatorPopup })), {
+  ssr: false,
+  loading: () => null,
 })
 
 export const metadata: Metadata = {

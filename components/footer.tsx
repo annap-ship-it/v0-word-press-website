@@ -463,7 +463,7 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/idea_team_dev"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"

@@ -3,6 +3,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Optimize animations for mobile devices */
+@media (max-width: 768px) {
+  * {
+    animation-duration: 0.3s !important;
+  }
+  
+  /* Disable expensive animations on mobile */
+  .animate-fadeIn,
+  .animate-slideIn,
+  .animate-pulse,
+  [class*="animate-"] {
+    animation-duration: 0.1s !important;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
 :root {
   --background: #ffffff; /* Preserved from existing */
   --foreground: #000000; /* Preserved from existing */
