@@ -12,8 +12,6 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   compress: true,
-  swcMinify: true,
-  optimizeFonts: true,
 }
 
 export default nextConfig

@@ -1,13 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Onest } from "next/font/google"
-import dynamic from "next/dynamic"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/lib/theme-context"
 import { LocaleProvider } from "@/lib/locale-context"
 import { ScrollAnimationProvider } from "@/components/scroll-animation-provider"
 import { CookiesConsent } from "@/components/cookies-consent"
 import { ScrollToTop } from "@/components/scroll-to-top"
+import { ClientOnlyPopups } from "@/components/client-only-popups"
 import "./globals.css"
 
 const onest = Onest({
@@ -15,12 +15,6 @@ const onest = Onest({
   weight: ["400", "500", "800"],
   variable: "--font-onest",
   display: "swap",
-})
-
-// Dynamic import for calculator popup to reduce initial bundle
-const CalculatorPopup = dynamic(() => import("@/components/calculator-popup").then(mod => ({ default: mod.CalculatorPopup })), {
-  ssr: false,
-  loading: () => null,
 })
 
 export const metadata: Metadata = {
@@ -62,7 +56,7 @@ export default function RootLayout({
             <ScrollAnimationProvider>{children}</ScrollAnimationProvider>
             <Analytics />
             <CookiesConsent />
-            <CalculatorPopup />
+            <ClientOnlyPopups />
             <ScrollToTop />
           </LocaleProvider>
         </ThemeProvider>
