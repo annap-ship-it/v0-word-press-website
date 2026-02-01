@@ -99,13 +99,10 @@ export default function BlogContent() {
   const [displayAllPosts, setDisplayAllPosts] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const { locale: rawLocale } = useLocale()
-  
-  // Safeguard: force locale to "en" or "uk"
   const locale = rawLocale === "uk" ? "uk" : "en"
-  
-  // Debug: log locale to console (remove later if needed)
+
   useEffect(() => {
-    console.log("Current locale:", locale, "Raw:", rawLocale)
+    console.log("Current locale:", locale)
   }, [locale])
 
   const t = translations[locale] || translations.en
@@ -119,7 +116,7 @@ export default function BlogContent() {
       const supabase = createBrowserClient()
       const targetLocale = locale
 
-      const { data: postsData, error: localeError } = await supabase
+      let { data: postsData, error: localeError } = await supabase
         .from("posts")
         .select(
           `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
@@ -131,7 +128,7 @@ export default function BlogContent() {
 
       let finalPostsData = postsData
 
-      if (targetLocale === "uk" && ((!localeError && (!postsData || postsData.length === 0)) || localeError)) {
+      if (targetLocale === "uk" && ((!postsData || postsData.length === 0) || localeError)) {
         const { data: englishPosts } = await supabase
           .from("posts")
           .select(
@@ -141,7 +138,10 @@ export default function BlogContent() {
           .eq("locale", "en")
           .order("published_at", { ascending: false, nullsFirst: false })
           .limit(50)
-        finalPostsData = englishPosts
+
+        finalPostsData = englishPosts?.map(post => localizePost(post, locale)) || []  // Localize English posts
+      } else if (finalPostsData) {
+        finalPostsData = finalPostsData.map(post => localizePost(post, locale))
       }
 
       if (finalPostsData && finalPostsData.length > 0) {
@@ -178,6 +178,49 @@ export default function BlogContent() {
     fetchPosts()
   }, [locale])
 
+  // Function to localize post (translate text and replace image if uk)
+  const localizePost = (post: Post, currentLocale: string): Post => {
+    if (currentLocale !== "uk") return post
+
+    const postMap: Record<string, { title: string; excerpt: string; categoryName?: string; image: string }> = {
+      "it-personnel-outsourcing-guide-2024": {
+        title: "Повний посібник з аутсорсингу IT-персоналу в 2024 році",
+        excerpt: "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції, знизити витрати та надати доступ до глобальних талантів.",
+        categoryName: "Автоматизація",
+        image: "/staff-augmentation.jpg"
+      },
+      "benefits-outsourcing-development-team": {
+        title: "5 переваг аутсорсингу вашої команди розробників",
+        excerpt: "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників та як це може прискорити доставку вашого проекту.",
+        categoryName: "Новини",
+        image: "/staff-augmentation.jpg"
+      },
+      "choose-right-it-outsourcing-partner": {
+        title: "Як вибрати правильного IT-партнера для аутсорсингу",
+        excerpt: "Комплексний контрольний список для оцінки та вибору ідеального партнера з аутсорсингу IT для потреб вашого бізнесу.",
+        categoryName: "Популярне",
+        image: "/staff-augmentation.jpg"
+      },
+      // Add more posts if needed
+    }
+
+    const mapping = postMap[post.slug]
+
+    if (!mapping) return post  // No mapping - keep original
+
+    const localizedPost = { ...post }
+
+    localizedPost.title = mapping.title
+    localizedPost.excerpt = mapping.excerpt
+    localizedPost.featured_image = mapping.image || localizedPost.featured_image
+
+    if (localizedPost.categories && localizedPost.categories[0]) {
+      localizedPost.categories[0].name = mapping.categoryName || localizedPost.categories[0].name
+    }
+
+    return localizedPost
+  }
+
   const defaultPosts: Post[] = [
     {
       id: "1",
@@ -191,7 +234,7 @@ export default function BlogContent() {
       published_at: new Date().toISOString(),
       author_id: "1",
       locale: locale,
-      author: { display_name: "Anna", avatar_url: null },
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "2",
@@ -205,7 +248,7 @@ export default function BlogContent() {
       published_at: new Date().toISOString(),
       author_id: "1",
       locale: locale,
-      author: { display_name: "Anna", avatar_url: null },
+      author: { display_name: "Author", avatar_url: null },
     },
     {
       id: "3",
@@ -219,25 +262,11 @@ export default function BlogContent() {
       published_at: new Date().toISOString(),
       author_id: "1",
       locale: locale,
-      author: { display_name: "Anna", avatar_url: null },
+      author: { display_name: "Author", avatar_url: null },
     },
   ]
 
   const displayPosts = posts.length > 0 ? posts : defaultPosts
-
-  const getLocalizedImage = (imagePath: string | null | undefined): string => {
-    if (!imagePath) return "/placeholder.svg"
-
-    if (locale !== "uk") return imagePath
-
-    const imageMap: Record<string, string> = {
-      "/it-team-working-remotely-on-computers.jpg": "/staff-augmentation.jpg",
-      "/developers-collaborating-on-project.jpg": "/staff-augmentation.jpg",
-      "/business-meeting-handshake-partnership.jpg": "/staff-augmentation.jpg",
-    }
-
-    return imageMap[imagePath] || imagePath
-  }
 
   const filteredPosts = searchQuery.trim()
     ? displayPosts.filter((post) => {
@@ -305,7 +334,7 @@ export default function BlogContent() {
                         </div>
                       )}
                       <Image
-                        src={getLocalizedImage(displayFeatured.featured_image) || "/placeholder.svg?height=400&width=600"}
+                        src={displayFeatured.featured_image || "/placeholder.svg?height=400&width=600"}
                         alt={displayFeatured.title}
                         fill
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
@@ -392,7 +421,7 @@ export default function BlogContent() {
                     <Link href={`/blog/${post.slug}`} className="group block">
                       <div className="flex gap-6 hover:opacity-80 transition">
                         <Image
-                          src={getLocalizedImage(post.featured_image) || "/placeholder.svg"}
+                          src={post.featured_image || "/placeholder.svg"}
                           alt={post.title}
                           width={200}
                           height={150}
