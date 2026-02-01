@@ -98,38 +98,38 @@ export default function BlogContent() {
   const [loading, setLoading] = useState(true)
   const [displayAllPosts, setDisplayAllPosts] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const { locale: rawLocale } = useLocale()
-  const locale = rawLocale === "uk" ? "uk" : "en"
 
-  useEffect(() => {
-    console.log("Current locale:", locale, "Raw:", rawLocale)
-  }, [locale])
+  const { locale } = useLocale()
+  const t = translations[locale as "en" | "uk"] || translations.en
 
-  const t = translations[locale] || translations.en
-
+  // ⚠️ IMPORTANT: Scroll to top on page load - DO NOT REMOVE
+  // This ensures pages open from header, not footer, as per design requirements
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [locale])
 
   useEffect(() => {
     async function fetchPosts() {
-      setLoading(true)
-      try {
-        const supabase = createBrowserClient()
-        const targetLocale = locale
+      const supabase = createBrowserClient()
+      
+      // Fetch posts in the current locale
+      const targetLocale = locale === "uk" ? "uk" : "en"
+      
+      const { data: postsData, error: localeError } = await supabase
+        .from("posts")
+        .select(
+          `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
+        )
+        .eq("status", "published")
+        .eq("locale", targetLocale)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(50)
 
-        let { data: postsData } = await supabase
-          .from("posts")
-          .select(
-            `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
-          )
-          .eq("status", "published")
-          .eq("locale", targetLocale)
-          .order("published_at", { ascending: false, nullsFirst: false })
-          .limit(50)
+      let finalPostsData = postsData
 
-        // Якщо в uk нічого не знайшли — беремо en
-        if (targetLocale === "uk" && (!postsData || postsData.length === 0)) {
+      if ((!localeError && postsData && postsData.length === 0) || localeError) {
+        // If requested Ukrainian but none found, fall back to English
+        if (targetLocale === "uk") {
           const { data: englishPosts } = await supabase
             .from("posts")
             .select(
@@ -139,121 +139,112 @@ export default function BlogContent() {
             .eq("locale", "en")
             .order("published_at", { ascending: false, nullsFirst: false })
             .limit(50)
-
-          postsData = englishPosts || []
+          finalPostsData = englishPosts
         }
-
-        // Застосовуємо локалізацію тільки якщо потрібно
-        let finalPosts = postsData || []
-        if (locale === "uk") {
-          finalPosts = finalPosts.map(post => localizePost(post))
-        }
-
-        // Автори
-        if (finalPosts.length > 0) {
-          const authorIds = [...new Set(finalPosts.map(p => p.author_id).filter(Boolean))]
-          let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
-
-          if (authorIds.length > 0) {
-            const { data: authorsData } = await supabase
-              .from("profiles")
-              .select("id, display_name, avatar_url")
-              .in("id", authorIds)
-
-            if (authorsData) {
-              authorsMap = authorsData.reduce((acc, a) => {
-                acc[a.id] = { display_name: a.display_name, avatar_url: a.avatar_url }
-                return acc
-              }, {} as Record<string, any>)
-            }
-          }
-
-          const postsWithAuthors = finalPosts.map(post => ({
-            ...post,
-            author: authorsMap[post.author_id] || null,
-          }))
-
-          setPosts(postsWithAuthors)
-        } else {
-          // Якщо база порожня — використовуємо defaultPosts (без проблемних)
-          let fallback = defaultPosts
-          if (locale === "uk") {
-            fallback = fallback.map(p => localizePost(p))
-          }
-          setPosts(fallback)
-        }
-      } catch (err) {
-        console.error("Error fetching posts:", err)
-        // Fallback на defaultPosts
-        let fallback = defaultPosts
-        if (locale === "uk") {
-          fallback = fallback.map(p => localizePost(p))
-        }
-        setPosts(fallback)
-      } finally {
-        setLoading(false)
       }
-    }
 
+      if (finalPostsData && finalPostsData.length > 0) {
+        const authorIds = [...new Set(finalPostsData.map((p) => p.author_id).filter(Boolean))]
+        let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
+
+        if (authorIds.length > 0) {
+          const { data: authorsData } = await supabase
+            .from("profiles")
+            .select("id, display_name, avatar_url")
+            .in("id", authorIds)
+
+          if (authorsData) {
+            authorsMap = authorsData.reduce(
+              (acc, author) => {
+                acc[author.id] = { display_name: author.display_name, avatar_url: author.avatar_url }
+                return acc
+              },
+              {} as Record<string, { display_name: string | null; avatar_url: string | null }>,
+            )
+          }
+        }
+
+        const postsWithAuthors = finalPostsData.map((post) => ({
+          ...post,
+          author: authorsMap[post.author_id] || null,
+        }))
+        setPosts(postsWithAuthors)
+      }
+      setLoading(false)
+    }
     fetchPosts()
   }, [locale])
 
-  // Локалізація — мінімальна, тільки для стабільних постів
-  const localizePost = (post: Post): Post => {
-    if (locale !== "uk") return post
-
-    const titleLower = post.title.trim().toLowerCase()
-
-    const map: Record<string, { title: string; excerpt: string; image?: string; category?: string }> = {
-      "the ultimate guide to it personnel outsourcing in 2024": {
-        title: "Повний посібник з аутсорсингу IT-персоналу в 2024 році",
-        excerpt: "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції.",
-        image: "/staff-augmentation.jpg",
-        category: "Автоматизація"
-      },
-      // Додай інші стабільні пости, якщо потрібно
-    }
-
-    const mapping = map[titleLower]
-
-    if (!mapping) return post
-
-    return {
-      ...post,
-      title: mapping.title,
-      excerpt: mapping.excerpt,
-      featured_image: mapping.image || post.featured_image,
-      categories: post.categories?.map(c => ({
-        ...c,
-        name: mapping.category || c.name
-      })) || post.categories
-    }
-  }
-
-  // defaultPosts — тільки стабільні пости (видалені проблемні)
   const defaultPosts: Post[] = [
     {
       id: "1",
-      title: "The Ultimate Guide to IT Personnel Outsourcing in 2024",
-      slug: "ultimate-guide-it-personnel-outsourcing-2024",
-      excerpt: "Learn how IT personnel outsourcing can transform your business operations.",
+      title:
+        locale === "uk"
+          ? "Повний посібник з аутсорсингу IT-персоналу в 2024 році"
+          : "The Ultimate Guide to IT Personnel Outsourcing in 2024",
+      slug: "it-personnel-outsourcing-guide-2024",
+      excerpt:
+        locale === "uk"
+          ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції."
+          : "Learn how IT personnel outsourcing can transform your business operations.",
       featured_image: "/it-team-working-remotely-on-computers.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: "Automation", slug: "automation" }],
+      categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
-      author: { display_name: "Anna", avatar_url: null },
+      locale: locale,
+      author: { display_name: "Author", avatar_url: null },
     },
-    // Якщо є інші стабільні пости — додай сюди
+    {
+      id: "2",
+      title:
+        locale === "uk"
+          ? "5 переваг аутсорсингу вашої команди розробників"
+          : "5 Benefits of Outsourcing Your Development Team",
+      slug: "benefits-outsourcing-development-team",
+      excerpt:
+        locale === "uk"
+          ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників."
+          : "Discover the key advantages of working with an outsourced development team.",
+      featured_image: "/developers-collaborating-on-project.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      locale: locale,
+      author: { display_name: "Author", avatar_url: null },
+    },
+    {
+      id: "3",
+      title:
+        locale === "uk"
+          ? "Як вибрати правильного IT-партнера для аутсорсингу"
+          : "How to Choose the Right IT Outsourcing Partner",
+      slug: "choose-right-it-outsourcing-partner",
+      excerpt:
+        locale === "uk"
+          ? "Комплексний контрольний список для оцінки та вибору ідеального партнера."
+          : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
+      featured_image: "/business-meeting-handshake-partnership.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: locale === "uk" ? "Популярне" : "Most Readed", slug: "most-readed" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      locale: locale,
+      author: { display_name: "Author", avatar_url: null },
+    },
   ]
 
+  const displayPosts = posts.length > 0 ? posts : defaultPosts
   const filteredPosts = searchQuery.trim()
-    ? posts.filter((post) => {
+    ? displayPosts.filter((post) => {
         const query = searchQuery.toLowerCase()
         return post.title.toLowerCase().includes(query) || post.excerpt.toLowerCase().includes(query)
       })
-    : posts
+    : displayPosts
 
   const displayFeatured = filteredPosts[0]
   const displayLatestNews = filteredPosts.slice(1, 3)
