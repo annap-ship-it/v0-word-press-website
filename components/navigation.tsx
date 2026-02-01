@@ -1010,7 +1010,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects#ecommerce-platform"
+                          href="/projects#1"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
