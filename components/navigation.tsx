@@ -911,7 +911,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects/multi-brand-ecommerce"
+                          href="/projects#multi-brand-ecommerce"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -944,7 +944,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects/statistics-platform"
+                          href="/projects#statistics-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -977,7 +977,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects/sensor-infobox"
+                          href="/projects#sensor-infobox"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1010,7 +1010,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects/ecommerce-platform"
+                          href="/projects#ecommerce-platform"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
