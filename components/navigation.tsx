@@ -1959,7 +1959,7 @@ export function Navigation() {
                     }}
                   >
                     <Link
-                      href="/projects#3"
+                      href="/projects#4"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
