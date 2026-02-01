@@ -102,7 +102,7 @@ export default function BlogContent() {
   const locale = rawLocale === "uk" ? "uk" : "en"
 
   useEffect(() => {
-    console.log("Current locale:", locale)
+    console.log("Current locale:", locale, "Raw:", rawLocale)
   }, [locale])
 
   const t = translations[locale] || translations.en
@@ -111,169 +111,203 @@ export default function BlogContent() {
     window.scrollTo(0, 0)
   }, [locale])
 
+  // Базовые посты — теперь они всегда английские, локализация применяется позже
+  const defaultPosts: Post[] = [
+    {
+      id: "1",
+      title: "The Ultimate Guide to IT Personnel Outsourcing in 2024",
+      slug: "ultimate-guide-it-personnel-outsourcing-2024",
+      excerpt: "Learn how IT personnel outsourcing can transform your business operations.",
+      featured_image: "/it-team-working-remotely-on-computers.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: "Automation", slug: "automation" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      author: { display_name: "Anna", avatar_url: null },
+    },
+    {
+      id: "2",
+      title: "5 Benefits of Outsourcing Your Development Team",
+      slug: "benefits-outsourcing-development-team",
+      excerpt: "Discover the key advantages of working with an outsourced development team.",
+      featured_image: "/developers-collaborating-on-project.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: "New", slug: "new" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      author: { display_name: "Anna", avatar_url: null },
+    },
+    {
+      id: "3",
+      title: "How to Choose the Right IT Outsourcing Partner",
+      slug: "choose-right-it-outsourcing-partner",
+      excerpt: "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
+      featured_image: "/business-meeting-handshake-partnership.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: "Most Readed", slug: "most-readed" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      author: { display_name: "Anna", avatar_url: null },
+    },
+    {
+      id: "4",
+      title: "Managing Remote Development Teams: Best Practices 2024",
+      slug: "managing-remote-development-teams",
+      excerpt: "Best practices for managing remote development teams in 2024.",
+      featured_image: "/it-team-working-remotely-on-computers.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: "Popular", slug: "popular" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      author: { display_name: "Anna", avatar_url: null },
+    },
+    // Добавьте другие посты, которые вы видите на сайте, если их больше
+  ]
+
   useEffect(() => {
     async function fetchPosts() {
-      const supabase = createBrowserClient()
-      const targetLocale = locale
+      setLoading(true)
+      try {
+        const supabase = createBrowserClient()
+        const targetLocale = locale
 
-      let { data: postsData, error: localeError } = await supabase
-        .from("posts")
-        .select(
-          `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
-        )
-        .eq("status", "published")
-        .eq("locale", targetLocale)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .limit(50)
-
-      let finalPostsData = postsData
-
-      if (targetLocale === "uk" && ((!postsData || postsData.length === 0) || localeError)) {
-        const { data: englishPosts } = await supabase
+        // Пытаемся взять посты на текущем языке
+        let { data: postsData, error } = await supabase
           .from("posts")
           .select(
             `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
           )
           .eq("status", "published")
-          .eq("locale", "en")
+          .eq("locale", targetLocale)
           .order("published_at", { ascending: false, nullsFirst: false })
           .limit(50)
 
-        finalPostsData = englishPosts?.map(post => localizePost(post, locale)) || []  // Localize English posts
-      } else if (finalPostsData) {
-        finalPostsData = finalPostsData.map(post => localizePost(post, locale))
-      }
-
-      if (finalPostsData && finalPostsData.length > 0) {
-        const authorIds = [...new Set(finalPostsData.map((p) => p.author_id).filter(Boolean))]
-        let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
-
-        if (authorIds.length > 0) {
-          const { data: authorsData } = await supabase
-            .from("profiles")
-            .select("id, display_name, avatar_url")
-            .in("id", authorIds)
-
-          if (authorsData) {
-            authorsMap = authorsData.reduce(
-              (acc, author) => {
-                acc[author.id] = { display_name: author.display_name, avatar_url: author.avatar_url }
-                return acc
-              },
-              {} as Record<string, { display_name: string | null; avatar_url: string | null }>,
+        // Если ничего не нашли и это uk — берём en
+        if (targetLocale === "uk" && (!postsData || postsData.length === 0)) {
+          const { data: englishPosts } = await supabase
+            .from("posts")
+            .select(
+              `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
             )
-          }
+            .eq("status", "published")
+            .eq("locale", "en")
+            .order("published_at", { ascending: false, nullsFirst: false })
+            .limit(50)
+
+          postsData = englishPosts || []
         }
 
-        const postsWithAuthors = finalPostsData.map((post) => ({
-          ...post,
-          author: authorsMap[post.author_id] || null,
-        }))
+        // Применяем локализацию ко всем постам, если режим uk
+        let localizedPosts = postsData || []
+        if (locale === "uk") {
+          localizedPosts = localizedPosts.map(post => localizePost(post))
+        }
 
-        setPosts(postsWithAuthors)
+        // Авторы
+        if (localizedPosts.length > 0) {
+          const authorIds = [...new Set(localizedPosts.map(p => p.author_id).filter(Boolean))]
+          let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
+
+          if (authorIds.length > 0) {
+            const { data: authorsData } = await supabase
+              .from("profiles")
+              .select("id, display_name, avatar_url")
+              .in("id", authorIds)
+
+            if (authorsData) {
+              authorsMap = authorsData.reduce((acc, a) => {
+                acc[a.id] = { display_name: a.display_name, avatar_url: a.avatar_url }
+                return acc
+              }, {} as Record<string, any>)
+            }
+          }
+
+          const postsWithAuthors = localizedPosts.map(post => ({
+            ...post,
+            author: authorsMap[post.author_id] || null,
+          }))
+
+          setPosts(postsWithAuthors)
+        } else {
+          // Если база пустая — используем defaultPosts и локализуем их
+          let fallback = defaultPosts
+          if (locale === "uk") {
+            fallback = fallback.map(p => localizePost(p))
+          }
+          setPosts(fallback)
+        }
+      } catch (err) {
+        console.error("Error fetching posts:", err)
+        // Fallback на defaultPosts в случае ошибки
+        let fallback = defaultPosts
+        if (locale === "uk") {
+          fallback = fallback.map(p => localizePost(p))
+        }
+        setPosts(fallback)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
 
     fetchPosts()
   }, [locale])
 
-  // Function to localize post (translate text and replace image if uk)
-  const localizePost = (post: Post, currentLocale: string): Post => {
-    if (currentLocale !== "uk") return post
-
-    const postMap: Record<string, { title: string; excerpt: string; categoryName?: string; image: string }> = {
-      "it-personnel-outsourcing-guide-2024": {
+  // Универсальная функция локализации — работает для любых постов
+  const localizePost = (post: Post): Post => {
+    const titleToUk: Record<string, { title: string; excerpt: string; image?: string; category?: string }> = {
+      "The Ultimate Guide to IT Personnel Outsourcing in 2024": {
         title: "Повний посібник з аутсорсингу IT-персоналу в 2024 році",
-        excerpt: "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції, знизити витрати та надати доступ до глобальних талантів.",
-        categoryName: "Автоматизація",
-        image: "/staff-augmentation.jpg"
+        excerpt: "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції.",
+        image: "/staff-augmentation.jpg",
+        category: "Автоматизація"
       },
-      "benefits-outsourcing-development-team": {
+      "5 Benefits of Outsourcing Your Development Team": {
         title: "5 переваг аутсорсингу вашої команди розробників",
-        excerpt: "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників та як це може прискорити доставку вашого проекту.",
-        categoryName: "Новини",
-        image: "/staff-augmentation.jpg"
+        excerpt: "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників.",
+        image: "/staff-augmentation.jpg",
+        category: "Новини"
       },
-      "choose-right-it-outsourcing-partner": {
-        title: "Як вибрати правильного IT-партнера для аутсорсингу",
-        excerpt: "Комплексний контрольний список для оцінки та вибору ідеального партнера з аутсорсингу IT для потреб вашого бізнесу.",
-        categoryName: "Популярне",
-        image: "/staff-augmentation.jpg"
+      "How to Choose the Right IT Outsourcing Partner": {
+        title: "Як вибрати правильного IT-партнера для аутсорсингу: контрольний список",
+        excerpt: "Комплексний контрольний список для оцінки та вибору ідеального партнера.",
+        image: "/staff-augmentation.jpg",
+        category: "Популярне"
       },
-      // Add more posts if needed
+      "Managing Remote Development Teams: Best Practices 2024": {
+        title: "Управління віддаленими командами розробки: найкращі практики 2024",
+        excerpt: "Найкращі практики управління віддаленими командами розробки в 2024 році.",
+        image: "/staff-augmentation.jpg",
+        category: "Популярне"
+      },
+      // Добавьте другие посты по их английскому title
     }
 
-    const mapping = postMap[post.slug]
+    const mapping = titleToUk[post.title.trim()]
 
-    if (!mapping) return post  // No mapping - keep original
+    if (!mapping) return post
 
-    const localizedPost = { ...post }
-
-    localizedPost.title = mapping.title
-    localizedPost.excerpt = mapping.excerpt
-    localizedPost.featured_image = mapping.image || localizedPost.featured_image
-
-    if (localizedPost.categories && localizedPost.categories[0]) {
-      localizedPost.categories[0].name = mapping.categoryName || localizedPost.categories[0].name
+    return {
+      ...post,
+      title: mapping.title,
+      excerpt: mapping.excerpt,
+      featured_image: mapping.image || post.featured_image,
+      categories: post.categories?.map(c => ({
+        ...c,
+        name: mapping.category || c.name
+      })) || post.categories
     }
-
-    return localizedPost
   }
 
-  const defaultPosts: Post[] = [
-    {
-      id: "1",
-      title: locale === "uk" ? "Повний посібник з аутсорсингу IT-персоналу в 2024 році" : "The Ultimate Guide to IT Personnel Outsourcing in 2024",
-      slug: "it-personnel-outsourcing-guide-2024",
-      excerpt: locale === "uk" ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції." : "Learn how IT personnel outsourcing can transform your business operations.",
-      featured_image: locale === "uk" ? "/staff-augmentation.jpg" : "/it-team-working-remotely-on-computers.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      locale: locale,
-      author: { display_name: "Author", avatar_url: null },
-    },
-    {
-      id: "2",
-      title: locale === "uk" ? "5 переваг аутсорсингу вашої команди розробників" : "5 Benefits of Outsourcing Your Development Team",
-      slug: "benefits-outsourcing-development-team",
-      excerpt: locale === "uk" ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників." : "Discover the key advantages of working with an outsourced development team.",
-      featured_image: locale === "uk" ? "/staff-augmentation.jpg" : "/developers-collaborating-on-project.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      locale: locale,
-      author: { display_name: "Author", avatar_url: null },
-    },
-    {
-      id: "3",
-      title: locale === "uk" ? "Як вибрати правильного IT-партнера для аутсорсингу" : "How to Choose the Right IT Outsourcing Partner",
-      slug: "choose-right-it-outsourcing-partner",
-      excerpt: locale === "uk" ? "Комплексний контрольний список для оцінки та вибору ідеального партнера." : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
-      featured_image: locale === "uk" ? "/staff-augmentation.jpg" : "/business-meeting-handshake-partnership.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: locale === "uk" ? "Популярне" : "Most Readed", slug: "most-readed" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      locale: locale,
-      author: { display_name: "Author", avatar_url: null },
-    },
-  ]
-
-  const displayPosts = posts.length > 0 ? posts : defaultPosts
-
   const filteredPosts = searchQuery.trim()
-    ? displayPosts.filter((post) => {
+    ? posts.filter((post) => {
         const query = searchQuery.toLowerCase()
         return post.title.toLowerCase().includes(query) || post.excerpt.toLowerCase().includes(query)
       })
-    : displayPosts
+    : posts
 
   const displayFeatured = filteredPosts[0]
   const displayLatestNews = filteredPosts.slice(1, 3)
