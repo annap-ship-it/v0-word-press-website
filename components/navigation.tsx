@@ -911,7 +911,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects#multi-brand-ecommerce"
+                          href="/projects#3"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -977,7 +977,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects#sensor-infobox"
+                          href="/projects#2"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
