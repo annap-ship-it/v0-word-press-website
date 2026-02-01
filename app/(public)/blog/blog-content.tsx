@@ -111,63 +111,6 @@ export default function BlogContent() {
     window.scrollTo(0, 0)
   }, [locale])
 
-  // Базовые посты — теперь они всегда английские, локализация применяется позже
-  const defaultPosts: Post[] = [
-    {
-      id: "1",
-      title: "The Ultimate Guide to IT Personnel Outsourcing in 2024",
-      slug: "ultimate-guide-it-personnel-outsourcing-2024",
-      excerpt: "Learn how IT personnel outsourcing can transform your business operations.",
-      featured_image: "/it-team-working-remotely-on-computers.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: "Automation", slug: "automation" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      author: { display_name: "Anna", avatar_url: null },
-    },
-    {
-      id: "2",
-      title: "5 Benefits of Outsourcing Your Development Team",
-      slug: "benefits-outsourcing-development-team",
-      excerpt: "Discover the key advantages of working with an outsourced development team.",
-      featured_image: "/developers-collaborating-on-project.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: "New", slug: "new" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      author: { display_name: "Anna", avatar_url: null },
-    },
-    {
-      id: "3",
-      title: "How to Choose the Right IT Outsourcing Partner",
-      slug: "choose-right-it-outsourcing-partner",
-      excerpt: "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
-      featured_image: "/business-meeting-handshake-partnership.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: "Most Readed", slug: "most-readed" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      author: { display_name: "Anna", avatar_url: null },
-    },
-    {
-      id: "4",
-      title: "Managing Remote Development Teams: Best Practices 2024",
-      slug: "managing-remote-development-teams",
-      excerpt: "Best practices for managing remote development teams in 2024.",
-      featured_image: "/it-team-working-remotely-on-computers.jpg",
-      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
-      categories: [{ name: "Popular", slug: "popular" }],
-      created_at: new Date().toISOString(),
-      published_at: new Date().toISOString(),
-      author_id: "1",
-      author: { display_name: "Anna", avatar_url: null },
-    },
-    // Добавьте другие посты, которые вы видите на сайте, если их больше
-  ]
-
   useEffect(() => {
     async function fetchPosts() {
       setLoading(true)
@@ -175,8 +118,7 @@ export default function BlogContent() {
         const supabase = createBrowserClient()
         const targetLocale = locale
 
-        // Пытаемся взять посты на текущем языке
-        let { data: postsData, error } = await supabase
+        let { data: postsData } = await supabase
           .from("posts")
           .select(
             `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
@@ -186,7 +128,7 @@ export default function BlogContent() {
           .order("published_at", { ascending: false, nullsFirst: false })
           .limit(50)
 
-        // Если ничего не нашли и это uk — берём en
+        // Якщо в uk нічого не знайшли — беремо en
         if (targetLocale === "uk" && (!postsData || postsData.length === 0)) {
           const { data: englishPosts } = await supabase
             .from("posts")
@@ -201,15 +143,15 @@ export default function BlogContent() {
           postsData = englishPosts || []
         }
 
-        // Применяем локализацию ко всем постам, если режим uk
-        let localizedPosts = postsData || []
+        // Застосовуємо локалізацію тільки якщо потрібно
+        let finalPosts = postsData || []
         if (locale === "uk") {
-          localizedPosts = localizedPosts.map(post => localizePost(post))
+          finalPosts = finalPosts.map(post => localizePost(post))
         }
 
-        // Авторы
-        if (localizedPosts.length > 0) {
-          const authorIds = [...new Set(localizedPosts.map(p => p.author_id).filter(Boolean))]
+        // Автори
+        if (finalPosts.length > 0) {
+          const authorIds = [...new Set(finalPosts.map(p => p.author_id).filter(Boolean))]
           let authorsMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {}
 
           if (authorIds.length > 0) {
@@ -226,14 +168,14 @@ export default function BlogContent() {
             }
           }
 
-          const postsWithAuthors = localizedPosts.map(post => ({
+          const postsWithAuthors = finalPosts.map(post => ({
             ...post,
             author: authorsMap[post.author_id] || null,
           }))
 
           setPosts(postsWithAuthors)
         } else {
-          // Если база пустая — используем defaultPosts и локализуем их
+          // Якщо база порожня — використовуємо defaultPosts (без проблемних)
           let fallback = defaultPosts
           if (locale === "uk") {
             fallback = fallback.map(p => localizePost(p))
@@ -242,7 +184,7 @@ export default function BlogContent() {
         }
       } catch (err) {
         console.error("Error fetching posts:", err)
-        // Fallback на defaultPosts в случае ошибки
+        // Fallback на defaultPosts
         let fallback = defaultPosts
         if (locale === "uk") {
           fallback = fallback.map(p => localizePost(p))
@@ -256,37 +198,23 @@ export default function BlogContent() {
     fetchPosts()
   }, [locale])
 
-  // Универсальная функция локализации — работает для любых постов
+  // Локалізація — мінімальна, тільки для стабільних постів
   const localizePost = (post: Post): Post => {
-    const titleToUk: Record<string, { title: string; excerpt: string; image?: string; category?: string }> = {
-      "The Ultimate Guide to IT Personnel Outsourcing in 2024": {
+    if (locale !== "uk") return post
+
+    const titleLower = post.title.trim().toLowerCase()
+
+    const map: Record<string, { title: string; excerpt: string; image?: string; category?: string }> = {
+      "the ultimate guide to it personnel outsourcing in 2024": {
         title: "Повний посібник з аутсорсингу IT-персоналу в 2024 році",
         excerpt: "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції.",
         image: "/staff-augmentation.jpg",
         category: "Автоматизація"
       },
-      "5 Benefits of Outsourcing Your Development Team": {
-        title: "5 переваг аутсорсингу вашої команди розробників",
-        excerpt: "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників.",
-        image: "/staff-augmentation.jpg",
-        category: "Новини"
-      },
-      "How to Choose the Right IT Outsourcing Partner": {
-        title: "Як вибрати правильного IT-партнера для аутсорсингу: контрольний список",
-        excerpt: "Комплексний контрольний список для оцінки та вибору ідеального партнера.",
-        image: "/staff-augmentation.jpg",
-        category: "Популярне"
-      },
-      "Managing Remote Development Teams: Best Practices 2024": {
-        title: "Управління віддаленими командами розробки: найкращі практики 2024",
-        excerpt: "Найкращі практики управління віддаленими командами розробки в 2024 році.",
-        image: "/staff-augmentation.jpg",
-        category: "Популярне"
-      },
-      // Добавьте другие посты по их английскому title
+      // Додай інші стабільні пости, якщо потрібно
     }
 
-    const mapping = titleToUk[post.title.trim()]
+    const mapping = map[titleLower]
 
     if (!mapping) return post
 
@@ -301,6 +229,24 @@ export default function BlogContent() {
       })) || post.categories
     }
   }
+
+  // defaultPosts — тільки стабільні пости (видалені проблемні)
+  const defaultPosts: Post[] = [
+    {
+      id: "1",
+      title: "The Ultimate Guide to IT Personnel Outsourcing in 2024",
+      slug: "ultimate-guide-it-personnel-outsourcing-2024",
+      excerpt: "Learn how IT personnel outsourcing can transform your business operations.",
+      featured_image: "/it-team-working-remotely-on-computers.jpg",
+      category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
+      categories: [{ name: "Automation", slug: "automation" }],
+      created_at: new Date().toISOString(),
+      published_at: new Date().toISOString(),
+      author_id: "1",
+      author: { display_name: "Anna", avatar_url: null },
+    },
+    // Якщо є інші стабільні пости — додай сюди
+  ]
 
   const filteredPosts = searchQuery.trim()
     ? posts.filter((post) => {
