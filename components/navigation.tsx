@@ -944,7 +944,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects#statistics-platform"
+                          href="/projects#4"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
