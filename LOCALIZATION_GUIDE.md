@@ -90,7 +90,7 @@ When users switch to Ukrainian (uk) locale:
 
 ### Content Structure
 All posts use the JSON blocks format:
-```json
+\`\`\`json
 {
   "type": "doc",
   "content": [
@@ -105,7 +105,7 @@ All posts use the JSON blocks format:
     }
   ]
 }
-```
+\`\`\`
 
 ## Database Schema
 Posts table includes:

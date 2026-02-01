@@ -6,6 +6,18 @@ import Image from "next/image"
 import { X, Loader2, Paperclip } from "lucide-react"
 import Link from "next/link"
 import { useLocale } from "@/lib/locale-context"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      enterprise: {
+        execute: (siteKey: string, options: { action: string }) => Promise<string>
+        ready: (callback: () => void) => void
+      }
+    }
+  }
+}
 
 // Localization content for Ukrainian translations
 const content = {
@@ -59,8 +71,23 @@ export function RequestConsultationSection() {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
+  const [siteKey, setSiteKey] = useState<string>("")
+  const scriptLoaded = useRef(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    // Fetch the reCAPTCHA site key from server action
+    const fetchSiteKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setSiteKey(key)
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      }
+    }
+    fetchSiteKey()
+  }, [])
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -73,6 +100,23 @@ export function RequestConsultationSection() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (scriptLoaded.current) return
+
+    // Load reCAPTCHA Enterprise script
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/enterprise.js"
+    script.async = true
+    script.defer = true
+
+    document.head.appendChild(script)
+    scriptLoaded.current = true
+
+    return () => {
+      // Script doesn't need cleanup
+    }
   }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,30 +146,14 @@ export function RequestConsultationSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate all required fields
-    if (!formData.name.trim()) {
-      setSubmitStatus({ type: "error", message: "Please enter your name" })
-      return
-    }
-
-    if (!formData.email.trim()) {
-      setSubmitStatus({ type: "error", message: "Please enter your email" })
-      return
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(formData.email)) {
-      setSubmitStatus({ type: "error", message: "Please enter a valid email address" })
-      return
-    }
-
-    if (!formData.message.trim()) {
-      setSubmitStatus({ type: "error", message: "Please enter your message" })
-      return
-    }
-
     if (!formData.acceptTerms) {
       setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
+      return
+    }
+
+    // Validate reCAPTCHA is ready
+    if (!siteKey || !window.grecaptcha?.enterprise?.execute) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
       return
     }
 
@@ -133,13 +161,19 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
+      // Execute reCAPTCHA Enterprise to get token
+      const recaptchaToken = await window.grecaptcha.enterprise.execute(
+        siteKey,
+        { action: "CONSULTATION_REQUEST" }
+      )
+
       const submitData = new FormData()
-      submitData.append("name", formData.name.trim())
-      submitData.append("email", formData.email.trim())
-      submitData.append("message", formData.message.trim())
+      submitData.append("name", formData.name)
+      submitData.append("email", formData.email)
+      submitData.append("message", formData.message)
+      submitData.append("recaptchaToken", recaptchaToken)
       submitData.append("type", "consultation")
 
-      // Append all files
       files.forEach((file) => {
         submitData.append("files", file)
       })
@@ -152,29 +186,17 @@ export function RequestConsultationSection() {
       const result = await response.json()
 
       if (response.ok) {
-        setSubmitStatus({ 
-          type: "success", 
-          message: result.message || "Your consultation request has been sent successfully!" 
-        })
+        setSubmitStatus({ type: "success", message: result.message || "Message sent successfully!" })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
         setFiles([])
         if (fileInputRef.current) {
           fileInputRef.current.value = ""
         }
       } else {
-        const errorMessage = result.error || `Server error: ${response.status}`
-        console.error("[v0] Form submission failed:", errorMessage)
-        setSubmitStatus({ 
-          type: "error", 
-          message: errorMessage
-        })
+        setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
       }
     } catch (error) {
-      console.error("[v0] Form submission error:", error)
-      setSubmitStatus({ 
-        type: "error", 
-        message: "Failed to send your request. Please check your connection and try again." 
-      })
+      setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
     } finally {
       setIsSubmitting(false)
     }

@@ -911,7 +911,7 @@ export function Navigation() {
                         }}
                       >
                         <Link
-                          href="/projects/multi-brand-ecommerce"
+                          href="/projects#3"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -944,7 +944,7 @@ export function Navigation() {
                           {t.multibrandEcommerce}
                         </Link>
                         <Link
-                          href="/projects/statistics-platform"
+                          href="/projects#4"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -977,7 +977,7 @@ export function Navigation() {
                           {t.statisticsPlatform}
                         </Link>
                         <Link
-                          href="/projects/sensor-infobox"
+                          href="/projects#2"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1010,7 +1010,7 @@ export function Navigation() {
                           {t.sensorInfobox}
                         </Link>
                         <Link
-                          href="/projects/ecommerce-platform"
+                          href="/projects#1"
                           onClick={() => setProjectsOpen(false)}
                           className="transition-all duration-300 ease-out"
                           style={{
@@ -1959,7 +1959,7 @@ export function Navigation() {
                     }}
                   >
                     <Link
-                      href="/projects/multi-brand-ecommerce"
+                      href="/projects#4"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2008,7 +2008,7 @@ export function Navigation() {
                       {t.multibrandEcommerce}
                     </Link>
                     <Link
-                      href="/projects/statistics-platform"
+                      href="/projects#1"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2057,7 +2057,7 @@ export function Navigation() {
                       {t.statisticsPlatform}
                     </Link>
                     <Link
-                      href="/projects/sensor-infobox"
+                      href="/projects#2"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
@@ -2106,7 +2106,7 @@ export function Navigation() {
                       {t.sensorInfobox}
                     </Link>
                     <Link
-                      href="/projects/ecommerce-platform"
+                      href="/projects#3"
                       onClick={() => {
                         setMobileMenuOpen(false)
                         setMobileProjectsOpen(false)
