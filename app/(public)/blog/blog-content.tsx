@@ -98,12 +98,18 @@ export default function BlogContent() {
   const [loading, setLoading] = useState(true)
   const [displayAllPosts, setDisplayAllPosts] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const { locale: rawLocale } = useLocale()
+  
+  // Safeguard: force locale to "en" or "uk"
+  const locale = rawLocale === "uk" ? "uk" : "en"
+  
+  // Debug: log locale to console (remove later if needed)
+  useEffect(() => {
+    console.log("Current locale:", locale, "Raw:", rawLocale)
+  }, [locale])
 
-  const { locale } = useLocale()
-  const t = translations[locale as "en" | "uk"] || translations.en
+  const t = translations[locale] || translations.en
 
-  // ⚠️ IMPORTANT: Scroll to top on page load - DO NOT REMOVE
-  // This ensures pages open from header, not footer, as per design requirements
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [locale])
@@ -111,10 +117,8 @@ export default function BlogContent() {
   useEffect(() => {
     async function fetchPosts() {
       const supabase = createBrowserClient()
-      
-      // Fetch posts in the current locale
-      const targetLocale = locale === "uk" ? "uk" : "en"
-      
+      const targetLocale = locale
+
       const { data: postsData, error: localeError } = await supabase
         .from("posts")
         .select(
@@ -127,20 +131,17 @@ export default function BlogContent() {
 
       let finalPostsData = postsData
 
-      if ((!localeError && postsData && postsData.length === 0) || localeError) {
-        // If requested Ukrainian but none found, fall back to English
-        if (targetLocale === "uk") {
-          const { data: englishPosts } = await supabase
-            .from("posts")
-            .select(
-              `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
-            )
-            .eq("status", "published")
-            .eq("locale", "en")
-            .order("published_at", { ascending: false, nullsFirst: false })
-            .limit(50)
-          finalPostsData = englishPosts
-        }
+      if (targetLocale === "uk" && ((!localeError && (!postsData || postsData.length === 0)) || localeError)) {
+        const { data: englishPosts } = await supabase
+          .from("posts")
+          .select(
+            `id, title, slug, excerpt, featured_image, category_id, categories(name, slug), created_at, published_at, author_id, locale, status`,
+          )
+          .eq("status", "published")
+          .eq("locale", "en")
+          .order("published_at", { ascending: false, nullsFirst: false })
+          .limit(50)
+        finalPostsData = englishPosts
       }
 
       if (finalPostsData && finalPostsData.length > 0) {
@@ -168,77 +169,76 @@ export default function BlogContent() {
           ...post,
           author: authorsMap[post.author_id] || null,
         }))
+
         setPosts(postsWithAuthors)
       }
       setLoading(false)
     }
+
     fetchPosts()
   }, [locale])
 
   const defaultPosts: Post[] = [
     {
       id: "1",
-      title:
-        locale === "uk"
-          ? "Повний посібник з аутсорсингу IT-персоналу в 2024 році"
-          : "The Ultimate Guide to IT Personnel Outsourcing in 2024",
+      title: locale === "uk" ? "Повний посібник з аутсорсингу IT-персоналу в 2024 році" : "The Ultimate Guide to IT Personnel Outsourcing in 2024",
       slug: "it-personnel-outsourcing-guide-2024",
-      excerpt:
-        locale === "uk"
-          ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції."
-          : "Learn how IT personnel outsourcing can transform your business operations.",
-      featured_image: "/it-team-working-remotely-on-computers.jpg",
+      excerpt: locale === "uk" ? "Дізнайтеся, як аутсорсинг IT-персоналу може трансформувати ваші бізнес-операції." : "Learn how IT personnel outsourcing can transform your business operations.",
+      featured_image: locale === "uk" ? "/staff-augmentation.jpg" : "/it-team-working-remotely-on-computers.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Автоматизація" : "Automation", slug: "automation" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
       locale: locale,
-      author: { display_name: "Author", avatar_url: null },
+      author: { display_name: "Anna", avatar_url: null },
     },
     {
       id: "2",
-      title:
-        locale === "uk"
-          ? "5 переваг аутсорсингу вашої команди розробників"
-          : "5 Benefits of Outsourcing Your Development Team",
+      title: locale === "uk" ? "5 переваг аутсорсингу вашої команди розробників" : "5 Benefits of Outsourcing Your Development Team",
       slug: "benefits-outsourcing-development-team",
-      excerpt:
-        locale === "uk"
-          ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників."
-          : "Discover the key advantages of working with an outsourced development team.",
-      featured_image: "/developers-collaborating-on-project.jpg",
+      excerpt: locale === "uk" ? "Дізнайтеся про ключові переваги роботи з аутсорсингованою командою розробників." : "Discover the key advantages of working with an outsourced development team.",
+      featured_image: locale === "uk" ? "/staff-augmentation.jpg" : "/developers-collaborating-on-project.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Новини" : "New", slug: "new" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
       locale: locale,
-      author: { display_name: "Author", avatar_url: null },
+      author: { display_name: "Anna", avatar_url: null },
     },
     {
       id: "3",
-      title:
-        locale === "uk"
-          ? "Як вибрати правильного IT-партнера для аутсорсингу"
-          : "How to Choose the Right IT Outsourcing Partner",
+      title: locale === "uk" ? "Як вибрати правильного IT-партнера для аутсорсингу" : "How to Choose the Right IT Outsourcing Partner",
       slug: "choose-right-it-outsourcing-partner",
-      excerpt:
-        locale === "uk"
-          ? "Комплексний контрольний список для оцінки та вибору ідеального партнера."
-          : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
-      featured_image: "/business-meeting-handshake-partnership.jpg",
+      excerpt: locale === "uk" ? "Комплексний контрольний список для оцінки та вибору ідеального партнера." : "A comprehensive checklist for evaluating and selecting the perfect IT outsourcing partner.",
+      featured_image: locale === "uk" ? "/staff-augmentation.jpg" : "/business-meeting-handshake-partnership.jpg",
       category_id: "c812ffe4-c357-4ade-bd6a-6dab6d9b1d79",
       categories: [{ name: locale === "uk" ? "Популярне" : "Most Readed", slug: "most-readed" }],
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
       author_id: "1",
       locale: locale,
-      author: { display_name: "Author", avatar_url: null },
+      author: { display_name: "Anna", avatar_url: null },
     },
   ]
 
   const displayPosts = posts.length > 0 ? posts : defaultPosts
+
+  const getLocalizedImage = (imagePath: string | null | undefined): string => {
+    if (!imagePath) return "/placeholder.svg"
+
+    if (locale !== "uk") return imagePath
+
+    const imageMap: Record<string, string> = {
+      "/it-team-working-remotely-on-computers.jpg": "/staff-augmentation.jpg",
+      "/developers-collaborating-on-project.jpg": "/staff-augmentation.jpg",
+      "/business-meeting-handshake-partnership.jpg": "/staff-augmentation.jpg",
+    }
+
+    return imageMap[imagePath] || imagePath
+  }
+
   const filteredPosts = searchQuery.trim()
     ? displayPosts.filter((post) => {
         const query = searchQuery.toLowerCase()
@@ -305,7 +305,7 @@ export default function BlogContent() {
                         </div>
                       )}
                       <Image
-                        src={displayFeatured.featured_image || "/placeholder.svg?height=400&width=600"}
+                        src={getLocalizedImage(displayFeatured.featured_image) || "/placeholder.svg?height=400&width=600"}
                         alt={displayFeatured.title}
                         fill
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
@@ -392,7 +392,7 @@ export default function BlogContent() {
                     <Link href={`/blog/${post.slug}`} className="group block">
                       <div className="flex gap-6 hover:opacity-80 transition">
                         <Image
-                          src={post.featured_image || "/placeholder.svg"}
+                          src={getLocalizedImage(post.featured_image) || "/placeholder.svg"}
                           alt={post.title}
                           width={200}
                           height={150}
