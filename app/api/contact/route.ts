@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend
     const emailContent = {
-      to: "info@ideateam.dev",
+      to: "oleksandr.r@ideateam.dev",
       subject: `New Consultation Request from ${name}`,
       html: `
         <h2>New Consultation Request</h2>
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
     }
 
     const resendPayload: Record<string, unknown> = {
-      from: "noreply@ideateam.dev",
+      from: "noreply@new.ideateam.dev",
       to: emailContent.to,
       subject: emailContent.subject,
       html: emailContent.html,
