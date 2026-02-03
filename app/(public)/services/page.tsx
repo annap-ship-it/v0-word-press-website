@@ -5,6 +5,16 @@ import { useLocale } from "@/lib/locale-context"
 import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
+    }
+  }
+}
 
 export default function ServicesPage() {
   const { t } = useLocale()
@@ -19,7 +29,8 @@ export default function ServicesPage() {
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isDark, setIsDark] = useState(false)
-  const recaptchaRef = useRef<HTMLDivElement>(null)
+  const [recaptchaSiteKey, setRecaptchaSiteKey] = useState<string>("")
+  const scriptLoaded = useRef(false)
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -41,17 +52,29 @@ export default function ServicesPage() {
     window.scrollTo(0, 0)
   }, [])
 
+  // Fetch reCAPTCHA v3 site key from server action
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/api.js"
-    script.async = true
-    script.defer = true
-    document.head.appendChild(script)
-
-    return () => {
-      document.head.removeChild(script)
+    const fetchSiteKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setRecaptchaSiteKey(key)
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      }
     }
+    fetchSiteKey()
   }, [])
+
+  // Load reCAPTCHA v3 script
+  useEffect(() => {
+    if (scriptLoaded.current || !recaptchaSiteKey) return
+
+    const script = document.createElement("script")
+    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`
+    script.async = true
+    document.head.appendChild(script)
+    scriptLoaded.current = true
+  }, [recaptchaSiteKey])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -84,10 +107,9 @@ export default function ServicesPage() {
       return
     }
 
-    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
-
-    if (!recaptchaResponse) {
-      setSubmitStatus({ type: "error", message: "Please complete the reCAPTCHA" })
+    // Check if reCAPTCHA v3 is ready
+    if (!recaptchaSiteKey || !window.grecaptcha) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
       return
     }
 
@@ -95,11 +117,14 @@ export default function ServicesPage() {
     setSubmitStatus(null)
 
     try {
+      // Execute reCAPTCHA v3 to get token
+      const recaptchaToken = await window.grecaptcha.execute(recaptchaSiteKey, { action: "services_contact" })
+
       const submitData = new FormData()
       submitData.append("name", formData.name)
       submitData.append("email", formData.email)
       submitData.append("message", formData.message)
-      submitData.append("recaptchaToken", recaptchaResponse)
+      submitData.append("recaptchaToken", recaptchaToken)
       if (selectedFile) {
         submitData.append("file", selectedFile)
       }
@@ -381,12 +406,6 @@ export default function ServicesPage() {
                       }}
                     />
                   </div>
-
-                  <div
-                    ref={recaptchaRef}
-                    className="g-recaptcha"
-                    data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"
-                  />
 
                   <div className="flex flex-wrap items-center gap-4">
                     <Button
