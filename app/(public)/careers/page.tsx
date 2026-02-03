@@ -106,7 +106,6 @@ export default function CareersPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const recaptchaRef = useRef<HTMLDivElement>(null)
 
   // Theme detection for styling
   const [isDarkTheme, setIsDarkTheme] = useState(false)
@@ -123,13 +122,15 @@ export default function CareersPage() {
 
   useEffect(() => {
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/api.js"
+    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"}`
     script.async = true
     script.defer = true
     document.head.appendChild(script)
 
     return () => {
-      document.head.removeChild(script)
+      if (document.head.contains(script)) {
+        document.head.removeChild(script)
+      }
     }
   }, [])
 
@@ -170,17 +171,22 @@ export default function CareersPage() {
       return
     }
 
-    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
-
-    if (!recaptchaResponse) {
-      setError(t.errorRecaptcha)
-      return
-    }
-
     setIsSubmitting(true)
     setError("")
 
     try {
+      // Get reCAPTCHA v3 token
+      const grecaptcha = (window as any).grecaptcha
+      if (!grecaptcha) {
+        setError("reCAPTCHA is not loaded. Please refresh the page.")
+        setIsSubmitting(false)
+        return
+      }
+
+      const token = await grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT", {
+        action: "careers",
+      })
+
       const formDataToSend = new FormData()
       formDataToSend.append("name", formData.name)
       formDataToSend.append("email", formData.email)
@@ -188,7 +194,7 @@ export default function CareersPage() {
       formDataToSend.append("experience", formData.experience)
       formDataToSend.append("message", formData.message)
       formDataToSend.append("type", "career")
-      formDataToSend.append("recaptchaToken", recaptchaResponse)
+      formDataToSend.append("recaptchaToken", token)
 
       files.forEach((file) => {
         formDataToSend.append("files", file)
@@ -463,8 +469,8 @@ export default function CareersPage() {
                 </div>
               )}
 
-              {/* reCAPTCHA */}
-              <div ref={recaptchaRef} className="g-recaptcha" data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT" />
+              {/* reCAPTCHA v3 - Invisible */}
+              {/* reCAPTCHA v3 runs silently in the background */}
 
               {/* Error Message */}
               {error && <p className="text-red-500 text-sm">{error}</p>}
