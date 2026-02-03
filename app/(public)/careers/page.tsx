@@ -11,16 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
-import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
-
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void
-      execute: (siteKey: string, options: { action: string }) => Promise<string>
-    }
-  }
-}
 
 const content = {
   en: {
@@ -116,8 +106,7 @@ export default function CareersPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [recaptchaSiteKey, setRecaptchaSiteKey] = useState<string>("")
-  const scriptLoaded = useRef(false)
+  const recaptchaRef = useRef<HTMLDivElement>(null)
 
   // Theme detection for styling
   const [isDarkTheme, setIsDarkTheme] = useState(false)
@@ -132,29 +121,17 @@ export default function CareersPage() {
     return () => observer.disconnect()
   }, [])
 
-  // Fetch reCAPTCHA v3 site key from server action
   useEffect(() => {
-    const fetchSiteKey = async () => {
-      try {
-        const key = await getRecaptchaSiteKey()
-        setRecaptchaSiteKey(key)
-      } catch (error) {
-        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
-      }
-    }
-    fetchSiteKey()
-  }, [])
-
-  // Load reCAPTCHA v3 script
-  useEffect(() => {
-    if (scriptLoaded.current || !recaptchaSiteKey) return
-
     const script = document.createElement("script")
-    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`
+    script.src = "https://www.google.com/recaptcha/api.js"
     script.async = true
+    script.defer = true
     document.head.appendChild(script)
-    scriptLoaded.current = true
-  }, [recaptchaSiteKey])
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -193,8 +170,9 @@ export default function CareersPage() {
       return
     }
 
-    // Check if reCAPTCHA v3 is ready
-    if (!recaptchaSiteKey || !window.grecaptcha) {
+    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
+
+    if (!recaptchaResponse) {
       setError(t.errorRecaptcha)
       return
     }
@@ -203,9 +181,6 @@ export default function CareersPage() {
     setError("")
 
     try {
-      // Execute reCAPTCHA v3 to get token
-      const recaptchaToken = await window.grecaptcha.execute(recaptchaSiteKey, { action: "career_application" })
-
       const formDataToSend = new FormData()
       formDataToSend.append("name", formData.name)
       formDataToSend.append("email", formData.email)
@@ -213,7 +188,7 @@ export default function CareersPage() {
       formDataToSend.append("experience", formData.experience)
       formDataToSend.append("message", formData.message)
       formDataToSend.append("type", "career")
-      formDataToSend.append("recaptchaToken", recaptchaToken)
+      formDataToSend.append("recaptchaToken", recaptchaResponse)
 
       files.forEach((file) => {
         formDataToSend.append("files", file)
@@ -487,6 +462,9 @@ export default function CareersPage() {
                   ))}
                 </div>
               )}
+
+              {/* reCAPTCHA */}
+              <div ref={recaptchaRef} className="g-recaptcha" data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT" />
 
               {/* Error Message */}
               {error && <p className="text-red-500 text-sm">{error}</p>}
