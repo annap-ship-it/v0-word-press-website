@@ -8,10 +8,55 @@ export async function POST(request: NextRequest) {
     const name = formData.get("name") as string
     const email = formData.get("email") as string
     const message = formData.get("message") as string
+    const recaptchaToken = formData.get("recaptchaToken") as string
 
     // Validate required fields
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email, and message are required" }, { status: 400 })
+    }
+
+    // Validate reCAPTCHA token
+    if (!recaptchaToken) {
+      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
+    }
+
+    // Verify reCAPTCHA token with Google
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY
+    if (!recaptchaSecret) {
+      console.error("[v0] RECAPTCHA_SECRET_KEY is not configured")
+      return NextResponse.json(
+        { error: "reCAPTCHA verification service is not configured" },
+        { status: 500 },
+      )
+    }
+
+    const verificationUrl = "https://www.google.com/recaptcha/api/siteverify"
+    const verificationResponse = await fetch(verificationUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `secret=${recaptchaSecret}&response=${recaptchaToken}`,
+    })
+
+    const verificationData = (await verificationResponse.json()) as {
+      success: boolean
+      score?: number
+      action?: string
+      challenge_ts?: string
+      hostname?: string
+      error_codes?: string[]
+    }
+
+    // For reCAPTCHA v3, check success and score (0.0 - 1.0, higher is better)
+    // You can adjust the threshold based on your needs (0.5 is a common threshold)
+    if (!verificationData.success || (verificationData.score !== undefined && verificationData.score < 0.5)) {
+      console.warn("[v0] reCAPTCHA verification failed:", {
+        success: verificationData.success,
+        score: verificationData.score,
+        errors: verificationData.error_codes,
+      })
+      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
     }
 
     // Validate email format
