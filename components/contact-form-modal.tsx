@@ -4,7 +4,6 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
-import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 import { X } from "lucide-react"
 
 interface ContactFormModalProps {
@@ -15,10 +14,7 @@ interface ContactFormModalProps {
 declare global {
   interface Window {
     grecaptcha: {
-      enterprise: {
-        execute: (siteKey: string, options: { action: string }) => Promise<string>
-        ready: (callback: () => void) => void
-      }
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
     }
   }
 }
@@ -29,39 +25,20 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
-  const [attachedFile, setAttachedFile] = useState<File | null>(null)
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([])
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null)
-  const [recaptchaSiteKey, setRecaptchaSiteKey] = useState<string | null>(null)
   const scriptLoaded = useRef(false)
-  const recaptchaRendered = useRef(false)
-  const recaptchaRef = useRef<HTMLDivElement | null>(null)
-  const [recaptchaWidgetId, setRecaptchaWidgetId] = useState<number | null>(null)
 
   const isDark = theme === "dark"
 
   useEffect(() => {
-    // Fetch reCAPTCHA site key from server action
-    async function fetchRecaptchaKey() {
-      try {
-        const siteKey = await getRecaptchaSiteKey()
-        if (siteKey) {
-          setRecaptchaSiteKey(siteKey)
-        }
-      } catch (error) {
-        console.error("[v0] Failed to fetch reCAPTCHA key:", error)
-      }
-    }
-    fetchRecaptchaKey()
-  }, [])
-
-  useEffect(() => {
     if (scriptLoaded.current) return
 
-    // Load reCAPTCHA Enterprise script
+    // Load reCAPTCHA v3 script
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/enterprise.js"
+    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"}`
     script.async = true
     script.defer = true
 
@@ -69,20 +46,39 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
     scriptLoaded.current = true
 
     return () => {
-      // Script doesn't need cleanup
+      if (document.head.contains(script)) {
+        document.head.removeChild(script)
+      }
     }
   }, [])
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || [])
+    const validExtensions = [".doc", ".docx", ".pdf", ".ppt", ".pptx"]
+    const maxSize = 3 * 1024 * 1024 // 3MB
+    const maxFiles = 3
+
+    const validFiles = selectedFiles.filter((file) => {
+      const ext = "." + file.name.split(".").pop()?.toLowerCase()
+      return validExtensions.includes(ext) && file.size <= maxSize
+    })
+
+    if (attachedFiles.length + validFiles.length > maxFiles) {
+      setSubmitStatus("error")
+      return
+    }
+
+    setAttachedFiles((prev) => [...prev, ...validFiles].slice(0, maxFiles))
+  }
+
+  const removeFile = (index: number) => {
+    setAttachedFiles((prev) => prev.filter((_, i) => i !== index))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!acceptTerms) {
-      setSubmitStatus("error")
-      return
-    }
-
-    // Validate reCAPTCHA is ready
-    if (!recaptchaSiteKey || !window.grecaptcha?.enterprise?.execute) {
       setSubmitStatus("error")
       return
     }
@@ -95,20 +91,28 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
     setIsSubmitting(true)
 
     try {
-      // Execute reCAPTCHA Enterprise to get token
-      const recaptchaToken = await window.grecaptcha.enterprise.execute(
-        recaptchaSiteKey,
-        { action: "CONTACT_FORM" }
+      // Get reCAPTCHA v3 token
+      const grecaptcha = (window as any).grecaptcha
+      if (!grecaptcha) {
+        setSubmitStatus("error")
+        setIsSubmitting(false)
+        return
+      }
+
+      const token = await grecaptcha.execute(
+        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT",
+        { action: "contact" }
       )
 
       const formData = new FormData()
       formData.append("name", name)
       formData.append("email", email)
       formData.append("message", message)
-      formData.append("recaptchaToken", recaptchaToken)
-      if (attachedFile) {
-        formData.append("file", attachedFile)
-      }
+      formData.append("recaptchaToken", token)
+
+      attachedFiles.forEach((file) => {
+        formData.append("files", file)
+      })
 
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -120,7 +124,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         setName("")
         setEmail("")
         setMessage("")
-        setAttachedFile(null)
+        setAttachedFiles([])
         setAcceptTerms(false)
         setTimeout(() => {
           onClose()
@@ -317,8 +321,53 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
               />
             </div>
 
+            {/* Attached Files */}
+            {attachedFiles.length > 0 && (
+              <div className="mt-4">
+                <label
+                  style={{
+                    color: isDark ? "#FFFFFF" : "#212121",
+                    fontFamily: "Onest",
+                    fontWeight: 400,
+                    fontSize: "clamp(13px, 1vw, 16px)",
+                  }}
+                >
+                  {t.attachFileOptional}
+                </label>
+                <div className="mt-2 space-y-2">
+                  {attachedFiles.map((file, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg"
+                      style={{
+                        backgroundColor: isDark ? "#373737" : "#F5F5F5",
+                        borderColor: isDark ? "#626262" : "#E0E0E0",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          fontFamily: "Onest",
+                          fontSize: "clamp(12px, 1vw, 14px)",
+                        }}
+                      >
+                        {file.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        style={{ color: "#FF6200" }}
+                      >
+                        <X size={18} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Send button and File attachment */}
-            <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -334,15 +383,16 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                   minWidth: "150px",
                 }}
               >
-                {isSubmitting ? t.loading : t.send}
+                {isSubmitting ? "Sending..." : t.send}
               </button>
 
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="file"
-                  onChange={(e) => setAttachedFile(e.target.files?.[0] || null)}
+                  onChange={handleFileSelect}
+                  multiple
                   className="hidden"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.ptx"
+                  accept=".pdf,.doc,.docx,.ppt,.pptx"
                 />
                 <span
                   style={{
@@ -377,8 +427,16 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
             </div>
 
             {/* Status Messages */}
-            {submitStatus === "success" && <p className="text-green-500 text-center">{t.successMessage}</p>}
-            {submitStatus === "error" && <p className="text-red-500 text-center">{t.errorMessage}</p>}
+            {submitStatus === "success" && (
+              <p className="text-green-500 text-center" style={{ color: "#4CAF50" }}>
+                {t.successMessage}
+              </p>
+            )}
+            {submitStatus === "error" && (
+              <p className="text-red-500 text-center" style={{ color: "#F44336" }}>
+                {t.errorMessage}
+              </p>
+            )}
           </form>
 
           {/* Right Column: Image (desktop only) */}
@@ -421,9 +479,9 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
           </div>
         </div>
 
-        {/* SECTION 3: Acceptance Terms + reCAPTCHA (2 columns on desktop, 1 column on mobile) */}
+        {/* SECTION 3: Acceptance Terms */}
         <style>{`
-          .acceptance-recaptcha-grid {
+          .acceptance-grid {
             display: grid;
             grid-template-columns: 350px 407px;
             gap: 32px;
@@ -433,14 +491,14 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
             border-top: 1px solid ${isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"};
           }
           @media (max-width: 1023px) {
-            .acceptance-recaptcha-grid {
+            .acceptance-grid {
               grid-template-columns: 1fr;
               gap: 24px;
             }
           }
         `}</style>
 
-        <div className="acceptance-recaptcha-grid">
+        <div className="acceptance-grid">
           {/* Left Column: Checkbox + Terms Text */}
           <div>
             <div
@@ -495,9 +553,6 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
               {t.bySubmitting} {t.mayEcho}
             </p>
           </div>
-
-          {/* Right Column: reCAPTCHA */}
-          <div style={{ display: "none" }} />
         </div>
       </div>
     </div>
