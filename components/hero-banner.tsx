@@ -53,8 +53,8 @@ export function HeroBanner() {
 
   return (
     <>
-      <section className="hero-banner relative w-full mx-auto min-h-screen flex flex-col items-center justify-center">
-        <div className="absolute inset-0 w-full h-full">
+      <section className="hero-banner relative w-full mx-auto min-h-screen flex flex-col items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
           <LiquidEther
             colors={theme === "dark" ? ["#FF6200", "#FFFFFF", "#FFB43F"] : ["#FF6200", "#000000", "#FFA57D"]}
             autoIntensity={2.4}
