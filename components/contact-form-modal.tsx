@@ -91,18 +91,32 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
     setIsSubmitting(true)
 
     try {
+      // Wait for grecaptcha to be available
+      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+      if (!siteKey) {
+        setSubmitStatus("error")
+        setIsSubmitting(false)
+        return
+      }
+
       // Get reCAPTCHA v3 token
-      const grecaptcha = (window as any).grecaptcha
+      let grecaptcha = (window as any).grecaptcha
+      
+      // Wait up to 3 seconds for grecaptcha to load
+      let attempts = 0
+      while (!grecaptcha && attempts < 30) {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        grecaptcha = (window as any).grecaptcha
+        attempts++
+      }
+
       if (!grecaptcha) {
         setSubmitStatus("error")
         setIsSubmitting(false)
         return
       }
 
-      const token = await grecaptcha.execute(
-        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT",
-        { action: "contact" }
-      )
+      const token = await grecaptcha.execute(siteKey, { action: "contact" })
 
       const formData = new FormData()
       formData.append("name", name)
@@ -134,7 +148,6 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         setSubmitStatus("error")
       }
     } catch (error) {
-      console.error("[v0] Contact form error:", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
