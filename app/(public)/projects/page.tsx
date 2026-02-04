@@ -469,20 +469,21 @@ export default function ProjectsPage() {
 
             return (
               <AnimatedCard key={project.id} delay={index * 100}>
-                <Link href={`/projects/${project.slug}`} className="block group">
-                  <div
-                    className="rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-lg"
-                    style={{
-                      background: isDark
-                        ? isReverse
-                          ? "linear-gradient(70.46deg, #212121 57.09%, #FF6200 125.28%)"
-                          : "linear-gradient(292.61deg, #212121 56.12%, #FF6200 111.19%)"
-                        : isReverse
-                          ? "linear-gradient(73.52deg, #FAF9F8 33.1%, #FFFFFF 75.27%, #FF6200 120.85%)"
-                          : "linear-gradient(283.85deg, #FAF9F8 45%, #FFFFFF 77.04%, #FF6200 110.33%)",
-                      boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
+                <div id={project.slug} className="scroll-mt-32">
+                  <Link href={`/projects/${project.slug}`} className="block group">
+                    <div
+                      className="rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-lg"
+                      style={{
+                        background: isDark
+                          ? isReverse
+                            ? "linear-gradient(70.46deg, #212121 57.09%, #FF6200 125.28%)"
+                            : "linear-gradient(292.61deg, #212121 56.12%, #FF6200 111.19%)"
+                          : isReverse
+                            ? "linear-gradient(73.52deg, #FAF9F8 33.1%, #FFFFFF 75.27%, #FF6200 120.85%)"
+                            : "linear-gradient(283.85deg, #FAF9F8 45%, #FFFFFF 77.04%, #FF6200 110.33%)",
+                        boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
                     <div
                       className={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 ${isReverse ? "lg:flex-row-reverse" : ""}`}
                     >
@@ -587,8 +588,8 @@ export default function ProjectsPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </AnimatedCard>
             )
           })}
