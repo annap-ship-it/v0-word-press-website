@@ -1541,7 +1541,6 @@ export function Navigation() {
                   </div>
                 </div>
               )}
-            </div>
 
             {/* Blog Link */}
             <Link
