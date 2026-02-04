@@ -696,7 +696,7 @@ export function Navigation() {
                         display: "flex",
                         justifyContent: "center",
                       }}
-                      >
+                    >
                         <Link
                           href="/services"
                           className="relative overflow-hidden transition-all duration-300 ease-out"
