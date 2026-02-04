@@ -152,56 +152,47 @@ export function Navigation() {
 
               {companyOpen && (
                 <div
-                  className="absolute left-0 animate-in fade-in"
+                  className="absolute z-50"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                   style={{
-                    top: "46px", // 52px (nav height) - 6px (button padding) = 46px to touch nav bar edge
-                    animationTimingFunction: "ease-out",
-                    animationDuration: "300ms",
+                    top: "46px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "auto",
+                    minWidth: "552px",
+                    maxWidth: "calc(100vw - 40px)",
                   }}
                 >
-                  {/* Polygon positioned to start exactly at the dropdown container edge */}
+                  {/* Triangle pointer */}
                   <div
                     className="absolute"
                     style={{
-                      top: "0px", // Start exactly at the dropdown container edge
-                      left: "81px",
-                      width: "24px",
-                      height: "17px",
-                      zIndex: 20,
+                      top: "-11px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "11px solid transparent",
+                      borderRight: "11px solid transparent",
+                      borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
                     }}
-                  >
-                    <svg
-                      width="24"
-                      height="17"
-                      viewBox="0 0 24 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        display: "block",
-                      }}
-                    >
-                      <path
-                        d="M10.7655 0.480262C11.2677 -0.160087 12.2323 -0.160087 12.7345 0.480262L23.2017 13.7472C23.8518 14.5831 23.3039 15.8696 22.2672 15.8696H1.23282C0.196124 15.8696 -0.351794 14.5831 0.29833 13.7472L10.7655 0.480262Z"
-                        fill={isDark ? "#212121" : "#FFFFFF"}
-                      />
-                    </svg>
-                  </div>
+                  />
 
                   {/* Dropdown content */}
                   <div
-                    className="relative overflow-hidden"
                     style={{
-                      marginTop: "17px",
-                      width: "552px",
-                      height: "196px",
+                      width: "100%",
+                      minHeight: "196px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
+                      padding: "20px",
+                      display: "flex",
                       boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
                     }}
                   >
-                    <div className="flex h-full">
-                      {/* Left column - Menu items */}
-                      <div className="flex-1 p-6 flex flex-col justify-center gap-4">
+                    {/* Left column - Menu items */}
+                    <div className="flex-1 flex flex-col justify-center gap-4">
                         <Link
                           href="/about"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
@@ -475,55 +466,47 @@ export function Navigation() {
 
               {servicesOpen && (
                 <div
-                  className="absolute left-0 animate-in fade-in"
+                  className="absolute z-50"
+                  onMouseEnter={handleServicesMouseEnter}
+                  onMouseLeave={handleServicesMouseLeave}
                   style={{
                     top: "46px",
-                    animationTimingFunction: "ease-out",
-                    animationDuration: "300ms",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "auto",
+                    minWidth: "600px",
+                    maxWidth: "calc(100vw - 40px)",
                   }}
                 >
-                  {/* Polygon arrow */}
+                  {/* Triangle pointer */}
                   <div
                     className="absolute"
                     style={{
-                      top: "0px",
-                      left: "81px",
-                      width: "24px",
-                      height: "17px",
-                      zIndex: 20,
+                      top: "-11px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "11px solid transparent",
+                      borderRight: "11px solid transparent",
+                      borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
                     }}
-                  >
-                    <svg
-                      width="24"
-                      height="17"
-                      viewBox="0 0 24 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        display: "block",
-                      }}
-                    >
-                      <path
-                        d="M10.7655 0.480262C11.2677 -0.160087 12.2323 -0.160087 12.7345 0.480262L23.2017 13.7472C23.8518 14.5831 23.3039 15.8696 22.2672 15.8696H1.23282C0.196124 15.8696 -0.351794 14.5831 0.29833 13.7472L10.7655 0.480262Z"
-                        fill={isDark ? "#212121" : "#FFFFFF"}
-                      />
-                    </svg>
-                  </div>
+                  />
 
                   {/* Dropdown content */}
                   <div
-                    className="relative overflow-hidden"
                     style={{
-                      marginTop: "17px",
-                      width: "552px",
-                      height: "207px",
+                      width: "100%",
+                      minHeight: "207px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
+                      padding: "20px",
+                      display: "flex",
+                      gap: "20px",
                       boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
                     }}
                   >
-                    <div className="flex h-full p-5 gap-5">
-                      {/* Column 1 - 30% width */}
+                    {/* Columns layout */}
                       <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                         <Link
                           href="/services#custom-web-solutions"
