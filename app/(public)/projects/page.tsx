@@ -484,9 +484,9 @@ export default function ProjectsPage() {
                         boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
                       }}
                     >
-                    <div
-                      className={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 ${isReverse ? "lg:flex-row-reverse" : ""}`}
-                    >
+                      <div
+                        className={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 ${isReverse ? "lg:flex-row-reverse" : ""}`}
+                      >
                       {/* Image */}
                       <div className={`${isReverse ? "lg:order-2" : "lg:order-1"}`}>
                         <div className="relative w-full aspect-[16/10] rounded-[14px] overflow-hidden">
@@ -587,6 +587,7 @@ export default function ProjectsPage() {
                           )}
                         </div>
                       </div>
+                    </div>
                     </div>
                   </Link>
                 </div>
