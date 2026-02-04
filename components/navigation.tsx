@@ -191,7 +191,6 @@ export function Navigation() {
                   <div
                     className="relative overflow-hidden"
                     style={{
-                      marginTop: "17px",
                       width: "552px",
                       height: "196px",
                       borderRadius: "14px",
@@ -514,7 +513,6 @@ export function Navigation() {
                   <div
                     className="relative overflow-hidden"
                     style={{
-                      marginTop: "17px",
                       width: "552px",
                       height: "207px",
                       borderRadius: "14px",
