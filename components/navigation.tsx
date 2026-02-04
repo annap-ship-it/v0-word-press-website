@@ -133,11 +133,12 @@ export function Navigation() {
                   <div
                     style={{
                       width: "100%",
-                      minHeight: "196px",
+                      minHeight: "300px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
                       padding: "20px",
                       display: "flex",
+                      gap: "30px",
                       boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
                     }}
                   >
@@ -218,6 +219,38 @@ export function Navigation() {
                         <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.careers}</span>
                       </Link>
                     </div>
+
+                    {/* Right column with content and image */}
+                    <div className="flex-1 flex flex-col justify-center items-center text-center gap-4">
+                      <div
+                        style={{
+                          width: "200px",
+                          height: "200px",
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, #FF6200 0%, #FFB366 100%)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <span style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 500 }}>20+ Countries</span>
+                      </div>
+                      <button
+                        style={{
+                          padding: "10px 24px",
+                          borderRadius: "24px",
+                          border: "2px solid #FF6200",
+                          background: "transparent",
+                          color: "#FF6200",
+                          fontFamily: "Onest",
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Read All Reviews
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -288,90 +321,192 @@ export function Navigation() {
                   <div
                     style={{
                       width: "100%",
-                      minHeight: "196px",
+                      minHeight: "300px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
                       padding: "20px",
                       display: "flex",
+                      gap: "30px",
                       boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
                     }}
                   >
-                    {/* Left column */}
-                    <div className="flex-1 flex flex-col justify-center gap-4">
+                    {/* Left and middle columns - 2 columns of services */}
+                    <div className="flex-1 grid grid-cols-2 gap-4">
                       <Link
                         href="/services#custom-web"
-                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out group"
                         style={{
-                          width: "186px",
                           height: "44px",
                           padding: "10px",
                           borderRadius: "8px",
                           background: isDark ? "#212121" : "#FFFFFF",
                           fontFamily: "Onest",
                           fontWeight: 500,
-                          fontSize: "16px",
+                          fontSize: "14px",
                           lineHeight: "110%",
                           letterSpacing: "-0.03em",
                         }}
                       >
                         <div
-                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
                           style={{ background: "#FF6200" }}
                         >
-                          <Building2 className="h-4 w-4 text-white" />
+                          <Building2 className="h-3 w-3 text-white" />
                         </div>
-                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Web Solutions</span>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Custom web solutions</span>
+                      </Link>
+
+                      <Link
+                        href="/services#qa"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out group"
+                        style={{
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "14px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Award className="h-3 w-3 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Manual and Automation QA</span>
                       </Link>
 
                       <Link
                         href="/services#mobile"
-                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out group"
                         style={{
-                          width: "186px",
                           height: "44px",
                           padding: "10px",
                           borderRadius: "8px",
                           background: isDark ? "#212121" : "#FFFFFF",
                           fontFamily: "Onest",
                           fontWeight: 500,
-                          fontSize: "16px",
+                          fontSize: "14px",
                           lineHeight: "110%",
                           letterSpacing: "-0.03em",
                         }}
                       >
                         <div
-                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
                           style={{ background: "#FF6200" }}
                         >
-                          <Award className="h-4 w-4 text-white" />
+                          <Briefcase className="h-3 w-3 text-white" />
                         </div>
-                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Mobile Apps</span>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Mobile applications</span>
+                      </Link>
+
+                      <Link
+                        href="/services#devops"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out group"
+                        style={{
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "14px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Building2 className="h-3 w-3 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>DevOps</span>
+                      </Link>
+
+                      <Link
+                        href="/services#analytics"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out group"
+                        style={{
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "14px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Award className="h-3 w-3 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Data Analytics</span>
                       </Link>
 
                       <Link
                         href="/services#design"
-                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        className="flex items-center gap-3 transition-all duration-300 ease-out group"
                         style={{
-                          width: "186px",
                           height: "44px",
                           padding: "10px",
                           borderRadius: "8px",
                           background: isDark ? "#212121" : "#FFFFFF",
                           fontFamily: "Onest",
                           fontWeight: 500,
-                          fontSize: "16px",
+                          fontSize: "14px",
                           lineHeight: "110%",
                           letterSpacing: "-0.03em",
                         }}
                       >
                         <div
-                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
                           style={{ background: "#FF6200" }}
                         >
-                          <Briefcase className="h-4 w-4 text-white" />
+                          <Briefcase className="h-3 w-3 text-white" />
                         </div>
-                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>UX/UI Design</span>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>UI/UX and Graphic Design</span>
                       </Link>
+                    </div>
+
+                    {/* Right column with image and button */}
+                    <div className="flex-1 flex flex-col justify-center items-center gap-4">
+                      <div
+                        style={{
+                          width: "180px",
+                          height: "200px",
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, #FF6200 0%, #FFB366 100%)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <span style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 500 }}>All Services</span>
+                      </div>
+                      <button
+                        style={{
+                          padding: "10px 24px",
+                          borderRadius: "24px",
+                          border: "2px solid #FF6200",
+                          background: "transparent",
+                          color: "#FF6200",
+                          fontFamily: "Onest",
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          cursor: "pointer",
+                        }}
+                      >
+                        View All
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -443,90 +578,69 @@ export function Navigation() {
                   <div
                     style={{
                       width: "100%",
-                      minHeight: "196px",
+                      minHeight: "300px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
                       padding: "20px",
                       display: "flex",
+                      gap: "30px",
                       boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
                     }}
                   >
-                    {/* Left column */}
-                    <div className="flex-1 flex flex-col justify-center gap-4">
-                      <Link
-                        href="/projects#ecommerce"
-                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                    {/* Left column with image */}
+                    <div className="flex-1 flex items-center justify-center">
+                      <div
                         style={{
-                          width: "186px",
-                          height: "44px",
-                          padding: "10px",
-                          borderRadius: "8px",
-                          background: isDark ? "#212121" : "#FFFFFF",
-                          fontFamily: "Onest",
-                          fontWeight: 500,
-                          fontSize: "16px",
-                          lineHeight: "110%",
-                          letterSpacing: "-0.03em",
+                          width: "200px",
+                          height: "240px",
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, #FF6200 0%, #FFB366 100%)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        <div
-                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-                          style={{ background: "#FF6200" }}
-                        >
-                          <Building2 className="h-4 w-4 text-white" />
-                        </div>
-                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>E-commerce</span>
-                      </Link>
+                        <span style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 500, textAlign: "center" }}>Multi-brand E-commerce Landing Pages</span>
+                      </div>
+                    </div>
 
-                      <Link
-                        href="/projects#saas"
-                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
-                        style={{
-                          width: "186px",
-                          height: "44px",
-                          padding: "10px",
-                          borderRadius: "8px",
-                          background: isDark ? "#212121" : "#FFFFFF",
-                          fontFamily: "Onest",
-                          fontWeight: 500,
-                          fontSize: "16px",
-                          lineHeight: "110%",
-                          letterSpacing: "-0.03em",
-                        }}
-                      >
-                        <div
-                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-                          style={{ background: "#FF6200" }}
-                        >
-                          <Award className="h-4 w-4 text-white" />
-                        </div>
-                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>SaaS</span>
-                      </Link>
+                    {/* Right column with project list and button */}
+                    <div className="flex-1 flex flex-col justify-center gap-3">
+                      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                        <h3 style={{ fontFamily: "Onest", fontWeight: 600, fontSize: "16px", color: isDark ? "#FFFFFF" : "#212121", margin: 0 }}>
+                          Multi-brand eCommerce Landing Pages
+                        </h3>
+                        <p style={{ fontFamily: "Onest", fontWeight: 400, fontSize: "14px", color: isDark ? "#CCCCCC" : "#666666", margin: 0 }}>
+                          Statistics Platform
+                        </p>
+                        <p style={{ fontFamily: "Onest", fontWeight: 400, fontSize: "14px", color: isDark ? "#CCCCCC" : "#666666", margin: 0 }}>
+                          Sensor Infobox
+                        </p>
+                        <p style={{ fontFamily: "Onest", fontWeight: 400, fontSize: "14px", color: isDark ? "#CCCCCC" : "#666666", margin: 0 }}>
+                          High-performance eCommerce platform
+                        </p>
+                      </div>
 
-                      <Link
-                        href="/projects#all"
-                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
-                        style={{
-                          width: "186px",
-                          height: "44px",
-                          padding: "10px",
-                          borderRadius: "8px",
-                          background: isDark ? "#212121" : "#FFFFFF",
-                          fontFamily: "Onest",
-                          fontWeight: 500,
-                          fontSize: "16px",
-                          lineHeight: "110%",
-                          letterSpacing: "-0.03em",
-                        }}
-                      >
-                        <div
-                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-                          style={{ background: "#FF6200" }}
+                      <div style={{ marginTop: "12px" }}>
+                        <h4 style={{ fontFamily: "Onest", fontWeight: 600, fontSize: "16px", color: isDark ? "#FFFFFF" : "#212121", margin: "0 0 12px 0" }}>
+                          A Portfolio of Our Flagship Projects
+                        </h4>
+                        <button
+                          style={{
+                            padding: "10px 24px",
+                            borderRadius: "24px",
+                            border: "2px solid #FF6200",
+                            background: "transparent",
+                            color: "#FF6200",
+                            fontFamily: "Onest",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                            cursor: "pointer",
+                          }}
                         >
-                          <Briefcase className="h-4 w-4 text-white" />
-                        </div>
-                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>All Projects</span>
-                      </Link>
+                          Explore All Portfolio
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
