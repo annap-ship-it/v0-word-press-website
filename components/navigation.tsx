@@ -163,7 +163,7 @@ export function Navigation() {
                   <div
                     className="absolute"
                     style={{
-                      top: "0px", // Start exactly at the dropdown container edge
+                      top: "-17px", // Position arrow above the dropdown to touch nav bar edge
                       left: "81px",
                       width: "24px",
                       height: "17px",
@@ -191,7 +191,6 @@ export function Navigation() {
                   <div
                     className="relative overflow-hidden"
                     style={{
-                      marginTop: "17px",
                       width: "552px",
                       height: "196px",
                       borderRadius: "14px",
@@ -486,7 +485,7 @@ export function Navigation() {
                   <div
                     className="absolute"
                     style={{
-                      top: "0px",
+                      top: "-17px", // Position arrow above the dropdown to touch nav bar edge
                       left: "81px",
                       width: "24px",
                       height: "17px",
@@ -514,7 +513,6 @@ export function Navigation() {
                   <div
                     className="relative overflow-hidden"
                     style={{
-                      marginTop: "17px",
                       width: "552px",
                       height: "207px",
                       borderRadius: "14px",
