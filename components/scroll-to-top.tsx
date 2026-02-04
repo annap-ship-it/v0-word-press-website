@@ -41,7 +41,7 @@ export function ScrollToTop() {
         >
 <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect x="0.5" y="0.5" width="43" height="43" rx="21.5" fill="#FF62001A" stroke="#FF6200"></rect>
-  <path d="M21.3529 29.7648V14.2354M21.3529 14.2354L28.4706 21.6895M21.3529 14.2354L14.2353 21.6895" stroke="#FF6200" strokewidth="1.5" strokelinecap="round" strokelinejoin="round"></path>
+  <path d="M21.3529 29.7648V14.2354M21.3529 14.2354L28.4706 21.6895M21.3529 14.2354L14.2353 21.6895" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
 </svg>
         </button>
       )}
