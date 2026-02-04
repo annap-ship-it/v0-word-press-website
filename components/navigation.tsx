@@ -692,10 +692,10 @@ export function Navigation() {
                     <div
                       className="relative"
                       style={{
-                          width: "40%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
+                        width: "40%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
                       >
                         <Link
                           href="/services"
