@@ -1624,6 +1624,7 @@ export function Navigation() {
               {/* Using t.contactUs from useLocale hook instead of currentTranslations */}
               {t.contactUs}
             </button>
+          </div>
         )}
       </nav>
     </>
