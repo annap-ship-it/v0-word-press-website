@@ -106,7 +106,7 @@ export function Navigation() {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   style={{
-                    top: "46px",
+                    top: "calc(100% + 8px)",
                     left: "50%",
                     transform: "translateX(-50%)",
                     width: "auto",
@@ -223,9 +223,322 @@ export function Navigation() {
               )}
             </div>
 
+            {/* Services Dropdown */}
+            <div className="relative" onMouseEnter={() => {
+              if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+              setServicesOpen(true)
+            }} onMouseLeave={() => {
+              closeTimerRef.current = setTimeout(() => setServicesOpen(false), 200)
+            }}>
+              <button
+                onClick={() => setServicesOpen(!servicesOpen)}
+                className="flex items-center gap-1 transition-colors whitespace-nowrap"
+                style={{
+                  fontFamily: "Onest",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                  color: textColor,
+                }}
+              >
+                {t.services}
+                {servicesOpen ? (
+                  <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
+                ) : (
+                  <ChevronDown className="h-4 w-4" style={{ color: textColor }} />
+                )}
+              </button>
+
+              {servicesOpen && (
+                <div
+                  className="absolute z-50"
+                  onMouseEnter={() => {
+                    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+                    setServicesOpen(true)
+                  }}
+                  onMouseLeave={() => {
+                    closeTimerRef.current = setTimeout(() => setServicesOpen(false), 200)
+                  }}
+                  style={{
+                    top: "calc(100% + 8px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "auto",
+                    minWidth: "552px",
+                    maxWidth: "calc(100vw - 40px)",
+                  }}
+                >
+                  {/* Triangle pointer */}
+                  <div
+                    className="absolute"
+                    style={{
+                      top: "-11px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "11px solid transparent",
+                      borderRight: "11px solid transparent",
+                      borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
+                    }}
+                  />
+
+                  {/* Dropdown content */}
+                  <div
+                    style={{
+                      width: "100%",
+                      minHeight: "196px",
+                      borderRadius: "14px",
+                      background: isDark ? "#212121" : "#FFFFFF",
+                      padding: "20px",
+                      display: "flex",
+                      boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
+                    }}
+                  >
+                    {/* Left column */}
+                    <div className="flex-1 flex flex-col justify-center gap-4">
+                      <Link
+                        href="/services#custom-web"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Building2 className="h-4 w-4 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Web Solutions</span>
+                      </Link>
+
+                      <Link
+                        href="/services#mobile"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Award className="h-4 w-4 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>Mobile Apps</span>
+                      </Link>
+
+                      <Link
+                        href="/services#design"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Briefcase className="h-4 w-4 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>UX/UI Design</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Projects Dropdown */}
+            <div className="relative" onMouseEnter={() => {
+              if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+              setProjectsOpen(true)
+            }} onMouseLeave={() => {
+              closeTimerRef.current = setTimeout(() => setProjectsOpen(false), 200)
+            }}>
+              <button
+                onClick={() => setProjectsOpen(!projectsOpen)}
+                className="flex items-center gap-1 transition-colors whitespace-nowrap"
+                style={{
+                  fontFamily: "Onest",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                  color: textColor,
+                }}
+              >
+                {t.projects}
+                {projectsOpen ? (
+                  <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
+                ) : (
+                  <ChevronDown className="h-4 w-4" style={{ color: textColor }} />
+                )}
+              </button>
+
+              {projectsOpen && (
+                <div
+                  className="absolute z-50"
+                  onMouseEnter={() => {
+                    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+                    setProjectsOpen(true)
+                  }}
+                  onMouseLeave={() => {
+                    closeTimerRef.current = setTimeout(() => setProjectsOpen(false), 200)
+                  }}
+                  style={{
+                    top: "calc(100% + 8px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "auto",
+                    minWidth: "552px",
+                    maxWidth: "calc(100vw - 40px)",
+                  }}
+                >
+                  {/* Triangle pointer */}
+                  <div
+                    className="absolute"
+                    style={{
+                      top: "-11px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "11px solid transparent",
+                      borderRight: "11px solid transparent",
+                      borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
+                    }}
+                  />
+
+                  {/* Dropdown content */}
+                  <div
+                    style={{
+                      width: "100%",
+                      minHeight: "196px",
+                      borderRadius: "14px",
+                      background: isDark ? "#212121" : "#FFFFFF",
+                      padding: "20px",
+                      display: "flex",
+                      boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
+                    }}
+                  >
+                    {/* Left column */}
+                    <div className="flex-1 flex flex-col justify-center gap-4">
+                      <Link
+                        href="/projects#ecommerce"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Building2 className="h-4 w-4 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>E-commerce</span>
+                      </Link>
+
+                      <Link
+                        href="/projects#saas"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Award className="h-4 w-4 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>SaaS</span>
+                      </Link>
+
+                      <Link
+                        href="/projects#all"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                      >
+                        <div
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
+                        >
+                          <Briefcase className="h-4 w-4 text-white" />
+                        </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>All Projects</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Navigation links */}
             <Link href="/blog" style={{ color: textColor, textDecoration: "none", fontSize: "16px" }}>
               {t.blog}
+            </Link>
+            <Link href="/careers" style={{ color: textColor, textDecoration: "none", fontSize: "16px" }}>
+              {t.careers}
             </Link>
             <ThemeToggle />
             <LocaleToggle />
