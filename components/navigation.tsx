@@ -1625,6 +1625,7 @@ export function Navigation() {
               {t.contactUs}
             </button>
           </div>
+        </div>
         )}
       </nav>
     </>
