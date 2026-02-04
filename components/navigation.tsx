@@ -193,248 +193,242 @@ export function Navigation() {
                   >
                     {/* Left column - Menu items */}
                     <div className="flex-1 flex flex-col justify-center gap-4">
-                        <Link
-                          href="/about"
-                          className="flex items-center gap-5 transition-all duration-300 ease-out group"
-                          style={{
-                            width: "186px",
-                            height: "44px",
-                            padding: "10px",
-                            borderRadius: "8px",
-                            background: isDark ? "#212121" : "#FFFFFF",
-                            fontFamily: "Onest",
-                            fontWeight: 500,
-                            fontSize: "16px",
-                            lineHeight: "110%",
-                            letterSpacing: "-0.03em",
-                          }}
-                          onMouseDown={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "1px solid #FF620033"
-                          }}
-                          onMouseUp={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "none"
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isDark ? "#212121" : "#FFFFFF"
-                            e.currentTarget.style.border = "none"
-                          }}
-                        >
-                          <div
-                            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-                            style={{ background: "#FF6200" }}
-                          >
-                            <Building2 className="h-4 w-4 text-white" />
-                          </div>
-                          {/* Using t.aboutUs from useLocale hook instead of currentTranslations */}
-                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.aboutUs}</span>
-                        </Link>
-
-                        <Link
-                          href="/experience"
-                          className="flex items-center gap-5 transition-all duration-300 ease-out group"
-                          style={{
-                            width: "186px",
-                            height: "44px",
-                            padding: "10px",
-                            borderRadius: "8px",
-                            background: isDark ? "#212121" : "#FFFFFF",
-                            fontFamily: "Onest",
-                            fontWeight: 500,
-                            fontSize: "16px",
-                            lineHeight: "110%",
-                            letterSpacing: "-0.03em",
-                          }}
-                          onMouseDown={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "1px solid #FF620033"
-                          }}
-                          onMouseUp={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "none"
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isDark ? "#212121" : "#FFFFFF"
-                            e.currentTarget.style.border = "none"
-                          }}
-                        >
-                          <div
-                            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-                            style={{ background: "#FF6200" }}
-                          >
-                            <Award className="h-4 w-4 text-white" />
-                          </div>
-                          {/* Using t.ourExperience from useLocale hook instead of currentTranslations */}
-                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.ourExperience}</span>
-                        </Link>
-
-                        <Link
-                          href="/careers"
-                          className="flex items-center gap-5 transition-all duration-300 ease-out group"
-                          style={{
-                            width: "186px",
-                            height: "44px",
-                            padding: "10px",
-                            borderRadius: "8px",
-                            background: isDark ? "#212121" : "#FFFFFF",
-                            fontFamily: "Onest",
-                            fontWeight: 500,
-                            fontSize: "16px",
-                            lineHeight: "110%",
-                            letterSpacing: "-0.03em",
-                          }}
-                          onMouseDown={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "1px solid #FF620033"
-                          }}
-                          onMouseUp={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "none"
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isDark ? "#212121" : "#FFFFFF"
-                            e.currentTarget.style.border = "none"
-                          }}
-                        >
-                          <div
-                            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-                            style={{ background: "#FF6200" }}
-                          >
-                            <Briefcase className="h-4 w-4 text-white" />
-                          </div>
-                          {/* Using t.careers from useLocale hook instead of currentTranslations */}
-                          <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.careers}</span>
-                        </Link>
-                      </div>
-
-                      {/* Right column - World map and stats */}
-                      <div
-                        className="relative"
+                      <Link
+                        href="/about"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
                         style={{
-                          width: "320px",
-                          height: "167px",
-                          top: "14px",
-                          left: "274px",
-                          position: "absolute",
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "1px solid #FF620033"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "none"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = isDark ? "#212121" : "#FFFFFF"
+                          e.currentTarget.style.border = "none"
                         }}
                       >
-                        {/* World map background */}
                         <div
-                          className="absolute"
-                          style={{
-                            width: "257.82px",
-                            height: "166.81px",
-                            top: "0.09px",
-                            left: "0.09px",
-                          }}
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
                         >
-                          <img
-                            src={isDark ? "/images/world-20map.svg" : "/images/world-map-light.svg"}
-                            alt="World map"
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              border: "0.5px solid rgba(255, 255, 255, 0.5)",
-                              opacity: 1,
-                            }}
-                          />
+                          <Building2 className="h-4 w-4 text-white" />
                         </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.aboutUs}</span>
+                      </Link>
 
-                        {/* 20+ text */}
+                      <Link
+                        href="/experience"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "1px solid #FF620033"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "none"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = isDark ? "#212121" : "#FFFFFF"
+                          e.currentTarget.style.border = "none"
+                        }}
+                      >
                         <div
-                          className="absolute z-10"
-                          style={{
-                            top: "10px",
-                            left: "13px",
-                            width: "43px",
-                            height: "26px",
-                            fontFamily: "Onest",
-                            fontWeight: 800,
-                            fontSize: "24px",
-                            lineHeight: "110%",
-                            letterSpacing: "-0.03em",
-                            color: isDark ? "#FFFFFF" : "#212121", // Updated text color
-                            textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                            textAlign: "left",
-                          }}
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
                         >
-                          20+
+                          <Award className="h-4 w-4 text-white" />
                         </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.ourExperience}</span>
+                      </Link>
 
-                        {/* Different Countries text */}
+                      <Link
+                        href="/careers"
+                        className="flex items-center gap-5 transition-all duration-300 ease-out group"
+                        style={{
+                          width: "186px",
+                          height: "44px",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          background: isDark ? "#212121" : "#FFFFFF",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "1px solid #FF620033"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "none"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = isDark ? "#212121" : "#FFFFFF"
+                          e.currentTarget.style.border = "none"
+                        }}
+                      >
                         <div
-                          className="absolute z-10"
-                          style={{
-                            top: "36px",
-                            left: "13px",
-                            width: "138px",
-                            height: "18px",
-                            fontFamily: "Onest",
-                            fontWeight: 500,
-                            fontSize: "16px",
-                            lineHeight: "110%",
-                            letterSpacing: "-0.03em",
-                            color: isDark ? "#FFFFFF" : "#212121", // Updated text color
-                            textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                            whiteSpace: "nowrap",
-                          }}
+                          className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
+                          style={{ background: "#FF6200" }}
                         >
-                          {/* Using t.differentCountries from useLocale hook instead of currentTranslations */}
-                          {t.differentCountries}
+                          <Briefcase className="h-4 w-4 text-white" />
                         </div>
+                        <span style={{ color: isDark ? "#FFFFFF" : "#212121" }}>{t.careers}</span>
+                      </Link>
+                    </div>
 
-                        {/* Read All Reviews button */}
-                        <button
-                          className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                    {/* Right column - World map and stats */}
+                    <div
+                      className="relative"
+                      style={{
+                        width: "320px",
+                        height: "167px",
+                        top: "14px",
+                        left: "274px",
+                        position: "absolute",
+                      }}
+                    >
+                      {/* World map background */}
+                      <div
+                        className="absolute"
+                        style={{
+                          width: "257.82px",
+                          height: "166.81px",
+                          top: "0.09px",
+                          left: "0.09px",
+                        }}
+                      >
+                        <img
+                          src={isDark ? "/images/world-20map.svg" : "/images/world-map-light.svg"}
+                          alt="World map"
                           style={{
-                            width: "auto",
-                            minWidth: "140px",
-                            maxWidth: "270px",
-                            height: "30px",
-                            borderRadius: "50px",
-                            border: "1px solid #FF6200",
-                            paddingTop: "4px",
-                            paddingRight: "12px",
-                            paddingBottom: "4px",
-                            paddingLeft: "12px",
-                            backdropFilter: "blur(4px)",
-                            fontFamily: "Onest",
-                            fontWeight: 400,
-                            fontSize: "13px",
-                            lineHeight: "100%",
-                            color: isDark ? "#FFFFFF" : "#212121",
-                            background: "transparent",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
+                            width: "100%",
+                            height: "100%",
+                            border: "0.5px solid rgba(255, 255, 255, 0.5)",
+                            opacity: 1,
                           }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#FF62001A"
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "transparent"
-                          }}
-                          onMouseDown={(e) => {
-                            e.currentTarget.style.background = "#FF620099"
-                          }}
-                          onMouseUp={(e) => {
-                            e.currentTarget.style.background = "#FF62001A"
-                          }}
-                        >
-                          {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
-                          {t.readAllReviews}
-                        </button>
+                        />
                       </div>
+
+                      {/* 20+ text */}
+                      <div
+                        className="absolute z-10"
+                        style={{
+                          top: "10px",
+                          left: "13px",
+                          width: "43px",
+                          height: "26px",
+                          fontFamily: "Onest",
+                          fontWeight: 800,
+                          fontSize: "24px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                          textAlign: "left",
+                        }}
+                      >
+                        20+
+                      </div>
+
+                      {/* Different Countries text */}
+                      <div
+                        className="absolute z-10"
+                        style={{
+                          top: "36px",
+                          left: "13px",
+                          width: "138px",
+                          height: "18px",
+                          fontFamily: "Onest",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "110%",
+                          letterSpacing: "-0.03em",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {t.differentCountries}
+                      </div>
+
+                      {/* Read All Reviews button */}
+                      <button
+                        className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                        style={{
+                          width: "auto",
+                          minWidth: "140px",
+                          maxWidth: "270px",
+                          height: "30px",
+                          borderRadius: "50px",
+                          border: "1px solid #FF6200",
+                          paddingTop: "4px",
+                          paddingRight: "12px",
+                          paddingBottom: "4px",
+                          paddingLeft: "12px",
+                          backdropFilter: "blur(4px)",
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "13px",
+                          lineHeight: "100%",
+                          color: isDark ? "#FFFFFF" : "#212121",
+                          background: "transparent",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = "#FF620099"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = "#FF62001A"
+                        }}
+                      >
+                        {t.readAllReviews}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -509,36 +503,35 @@ export function Navigation() {
                     {/* Columns layout */}
                     <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                       <Link
-                          href="/services#custom-web-solutions"
-                          className="transition-all duration-300 ease-out p-2"
-                          style={{
-                            fontFamily: "Onest",
-                            fontWeight: 400,
-                            fontSize: "16px",
-                            lineHeight: "100%",
-                            letterSpacing: "0.02em",
-                            color: isDark ? "#FFFFFF99" : "#21212199",
-                            borderRadius: "8px",
-                          }}
-                          onMouseDown={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "1px solid #FF620033"
-                          }}
-                          onMouseUp={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                            e.currentTarget.style.border = "none"
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "transparent"
-                            e.currentTarget.style.border = "none"
-                          }}
-                        >
-                          {/* Using t.customWebSolutions from useLocale hook instead of currentTranslations */}
-                          {t.customWebSolutions}
-                        </Link>
+                        href="/services#custom-web-solutions"
+                        className="transition-all duration-300 ease-out p-2"
+                        style={{
+                          fontFamily: "Onest",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "100%",
+                          letterSpacing: "0.02em",
+                          color: isDark ? "#FFFFFF99" : "#21212199",
+                          borderRadius: "8px",
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "1px solid #FF620033"
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                          e.currentTarget.style.border = "none"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isDark ? "#303030" : "#F5F5F5"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.border = "none"
+                        }}
+                      >
+                        {t.customWebSolutions}
+                      </Link>
                         <Link
                           href="/services#mobile-applications"
                           className="transition-all duration-300 ease-out p-2"
