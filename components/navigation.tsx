@@ -507,7 +507,7 @@ export function Navigation() {
                     }}
                   >
                     {/* Columns layout */}
-                      <div className="flex flex-col gap-3" style={{ width: "30%" }}>
+                    <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                         <Link
                           href="/services#custom-web-solutions"
                           className="transition-all duration-300 ease-out p-2"
@@ -603,8 +603,8 @@ export function Navigation() {
                         </Link>
                       </div>
 
-                      {/* Column 2 - 30% width */}
-                      <div className="flex flex-col gap-3" style={{ width: "30%" }}>
+                    {/* Column 2 - 30% width */}
+                    <div className="flex flex-col gap-3" style={{ width: "30%" }}>
                         <Link
                           href="/services#qa"
                           className="transition-all duration-300 ease-out p-2"
@@ -700,8 +700,8 @@ export function Navigation() {
                         </Link>
                       </div>
 
-                      {/* Column 3 - Blog Article Card - 40% width */}
-                      <div
+                    {/* Column 3 - Blog Article Card - 40% width */}
+                    <div
                         className="relative"
                         style={{
                           width: "40%",
