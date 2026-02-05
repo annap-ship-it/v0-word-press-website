@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
 import { X } from "lucide-react"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 
 interface ContactFormModalProps {
   isOpen: boolean
@@ -30,15 +31,28 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null)
   const scriptLoaded = useRef(false)
+  const [siteKey, setSiteKey] = useState<string>("")
 
   const isDark = theme === "dark"
+
+  useEffect(() => {
+    const fetchSiteKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setSiteKey(key)
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      }
+    }
+    fetchSiteKey()
+  }, [])
 
   useEffect(() => {
     if (scriptLoaded.current) return
 
     // Load reCAPTCHA v3 script
     const script = document.createElement("script")
-    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
     script.async = true
     script.defer = true
 
@@ -50,7 +64,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         document.head.removeChild(script)
       }
     }
-  }, [])
+  }, [siteKey])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
@@ -92,7 +106,6 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
 
     try {
       // Wait for grecaptcha to be available
-      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
       if (!siteKey) {
         setSubmitStatus("error")
         setIsSubmitting(false)

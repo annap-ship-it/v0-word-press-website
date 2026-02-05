@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 
 const content = {
   en: {
@@ -106,9 +107,22 @@ export default function CareersPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [siteKey, setSiteKey] = useState<string>("")
 
   // Theme detection for styling
   const [isDarkTheme, setIsDarkTheme] = useState(false)
+
+  useEffect(() => {
+    const fetchSiteKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setSiteKey(key)
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      }
+    }
+    fetchSiteKey()
+  }, [])
 
   useEffect(() => {
     const checkTheme = () => {
@@ -122,7 +136,7 @@ export default function CareersPage() {
 
   useEffect(() => {
     const script = document.createElement("script")
-    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
     script.async = true
     script.defer = true
     document.head.appendChild(script)
@@ -132,7 +146,7 @@ export default function CareersPage() {
         document.head.removeChild(script)
       }
     }
-  }, [])
+  }, [siteKey])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -183,7 +197,7 @@ export default function CareersPage() {
         return
       }
 
-      const token = await grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, {
+      const token = await grecaptcha.execute(siteKey, {
         action: "careers",
       })
 
