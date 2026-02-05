@@ -48,14 +48,21 @@ export async function POST(request: NextRequest) {
       error_codes?: string[]
     }
 
-    // For reCAPTCHA v3, check success and score (0.0 - 1.0, higher is better)
-    // You can adjust the threshold based on your needs (0.5 is a common threshold)
-    if (!verificationData.success || (verificationData.score !== undefined && verificationData.score < 0.5)) {
+    // Check reCAPTCHA verification success
+    // For v2: just check success flag
+    // For v3: check success and score (0.0 - 1.0, higher is better, 0.5 is common threshold)
+    if (!verificationData.success) {
       console.warn("[v0] reCAPTCHA verification failed:", {
         success: verificationData.success,
         score: verificationData.score,
         errors: verificationData.error_codes,
       })
+      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
+    }
+
+    // Optional: for v3, apply score threshold (adjust as needed)
+    if (verificationData.score !== undefined && verificationData.score < 0.3) {
+      console.warn("[v0] reCAPTCHA score too low:", verificationData.score)
       return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
     }
 

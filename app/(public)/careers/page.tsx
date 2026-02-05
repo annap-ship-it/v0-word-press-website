@@ -122,7 +122,7 @@ export default function CareersPage() {
 
   useEffect(() => {
     const script = document.createElement("script")
-    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"}`
+    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
     script.async = true
     script.defer = true
     document.head.appendChild(script)
@@ -183,7 +183,7 @@ export default function CareersPage() {
         return
       }
 
-      const token = await grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT", {
+      const token = await grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, {
         action: "careers",
       })
 
