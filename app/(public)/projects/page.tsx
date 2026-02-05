@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
+import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 
 interface Project {
   id: string
@@ -229,6 +230,19 @@ export default function ProjectsPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
   const recaptchaRef = useRef<HTMLDivElement>(null)
+  const [siteKey, setSiteKey] = useState<string>("")
+
+  useEffect(() => {
+    const fetchSiteKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setSiteKey(key)
+      } catch (error) {
+        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      }
+    }
+    fetchSiteKey()
+  }, [])
 
   useEffect(() => {
     // Check theme
@@ -251,7 +265,7 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/api.js"
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
     script.async = true
     script.defer = true
     document.head.appendChild(script)
@@ -259,7 +273,7 @@ export default function ProjectsPage() {
     return () => {
       document.head.removeChild(script)
     }
-  }, [])
+  }, [siteKey])
 
   useEffect(() => {
     async function fetchProjects() {
@@ -328,22 +342,25 @@ export default function ProjectsPage() {
       return
     }
 
-    const recaptchaResponse = (recaptchaRef.current?.querySelector("textarea") as HTMLTextAreaElement)?.value
-
-    if (!recaptchaResponse) {
-      alert(t.recaptchaRequiredAlert)
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
+      // Generate reCAPTCHA token using v3
+      if (!window.grecaptcha) {
+        alert("reCAPTCHA is not loaded. Please refresh the page.")
+        return
+      }
+
+      const recaptchaToken = await window.grecaptcha.execute(siteKey, {
+        action: "submit"
+      })
+
       const formDataToSend = new FormData()
       formDataToSend.append("name", formData.name)
       formDataToSend.append("email", formData.email)
       formDataToSend.append("message", formData.message)
       formDataToSend.append("subject", "Project Consultation Request")
-      formDataToSend.append("recaptchaToken", recaptchaResponse)
+      formDataToSend.append("recaptchaToken", recaptchaToken)
       if (attachedFile) {
         formDataToSend.append("file", attachedFile)
       }
@@ -771,11 +788,6 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* reCAPTCHA widget */}
-                  <div
-                    ref={recaptchaRef}
-                    className="g-recaptcha"
-                    data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"
-                  />
                 </form>
 
                 {/* Image */}
