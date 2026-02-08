@@ -177,15 +177,24 @@ export async function POST(request: NextRequest) {
       if (!response.ok) {
         console.error("[v0] Resend API error:", {
           status: response.status,
+          statusText: response.statusText,
           error: responseData,
+          apiKeyExists: !!resendApiKey,
+          apiKeyLength: resendApiKey?.length,
         })
+        
+        // Log the exact error for debugging
+        if (response.status === 403) {
+          console.error("[v0] AUTHORIZATION FAILED - Check RESEND_API_KEY in environment variables")
+        }
+        
         return NextResponse.json(
           { error: `Email service error: ${responseData.message || responseData.error || "Unknown error"}` },
           { status: 500 },
         )
       }
 
-      console.log("[v0] Consultation request email sent successfully. ID:", responseData.id)
+      console.log("[v0] Consultation request email sent successfully. ID:", responseData.id, "Status:", response.status)
       return NextResponse.json({
         success: true,
         message: "Your consultation request has been sent successfully!",
