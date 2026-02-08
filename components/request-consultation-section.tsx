@@ -360,6 +360,19 @@ export function RequestConsultationSection() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Input */}
               <div>
+                <label
+                  htmlFor="consultation-name"
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontFamily: "Onest",
+                    fontSize: "12px",
+                    color: isDark ? "#FFFFFF" : "#212121",
+                  }}
+                  className="sr-only"
+                >
+                  Name
+                </label>
                 <input
                   id="consultation-name"
                   name="consultation-name"
@@ -387,6 +400,19 @@ export function RequestConsultationSection() {
 
               {/* Email Input */}
               <div>
+                <label
+                  htmlFor="consultation-email"
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontFamily: "Onest",
+                    fontSize: "12px",
+                    color: isDark ? "#FFFFFF" : "#212121",
+                  }}
+                  className="sr-only"
+                >
+                  Email
+                </label>
                 <input
                   id="consultation-email"
                   name="consultation-email"
@@ -414,6 +440,19 @@ export function RequestConsultationSection() {
 
               {/* Message Input */}
               <div>
+                <label
+                  htmlFor="consultation-message"
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontFamily: "Onest",
+                    fontSize: "12px",
+                    color: isDark ? "#FFFFFF" : "#212121",
+                  }}
+                  className="sr-only"
+                >
+                  Message
+                </label>
                 <textarea
                   id="consultation-message"
                   name="consultation-message"
@@ -441,19 +480,8 @@ export function RequestConsultationSection() {
 
               {/* File Upload */}
               <div>
-                <input
-                  ref={fileInputRef}
-                  id="consultation-file"
-                  name="consultation-file"
-                  type="file"
-                  multiple
-                  accept=".doc,.docx,.pdf,.ppt,.pptx"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
+                <label
+                  htmlFor="consultation-file"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -472,7 +500,17 @@ export function RequestConsultationSection() {
                 >
                   <Paperclip size={14} color="#FF6200" />
                   {t.attachFile}
-                </button>
+                </label>
+                <input
+                  ref={fileInputRef}
+                  id="consultation-file"
+                  name="consultation-file"
+                  type="file"
+                  multiple
+                  accept=".doc,.docx,.pdf,.ppt,.pptx"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
                 <p
                   className="mt-2"
                   style={{
@@ -571,24 +609,45 @@ export function RequestConsultationSection() {
               )}
 
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                {/* Terms Checkbox */}
-                <div className="flex items-start gap-3 flex-1">
-                  <input
-                    type="checkbox"
-                    id="consultation-terms"
-                    name="consultation-terms"
-                    checked={formData.acceptTerms}
-                    onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+              {/* Terms Checkbox */}
+              <div className="flex items-start gap-4">
+                <div>
+                  <div
                     style={{
-                      width: "14px",
-                      height: "14px",
-                      background: isDark ? "#161515" : "transparent",
-                      border: "1px solid #A8A8A8",
-                      borderRadius: "2px",
-                      marginTop: "2px",
-                      flexShrink: 0,
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "8px",
                     }}
-                  />
+                  >
+                    <input
+                      type="checkbox"
+                      id="consultation-terms"
+                      name="consultation-terms"
+                      checked={formData.acceptTerms}
+                      onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+                      style={{
+                        width: "14px",
+                        height: "14px",
+                        background: isDark ? "#161515" : "transparent",
+                        border: "1px solid #A8A8A8",
+                        borderRadius: "2px",
+                        marginTop: "2px",
+                        flexShrink: 0,
+                        cursor: "pointer",
+                      }}
+                    />
+                    <label
+                      htmlFor="consultation-terms"
+                      style={{
+                        fontFamily: "Onest",
+                        fontSize: "14px",
+                        lineHeight: "100%",
+                        color: isDark ? "#FFFFFF" : "#212121",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {t.acceptTerms}
+                    </label>
                   <label
                     htmlFor="consultation-terms"
                     style={{
