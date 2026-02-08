@@ -354,9 +354,9 @@ export function RequestConsultationSection() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
           {/* Left: Form */}
-          <div>
+          <div className="w-full">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Input */}
               <div>
@@ -608,66 +608,57 @@ export function RequestConsultationSection() {
                 </div>
               )}
 
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
               {/* Terms Checkbox */}
-              <div className="flex items-start gap-4">
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "8px",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      id="consultation-terms"
-                      name="consultation-terms"
-                      checked={formData.acceptTerms}
-                      onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
-                      style={{
-                        width: "14px",
-                        height: "14px",
-                        background: isDark ? "#161515" : "transparent",
-                        border: "1px solid #A8A8A8",
-                        borderRadius: "2px",
-                        marginTop: "2px",
-                        flexShrink: 0,
-                        cursor: "pointer",
-                      }}
-                    />
-                    
-                  <label
-                    htmlFor="consultation-terms"
-                    style={{
-                      fontFamily: "Onest",
-                      fontSize: "14px",
-                      lineHeight: "110%",
-                      color: "#A8A8A8",
-                    }}
-                  >
-                    {currentLocale === "uk" ? "Я приймаю" : "I Accept"}{" "}
-                    <Link href="/terms" className="underline" style={{ color: "#FF6200" }}>
-                      {t.termsLink}
-                    </Link>
-                    .{" "}
-                    {currentLocale === "uk"
-                      ? "Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи."
-                      : "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails."}
-                  </label>
-                </div>
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="consultation-terms"
+                  name="consultation-terms"
+                  checked={formData.acceptTerms}
+                  onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+                  style={{
+                    width: "14px",
+                    height: "14px",
+                    background: isDark ? "#161515" : "transparent",
+                    border: "1px solid #A8A8A8",
+                    borderRadius: "2px",
+                    marginTop: "2px",
+                    flexShrink: 0,
+                    cursor: "pointer",
+                  }}
+                />
+                <label
+                  htmlFor="consultation-terms"
+                  style={{
+                    fontFamily: "Onest",
+                    fontSize: "14px",
+                    lineHeight: "110%",
+                    color: "#A8A8A8",
+                  }}
+                >
+                  {currentLocale === "uk" ? "Я приймаю" : "I Accept"}{" "}
+                  <Link href="/terms" className="underline" style={{ color: "#FF6200" }}>
+                    {t.termsLink}
+                  </Link>
+                  .{" "}
+                  {currentLocale === "uk"
+                    ? "Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи."
+                    : "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails."}
+                </label>
               </div>
             </form>
           </div>
 
           {/* Right: Image */}
-          <div className="relative w-full h-[400px] lg:h-[455px] rounded-[14px] overflow-hidden">
-            <Image
-              src="/images/903416dfea2ecdd32e83cc85f6e0cee9b2d4fb63-20-281-29.jpg"
-              alt="Person working on laptop"
-              fill
-              className="object-cover"
-            />
+          <div className="w-full">
+            <div className="relative w-full h-[400px] lg:h-[455px] rounded-[14px] overflow-hidden">
+              <Image
+                src="/images/903416dfea2ecdd32e83cc85f6e0cee9b2d4fb63-20-281-29.jpg"
+                alt="Person working on laptop"
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </div>
