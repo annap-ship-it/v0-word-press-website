@@ -331,11 +331,12 @@ export default function ServicesPage() {
                 <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                   <div>
                     <label
-                      htmlFor="services-terms"
-                      className="text-white text-sm cursor-pointer"
+                      htmlFor="services-name"
+                      className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
-                        fontSize: "14px",
+                        fontSize: "16px",
+                        fontWeight: 400,
                       }}
                     >
                       {t.name}
@@ -504,7 +505,7 @@ export default function ServicesPage() {
                       onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                       className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
                     />
-                    <label htmlFor="terms" className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
+                    <label htmlFor="services-terms" className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
                       {t.iAccept}{" "}
                       <a href="/terms" className="underline text-white hover:text-[#FF6200]">
                         {t.termsAndConditions}
