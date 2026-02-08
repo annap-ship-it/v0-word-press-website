@@ -163,6 +163,14 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      console.log("[v0] Sending email to Resend API")
+      console.log("[v0] Payload:", {
+        from: resendPayload.from,
+        to: resendPayload.to,
+        subject: resendPayload.subject,
+        hasAttachments: (resendPayload.attachments as any)?.length || 0,
+      })
+      
       const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -173,6 +181,8 @@ export async function POST(request: NextRequest) {
       })
 
       const responseData = await response.json()
+      console.log("[v0] Resend API response status:", response.status)
+      console.log("[v0] Resend API response data:", responseData)
 
       if (!response.ok) {
         console.error("[v0] Resend API error:", {
