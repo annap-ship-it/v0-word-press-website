@@ -107,6 +107,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
     try {
       // Wait for grecaptcha to be available
       if (!siteKey) {
+        console.error("[v0] Site key not loaded yet")
         setSubmitStatus("error")
         setIsSubmitting(false)
         return
@@ -124,12 +125,15 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
       }
 
       if (!grecaptcha) {
+        console.error("[v0] reCAPTCHA script not loaded")
         setSubmitStatus("error")
         setIsSubmitting(false)
         return
       }
 
+      console.log("[v0] Executing reCAPTCHA with site key:", siteKey.substring(0, 10) + "...")
       const token = await grecaptcha.execute(siteKey, { action: "contact" })
+      console.log("[v0] reCAPTCHA token received:", token.substring(0, 20) + "...")
 
       const formData = new FormData()
       formData.append("name", name)
@@ -158,9 +162,13 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
           setSubmitStatus(null)
         }, 2000)
       } else {
+        console.error("[v0] Contact form API error:", response.status, response.statusText)
+        const errorData = await response.json()
+        console.error("[v0] Error details:", errorData)
         setSubmitStatus("error")
       }
     } catch (error) {
+      console.error("[v0] Contact form submission error:", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)

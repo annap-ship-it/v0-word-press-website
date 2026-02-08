@@ -3,12 +3,15 @@ import { Buffer } from "buffer"
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("[v0] Contact form API called")
     const formData = await request.formData()
 
     const name = formData.get("name") as string
     const email = formData.get("email") as string
     const message = formData.get("message") as string
     const recaptchaToken = formData.get("recaptchaToken") as string
+
+    console.log("[v0] Form data received:", { name, email, messageLength: message?.length, tokenLength: recaptchaToken?.length })
 
     // Validate required fields
     if (!name || !email || !message) {
@@ -148,7 +151,7 @@ export async function POST(request: NextRequest) {
     }
 
     const resendPayload: Record<string, unknown> = {
-      from: "noreply@new.ideateam.dev",
+      from: "onboarding@resend.dev", // Use default Resend domain that works out of the box
       to: emailContent.to,
       subject: emailContent.subject,
       html: emailContent.html,
