@@ -34,7 +34,6 @@ export default function ServicesPage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const scriptLoaded = useRef(false)
 
-  // Тёмная/светлая тема
   useEffect(() => {
     const checkDarkMode = () => {
       setIsDark(document.documentElement.classList.contains("dark"))
@@ -45,7 +44,6 @@ export default function ServicesPage() {
     return () => observer.disconnect()
   }, [])
 
-  // reCAPTCHA
   useEffect(() => {
     const fetchKey = async () => {
       try {
@@ -285,7 +283,7 @@ export default function ServicesPage() {
               {/* Form */}
               <div>
                 <h2
-                  className="font-semibold mb-3 text-white"
+                  className="font-semibold mb-3 text-white whitespace-nowrap"
                   style={{
                     fontFamily: "Onest",
                     fontSize: "clamp(28px, 4vw, 40px)",
@@ -427,10 +425,10 @@ export default function ServicesPage() {
 
                     <label
                       htmlFor="attach-file"
-                      className="flex items-center gap-2 cursor-pointer text-[#FF6200] hover:opacity-80 transition"
+                      className="flex items-center gap-2 cursor-pointer text-white hover:opacity-80 transition"
                       style={{ fontFamily: "Onest", fontSize: "16px" }}
                     >
-                      <Paperclip size={18} />
+                      <Paperclip size={18} color="#FF6200" />
                       {t.attachFile || "Attach file (optional)"}
                     </label>
 
