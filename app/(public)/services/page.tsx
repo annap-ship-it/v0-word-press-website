@@ -331,19 +331,19 @@ export default function ServicesPage() {
                 <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                   <div>
                     <label
-                      htmlFor="name"
-                      className="block mb-2 text-white"
+                      htmlFor="services-terms"
+                      className="text-white text-sm cursor-pointer"
                       style={{
                         fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
+                        fontSize: "14px",
                       }}
                     >
                       {t.name}
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="services-name"
+                      name="services-name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder={t.typeYourName}
@@ -359,7 +359,7 @@ export default function ServicesPage() {
 
                   <div>
                     <label
-                      htmlFor="email"
+                      htmlFor="services-email"
                       className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
@@ -371,7 +371,8 @@ export default function ServicesPage() {
                     </label>
                     <input
                       type="email"
-                      id="email"
+                      id="services-email"
+                      name="services-email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder={t.typeYourEmail}
@@ -387,7 +388,7 @@ export default function ServicesPage() {
 
                   <div>
                     <label
-                      htmlFor="message"
+                      htmlFor="services-message"
                       className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
@@ -398,7 +399,8 @@ export default function ServicesPage() {
                       {t.message}
                     </label>
                     <textarea
-                      id="message"
+                      id="services-message"
+                      name="services-message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -429,6 +431,8 @@ export default function ServicesPage() {
 
                     <input
                       ref={fileInputRef}
+                      id="services-file"
+                      name="services-file"
                       type="file"
                       accept=".jpg,.jpeg,.png,.pdf,.docx,.xlsx,.mp4"
                       onChange={handleFileSelect}
@@ -439,6 +443,7 @@ export default function ServicesPage() {
                       type="button"
                       onClick={handleAttachClick}
                       className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                      aria-label="Attach file"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "14px",
@@ -493,7 +498,8 @@ export default function ServicesPage() {
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
-                      id="terms"
+                      id="services-terms"
+                      name="services-terms"
                       checked={formData.acceptTerms}
                       onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                       className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
