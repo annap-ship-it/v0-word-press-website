@@ -1,114 +1,109 @@
 "use client"
 
-import type React from "react"
-import { useLocale } from "@/lib/locale-context"
-import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import { Loader2, Paperclip, X } from "lucide-react"
+import Link from "next/link"
+import { useLocale } from "@/lib/locale-context"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+import { Button } from "@/components/ui/button"
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      enterprise: {
+        execute: (siteKey: string, options: { action: string }) => Promise<string>
+      }
+    }
+  }
+}
 
 export default function ServicesPage() {
   const { t } = useLocale()
+
+  const [isDark, setIsDark] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
     acceptTerms: false,
   })
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
+  const [siteKey, setSiteKey] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [isDark, setIsDark] = useState(false)
-  const recaptchaRef = useRef<HTMLDivElement>(null)
-  const [siteKey, setSiteKey] = useState<string>("")
+  const scriptLoaded = useRef(false)
 
+  // Проверка тёмной темы
   useEffect(() => {
-    const fetchSiteKey = async () => {
+    const checkDarkMode = () => {
+      const isDarkMode = document.documentElement.classList.contains("dark")
+      setIsDark(isDarkMode)
+    }
+
+    checkDarkMode()
+
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Загрузка reCAPTCHA
+  useEffect(() => {
+    const fetchKey = async () => {
       try {
         const key = await getRecaptchaSiteKey()
         setSiteKey(key)
-      } catch (error) {
-        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
+      } catch (err) {
+        console.error("Failed to load reCAPTCHA key:", err)
       }
     }
-    fetchSiteKey()
+    fetchKey()
   }, [])
 
   useEffect(() => {
-    const checkDarkMode = () => {
-      const isDarkMode = document.documentElement.classList.contains("dark")
-      setIsDark(isDarkMode)
-    }
+    if (scriptLoaded.current) return
 
-    checkDarkMode()
-
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const checkDarkMode = () => {
-      const isDarkMode = document.documentElement.classList.contains("dark")
-      setIsDark(isDarkMode)
-    }
-
-    checkDarkMode()
-
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-
-    return () => observer.disconnect()
-  }, [])
-
-  // ⚠️ IMPORTANT: Scroll to top on page load - DO NOT REMOVE
-  // This ensures pages open from header, not footer, as per design requirements
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
     const script = document.createElement("script")
-    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+    script.src = "https://www.google.com/recaptcha/enterprise.js?render=explicit"
     script.async = true
     script.defer = true
     document.head.appendChild(script)
+    scriptLoaded.current = true
 
-    return () => {
-      document.head.removeChild(script)
-    }
-  }, [siteKey])
+    // Скрываем бейдж reCAPTCHA
+    const style = document.createElement("style")
+    style.innerHTML = `
+      .grecaptcha-badge { 
+        visibility: hidden !important; 
+        width: 0 !important; 
+        height: 0 !important; 
+      }
+    `
+    document.head.appendChild(style)
+  }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        setSubmitStatus({ type: "error", message: "File size must be less than 10MB" })
-        return
-      }
-      setSelectedFile(file)
-      setSubmitStatus(null)
-    }
+    if (!e.target.files?.length) return
+    const newFiles = Array.from(e.target.files)
+    setFiles((prev) => [...prev, ...newFiles].slice(0, 3)) // лимит 3 файла
   }
 
-  const handleAttachClick = () => {
-    fileInputRef.current?.click()
-  }
-
-  const removeFile = () => {
-    setSelectedFile(null)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
-    }
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!formData.acceptTerms) {
       setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
+      return
+    }
+
+    if (!siteKey) {
+      setSubmitStatus({ type: "error", message: "reCAPTCHA not loaded. Refresh page." })
       return
     }
 
@@ -116,48 +111,38 @@ export default function ServicesPage() {
     setSubmitStatus(null)
 
     try {
-      // Generate reCAPTCHA token using v3
-      if (!window.grecaptcha) {
-        setSubmitStatus({ type: "error", message: "reCAPTCHA is not loaded. Please refresh the page." })
-        return
-      }
+      const token = await window.grecaptcha.enterprise.execute(siteKey, { action: "contact_form" })
 
-      const recaptchaToken = await window.grecaptcha.execute(siteKey, {
-        action: "submit"
-      })
+      const form = new FormData()
+      form.append("name", formData.name)
+      form.append("email", formData.email)
+      form.append("message", formData.message)
+      form.append("recaptchaToken", token)
+      files.forEach((file) => form.append("files", file))
 
-      const submitData = new FormData()
-      submitData.append("name", formData.name)
-      submitData.append("email", formData.email)
-      submitData.append("message", formData.message)
-      submitData.append("recaptchaToken", recaptchaToken)
-      if (selectedFile) {
-        submitData.append("file", selectedFile)
-      }
+      const res = await fetch("/api/contact", { method: "POST", body: form })
+      const data = await res.json()
 
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        body: submitData,
-      })
-
-      const result = await response.json()
-
-      if (response.ok) {
-        setSubmitStatus({ type: "success", message: result.message || "Message sent successfully!" })
+      if (res.ok) {
+        setSubmitStatus({ type: "success", message: "Message sent successfully!" })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
-        setSelectedFile(null)
-        if (fileInputRef.current) {
-          fileInputRef.current.value = ""
-        }
+        setFiles([])
+        if (fileInputRef.current) fileInputRef.current.value = ""
       } else {
-        setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
+        setSubmitStatus({ type: "error", message: data.error || "Failed to send message" })
       }
-    } catch {
-      setSubmitStatus({ type: "error", message: "Network error. Please try again." })
+    } catch (err) {
+      console.error("Submit failed:", err)
+      setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
     } finally {
       setIsSubmitting(false)
     }
   }
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const services = [
     {
@@ -250,14 +235,12 @@ export default function ServicesPage() {
                   }}
                 />
               )}
-
               <div
                 id={service.id}
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20 items-center scroll-mt-32 ${
                   service.reverse ? "lg:grid-flow-dense" : ""
                 }`}
               >
-                {/* Text Content */}
                 <div className={service.reverse ? "lg:col-start-2" : ""}>
                   <h2
                     className="font-semibold mb-6"
@@ -290,7 +273,6 @@ export default function ServicesPage() {
                   </p>
                 </div>
 
-                {/* Image */}
                 <div className={service.reverse ? "lg:col-start-1 lg:row-start-1" : ""}>
                   <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
                     <Image
@@ -311,8 +293,7 @@ export default function ServicesPage() {
       {/* Contact Form Section */}
       <section className="py-20 px-6">
         <div className="max-w-[1280px] mx-auto">
-          {/* Wrapper div with fixed dark background for the form card */}
-          <div className="rounded-2xl p-8 md:p-12" style={{ background: "#1E1E1E" }}>
+          <div className="rounded-2xl p-8 md:p-12 lg:p-16" style={{ background: "#1E1E1E" }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Form */}
               <div>
@@ -320,18 +301,20 @@ export default function ServicesPage() {
                   className="font-semibold mb-4 text-white"
                   style={{
                     fontFamily: "Onest",
-                    fontSize: "clamp(24px, 3vw, 32px)",
-                    lineHeight: "1.3",
+                    fontSize: "clamp(28px, 4vw, 40px)",
+                    lineHeight: "1.2",
                   }}
                 >
-                  {t.getConsultation}
+                  Send us a note with your idea,
                 </h2>
-                <p className="text-white/80 mb-6">{t.sendUsMessage}</p>
+                <p className="text-white/80 mb-6 text-lg">
+                  and we'll get in touch to provide guidance on implementation
+                </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                   <div>
                     <label
-                      htmlFor="services-name"
+                      htmlFor="name"
                       className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
@@ -339,28 +322,23 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      {t.name}
+                      Name
                     </label>
                     <input
                       type="text"
-                      id="services-name"
-                      name="services-name"
+                      id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder={t.typeYourName}
+                      placeholder="Type your Name"
                       required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        background: "#2A2A2A",
-                      }}
+                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+                      style={{ fontFamily: "Onest" }}
                     />
                   </div>
 
                   <div>
                     <label
-                      htmlFor="services-email"
+                      htmlFor="email"
                       className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
@@ -368,28 +346,23 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      {t.email}
+                      Email
                     </label>
                     <input
                       type="email"
-                      id="services-email"
-                      name="services-email"
+                      id="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder={t.typeYourEmail}
+                      placeholder="Type your email"
                       required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        background: "#2A2A2A",
-                      }}
+                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+                      style={{ fontFamily: "Onest" }}
                     />
                   </div>
 
                   <div>
                     <label
-                      htmlFor="services-message"
+                      htmlFor="message"
                       className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
@@ -397,26 +370,21 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      {t.message}
+                      Message
                     </label>
                     <textarea
-                      id="services-message"
-                      name="services-message"
+                      id="message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder={t.typeYourMessage}
+                      placeholder="Type your message"
                       required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        background: "#2A2A2A",
-                      }}
+                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
+                      style={{ fontFamily: "Onest" }}
                     />
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-6">
                     <Button
                       type="submit"
                       disabled={isSubmitting}
@@ -427,100 +395,68 @@ export default function ServicesPage() {
                         borderRadius: "50px",
                       }}
                     >
-                      {isSubmitting ? t.sending : t.send}
+                      {isSubmitting ? "Sending..." : "Send"}
                     </Button>
+
+                    <label
+                      htmlFor="attach-file"
+                      className="flex items-center gap-2 cursor-pointer text-[#FF6200] hover:opacity-80 transition"
+                      style={{ fontFamily: "Onest", fontSize: "14px" }}
+                    >
+                      <Paperclip size={14} />
+                      Attach file (optional)
+                    </label>
 
                     <input
                       ref={fileInputRef}
-                      id="services-file"
-                      name="services-file"
+                      id="attach-file"
                       type="file"
-                      accept=".jpg,.jpeg,.png,.pdf,.docx,.xlsx,.mp4"
+                      multiple
+                      accept=".doc,.docx,.pdf,.ppt,.pptx"
                       onChange={handleFileSelect}
                       className="hidden"
                     />
-
-                    <button
-                      type="button"
-                      onClick={handleAttachClick}
-                      className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-                      aria-label="Attach file"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "14px",
-                        color: "#FF6200",
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clipPath="url(#clip0_1188_7152)">
-                          <path
-                            d="M12.507 6.44489L7.14617 11.8057C6.48942 12.4625 5.59869 12.8314 4.66992 12.8314C3.74114 12.8314 2.85041 12.4625 2.19367 11.8057C1.53692 11.149 1.16797 10.2582 1.16797 9.32947C1.16797 8.4007 1.53692 7.50997 2.19367 6.85322L7.5545 1.49239C7.99233 1.05456 8.58615 0.808594 9.20533 0.808594C9.82451 0.808594 10.4183 1.05456 10.8562 1.49239C11.294 1.93022 11.54 2.52404 11.54 3.14322C11.54 3.76241 11.294 4.35623 10.8562 4.79406L5.4895 10.1549C5.27058 10.3738 4.97367 10.4968 4.66408 10.4968C4.35449 10.4968 4.05758 10.3738 3.83867 10.1549C3.61975 9.93598 3.49677 9.63907 3.49677 9.32947C3.49677 9.01988 3.61975 8.72297 3.83867 8.50406L8.79116 3.55739"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_1188_7152">
-                            <rect width="14" height="14" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
-                      {t.attachFile}
-                    </button>
                   </div>
 
-                  {selectedFile && (
-                    <div
-                      className="flex items-center gap-2 p-3 rounded-[4px]"
-                      style={{ background: "rgba(255, 98, 0, 0.1)", border: "1px solid rgba(255, 98, 0, 0.3)" }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                      </svg>
-                      <span className="text-white text-sm flex-1 truncate">{selectedFile.name}</span>
-                      <button type="button" onClick={removeFile} className="text-white/60 hover:text-white">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
+                  {files.length > 0 && (
+                    <div className="flex flex-wrap gap-3 mt-4">
+                      {files.map((file, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-2 px-4 py-2 bg-[#2A2A2A] rounded-full text-white text-sm border border-[#3A3A3A]"
                         >
-                          <line x1="18" y1="6" x2="6" y2="18" />
-                          <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                      </button>
+                          <span className="truncate max-w-[180px]">{file.name}</span>
+                          <button type="button" onClick={() => removeFile(idx)}>
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   )}
 
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 mt-6">
                     <input
                       type="checkbox"
-                      id="services-terms"
-                      name="services-terms"
+                      id="terms"
                       checked={formData.acceptTerms}
                       onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                       className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
                     />
-                    <label htmlFor="services-terms" className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
-                      {t.iAccept}{" "}
-                      <a href="/terms" className="underline text-white hover:text-[#FF6200]">
-                        {t.termsAndConditions}
-                      </a>
+                    <label className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
+                      I Accept{" "}
+                      <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
+                        Terms and Conditions
+                      </Link>
                       .<br />
-                      <span className="text-white/60">{t.bySubmittingEmail}</span>
+                      By submitting your email, you accept terms and conditions.<br />
+                      We may send you occasionally marketing emails.
                     </label>
                   </div>
 
                   {submitStatus && (
                     <div
-                      className={`p-4 rounded-[4px] ${
-                        submitStatus.type === "success"
-                          ? "bg-green-500/20 text-green-400"
-                          : "bg-red-500/20 text-red-400"
+                      className={`p-4 rounded-[4px] mt-6 ${
+                        submitStatus.type === "success" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
                       }`}
                       style={{ fontFamily: "Onest" }}
                     >
