@@ -283,24 +283,24 @@ export default function ServicesPage() {
               {/* Form */}
               <div>
                 <h2
-                  className="font-semibold mb-3 text-white whitespace-nowrap"
+                  className="font-semibold mb-4 text-white whitespace-nowrap overflow-hidden text-ellipsis"
                   style={{
                     fontFamily: "Onest",
-                    fontSize: "clamp(28px, 4vw, 40px)",
-                    lineHeight: "1.2",
+                    fontSize: "clamp(32px, 3.5vw, 48px)",
+                    lineHeight: "1.1",
                   }}
                 >
                   {t.getConsultation || "Send us a note with your idea,"}
                 </h2>
-                <p className="text-white/80 mb-6 text-lg">
+                <p className="text-white/80 mb-8 text-lg">
                   {t.sendUsMessage || "and we'll get in touch to provide guidance on implementation"}
                 </p>
 
-                <form onSubmit={handleSubmit} className="space-y-5 mt-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label
                       htmlFor="name"
-                      className="block mb-1.5 text-white"
+                      className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "16px",
@@ -324,7 +324,7 @@ export default function ServicesPage() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block mb-1.5 text-white"
+                      className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "16px",
@@ -348,7 +348,7 @@ export default function ServicesPage() {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block mb-1.5 text-white"
+                      className="block mb-2 text-white"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "16px",
