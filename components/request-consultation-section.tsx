@@ -636,18 +636,7 @@ export function RequestConsultationSection() {
                         cursor: "pointer",
                       }}
                     />
-                    <label
-                      htmlFor="consultation-terms"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "14px",
-                        lineHeight: "100%",
-                        color: isDark ? "#FFFFFF" : "#212121",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {t.acceptTerms}
-                    </label>
+                    
                   <label
                     htmlFor="consultation-terms"
                     style={{
