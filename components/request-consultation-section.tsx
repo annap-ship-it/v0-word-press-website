@@ -1,5 +1,4 @@
 "use client"
-
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
@@ -61,7 +60,6 @@ export function RequestConsultationSection() {
   const { locale } = useLocale()
   const currentLocale = (locale as keyof typeof content) || "en"
   const t = content[currentLocale]
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -94,25 +92,26 @@ export function RequestConsultationSection() {
       const isDarkMode = document.documentElement.classList.contains("dark")
       setIsDark(isDarkMode)
     }
-
     checkDarkMode()
     const observer = new MutationObserver(checkDarkMode)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-
     return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
     if (scriptLoaded.current) return
-
     // Load reCAPTCHA Enterprise script
     const script = document.createElement("script")
     script.src = "https://www.google.com/recaptcha/enterprise.js"
     script.async = true
     script.defer = true
-
     document.head.appendChild(script)
     scriptLoaded.current = true
+
+    // Hide reCAPTCHA badge
+    const style = document.createElement("style")
+    style.innerHTML = ".grecaptcha-badge { visibility: hidden !important; }"
+    document.head.appendChild(style)
 
     return () => {
       // Script doesn't need cleanup
@@ -124,17 +123,14 @@ export function RequestConsultationSection() {
     const validExtensions = [".doc", ".docx", ".pdf", ".ppt", ".pptx"]
     const maxSize = 3 * 1024 * 1024 // 3MB
     const maxFiles = 3
-
     const validFiles = selectedFiles.filter((file) => {
       const ext = "." + file.name.split(".").pop()?.toLowerCase()
       return validExtensions.includes(ext) && file.size <= maxSize
     })
-
     if (files.length + validFiles.length > maxFiles) {
       setSubmitStatus({ type: "error", message: `Maximum ${maxFiles} files allowed` })
       return
     }
-
     setFiles((prev) => [...prev, ...validFiles].slice(0, maxFiles))
     setSubmitStatus(null)
   }
@@ -145,46 +141,37 @@ export function RequestConsultationSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!formData.acceptTerms) {
       setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
       return
     }
-
     // Validate reCAPTCHA is ready
     if (!siteKey || !window.grecaptcha?.enterprise?.execute) {
       setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
       return
     }
-
     setIsSubmitting(true)
     setSubmitStatus(null)
-
     try {
       // Execute reCAPTCHA Enterprise to get token
       const recaptchaToken = await window.grecaptcha.enterprise.execute(
         siteKey,
         { action: "CONSULTATION_REQUEST" }
       )
-
       const submitData = new FormData()
       submitData.append("name", formData.name)
       submitData.append("email", formData.email)
       submitData.append("message", formData.message)
       submitData.append("recaptchaToken", recaptchaToken)
       submitData.append("type", "consultation")
-
       files.forEach((file) => {
         submitData.append("files", file)
       })
-
       const response = await fetch("/api/contact", {
         method: "POST",
         body: submitData,
       })
-
       const result = await response.json()
-
       if (response.ok) {
         setSubmitStatus({ type: "success", message: result.message || "Message sent successfully!" })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
@@ -217,7 +204,6 @@ export function RequestConsultationSection() {
         >
           {t.title}
         </h2>
-
         <div
           className="p-6 md:p-10 rounded-[14px] mb-12"
           style={{
@@ -236,7 +222,6 @@ export function RequestConsultationSection() {
           >
             {t.processTitle}
           </h3>
-
           <div className="grid md:grid-cols-3 gap-6">
             {/* Step 1 */}
             <div className="flex gap-4">
@@ -271,7 +256,6 @@ export function RequestConsultationSection() {
                 {t.step1}
               </p>
             </div>
-
             {/* Step 2 */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
@@ -318,7 +302,6 @@ export function RequestConsultationSection() {
                 {t.step2}
               </p>
             </div>
-
             {/* Step 3 */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
@@ -353,7 +336,6 @@ export function RequestConsultationSection() {
             </div>
           </div>
         </div>
-
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
           {/* Left: Form */}
           <div className="w-full">
@@ -397,7 +379,6 @@ export function RequestConsultationSection() {
                   className="placeholder:text-[#A8A8A8]"
                 />
               </div>
-
               {/* Email Input */}
               <div>
                 <label
@@ -437,7 +418,6 @@ export function RequestConsultationSection() {
                   className="placeholder:text-[#A8A8A8]"
                 />
               </div>
-
               {/* Message Input */}
               <div>
                 <label
@@ -477,30 +457,44 @@ export function RequestConsultationSection() {
                   className="placeholder:text-[#A8A8A8]"
                 />
               </div>
-
               {/* File Upload */}
               <div>
-                <label
-                  htmlFor="consultation-file"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    padding: "10px 20px",
-                    background: isDark ? "#212121" : "transparent",
-                    border: isDark ? "1px solid rgba(255, 255, 255, 0.5)" : "1px solid #A8A8A8",
-                    borderRadius: "6px",
-                    fontFamily: "Onest",
-                    fontSize: "16px",
-                    lineHeight: "20px",
-                    letterSpacing: "0.02em",
-                    color: isDark ? "#FFFFFF" : "#212121",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Paperclip size={14} color="#FF6200" />
-                  {t.attachFile}
-                </label>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2">
+                  <label
+                    htmlFor="consultation-file"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      padding: "10px 20px",
+                      background: isDark ? "#212121" : "transparent",
+                      border: isDark ? "1px solid rgba(255, 255, 255, 0.5)" : "1px solid #A8A8A8",
+                      borderRadius: "6px",
+                      fontFamily: "Onest",
+                      fontSize: "16px",
+                      lineHeight: "20px",
+                      letterSpacing: "0.02em",
+                      color: isDark ? "#FFFFFF" : "#212121",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap", // чтобы кнопка не растягивалась
+                    }}
+                  >
+                    <Paperclip size={14} color="#FF6200" />
+                    {t.attachFile}
+                  </label>
+
+                  <p
+                    style={{
+                      fontFamily: "Onest",
+                      fontSize: "14px",
+                      lineHeight: "110%",
+                      color: "#A8A8A8",
+                      margin: 0,
+                    }}
+                  >
+                    {t.fileHelp}
+                  </p>
+                </div>
                 <input
                   ref={fileInputRef}
                   id="consultation-file"
@@ -511,18 +505,6 @@ export function RequestConsultationSection() {
                   onChange={handleFileSelect}
                   className="hidden"
                 />
-                <p
-                  className="mt-2"
-                  style={{
-                    fontFamily: "Onest",
-                    fontSize: "14px",
-                    lineHeight: "110%",
-                    color: "#A8A8A8",
-                  }}
-                >
-                  {t.fileHelp}
-                </p>
-
                 {/* Attached Files */}
                 {files.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-3">
@@ -544,7 +526,6 @@ export function RequestConsultationSection() {
                   </div>
                 )}
               </div>
-
               {/* Submit Button */}
               <button
                 type="submit"
@@ -594,7 +575,6 @@ export function RequestConsultationSection() {
                   t.send
                 )}
               </button>
-
               {/* Submit Status */}
               {submitStatus && (
                 <div
@@ -607,7 +587,6 @@ export function RequestConsultationSection() {
                   {submitStatus.message}
                 </div>
               )}
-
               {/* Terms Checkbox */}
               <div className="flex items-start gap-3">
                 <input
@@ -648,7 +627,6 @@ export function RequestConsultationSection() {
               </div>
             </form>
           </div>
-
           {/* Right: Image */}
           <div className="w-full">
             <div className="relative w-full h-[400px] lg:h-[455px] rounded-[14px] overflow-hidden">
