@@ -163,6 +163,14 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      console.log("[v0] Sending email to Resend API")
+      console.log("[v0] Payload:", {
+        from: resendPayload.from,
+        to: resendPayload.to,
+        subject: resendPayload.subject,
+        hasAttachments: (resendPayload.attachments as any)?.length || 0,
+      })
+      
       const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -173,19 +181,30 @@ export async function POST(request: NextRequest) {
       })
 
       const responseData = await response.json()
+      console.log("[v0] Resend API response status:", response.status)
+      console.log("[v0] Resend API response data:", responseData)
 
       if (!response.ok) {
         console.error("[v0] Resend API error:", {
           status: response.status,
+          statusText: response.statusText,
           error: responseData,
+          apiKeyExists: !!resendApiKey,
+          apiKeyLength: resendApiKey?.length,
         })
+        
+        // Log the exact error for debugging
+        if (response.status === 403) {
+          console.error("[v0] AUTHORIZATION FAILED - Check RESEND_API_KEY in environment variables")
+        }
+        
         return NextResponse.json(
           { error: `Email service error: ${responseData.message || responseData.error || "Unknown error"}` },
           { status: 500 },
         )
       }
 
-      console.log("[v0] Consultation request email sent successfully. ID:", responseData.id)
+      console.log("[v0] Consultation request email sent successfully. ID:", responseData.id, "Status:", response.status)
       return NextResponse.json({
         success: true,
         message: "Your consultation request has been sent successfully!",
