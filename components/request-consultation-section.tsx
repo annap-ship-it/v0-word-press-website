@@ -361,6 +361,8 @@ export function RequestConsultationSection() {
               {/* Name Input */}
               <div>
                 <input
+                  id="consultation-name"
+                  name="consultation-name"
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -386,6 +388,8 @@ export function RequestConsultationSection() {
               {/* Email Input */}
               <div>
                 <input
+                  id="consultation-email"
+                  name="consultation-email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -411,6 +415,8 @@ export function RequestConsultationSection() {
               {/* Message Input */}
               <div>
                 <textarea
+                  id="consultation-message"
+                  name="consultation-message"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder={t.messagePlaceholder}
@@ -437,6 +443,8 @@ export function RequestConsultationSection() {
               <div>
                 <input
                   ref={fileInputRef}
+                  id="consultation-file"
+                  name="consultation-file"
                   type="file"
                   multiple
                   accept=".doc,.docx,.pdf,.ppt,.pptx"
@@ -568,6 +576,7 @@ export function RequestConsultationSection() {
                   <input
                     type="checkbox"
                     id="consultation-terms"
+                    name="consultation-terms"
                     checked={formData.acceptTerms}
                     onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                     style={{
