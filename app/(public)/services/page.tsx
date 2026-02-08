@@ -84,12 +84,12 @@ export default function ServicesPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.acceptTerms) {
-      setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
+      setSubmitStatus({ type: "error", message: t.pleaseAcceptTerms || "Please accept the Terms and Conditions" })
       return
     }
 
     if (!siteKey) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA not loaded. Refresh page." })
+      setSubmitStatus({ type: "error", message: t.recaptchaNotLoaded || "reCAPTCHA not loaded. Refresh page." })
       return
     }
 
@@ -110,16 +110,16 @@ export default function ServicesPage() {
       const data = await res.json()
 
       if (res.ok) {
-        setSubmitStatus({ type: "success", message: "Message sent successfully!" })
+        setSubmitStatus({ type: "success", message: t.messageSent || "Message sent successfully!" })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
         setFiles([])
         if (fileInputRef.current) fileInputRef.current.value = ""
       } else {
-        setSubmitStatus({ type: "error", message: data.error || "Failed to send message" })
+        setSubmitStatus({ type: "error", message: data.error || t.failedToSend || "Failed to send message" })
       }
     } catch (err) {
       console.error("Submit failed:", err)
-      setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
+      setSubmitStatus({ type: "error", message: t.failedToSend || "Failed to send message. Please try again." })
     } finally {
       setIsSubmitting(false)
     }
@@ -290,10 +290,10 @@ export default function ServicesPage() {
                     lineHeight: "1.2",
                   }}
                 >
-                  Send us a note with your idea,
+                  {t.getConsultation || "Send us a note with your idea,"}
                 </h2>
                 <p className="text-white/80 mb-6 text-lg">
-                  and we'll get in touch to provide guidance on implementation
+                  {t.sendUsMessage || "and we'll get in touch to provide guidance on implementation"}
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5 mt-4">
@@ -307,7 +307,7 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      Name
+                      {t.name || "Name"}
                     </label>
                     <input
                       type="text"
@@ -331,7 +331,7 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      Email
+                      {t.email || "Email"}
                     </label>
                     <input
                       type="email"
@@ -355,7 +355,7 @@ export default function ServicesPage() {
                         fontWeight: 400,
                       }}
                     >
-                      Message
+                      {t.message || "Message"}
                     </label>
                     <textarea
                       id="message"
@@ -369,7 +369,6 @@ export default function ServicesPage() {
                     />
                   </div>
 
-                  {/* Кнопки Send + Attach */}
                   <div className="flex flex-wrap items-center gap-6 mt-4">
                     <button
                       type="submit"
