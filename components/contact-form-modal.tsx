@@ -146,7 +146,9 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         body: formData,
       })
 
-      if (response.ok) {
+      const responseData = await response.json()
+
+      if (response.ok && responseData.success) {
         setSubmitStatus("success")
         setName("")
         setEmail("")
@@ -159,9 +161,11 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         }, 2000)
       } else {
         setSubmitStatus("error")
+        console.error("[v0] Submit error:", responseData)
       }
     } catch (error) {
       setSubmitStatus("error")
+      console.error("[v0] Submit error:", error)
     } finally {
       setIsSubmitting(false)
     }
@@ -257,6 +261,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
             {/* Name Input */}
             <div>
               <label
+                htmlFor="contact-name"
                 className="block mb-2"
                 style={{
                   color: isDark ? "#FFFFFF" : "#212121",
@@ -268,6 +273,8 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                 {t.name}
               </label>
               <input
+                id="contact-name"
+                name="contact-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -289,6 +296,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
             {/* Email Input */}
             <div>
               <label
+                htmlFor="contact-email"
                 className="block mb-2"
                 style={{
                   color: isDark ? "#FFFFFF" : "#212121",
@@ -300,6 +308,8 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                 {t.email}
               </label>
               <input
+                id="contact-email"
+                name="contact-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -321,6 +331,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
             {/* Message Input */}
             <div>
               <label
+                htmlFor="contact-message"
                 className="block mb-2"
                 style={{
                   color: isDark ? "#FFFFFF" : "#212121",
@@ -332,6 +343,8 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                 {t.message}
               </label>
               <textarea
+                id="contact-message"
+                name="contact-message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder={t.enterYourMessage}
@@ -538,6 +551,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
               <input
                 type="checkbox"
                 id="terms"
+                name="terms"
                 checked={acceptTerms}
                 onChange={(e) => setAcceptTerms(e.target.checked)}
                 style={{

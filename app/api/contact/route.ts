@@ -12,12 +12,26 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!name || !email || !message) {
-      return NextResponse.json({ error: "Name, email, and message are required" }, { status: 400 })
+      return NextResponse.json(
+        { 
+          success: false,
+          error: "Name, email, and message are required",
+          message: "Name, email, and message are required"
+        },
+        { status: 400 },
+      )
     }
 
     // Validate reCAPTCHA token
     if (!recaptchaToken) {
-      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
+      return NextResponse.json(
+        { 
+          success: false,
+          error: "reCAPTCHA verification failed",
+          message: "reCAPTCHA verification failed"
+        },
+        { status: 400 },
+      )
     }
 
     // Verify reCAPTCHA token with Google
@@ -25,7 +39,11 @@ export async function POST(request: NextRequest) {
     if (!recaptchaSecret) {
       console.error("[v0] RECAPTCHA_SECRET_KEY is not configured")
       return NextResponse.json(
-        { error: "reCAPTCHA verification service is not configured" },
+        { 
+          success: false,
+          error: "reCAPTCHA verification service is not configured",
+          message: "reCAPTCHA verification service is not configured"
+        },
         { status: 500 },
       )
     }
@@ -57,19 +75,40 @@ export async function POST(request: NextRequest) {
         score: verificationData.score,
         errors: verificationData.error_codes,
       })
-      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
+      return NextResponse.json(
+        { 
+          success: false,
+          error: "reCAPTCHA verification failed",
+          message: "reCAPTCHA verification failed"
+        },
+        { status: 400 },
+      )
     }
 
     // Optional: for v3, apply score threshold (adjust as needed)
     if (verificationData.score !== undefined && verificationData.score < 0.3) {
       console.warn("[v0] reCAPTCHA score too low:", verificationData.score)
-      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
+      return NextResponse.json(
+        { 
+          success: false,
+          error: "reCAPTCHA verification failed",
+          message: "reCAPTCHA verification failed"
+        },
+        { status: 400 },
+      )
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
+      return NextResponse.json(
+        { 
+          success: false,
+          error: "Invalid email format",
+          message: "Invalid email format"
+        },
+        { status: 400 },
+      )
     }
 
     // Prepare file attachments if exist (handle multiple files)
@@ -94,14 +133,22 @@ export async function POST(request: NextRequest) {
           // Check file size (max 3MB per file)
           if (file.size > 3 * 1024 * 1024) {
             return NextResponse.json(
-              { error: `File "${file.name}" exceeds 3MB limit` },
+              { 
+                success: false,
+                error: `File "${file.name}" exceeds 3MB limit`,
+                message: `File "${file.name}" exceeds 3MB limit`
+              },
               { status: 400 },
             )
           }
 
           if (!allowedMimeTypes.includes(file.type)) {
             return NextResponse.json(
-              { error: `File type for "${file.name}" not allowed. Allowed: doc, docx, pdf, ppt, pptx` },
+              { 
+                success: false,
+                error: `File type for "${file.name}" not allowed. Allowed: doc, docx, pdf, ppt, pptx`,
+                message: `File type for "${file.name}" not allowed. Allowed: doc, docx, pdf, ppt, pptx`
+              },
               { status: 400 },
             )
           }
@@ -142,7 +189,11 @@ export async function POST(request: NextRequest) {
 
     if (!resendApiKey) {
       return NextResponse.json(
-        { error: "Email service is not configured. Please contact the administrator." },
+        { 
+          success: false,
+          error: "Email service is not configured. Please contact the administrator.",
+          message: "Email service is not configured. Please contact the administrator."
+        },
         { status: 500 },
       )
     }
@@ -193,13 +244,16 @@ export async function POST(request: NextRequest) {
           apiKeyLength: resendApiKey?.length,
         })
         
-        // Log the exact error for debugging
         if (response.status === 403) {
           console.error("[v0] AUTHORIZATION FAILED - Check RESEND_API_KEY in environment variables")
         }
         
         return NextResponse.json(
-          { error: `Email service error: ${responseData.message || responseData.error || "Unknown error"}` },
+          { 
+            success: false,
+            error: `Email service error: ${responseData.message || responseData.error || "Unknown error"}`,
+            message: `Email service error: ${responseData.message || responseData.error || "Unknown error"}`
+          },
           { status: 500 },
         )
       }
@@ -209,17 +263,28 @@ export async function POST(request: NextRequest) {
         success: true,
         message: "Your consultation request has been sent successfully!",
         id: responseData.id,
-      })
+      }, { status: 200 })
     } catch (fetchError) {
       console.error("[v0] Resend API fetch error:", fetchError)
       const errorMsg = fetchError instanceof Error ? fetchError.message : "Unknown error"
       return NextResponse.json(
-        { error: `Failed to send email: ${errorMsg}` },
+        { 
+          success: false,
+          error: `Failed to send email: ${errorMsg}`,
+          message: `Failed to send email: ${errorMsg}`
+        },
         { status: 500 },
       )
     }
   } catch (error) {
     console.error("Contact form error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json(
+      { 
+        success: false,
+        error: "Internal server error",
+        message: "Internal server error"
+      },
+      { status: 500 },
+    )
   }
 }
