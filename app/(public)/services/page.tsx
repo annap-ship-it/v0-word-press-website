@@ -6,7 +6,6 @@ import { Loader2, Paperclip, X } from "lucide-react"
 import Link from "next/link"
 import { useLocale } from "@/lib/locale-context"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
-import { Button } from "@/components/ui/button"
 
 declare global {
   interface Window {
@@ -35,22 +34,18 @@ export default function ServicesPage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const scriptLoaded = useRef(false)
 
-  // Проверка тёмной темы
+  // Тёмная/светлая тема
   useEffect(() => {
     const checkDarkMode = () => {
-      const isDarkMode = document.documentElement.classList.contains("dark")
-      setIsDark(isDarkMode)
+      setIsDark(document.documentElement.classList.contains("dark"))
     }
-
     checkDarkMode()
-
     const observer = new MutationObserver(checkDarkMode)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-
     return () => observer.disconnect()
   }, [])
 
-  // Загрузка reCAPTCHA
+  // reCAPTCHA
   useEffect(() => {
     const fetchKey = async () => {
       try {
@@ -73,22 +68,15 @@ export default function ServicesPage() {
     document.head.appendChild(script)
     scriptLoaded.current = true
 
-    // Скрываем бейдж reCAPTCHA
     const style = document.createElement("style")
-    style.innerHTML = `
-      .grecaptcha-badge { 
-        visibility: hidden !important; 
-        width: 0 !important; 
-        height: 0 !important; 
-      }
-    `
+    style.innerHTML = `.grecaptcha-badge { visibility: hidden !important; width: 0 !important; height: 0 !important; }`
     document.head.appendChild(style)
   }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return
     const newFiles = Array.from(e.target.files)
-    setFiles((prev) => [...prev, ...newFiles].slice(0, 3)) // лимит 3 файла
+    setFiles((prev) => [...prev, ...newFiles].slice(0, 3))
   }
 
   const removeFile = (index: number) => {
@@ -139,7 +127,6 @@ export default function ServicesPage() {
     }
   }
 
-  // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -291,14 +278,14 @@ export default function ServicesPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-20 px-6">
+      <section className="py-16 px-6">
         <div className="max-w-[1280px] mx-auto">
-          <div className="rounded-2xl p-8 md:p-12 lg:p-16" style={{ background: "#1E1E1E" }}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               {/* Form */}
               <div>
                 <h2
-                  className="font-semibold mb-4 text-white"
+                  className="font-semibold mb-3 text-white"
                   style={{
                     fontFamily: "Onest",
                     fontSize: "clamp(28px, 4vw, 40px)",
@@ -311,11 +298,11 @@ export default function ServicesPage() {
                   and we'll get in touch to provide guidance on implementation
                 </p>
 
-                <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+                <form onSubmit={handleSubmit} className="space-y-5 mt-4">
                   <div>
                     <label
                       htmlFor="name"
-                      className="block mb-2 text-white"
+                      className="block mb-1.5 text-white"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "16px",
@@ -329,7 +316,7 @@ export default function ServicesPage() {
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Type your Name"
+                      placeholder={t.typeYourName || "Type your Name"}
                       required
                       className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
                       style={{ fontFamily: "Onest" }}
@@ -339,7 +326,7 @@ export default function ServicesPage() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block mb-2 text-white"
+                      className="block mb-1.5 text-white"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "16px",
@@ -353,7 +340,7 @@ export default function ServicesPage() {
                       id="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="Type your email"
+                      placeholder={t.typeYourEmail || "Type your email"}
                       required
                       className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
                       style={{ fontFamily: "Onest" }}
@@ -363,7 +350,7 @@ export default function ServicesPage() {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block mb-2 text-white"
+                      className="block mb-1.5 text-white"
                       style={{
                         fontFamily: "Onest",
                         fontSize: "16px",
@@ -377,34 +364,74 @@ export default function ServicesPage() {
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Type your message"
+                      placeholder={t.typeYourMessage || "Type your message"}
                       required
                       className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
                       style={{ fontFamily: "Onest" }}
                     />
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-6">
-                    <Button
+                  {/* Кнопки Send + Attach */}
+                  <div className="flex flex-wrap items-center gap-6 mt-4">
+                    <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="px-12 py-6 text-lg font-medium disabled:opacity-50"
+                      className={`
+                        relative overflow-hidden
+                        flex items-center justify-center gap-[10px]
+                        text-[16px] font-medium leading-[1]
+                        text-white
+                        transition duration-300 ease-out
+                        disabled:cursor-not-allowed disabled:opacity-50
+                        bg-[#FF6200] rounded-[50px]
+                        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+                        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+                        active:scale-[0.98]
+                      `}
+                      onMouseEnter={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "#FF6200"
+                        }
+                      }}
+                      onMouseDown={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
+                        }
+                      }}
+                      onMouseUp={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                        }
+                      }}
                       style={{
+                        width: "264px",
+                        height: "40px",
+                        padding: "4px 14px",
                         fontFamily: "Onest",
-                        background: "#FF6200",
-                        borderRadius: "50px",
                       }}
                     >
-                      {isSubmitting ? "Sending..." : "Send"}
-                    </Button>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          {t.sending || "Sending..."}
+                        </>
+                      ) : (
+                        t.send || "Send"
+                      )}
+                    </button>
 
                     <label
                       htmlFor="attach-file"
                       className="flex items-center gap-2 cursor-pointer text-[#FF6200] hover:opacity-80 transition"
-                      style={{ fontFamily: "Onest", fontSize: "14px" }}
+                      style={{ fontFamily: "Onest", fontSize: "16px" }}
                     >
-                      <Paperclip size={14} />
-                      Attach file (optional)
+                      <Paperclip size={18} />
+                      {t.attachFile || "Attach file (optional)"}
                     </label>
 
                     <input
@@ -419,7 +446,7 @@ export default function ServicesPage() {
                   </div>
 
                   {files.length > 0 && (
-                    <div className="flex flex-wrap gap-3 mt-4">
+                    <div className="flex flex-wrap gap-3 mt-3">
                       {files.map((file, idx) => (
                         <div
                           key={idx}
@@ -434,7 +461,7 @@ export default function ServicesPage() {
                     </div>
                   )}
 
-                  <div className="flex items-start gap-3 mt-6">
+                  <div className="flex items-start gap-3 mt-5">
                     <input
                       type="checkbox"
                       id="terms"
@@ -443,19 +470,19 @@ export default function ServicesPage() {
                       className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
                     />
                     <label className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
-                      I Accept{" "}
+                      {t.iAccept || "I Accept"}{" "}
                       <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
-                        Terms and Conditions
+                        {t.termsAndConditions || "Terms and Conditions"}
                       </Link>
                       .<br />
-                      By submitting your email, you accept terms and conditions.<br />
-                      We may send you occasionally marketing emails.
+                      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
+                      {t.marketing || "We may send you occasionally marketing emails."}
                     </label>
                   </div>
 
                   {submitStatus && (
                     <div
-                      className={`p-4 rounded-[4px] mt-6 ${
+                      className={`p-4 rounded-[4px] mt-5 ${
                         submitStatus.type === "success" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
                       }`}
                       style={{ fontFamily: "Onest" }}
