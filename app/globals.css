@@ -67,7 +67,7 @@
 }
 
 .dark {
-  --background: #000000; /* Preserved from existing */
+  --background: #161515; /* Corrected from #000000 */
   --foreground: #ffffff; /* Preserved from existing */
   --card: #1a1a1a; /* Preserved from existing */
   --card-foreground: #ffffff; /* Preserved from existing */
@@ -75,16 +75,16 @@
   --popover-foreground: #ffffff; /* Preserved from existing */
   --primary: #ff6200; /* Preserved from existing */
   --primary-foreground: #ffffff; /* Preserved from existing */
-  --secondary: #000000; /* Preserved from existing */
+  --secondary: #161515; /* Corrected from #000000 */
   --secondary-foreground: #ffffff; /* Preserved from existing */
-  --muted: #000000; /* Preserved from existing */
+  --muted: #161515; /* Corrected from #000000 */
   --muted-foreground: #ffffff; /* Preserved from existing */
   --accent: #ff6200; /* Preserved from existing */
   --accent-foreground: #ffffff; /* Preserved from existing */
   --destructive: #ff4444; /* Preserved from existing */
   --destructive-foreground: #ffffff; /* Preserved from existing */
-  --border: #000000; /* Preserved from existing */
-  --input: #000000; /* Preserved from existing */
+  --border: #161515; /* Corrected from #000000 */
+  --input: #161515; /* Corrected from #000000 */
   --ring: #ff6200; /* Preserved from existing */
   --chart-1: oklch(0.488 0.243 264.376); /* Preserved from existing */
   --chart-2: oklch(0.696 0.17 162.48); /* Preserved from existing */
@@ -145,7 +145,67 @@
   /* The provided diff's @theme inline matches the existing, so no new color variables are added here. */
 }
 
-@layer base {
+/* Custom styles for design fixes */
+
+/* Text opacity for dark mode policy pages */
+.dark .policy-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* White text opacity for light mode */
+.light .white-text-opacity {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Hover states for footer links */
+.footer-link {
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+.footer-link:active {
+  color: #ff6200;
+}
+
+/* Social icons hover/active states */
+.social-icon {
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #ffffff;
+}
+
+.social-icon:active {
+  color: #ff6200;
+}
+
+/* Scroll to top arrow hover state */
+.scroll-to-top-arrow {
+  transition: color 0.3s ease;
+  color: #666666;
+}
+
+.scroll-to-top-arrow:hover,
+.scroll-to-top-arrow:active {
+  color: #ff6200;
+}
+
+/* Button states */
+.custom-button {
+  transition: all 0.3s ease;
+}
+
+.custom-button:hover {
+  transform: translateY(-2px);
+}
+
+.custom-button:active {
+  transform: translateY(0);
+}
   * {
     @apply border-border outline-ring/50;
   }
