@@ -10,9 +10,8 @@ import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 declare global {
   interface Window {
     grecaptcha: {
-      enterprise: {
-        execute: (siteKey: string, options: { action: string }) => Promise<string>
-      }
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
+      ready: (callback: () => void) => void
     }
   }
 }
@@ -60,7 +59,7 @@ export function RequestConsultationSection() {
     if (scriptLoaded.current) return
 
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/enterprise.js?render=explicit"
+    script.src = "https://www.google.com/recaptcha/api.js?render=explicit"
     script.async = true
     script.defer = true
     document.head.appendChild(script)
@@ -97,7 +96,21 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
-      const token = await window.grecaptcha.enterprise.execute(siteKey, { action: "contact_form" })
+      // Wait for grecaptcha to be ready
+      await new Promise<void>((resolve) => {
+        if ((window as any).grecaptcha) {
+          resolve()
+        } else {
+          const checkInterval = setInterval(() => {
+            if ((window as any).grecaptcha) {
+              clearInterval(checkInterval)
+              resolve()
+            }
+          }, 100)
+        }
+      })
+
+      const token = await window.grecaptcha.execute(siteKey, { action: "contact_form" })
 
       const form = new FormData()
       form.append("name", formData.name)
