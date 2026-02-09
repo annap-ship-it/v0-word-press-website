@@ -276,7 +276,6 @@ export default function ServicesPage() {
       </section>
 
       {/* Contact Form Section */}
-      {/* Contact Form Section */}
 <section className="py-16 px-6">
   <div className="max-w-[1280px] mx-auto">
     <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
