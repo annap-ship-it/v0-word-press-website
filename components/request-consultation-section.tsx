@@ -444,11 +444,11 @@ export function RequestConsultationSection() {
     <label className="text-sm text-white/80 leading-relaxed" style={{ fontFamily: "Onest" }}>
       {t.iAccept || "I Accept"}{" "}
       <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
-        {t.termsAndConditions || "Terms and Conditions"}
+        {t.acceptTerms || "Terms and Conditions"}
       </Link>
       .<br />
-      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
-      {t.marketing || "We may send you occasionally marketing emails."}
+      {t.bySubmitting || "By submitting your email, you accept terms and conditions."}<br />
+      {t.mayEcho || "We may send you occasionally marketing emails."}
     </label>
   </div>
 
