@@ -1,9 +1,8 @@
 "use client"
 
-import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { X, Loader2, Paperclip } from "lucide-react"
+import { Loader2, Paperclip, X } from "lucide-react"
 import Link from "next/link"
 import { useLocale } from "@/lib/locale-context"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
@@ -13,55 +12,15 @@ declare global {
     grecaptcha: {
       enterprise: {
         execute: (siteKey: string, options: { action: string }) => Promise<string>
-        ready: (callback: () => void) => void
       }
     }
   }
 }
 
-// Localization content for Ukrainian translations
-const content = {
-  en: {
-    title: "Request Free Consultation",
-    processTitle: "What's the process?",
-    step1: "Our specialist will reach out after reviewing your message",
-    step2: "If needed we'll sign an NDA to ensure trust, after what you provide us with the project details",
-    step3: "You'll receive a detailed proposal including estimates, timelines, and expert profiles",
-    namePlaceholder: "*Type your Name",
-    emailPlaceholder: "*Type your Email",
-    messagePlaceholder: "*Type your Message",
-    attachFile: "Attach file (optional)",
-    fileHelp: "No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.",
-    send: "Send",
-    sending: "Sending...",
-    acceptTerms:
-      "I Accept Terms and Conditions. By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails.",
-    termsLink: "Terms and Conditions",
-  },
-  uk: {
-    title: "Запит на безкоштовну консультацію",
-    processTitle: "Який подальший процес?",
-    step1: "Наш спеціаліст зв'яжеться з вами після ознайомлення з вашим запитом.",
-    step2: "За потреби ми підпишемо NDA для забезпечення конфіденційності після отримання деталей проєкту.",
-    step3: "Ви отримаєте детальну комерційну пропозицію з оцінками, термінами та профілями експертів.",
-    namePlaceholder: "*Введіть ваше ім'я",
-    emailPlaceholder: "*Введіть вашу електронну пошту",
-    messagePlaceholder: "*Введіть ваше повідомлення",
-    attachFile: "Додати файл (необов'язково)",
-    fileHelp: "Можна додати до 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
-    send: "Надіслати",
-    sending: "Надсилання...",
-    acceptTerms:
-      "Я приймаю Умови та положення. Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи.",
-    termsLink: "Умови та положення",
-  },
-}
-
 export function RequestConsultationSection() {
-  const { locale } = useLocale()
-  const currentLocale = (locale as keyof typeof content) || "en"
-  const t = content[currentLocale]
+  const { t } = useLocale()
 
+  const [isDark, setIsDark] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -71,72 +30,51 @@ export function RequestConsultationSection() {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
-  const [siteKey, setSiteKey] = useState<string>("")
+  const [siteKey, setSiteKey] = useState("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const scriptLoaded = useRef(false)
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const [isDark, setIsDark] = useState(false)
-
-  useEffect(() => {
-    // Fetch the reCAPTCHA site key from server action
-    const fetchSiteKey = async () => {
-      try {
-        const key = await getRecaptchaSiteKey()
-        setSiteKey(key)
-      } catch (error) {
-        console.error("[v0] Failed to fetch reCAPTCHA site key:", error)
-      }
-    }
-    fetchSiteKey()
-  }, [])
 
   useEffect(() => {
     const checkDarkMode = () => {
-      const isDarkMode = document.documentElement.classList.contains("dark")
-      setIsDark(isDarkMode)
+      setIsDark(document.documentElement.classList.contains("dark"))
     }
-
     checkDarkMode()
     const observer = new MutationObserver(checkDarkMode)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const fetchKey = async () => {
+      try {
+        const key = await getRecaptchaSiteKey()
+        setSiteKey(key)
+      } catch (err) {
+        console.error("Failed to load reCAPTCHA key:", err)
+      }
+    }
+    fetchKey()
   }, [])
 
   useEffect(() => {
     if (scriptLoaded.current) return
 
-    // Load reCAPTCHA Enterprise script
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/enterprise.js"
+    script.src = "https://www.google.com/recaptcha/enterprise.js?render=explicit"
     script.async = true
     script.defer = true
-
     document.head.appendChild(script)
     scriptLoaded.current = true
 
-    return () => {
-      // Script doesn't need cleanup
-    }
+    const style = document.createElement("style")
+    style.innerHTML = `.grecaptcha-badge { visibility: hidden !important; width: 0 !important; height: 0 !important; }`
+    document.head.appendChild(style)
   }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || [])
-    const validExtensions = [".doc", ".docx", ".pdf", ".ppt", ".pptx"]
-    const maxSize = 3 * 1024 * 1024 // 3MB
-    const maxFiles = 3
-
-    const validFiles = selectedFiles.filter((file) => {
-      const ext = "." + file.name.split(".").pop()?.toLowerCase()
-      return validExtensions.includes(ext) && file.size <= maxSize
-    })
-
-    if (files.length + validFiles.length > maxFiles) {
-      setSubmitStatus({ type: "error", message: `Maximum ${maxFiles} files allowed` })
-      return
-    }
-
-    setFiles((prev) => [...prev, ...validFiles].slice(0, maxFiles))
-    setSubmitStatus(null)
+    if (!e.target.files?.length) return
+    const newFiles = Array.from(e.target.files)
+    setFiles((prev) => [...prev, ...newFiles].slice(0, 3))
   }
 
   const removeFile = (index: number) => {
@@ -145,15 +83,13 @@ export function RequestConsultationSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!formData.acceptTerms) {
-      setSubmitStatus({ type: "error", message: "Please accept the Terms and Conditions" })
+      setSubmitStatus({ type: "error", message: t.pleaseAcceptTerms || "Please accept the Terms and Conditions" })
       return
     }
 
-    // Validate reCAPTCHA is ready
-    if (!siteKey || !window.grecaptcha?.enterprise?.execute) {
-      setSubmitStatus({ type: "error", message: "reCAPTCHA is not ready. Please refresh the page." })
+    if (!siteKey) {
+      setSubmitStatus({ type: "error", message: t.recaptchaNotLoaded || "reCAPTCHA not loaded. Refresh page." })
       return
     }
 
@@ -161,468 +97,373 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
-      // Execute reCAPTCHA Enterprise to get token
-      const recaptchaToken = await window.grecaptcha.enterprise.execute(
-        siteKey,
-        { action: "CONSULTATION_REQUEST" }
-      )
+      const token = await window.grecaptcha.enterprise.execute(siteKey, { action: "contact_form" })
 
-      const submitData = new FormData()
-      submitData.append("name", formData.name)
-      submitData.append("email", formData.email)
-      submitData.append("message", formData.message)
-      submitData.append("recaptchaToken", recaptchaToken)
-      submitData.append("type", "consultation")
+      const form = new FormData()
+      form.append("name", formData.name)
+      form.append("email", formData.email)
+      form.append("message", formData.message)
+      form.append("recaptchaToken", token)
+      files.forEach((file) => form.append("files", file))
 
-      files.forEach((file) => {
-        submitData.append("files", file)
-      })
+      const res = await fetch("/api/contact", { method: "POST", body: form })
+      const data = await res.json()
 
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        body: submitData,
-      })
-
-      const result = await response.json()
-
-      if (response.ok) {
-        setSubmitStatus({ type: "success", message: result.message || "Message sent successfully!" })
+      if (res.ok) {
+        setSubmitStatus({ type: "success", message: t.messageSent || "Message sent successfully!" })
         setFormData({ name: "", email: "", message: "", acceptTerms: false })
         setFiles([])
-        if (fileInputRef.current) {
-          fileInputRef.current.value = ""
-        }
+        if (fileInputRef.current) fileInputRef.current.value = ""
       } else {
-        setSubmitStatus({ type: "error", message: result.error || "Failed to send message" })
+        setSubmitStatus({ type: "error", message: data.error || t.failedToSend || "Failed to send message" })
       }
-    } catch (error) {
-      setSubmitStatus({ type: "error", message: "Failed to send message. Please try again." })
+    } catch (err) {
+      console.error("Submit failed:", err)
+      setSubmitStatus({ type: "error", message: t.failedToSend || "Failed to send message. Please try again." })
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  return (
-    <section className="py-20 px-4" style={{ background: isDark ? "#161515" : "#FFFFFF" }}>
-      <div className="max-w-7xl mx-auto">
-        <h2
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-          style={{
-            fontFamily: "Onest",
-            fontSize: "48px",
-            lineHeight: "90%",
-            letterSpacing: "-0.03em",
-            color: isDark ? "#FFFFFF" : "#212121",
-          }}
-        >
-          {t.title}
-        </h2>
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
-        <div
-          className="p-6 md:p-10 rounded-[14px] mb-12"
-          style={{
-            background: "#212121",
-          }}
-        >
-          <h3
-            className="text-2xl font-medium mb-6"
+  const services = [
+    {
+      id: "custom-web-solutions",
+      title: t.customWebSolutions,
+      description: t.customWebSolutionsDesc,
+      image: "/images/3f00f5531b4c18a10739177bfb9caed239f86ebd.jpg",
+      imageAlt: "Custom web solutions - laptop with code",
+      reverse: false,
+    },
+    {
+      id: "ux-ui-design",
+      title: t.uiUxDesign,
+      description: t.uiUxDesignDesc,
+      image: "/images/8d64c3f21c11f588925bab77e415bd557cad385b.jpg",
+      imageAlt: "UX/UI and Graphic Design workspace",
+      reverse: true,
+    },
+    {
+      id: "qa",
+      title: t.qaAutomation,
+      titleHighlight: t.locale === "uk" ? "Ручне та" : "Manual and",
+      description: t.qaAutomationDesc,
+      image: "/images/d99f7180c4bf0265069aa1c177dc0143e37e4d79.jpg",
+      imageAlt: "Manual and Automation QA - testing screens",
+      reverse: false,
+    },
+    {
+      id: "devops",
+      title: t.devops,
+      description: t.devopsDesc,
+      image: "/images/45fc920cb000857538e44a289f252b1506456ab8.jpg",
+      imageAlt: "DevOps - keyboard and development",
+      reverse: true,
+    },
+    {
+      id: "data-analytics",
+      title: t.dataAnalytics,
+      description: t.dataAnalyticsDesc,
+      image: "/images/ee788060a2aeeb43a086780a10e052075317f0cd.jpg",
+      imageAlt: "Data Analytics - graphs and charts",
+      reverse: false,
+    },
+    {
+      id: "mobile-applications",
+      title: t.mobileApplications,
+      description: t.mobileApplicationsDesc,
+      image: "/images/d00b7db9fb79ecd79b7d95fa7eecf2e662529ebe.jpg",
+      imageAlt: "Mobile Applications - app icons",
+      reverse: true,
+    },
+  ]
+
+  return (
+    <main className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="pt-32 pb-16 px-6">
+        <div className="max-w-[1280px] mx-auto text-center">
+          <h1
+            className="font-bold mb-4"
             style={{
               fontFamily: "Onest",
-              fontSize: "24px",
-              lineHeight: "31px",
-              letterSpacing: "-0.03em",
-              color: "#FFFFFF",
+              fontSize: "clamp(40px, 5vw, 72px)",
+              lineHeight: "1.1",
+              backgroundImage: isDark
+                ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
+                : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
             }}
           >
-            {t.processTitle}
-          </h3>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Step 1 */}
-            <div className="flex gap-4">
-              <div className="flex-shrink-0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M9 9L13.5 12L18 9"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path d="M3 13.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M1 10.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path
-                    d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-              <p
-                style={{
-                  fontFamily: "Onest",
-                  fontSize: "20px",
-                  lineHeight: "26px",
-                  letterSpacing: "-0.02em",
-                  color: "rgba(255, 255, 255, 0.8)",
-                }}
-              >
-                {t.step1}
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="flex gap-4">
-              <div className="flex-shrink-0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8 10H16M8 6H12M8 14H11"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <p
-                style={{
-                  fontFamily: "Onest",
-                  fontSize: "20px",
-                  lineHeight: "26px",
-                  letterSpacing: "-0.02em",
-                  color: "rgba(255, 255, 255, 0.8)",
-                }}
-              >
-                {t.step2}
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="flex gap-4">
-              <div className="flex-shrink-0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 12L11 15L16 10"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z"
-                    stroke="#FF6200"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <p
-                style={{
-                  fontFamily: "Onest",
-                  fontSize: "20px",
-                  lineHeight: "26px",
-                  letterSpacing: "-0.02em",
-                  color: "rgba(255, 255, 255, 0.8)",
-                }}
-              >
-                {t.step3}
-              </p>
-            </div>
-          </div>
+            {t.servicesTitle}
+          </h1>
         </div>
+      </section>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Left: Form */}
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name Input */}
-              <div>
-                <input
-                  id="consultation-name"
-                  name="consultation-name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={t.namePlaceholder}
-                  required
-                  style={{
-                    width: "100%",
-                    height: "40px",
-                    background: isDark ? "#161515" : "transparent",
-                    borderBottom: "1px solid #A8A8A8",
-                    fontFamily: "Onest",
-                    fontSize: "16px",
-                    lineHeight: "20px",
-                    letterSpacing: "0.02em",
-                    color: isDark ? "#FFFFFF" : "#212121",
-                    outline: "none",
-                    paddingLeft: "0",
-                  }}
-                  className="placeholder:text-[#A8A8A8]"
-                />
-              </div>
-
-              {/* Email Input */}
-              <div>
-                <input
-                  id="consultation-email"
-                  name="consultation-email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={t.emailPlaceholder}
-                  required
-                  style={{
-                    width: "100%",
-                    height: "40px",
-                    background: isDark ? "#161515" : "transparent",
-                    borderBottom: "1px solid #A8A8A8",
-                    fontFamily: "Onest",
-                    fontSize: "16px",
-                    lineHeight: "20px",
-                    letterSpacing: "0.02em",
-                    color: isDark ? "#FFFFFF" : "#212121",
-                    outline: "none",
-                    paddingLeft: "0",
-                  }}
-                  className="placeholder:text-[#A8A8A8]"
-                />
-              </div>
-
-              {/* Message Input */}
-              <div>
-                <textarea
-                  id="consultation-message"
-                  name="consultation-message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder={t.messagePlaceholder}
-                  required
-                  rows={3}
-                  style={{
-                    width: "100%",
-                    background: isDark ? "#161515" : "transparent",
-                    borderBottom: "1px solid #A8A8A8",
-                    fontFamily: "Onest",
-                    fontSize: "16px",
-                    lineHeight: "20px",
-                    letterSpacing: "0.02em",
-                    color: isDark ? "#FFFFFF" : "#212121",
-                    outline: "none",
-                    resize: "none",
-                    paddingLeft: "0",
-                  }}
-                  className="placeholder:text-[#A8A8A8]"
-                />
-              </div>
-
-              {/* File Upload */}
-              <div>
-                <input
-                  ref={fileInputRef}
-                  id="consultation-file"
-                  name="consultation-file"
-                  type="file"
-                  multiple
-                  accept=".doc,.docx,.pdf,.ppt,.pptx"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    padding: "10px 20px",
-                    background: isDark ? "#212121" : "transparent",
-                    border: isDark ? "1px solid rgba(255, 255, 255, 0.5)" : "1px solid #A8A8A8",
-                    borderRadius: "6px",
-                    fontFamily: "Onest",
-                    fontSize: "16px",
-                    lineHeight: "20px",
-                    letterSpacing: "0.02em",
-                    color: isDark ? "#FFFFFF" : "#212121",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Paperclip size={14} color="#FF6200" />
-                  {t.attachFile}
-                </button>
-                <p
-                  className="mt-2"
-                  style={{
-                    fontFamily: "Onest",
-                    fontSize: "14px",
-                    lineHeight: "110%",
-                    color: "#A8A8A8",
-                  }}
-                >
-                  {t.fileHelp}
-                </p>
-
-                {/* Attached Files */}
-                {files.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {files.map((file, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#212121] border border-[#3A3A3A]"
-                      >
-                        <span className="text-sm text-white truncate max-w-[150px]">{file.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => removeFile(index)}
-                          className="text-gray-400 hover:text-white"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`
-    relative overflow-hidden
-    flex items-center justify-center gap-2.5
-    w-[200px] h-10
-    rounded-full
-    font-[Onest] font-normal text-[16px] leading-[100%]
-    text-white
-    transition duration-300 ease-out
-    disabled:cursor-not-allowed
-    bg-[#FF6200]
-    hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
-    active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
-    active:scale-[0.98]
-    disabled:bg-[#4A4A4A] disabled:text-[#AAAAAA] disabled:opacity-70
-  `}
-                onMouseEnter={(e) => {
-                  if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = "#FF6200";
-                  }
-                }}
-                onMouseDown={(e) => {
-                  if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)";
-                  }
-                }}
-                onMouseUp={(e) => {
-                  if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
-                  }
-                }}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    {t.sending}
-                  </>
-                ) : (
-                  t.send
-                )}
-              </button>
-
-              {/* Submit Status */}
-              {submitStatus && (
+      {/* Services Sections */}
+      <section className="pb-16">
+        <div className="max-w-[1280px] mx-auto px-6">
+          {services.map((service, index) => (
+            <div key={index}>
+              {index > 0 && (
                 <div
-                  className={`p-3 rounded ${
-                    submitStatus.type === "success"
-                      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                      : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
-                  }`}
-                >
-                  {submitStatus.message}
-                </div>
+                  className="w-full mb-16"
+                  style={{
+                    height: "1px",
+                    background: "var(--foreground)",
+                    opacity: 0.1,
+                  }}
+                />
               )}
-
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                {/* Terms Checkbox */}
-                <div className="flex items-start gap-3 flex-1">
-                  <input
-                    type="checkbox"
-                    id="consultation-terms"
-                    name="consultation-terms"
-                    checked={formData.acceptTerms}
-                    onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
-                    style={{
-                      width: "14px",
-                      height: "14px",
-                      background: isDark ? "#161515" : "transparent",
-                      border: "1px solid #A8A8A8",
-                      borderRadius: "2px",
-                      marginTop: "2px",
-                      flexShrink: 0,
-                    }}
-                  />
-                  <label
-                    htmlFor="consultation-terms"
+              <div
+                id={service.id}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20 items-center scroll-mt-32 ${
+                  service.reverse ? "lg:grid-flow-dense" : ""
+                }`}
+              >
+                <div className={service.reverse ? "lg:col-start-2" : ""}>
+                  <h2
+                    className="font-semibold mb-6"
                     style={{
                       fontFamily: "Onest",
-                      fontSize: "14px",
-                      lineHeight: "110%",
-                      color: "#A8A8A8",
+                      fontSize: "clamp(24px, 3vw, 40px)",
+                      lineHeight: "1.2",
+                      color: service.titleHighlight ? undefined : "inherit",
                     }}
                   >
-                    {currentLocale === "uk" ? "Я приймаю" : "I Accept"}{" "}
-                    <Link href="/terms" className="underline" style={{ color: "#FF6200" }}>
-                      {t.termsLink}
-                    </Link>
-                    .{" "}
-                    {currentLocale === "uk"
-                      ? "Надсилаючи свій запит, ви погоджуєтеся з умовами та положеннями. Ми можемо періодично надсилати вам маркетингові листи."
-                      : "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails."}
-                  </label>
+                    {service.titleHighlight ? (
+                      <>
+                        <span style={{ color: "#FF6200" }}>{service.titleHighlight}</span>{" "}
+                        {service.title.replace(service.titleHighlight, "").trim()}
+                      </>
+                    ) : (
+                      service.title
+                    )}
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: "Onest",
+                      fontSize: "16px",
+                      lineHeight: "1.6",
+                      color: "var(--foreground)",
+                      opacity: 0.8,
+                    }}
+                  >
+                    {service.description}
+                  </p>
+                </div>
+
+                <div className={service.reverse ? "lg:col-start-1 lg:row-start-1" : ""}>
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
+                    <Image
+                      src={service.image || "/placeholder.svg"}
+                      alt={service.imageAlt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  </div>
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          {/* Right: Image */}
-          <div className="relative w-full h-[400px] lg:h-[455px] rounded-[14px] overflow-hidden">
-            <Image
-              src="/images/903416dfea2ecdd32e83cc85f6e0cee9b2d4fb63-20-281-29.jpg"
-              alt="Person working on laptop"
-              fill
-              className="object-cover"
-            />
+      {/* Contact Form Section */}
+      <section className="py-16 px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Form */}
+              <div>
+                <h2
+                  className="font-bold mb-8 text-white whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+                  style={{
+                    fontFamily: "Onest",
+                    fontSize: "clamp(32px, 3.8vw, 48px)",
+                    lineHeight: "1.1",
+                  }}
+                >
+                  {t.getConsultation || "Send us a note with your idea, and we'll get in touch to provide guidance on implementation"}
+                </h2>
+
+ <form onSubmit={handleSubmit} className="space-y-5">
+  <div>
+    <label
+      htmlFor="name"
+      className="block mb-2 text-white font-onest text-base"
+    >
+      {t.name || "Name"}
+    </label>
+    <input
+      id="name"
+      type="text"
+      value={formData.name}
+      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+      placeholder={t.typeYourName || "Type your Name"}
+      required
+      className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-md text-white placeholder:text-white/50 focus:outline-none focus:border-[#FF6200]"
+    />
+  </div>
+
+  <div>
+    <label
+      htmlFor="email"
+      className="block mb-2 text-white font-onest text-base"
+    >
+      {t.email || "Email"}
+    </label>
+    <input
+      id="email"
+      type="email"
+      value={formData.email}
+      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+      placeholder={t.typeYourEmail || "Type your email"}
+      required
+      className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-md text-white placeholder:text-white/50 focus:outline-none focus:border-[#FF6200]"
+    />
+  </div>
+
+  <div>
+    <label
+      htmlFor="message"
+      className="block mb-2 text-white font-onest text-base"
+    >
+      {t.message || "Message"}
+    </label>
+    <textarea
+      id="message"
+      rows={4}
+      value={formData.message}
+      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+      placeholder={t.typeYourMessage || "Type your message"}
+      required
+      className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-md text-white placeholder:text-white/50 resize-none focus:outline-none focus:border-[#FF6200]"
+    />
+  </div>
+
+  <div className="flex flex-wrap items-center gap-6 mt-4">
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className={`
+        relative overflow-hidden
+        flex items-center justify-center gap-2.5
+        px-10 py-4 text-base font-medium
+        text-white
+        bg-[#FF6200] rounded-full
+        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+        active:scale-[0.98]
+        disabled:opacity-50 disabled:cursor-not-allowed
+        transition-all duration-300
+      `}
+      style={{
+        width: "264px",
+        height: "40px",
+        padding: "4px 14px",
+        fontFamily: "Onest",
+      }}
+    >
+      {isSubmitting ? (
+        <>
+          <Loader2 className="w-5 h-5 animate-spin" />
+          {t.sending || "Sending..."}
+        </>
+      ) : (
+        t.send || "Send"
+      )}
+    </button>
+
+    <label
+      htmlFor="attach-file"
+      className="flex items-center gap-2 cursor-pointer text-white hover:opacity-80 transition"
+      style={{
+        fontFamily: "Onest",
+        fontSize: "16px",
+      }}
+    >
+      <Paperclip size={18} color="#FF6200" />
+      {t.attachFile || "Attach file (optional)"}
+    </label>
+
+    <input
+      ref={fileInputRef}
+      id="attach-file"
+      type="file"
+      multiple
+      accept=".doc,.docx,.pdf,.ppt,.pptx"
+      onChange={handleFileSelect}
+      className="hidden"
+    />
+  </div>
+
+  {files.length > 0 && (
+    <div className="flex flex-wrap gap-3 mt-3">
+      {files.map((file, idx) => (
+        <div
+          key={idx}
+          className="flex items-center gap-2 px-4 py-2 bg-[#2A2A2A] rounded-full text-white text-sm border border-[#3A3A3A]"
+        >
+          <span className="truncate max-w-[180px]">{file.name}</span>
+          <button type="button" onClick={() => removeFile(idx)}>
+            <X size={14} />
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <div className="flex items-start gap-3 mt-5">
+    <input
+      type="checkbox"
+      id="terms"
+      checked={formData.acceptTerms}
+      onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+      className="mt-1 w-4 h-4 accent-[#FF6200] bg-transparent border-[#3A3A3A] rounded"
+    />
+    <label className="text-sm text-white/80 leading-relaxed" style={{ fontFamily: "Onest" }}>
+      {t.iAccept || "I Accept"}{" "}
+      <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
+        {t.termsAndConditions || "Terms and Conditions"}
+      </Link>
+      .<br />
+      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
+      {t.marketing || "We may send you occasionally marketing emails."}
+    </label>
+  </div>
+
+  {submitStatus && (
+    <div
+      className={`p-4 rounded-md mt-5 ${
+        submitStatus.type === "success" ? "bg-green-900/30 text-green-300" : "bg-red-900/30 text-red-300"
+      }`}
+    >
+      {submitStatus.message}
+    </div>
+  )}
+</form>
+              </div>
+
+              {/* Image */}
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden">
+                <Image
+                  src="/images/f236a65b9dcdd59fe25f5a9694d5243e04bca53a-20-281-29.jpg"
+                  alt="Developer working at desk"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   )
 }
