@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-export default function ServicesPage() {
+export function RequestConsultationSection() {
   const { t } = useLocale()
 
   const [isDark, setIsDark] = useState(false)
