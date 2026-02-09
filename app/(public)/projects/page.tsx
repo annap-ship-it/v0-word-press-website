@@ -632,9 +632,26 @@ export default function ProjectsPage() {
 
                   {/* Submit Button */}
                   <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
+      type="submit"
+      disabled={isSubmitting}
+      className={`
+        relative overflow-hidden
+        flex items-center justify-center gap-2.5
+        px-10 py-4 text-base font-medium
+        text-white
+        bg-[#FF6200] rounded-full
+        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+        active:scale-[0.98]
+        disabled:opacity-50 disabled:cursor-not-allowed
+        transition-all duration-300
+      `}
+      style={{
+        width: "264px",
+        height: "40px",
+        padding: "4px 14px",
+        fontFamily: "Onest",
+      }}
                   >
                     {isSubmitting ? t.sendingButton : t.submitButton}
                   </button>
