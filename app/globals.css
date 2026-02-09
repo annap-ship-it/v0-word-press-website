@@ -206,6 +206,161 @@
 .custom-button:active {
   transform: translateY(0);
 }
+
+/* Numbers block with gradient hover */
+.numbers-block {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.number-item {
+  transition: all 0.3s ease;
+}
+
+.number-item:hover {
+  background: linear-gradient(135deg, rgba(255, 98, 0, 0.1), rgba(255, 170, 0, 0.05));
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+/* Quote styling */
+.quote-section {
+  margin-top: 40px;
+}
+
+.quote-text {
+  font-family: "Onest", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* Feedback and testimonials */
+.feedback-avatar {
+  align-self: flex-start;
+}
+
+.feedback-scroll-arrow {
+  color: #666666;
+  transition: color 0.3s ease;
+}
+
+.feedback-scroll-arrow:hover,
+.feedback-scroll-arrow:active {
+  color: #ff6200;
+}
+
+.feedback-background-logo {
+  position: absolute;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* Form inputs styling */
+.form-input {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: "Onest", sans-serif;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.form-input:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.form-input:focus {
+  border-color: #ffaa00;
+  background-color: rgba(255, 170, 0, 0.08);
+  outline: none;
+}
+
+.form-input.typing {
+  border-color: #ffaa00;
+  background-color: rgba(255, 170, 0, 0.1);
+}
+
+/* Attach file button */
+.attach-file-btn {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Onest", sans-serif;
+}
+
+.attach-file-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.attach-file-btn:active {
+  transform: scale(0.98);
+}
+
+/* Check button */
+.check-btn {
+  background-color: #ff6200;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: "Onest", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.check-btn:hover {
+  background-color: #ff7722;
+  transform: translateY(-2px);
+}
+
+.check-btn:active {
+  transform: translateY(0);
+  background-color: #ff6200;
+}
+
+/* Footer and policy pages */
+.policy-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footer-link {
+  transition: color 0.3s ease;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+.footer-link:active {
+  color: #ff6200;
+}
+
+/* Social links alignment */
+.social-links-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Scroll to top button */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 140px;
+  right: 20px;
+  z-index: 40;
+}
   * {
     @apply border-border outline-ring/50;
   }

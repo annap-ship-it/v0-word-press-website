@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/locale-context"
 function LinkedInIcon({ className }: { className?: string }) {
   return (
     <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.78v2.16h.07c.66-1.25 2.28-2.56 4.7-2.56 5.03 0 5.95 3.3 5.95 7.59V24h-5v-7.75c0-1.85-.03-4.23-2.57-4.23-2.57 0-2.96 2-2.96 4.09V24h-5V8z" />
+      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
     </svg>
   )
 }
@@ -16,7 +16,7 @@ function LinkedInIcon({ className }: { className?: string }) {
 function TelegramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19 7L4 12.5L9.526 13.233L12.091 14.864V17.267L19 7Z" />
+      <path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.687c.546-.335 1.074-.16.65.21l-8.15 7.34.002.001-.315 4.71c.447 0 .645-.222.9-.491l2.162-2.04 4.552 3.36c.937.664 1.96.331 2.28-.721l3.715-17.297c.29-.95-.537-1.428-1.54-.932z" />
     </svg>
   )
 }
@@ -76,7 +76,7 @@ export function QuoteSection() {
   return (
     <section className="py-16 px-4 md:py-24 bg-card">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           {/* Фото */}
           <div className="order-2 lg:order-1 flex justify-center lg:justify-end">
             <div className="relative rounded-3xl overflow-hidden w-full max-w-md aspect-[3/4]">

@@ -76,7 +76,7 @@ export function HeroBanner() {
             }}
           >
             {t.mainTitle}
-            <br />a{" "}
+            <br />
             <span
               style={{
                 backgroundImage:

@@ -172,8 +172,8 @@ export default function PrivacyPage() {
                 {section.title}
               </h2>
               <div 
-                className="whitespace-pre-line text-base leading-relaxed"
-                style={{ color: "var(--muted-foreground)" }}
+                className="whitespace-pre-line text-base leading-relaxed policy-text"
+                style={{ color: "rgba(var(--foreground-rgb, 255 255 255) / 0.6)" }}
               >
                 {section.content}
               </div>
