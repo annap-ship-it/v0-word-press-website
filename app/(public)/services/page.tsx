@@ -276,233 +276,234 @@ export default function ServicesPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-16 px-6">
-        <div className="max-w-[1280px] mx-auto">
-          <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Form */}
-              <div>
-                <h2
-                  className="font-semibold mb-4 text-white whitespace-nowrap overflow-hidden text-ellipsis"
-                  style={{
-                    fontFamily: "Onest",
-                    fontSize: "clamp(32px, 3.5vw, 48px)",
-                    lineHeight: "1.1",
-                  }}
-                >
-                  {t.getConsultation || "Send us a note with your idea,"}
-                </h2>
-                <p className="text-white/80 mb-8 text-lg">
-                  {t.sendUsMessage || "and we'll get in touch to provide guidance on implementation"}
-                </p>
+      {/* Contact Form Section */}
+<section className="py-16 px-6">
+  <div className="max-w-[1280px] mx-auto">
+    <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        {/* Form */}
+        <div>
+          <h2
+            className="font-bold mb-8 text-white whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+            style={{
+              fontFamily: "Onest",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSize: "clamp(28px, 3.8vw, 48px)",
+              lineHeight: "100%",
+              letterSpacing: "-0.04em",
+            }}
+          >
+            {t.getConsultation || "Send us a note with your idea, and we’ll get in touch to provide guidance on implementation"}
+          </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-white"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      {t.name || "Name"}
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder={t.typeYourName || "Type your Name"}
-                      required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
-                      style={{ fontFamily: "Onest" }}
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-white"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      {t.email || "Email"}
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder={t.typeYourEmail || "Type your email"}
-                      required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
-                      style={{ fontFamily: "Onest" }}
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block mb-2 text-white"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      {t.message || "Message"}
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder={t.typeYourMessage || "Type your message"}
-                      required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
-                      style={{ fontFamily: "Onest" }}
-                    />
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-6 mt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={`
-                        relative overflow-hidden
-                        flex items-center justify-center gap-[10px]
-                        text-[16px] font-medium leading-[1]
-                        text-white
-                        transition duration-300 ease-out
-                        disabled:cursor-not-allowed disabled:opacity-50
-                        bg-[#FF6200] rounded-[50px]
-                        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
-                        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
-                        active:scale-[0.98]
-                      `}
-                      onMouseEnter={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "#FF6200"
-                        }
-                      }}
-                      onMouseDown={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
-                        }
-                      }}
-                      onMouseUp={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
-                        }
-                      }}
-                      style={{
-                        width: "264px",
-                        height: "40px",
-                        padding: "4px 14px",
-                        fontFamily: "Onest",
-                      }}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          {t.sending || "Sending..."}
-                        </>
-                      ) : (
-                        t.send || "Send"
-                      )}
-                    </button>
-
-                    <label
-                      htmlFor="attach-file"
-                      className="flex items-center gap-2 cursor-pointer text-white hover:opacity-80 transition"
-                      style={{ fontFamily: "Onest", fontSize: "16px" }}
-                    >
-                      <Paperclip size={18} color="#FF6200" />
-                      {t.attachFile || "Attach file (optional)"}
-                    </label>
-
-                    <input
-                      ref={fileInputRef}
-                      id="attach-file"
-                      type="file"
-                      multiple
-                      accept=".doc,.docx,.pdf,.ppt,.pptx"
-                      onChange={handleFileSelect}
-                      className="hidden"
-                    />
-                  </div>
-
-                  {files.length > 0 && (
-                    <div className="flex flex-wrap gap-3 mt-3">
-                      {files.map((file, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-2 px-4 py-2 bg-[#2A2A2A] rounded-full text-white text-sm border border-[#3A3A3A]"
-                        >
-                          <span className="truncate max-w-[180px]">{file.name}</span>
-                          <button type="button" onClick={() => removeFile(idx)}>
-                            <X size={14} />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="flex items-start gap-3 mt-5">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      checked={formData.acceptTerms}
-                      onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
-                      className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
-                    />
-                    <label className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
-                      {t.iAccept || "I Accept"}{" "}
-                      <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
-                        {t.termsAndConditions || "Terms and Conditions"}
-                      </Link>
-                      .<br />
-                      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
-                      {t.marketing || "We may send you occasionally marketing emails."}
-                    </label>
-                  </div>
-
-                  {submitStatus && (
-                    <div
-                      className={`p-4 rounded-[4px] mt-5 ${
-                        submitStatus.type === "success" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
-                      }`}
-                      style={{ fontFamily: "Onest" }}
-                    >
-                      {submitStatus.message}
-                    </div>
-                  )}
-                </form>
-              </div>
-
-              {/* Image */}
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden">
-                <Image
-                  src="/images/f236a65b9dcdd59fe25f5a9694d5243e04bca53a-20-281-29.jpg"
-                  alt="Developer working at desk"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label
+                htmlFor="name"
+                className="block mb-2 text-white"
+                style={{
+                  fontFamily: "Onest",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                }}
+              >
+                {t.name || "Name"}
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder={t.typeYourName || "Type your Name"}
+                required
+                className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+                style={{ fontFamily: "Onest" }}
+              />
             </div>
-          </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block mb-2 text-white"
+                style={{
+                  fontFamily: "Onest",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                }}
+              >
+                {t.email || "Email"}
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder={t.typeYourEmail || "Type your email"}
+                required
+                className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+                style={{ fontFamily: "Onest" }}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="message"
+                className="block mb-2 text-white"
+                style={{
+                  fontFamily: "Onest",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                }}
+              >
+                {t.message || "Message"}
+              </label>
+              <textarea
+                id="message"
+                rows={4}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                placeholder={t.typeYourMessage || "Type your message"}
+                required
+                className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
+                style={{ fontFamily: "Onest" }}
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center gap-6 mt-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`
+                  relative overflow-hidden
+                  flex items-center justify-center gap-[10px]
+                  text-[16px] font-medium leading-[1]
+                  text-white
+                  transition duration-300 ease-out
+                  disabled:cursor-not-allowed disabled:opacity-50
+                  bg-[#FF6200] rounded-[50px]
+                  hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+                  active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+                  active:scale-[0.98]
+                `}
+                onMouseEnter={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.background = "#FF6200"
+                  }
+                }}
+                onMouseDown={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
+                  }
+                }}
+                onMouseUp={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                  }
+                }}
+                style={{
+                  width: "264px",
+                  height: "40px",
+                  padding: "4px 14px",
+                  fontFamily: "Onest",
+                }}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    {t.sending || "Sending..."}
+                  </>
+                ) : (
+                  t.send || "Send"
+                )}
+              </button>
+
+              <label
+                htmlFor="attach-file"
+                className="flex items-center gap-2 cursor-pointer text-white hover:opacity-80 transition"
+                style={{ fontFamily: "Onest", fontSize: "16px" }}
+              >
+                <Paperclip size={18} color="#FF6200" />
+                {t.attachFile || "Attach file (optional)"}
+              </label>
+
+              <input
+                ref={fileInputRef}
+                id="attach-file"
+                type="file"
+                multiple
+                accept=".doc,.docx,.pdf,.ppt,.pptx"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+            </div>
+
+            {files.length > 0 && (
+              <div className="flex flex-wrap gap-3 mt-3">
+                {files.map((file, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#2A2A2A] rounded-full text-white text-sm border border-[#3A3A3A]"
+                  >
+                    <span className="truncate max-w-[180px]">{file.name}</span>
+                    <button type="button" onClick={() => removeFile(idx)}>
+                      <X size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex items-start gap-3 mt-5">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={formData.acceptTerms}
+                onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+                className="mt-1 w-4 h-4 rounded border-[#3A3A3A] bg-[#2A2A2A]"
+              />
+              <label className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
+                {t.iAccept || "I Accept"}{" "}
+                <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
+                  {t.termsAndConditions || "Terms and Conditions"}
+                </Link>
+                .<br />
+                {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
+                {t.marketing || "We may send you occasionally marketing emails."}
+              </label>
+            </div>
+
+            {submitStatus && (
+              <div
+                className={`p-4 rounded-[4px] mt-5 ${
+                  submitStatus.type === "success" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+                }`}
+                style={{ fontFamily: "Onest" }}
+              >
+                {submitStatus.message}
+              </div>
+            )}
+          </form>
         </div>
-      </section>
+
+        {/* Image */}
+        <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden">
+          <Image
+            src="/images/f236a65b9dcdd59fe25f5a9694d5243e04bca53a-20-281-29.jpg"
+            alt="Developer working at desk"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
     </main>
   )
 }
