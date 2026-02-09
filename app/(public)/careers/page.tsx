@@ -283,8 +283,8 @@ export default function CareersPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - Text Content */}
           <div className="space-y-6">
-            <div className="space-y-6 text-lg text-foreground">
-              <p className="mt-52">
+            <div className="space-y-6 text-lg" style={{ color: "rgba(255, 255, 255, 0.6)" }}>
+              <p className="mt-16">
                 {t.introText1}
                 <span className="text-[#FF6200] font-medium">{t.introHighlight1}</span>
                 {t.introText2}

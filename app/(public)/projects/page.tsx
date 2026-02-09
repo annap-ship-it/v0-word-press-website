@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+import { ProjectsOverlappingSection } from "@/components/projects-overlapping-section"
 
 interface Project {
   id: string
@@ -478,139 +479,14 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Projects List */}
-      <section className="py-10 px-6">
-        <div className="max-w-[1280px] mx-auto space-y-8">
-          {projects.map((project, index) => {
-            const isReverse = index % 2 === 1
-
-            return (
-              <AnimatedCard key={project.id} delay={index * 100}>
-                <Link href={`/projects/${project.slug}`} className="block group">
-                  <div
-                    className="rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-lg"
-                    style={{
-                      background: isDark
-                        ? isReverse
-                          ? "linear-gradient(70.46deg, #212121 57.09%, #FF6200 125.28%)"
-                          : "linear-gradient(292.61deg, #212121 56.12%, #FF6200 111.19%)"
-                        : isReverse
-                          ? "linear-gradient(73.52deg, #FAF9F8 33.1%, #FFFFFF 75.27%, #FF6200 120.85%)"
-                          : "linear-gradient(283.85deg, #FAF9F8 45%, #FFFFFF 77.04%, #FF6200 110.33%)",
-                      boxShadow: isDark ? "none" : "2px 2px 20px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    <div
-                      className={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 ${isReverse ? "lg:flex-row-reverse" : ""}`}
-                    >
-                      {/* Image */}
-                      <div className={`${isReverse ? "lg:order-2" : "lg:order-1"}`}>
-                        <div className="relative w-full aspect-[16/10] rounded-[14px] overflow-hidden">
-                          <Image
-                            src={project.featured_image || "/placeholder.svg"}
-                            alt={typeof project.title === "string" ? project.title : project.title[locale]}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className={`${isReverse ? "lg:order-1" : "lg:order-2"} flex flex-col justify-center`}>
-                        <h2
-                          className="text-xl md:text-2xl font-bold mb-4"
-                          style={{ color: isDark ? "#FFFFFF" : "#000000" }}
-                        >
-                          {typeof project.title === "string" ? project.title : project.title[locale]}
-                        </h2>
-
-                        <div className="space-y-3 text-sm">
-                          {typeof project.challenge === "string" ? (
-                            <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.challengeLabel}</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge}</span>
-                            </div>
-                          ) : (
-                            <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.challengeLabel}</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.challenge[locale]}</span>
-                            </div>
-                          )}
-                          {typeof project.solution === "string" ? (
-                            <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.solutionLabel}</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution}</span>
-                            </div>
-                          ) : (
-                            <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.solutionLabel}</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.solution[locale]}</span>
-                            </div>
-                          )}
-                          {typeof project.result === "string" ? (
-                            <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.resultLabel}</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result}</span>
-                            </div>
-                          ) : (
-                            <div className="flex gap-3">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.resultLabel}</span>
-                              <span style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{project.result[locale]}</span>
-                            </div>
-                          )}
-
-                          {/* Stack */}
-                          {project.stack && project.stack.length > 0 && (
-                            <div className="flex gap-3 items-start pt-2">
-                              <span className="font-semibold text-[#FF6200] min-w-[80px]">{t.stackLabel}</span>
-                              <div className="flex flex-wrap gap-2">
-                                {project.stack.map((tech: string, i: number) => {
-                                  const iconPath = techIcons[tech]
-                                  return (
-                                    <span
-                                      key={i}
-                                      className="px-3 py-1.5 rounded-[4px] text-xs font-medium flex items-center gap-2 transition-transform duration-200 hover:scale-105"
-                                      style={{
-                                        backgroundColor: isDark ? "#323130" : "#FFFFFF",
-                                        color: isDark ? "#FFFFFF" : "#000000",
-                                        border: isDark ? "none" : "1px solid #E0E0E0",
-                                      }}
-                                    >
-                                      {iconPath && (
-                                        <span
-                                          className="flex items-center justify-center rounded-[2px] flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
-                                          style={{
-                                            backgroundColor: "#FFFFFF",
-                                            padding: "2px",
-                                            width: "20px",
-                                            height: "20px",
-                                          }}
-                                        >
-                                          <Image
-                                            src={iconPath || "/placeholder.svg"}
-                                            alt={tech}
-                                            width={16}
-                                            height={16}
-                                          />
-                                        </span>
-                                      )}
-                                      {tech}
-                                    </span>
-                                  )
-                                })}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </AnimatedCard>
-            )
-          })}
-        </div>
-      </section>
+      {/* Projects List - With Overlapping Effect */}
+      <ProjectsOverlappingSection 
+        projects={projects}
+        locale={locale}
+        isDark={isDark}
+        translations={translations}
+        techIcons={techIcons}
+      />
 
       {/* Request Free Consultation Section */}
       <section className="py-20 px-6">
