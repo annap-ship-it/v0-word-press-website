@@ -30,7 +30,7 @@ function SocialLinks() {
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground transition-colors"
-        style={{ border: '1px solid #FFFFFF80'}}
+        style={{ border: '1px solid #FFFFFF80' }}
       >
         <LinkedInIcon className="w-6 h-6 text-foreground" />
         <span className="text-foreground/70 hover:text-primary transition-colors">LinkedIn</span>
