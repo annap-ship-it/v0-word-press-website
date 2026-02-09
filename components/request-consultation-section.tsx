@@ -293,39 +293,48 @@ export default function ServicesPage() {
                   {t.getConsultation || "Send us a note with your idea, and we'll get in touch to provide guidance on implementation"}
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+ <form onSubmit={handleSubmit} className="space-y-5">
   <div>
-    <label htmlFor="name" className="block mb-2 text-white">
+    <label
+      htmlFor="name"
+      className="block mb-2 text-white font-onest text-base"
+    >
       {t.name || "Name"}
     </label>
     <input
-      type="text"
       id="name"
+      type="text"
       value={formData.name}
       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
       placeholder={t.typeYourName || "Type your Name"}
       required
-      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+      className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-md text-white placeholder:text-white/50 focus:outline-none focus:border-[#FF6200]"
     />
   </div>
 
   <div>
-    <label htmlFor="email" className="block mb-2 text-white">
+    <label
+      htmlFor="email"
+      className="block mb-2 text-white font-onest text-base"
+    >
       {t.email || "Email"}
     </label>
     <input
-      type="email"
       id="email"
+      type="email"
       value={formData.email}
       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
       placeholder={t.typeYourEmail || "Type your email"}
       required
-      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+      className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-md text-white placeholder:text-white/50 focus:outline-none focus:border-[#FF6200]"
     />
   </div>
 
   <div>
-    <label htmlFor="message" className="block mb-2 text-white">
+    <label
+      htmlFor="message"
+      className="block mb-2 text-white font-onest text-base"
+    >
       {t.message || "Message"}
     </label>
     <textarea
@@ -335,7 +344,7 @@ export default function ServicesPage() {
       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
       placeholder={t.typeYourMessage || "Type your message"}
       required
-      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
+      className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-md text-white placeholder:text-white/50 resize-none focus:outline-none focus:border-[#FF6200]"
     />
   </div>
 
@@ -343,11 +352,23 @@ export default function ServicesPage() {
     <button
       type="submit"
       disabled={isSubmitting}
-      className="relative overflow-hidden flex items-center justify-center gap-[10px] text-[16px] font-medium text-white bg-[#FF6200] rounded-[50px] hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000] active:scale-[0.98]"
+      className={`
+        relative overflow-hidden
+        flex items-center justify-center gap-2.5
+        px-10 py-4 text-base font-medium
+        text-white
+        bg-[#FF6200] rounded-full
+        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+        active:scale-[0.98]
+        disabled:opacity-50 disabled:cursor-not-allowed
+        transition-all duration-300
+      `}
       style={{
         width: "264px",
         height: "40px",
         padding: "4px 14px",
+        fontFamily: "Onest",
       }}
     >
       {isSubmitting ? (
@@ -363,6 +384,10 @@ export default function ServicesPage() {
     <label
       htmlFor="attach-file"
       className="flex items-center gap-2 cursor-pointer text-white hover:opacity-80 transition"
+      style={{
+        fontFamily: "Onest",
+        fontSize: "16px",
+      }}
     >
       <Paperclip size={18} color="#FF6200" />
       {t.attachFile || "Attach file (optional)"}
@@ -379,7 +404,50 @@ export default function ServicesPage() {
     />
   </div>
 
-  {/* Остальные части формы — файлы, чекбокс, статус — оставь как есть */}
+  {files.length > 0 && (
+    <div className="flex flex-wrap gap-3 mt-3">
+      {files.map((file, idx) => (
+        <div
+          key={idx}
+          className="flex items-center gap-2 px-4 py-2 bg-[#2A2A2A] rounded-full text-white text-sm border border-[#3A3A3A]"
+        >
+          <span className="truncate max-w-[180px]">{file.name}</span>
+          <button type="button" onClick={() => removeFile(idx)}>
+            <X size={14} />
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <div className="flex items-start gap-3 mt-5">
+    <input
+      type="checkbox"
+      id="terms"
+      checked={formData.acceptTerms}
+      onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+      className="mt-1 w-4 h-4 accent-[#FF6200] bg-transparent border-[#3A3A3A] rounded"
+    />
+    <label className="text-sm text-white/80 leading-relaxed" style={{ fontFamily: "Onest" }}>
+      {t.iAccept || "I Accept"}{" "}
+      <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
+        {t.termsAndConditions || "Terms and Conditions"}
+      </Link>
+      .<br />
+      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
+      {t.marketing || "We may send you occasionally marketing emails."}
+    </label>
+  </div>
+
+  {submitStatus && (
+    <div
+      className={`p-4 rounded-md mt-5 ${
+        submitStatus.type === "success" ? "bg-green-900/30 text-green-300" : "bg-red-900/30 text-red-300"
+      }`}
+    >
+      {submitStatus.message}
+    </div>
+  )}
 </form>
               </div>
 
