@@ -479,15 +479,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Projects List - With Overlapping Effect */}
-      <ProjectsOverlappingSection 
-        projects={projects}
-        locale={locale}
-        isDark={isDark}
-        translations={translations}
-        techIcons={techIcons}
-      />
-
       {/* Request Free Consultation Section */}
       <section className="py-12 md:py-16 px-6">
         <div className="max-w-[1280px] mx-auto">
@@ -697,6 +688,15 @@ export default function ProjectsPage() {
           </AnimatedCard>
         </div>
       </section>
+
+      {/* Projects List - With Overlapping Effect - Minimal margin from form */}
+      <ProjectsOverlappingSection 
+        projects={projects}
+        locale={locale}
+        isDark={isDark}
+        translations={translations}
+        techIcons={techIcons}
+      />
     </main>
   )
 }
