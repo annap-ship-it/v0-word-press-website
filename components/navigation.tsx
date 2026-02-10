@@ -532,7 +532,7 @@ export function Navigation() {
                             fontSize: "16px",
                             lineHeight: "100%",
                             letterSpacing: "0.02em",
-                            color: isDark ? "#FFFFFF99" : "#21212199",
+                            color: isDark ? "rgba(255, 255, 255, 0.6)" : "#212121",
                             borderRadius: "8px",
                           }}
                           onMouseDown={(e) => {

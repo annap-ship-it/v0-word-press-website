@@ -65,14 +65,14 @@ export function HeroBanner() {
 
         <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-4 lg:px-6 text-center md:px-[15px] flex flex-col justify-center py-8 md:py-12 items-center h-max">
           <h1
-            className="hero-title font-extrabold text-center mb-4 md:mb-6 md:w-[738px] md:mx-auto lg:mt-20 xl:mt-24 leading-4 mt-40 px-2"
+            className="hero-title font-extrabold text-center mb-6 md:mb-8 md:w-[738px] md:mx-auto lg:mt-20 xl:mt-24 leading-4 mt-40 px-2"
             style={{
               fontSize: "64px",
               lineHeight: "110%",
               letterSpacing: "-3%",
               fontWeight: 800,
               color: theme === "light" ? "#000000" : "#FFFFFF",
-              marginTop: "197px",
+              marginTop: "160px",
             }}
           >
             {t.mainTitle}
@@ -107,7 +107,7 @@ export function HeroBanner() {
             {t.subtitle2}
           </p>
 
-          <div className="flex flex-col items-center gap-3 mt-8 md:mt-12">
+          <div className="flex flex-col items-center gap-4 mt-12 md:mt-14">
             <button
               className="h-10 rounded-full px-7 font-normal transition-all duration-300 ease-out disabled:cursor-not-allowed md:w-[200px] md:h-[40px]"
               style={{
@@ -166,11 +166,11 @@ export function HeroBanner() {
           </div>
 
           <div
-            className="stats-section flex flex-col w-full px-4 gap-6 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4 md:flex-nowrap items-center justify-center mt-12 md:mt-16"
+            className="stats-section flex flex-col w-full px-4 gap-8 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-6 md:flex-nowrap items-center justify-center mt-16 md:mt-20"
             style={{
               maxWidth: "1116px",
               height: "auto",
-              margin: "48px auto 0",
+              margin: "64px auto 0",
             }}
           >
             <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center">

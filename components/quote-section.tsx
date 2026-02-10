@@ -33,7 +33,7 @@ function SocialLinks() {
         style={{ border: '1px solid #FFFFFF80' }}
       >
         <LinkedInIcon className="w-6 h-6 text-foreground" />
-        <span className="text-foreground/70 hover:text-primary transition-colors">LinkedIn</span>
+        <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>LinkedIn</span>
       </Link>
 
       <Link
@@ -44,7 +44,7 @@ function SocialLinks() {
         style={{ border: '1px solid #FFFFFF80' }}
       >
         <TelegramIcon className="w-6 h-6 text-foreground" />
-        <span className="text-foreground/70 hover:text-primary transition-colors">Telegram</span>
+        <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Telegram</span>
       </Link>
     </div>
   )
@@ -89,7 +89,10 @@ export function QuoteSection() {
 
           {/* Цитата */}
           <div className="order-1 lg:order-2 space-y-8">
-            <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">"</span>
+            <div className="flex flex-col items-start">
+              <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">"</span>
+              <div className="h-10" /> {/* 40px spacer */}
+            </div>
 
             <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground whitespace-pre-line">
               {t.quote}
@@ -99,7 +102,7 @@ export function QuoteSection() {
             <div className="space-y-1">
               <p className="text-xl font-semibold text-foreground">{t.name}</p>
               <p className="text-foreground/60">{t.title1}</p>
-              
+              <p className="text-foreground/60">{t.title2}</p>
             </div>
 
             {/* Соцсети */}

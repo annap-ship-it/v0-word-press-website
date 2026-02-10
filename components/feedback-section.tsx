@@ -223,15 +223,27 @@ export function FeedbackSection() {
                 <div className="flex justify-end gap-6 mt-6">
                   <button
                     onClick={goToPrev}
-                    className="flex items-center justify-center transition-colors"
+                    className="flex items-center justify-center transition-all duration-300 hover:scale-110"
                     style={{ color: textSecondary }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "#FF6200"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = textSecondary
+                    }}
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
                   <button
                     onClick={goToNext}
-                    className="flex items-center justify-center transition-colors"
+                    className="flex items-center justify-center transition-all duration-300 hover:scale-110"
                     style={{ color: "#FF6200" }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.2)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)"
+                    }}
                   >
                     <ChevronRight className="w-6 h-6" />
                   </button>
