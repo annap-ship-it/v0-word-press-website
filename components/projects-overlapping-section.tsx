@@ -65,9 +65,9 @@ export function ProjectsOverlappingSection({
   }, [projects])
 
   return (
-    <div ref={containerRef} className="relative py-16 px-6">
+    <div ref={containerRef} className="relative py-12 md:py-16 px-6">
       <div className="max-w-[1280px] mx-auto">
-        <div className="space-y-0">
+        <div className="space-y-10 md:space-y-12">
           {projects.map((project, index) => {
             const isReverse = index % 2 === 1
             const offset = cardOffsets[index] || -80 * index
