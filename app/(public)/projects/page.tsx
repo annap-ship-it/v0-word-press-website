@@ -459,11 +459,11 @@ export default function ProjectsPage() {
   return (
     <main className="min-h-screen" style={{ backgroundColor: "var(--background)" }}>
       {/* Header Section */}
-      <section className="pt-20 pb-10 px-6">
+      <section className="pt-10 md:pt-16 pb-6 md:pb-10 px-6">
         <div className="max-w-[1280px] mx-auto text-center">
           <AnimatedCard>
             <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 mt-24 pb-2"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 mt-6 md:mt-8 pb-2"
               style={{
                 backgroundImage: titleGradient,
                 backgroundClip: "text",
@@ -489,7 +489,7 @@ export default function ProjectsPage() {
       />
 
       {/* Request Free Consultation Section */}
-      <section className="py-20 px-6">
+      <section className="py-12 md:py-16 px-6">
         <div className="max-w-[1280px] mx-auto">
           <AnimatedCard>
             <h2
