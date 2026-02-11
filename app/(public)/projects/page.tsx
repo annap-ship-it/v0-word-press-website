@@ -670,16 +670,7 @@ export default function ProjectsPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
                 <div></div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-                    </svg>
-                  </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    {t.processStep4}
-                  </p>
-                </div>
+                
               </div>
             </div>
           </AnimatedCard>
