@@ -669,7 +669,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-                <div></div>
+                
                 
               </div>
             </div>
