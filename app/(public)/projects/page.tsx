@@ -381,14 +381,16 @@ export default function ProjectsPage() {
     }
   }
 
- const translations = {
+  const translations = {
     en: {
       title: "Projects",
       subtitle: "Find out how we have turned our clients' inspiring ideas into high-end products",
       consultationTitle: "Request Free Consultation",
       processTitle: "What's the process?",
       processStep1: "Our specialist will reach out after reviewing your message",
-      processStep2: "We'll create a roadmap to turn your vision into reality",
+      processStep2: "If needed we'll sign an NDA to ensure trust, after which we project details",
+      processStep3: "We'll create a roadmap to turn your vision into reality",
+      processStep4: "You'll receive a detailed proposal with timelines, and expert onboarding",
       nameLabel: "Your Name",
       emailLabel: "Your Email",
       messageLabel: "Your Message",
@@ -417,7 +419,9 @@ export default function ProjectsPage() {
       consultationTitle: "Запитати безкоштовну консультацію",
       processTitle: "Як це працює?",
       processStep1: "Наш фахівець зв'яжеться з вами після розгляду вашого повідомлення",
-      processStep2: "Ми створимо дорожну карту, щоб втілити вашу видіння в реальність",
+      processStep2: "Якщо потрібно ми підпишемо NDA щоб забезпечити довіру, після чого деталі проекту",
+      processStep3: "Ми створимо дорожну карту, щоб втілити вашу видіння в реальність",
+      processStep4: "Ви отримаєте детальну пропозицію з графіком та експертним супроводом",
       nameLabel: "Ваше ім'я",
       emailLabel: "Ваша електронна пошта",
       messageLabel: "Ваше повідомлення",
@@ -645,12 +649,35 @@ export default function ProjectsPage() {
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path>
+                    </svg>
+                  </div>
+                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                    {t.processStep2}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                       <polyline points="14 2 14 8 20 8"></polyline>
                     </svg>
                   </div>
                   <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
-                    {t.processStep2}
+                    {t.processStep3}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+                <div></div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+                    </svg>
+                  </div>
+                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                    {t.processStep4}
                   </p>
                 </div>
               </div>
