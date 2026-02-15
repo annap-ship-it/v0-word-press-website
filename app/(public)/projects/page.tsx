@@ -802,12 +802,56 @@ export default function ProjectsPage() {
 
                   {/* Submit Button */}
                   <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
-                  >
-                    {isSubmitting ? t.sendingButton : t.submitButton}
-                  </button>
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`
+                        relative overflow-hidden
+                        flex items-center justify-center gap-[10px]
+                        text-[16px] font-medium leading-[1]
+                        text-white
+                        transition duration-300 ease-out
+                        disabled:cursor-not-allowed disabled:opacity-50
+                        bg-[#FF6200] rounded-[50px]
+                        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+                        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+                        active:scale-[0.98]
+                      `}
+                      onMouseEnter={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "#FF6200"
+                        }
+                      }}
+                      onMouseDown={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
+                        }
+                      }}
+                      onMouseUp={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                        }
+                      }}
+                      style={{
+                        width: "264px",
+                        height: "40px",
+                        padding: "4px 14px",
+                        fontFamily: "Onest",
+                      }}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          {t.sending || "Sending..."}
+                        </>
+                      ) : (
+                        t.send || "Send"
+                      )}
+                    </button>
 
                   {/* Terms */}
                   <div className="flex items-start gap-2">
