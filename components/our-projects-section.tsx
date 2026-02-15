@@ -23,37 +23,34 @@ function ProjectCard({
   index: number
 }) {
   const { locale } = useLocale()
-
   const isOrange = index % 2 === 0
   const bgColor = isOrange ? "#FF6200" : "#000000"
   const textColor = "text-white"
   const boxShadow = !isOrange ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "none"
 
-  // Handle title as string or object
-  let title: string
-  if (typeof project.title === "string") {
-    title = project.title
-  } else {
-    title = project.title[locale as "en" | "uk"] || project.title.en || ""
-  }
+  // Normalize title
+  const title =
+    typeof project.title === "string"
+      ? project.title
+      : project.title[locale as "en" | "uk"] || project.title.en || ""
 
-  // Handle shortDescription as string or object
-  let shortDesc: string
-  if (typeof project.shortDescription === "string") {
-    shortDesc = project.shortDescription
-  } else {
-    shortDesc = project.shortDescription[locale as "en" | "uk"] || project.shortDescription.en || ""
-  }
+  // Normalize short description
+  const shortDesc =
+    typeof project.shortDescription === "string"
+      ? project.shortDescription
+      : project.shortDescription[locale as "en" | "uk"] ||
+        project.shortDescription.en ||
+        ""
 
-  // Handle fullDescription as string or object (optional)
-  let fullDesc: string | undefined
-  if (typeof project.fullDescription === "string") {
-    fullDesc = project.fullDescription
-  } else if (project.fullDescription) {
-    fullDesc = project.fullDescription[locale as "en" | "uk"] || project.fullDescription.en
-  }
-
-  const solution = fullDesc || shortDesc
+  // Normalize full description (fallback to short)
+  const solution =
+    typeof project.fullDescription === "string"
+      ? project.fullDescription
+      : project.fullDescription
+      ? project.fullDescription[locale as "en" | "uk"] ||
+        project.fullDescription.en ||
+        shortDesc
+      : shortDesc
 
   return (
     <Link href={`/projects/${project.slug}`} className="block w-full">
@@ -70,18 +67,18 @@ function ProjectCard({
             <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight">
               {title}
             </h3>
-            <p className="text-xs sm:text-sm md:text-base leading-relaxed opacity-90 line-clamp-3">
+            <p className="text-xs sm:text-sm md:text-base leading-relaxed opacity-90 line-clamp-3 md:line-clamp-4">
               {solution}
             </p>
           </div>
-          <span className="text-xs sm:text-sm opacity-75 flex-shrink-0 mt-2">
+          <span className="text-xs sm:text-sm opacity-75 flex-shrink-0 mt-3 md:mt-4">
             {locale === "uk" ? "Читати повний кейс →" : "Read the full case →"}
           </span>
         </div>
 
         <div className="w-full md:w-1/2 relative h-48 sm:h-64 md:h-auto order-2 md:order-none">
           <Image
-            src={project.image || "/placeholder.svg"}
+            src={project.image || "/placeholder.svg?height=400&width=600"}
             alt={title}
             fill
             className="object-cover"
@@ -99,18 +96,19 @@ export function OurProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+
   const { locale } = useLocale()
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("/api/projects")
-        if (response.ok) {
-          const data = await response.json()
+        const res = await fetch("/api/projects")
+        if (res.ok) {
+          const data = await res.json()
           setProjects(data)
         }
-      } catch (error) {
-        console.error("[v0] Failed to fetch projects:", error)
+      } catch (err) {
+        console.error("Failed to load projects:", err)
       } finally {
         setIsLoading(false)
       }
@@ -119,90 +117,105 @@ export function OurProjectsSection() {
     fetchProjects()
   }, [])
 
+  // Mobile navigation
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % projects.length)
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length)
-  const goToSlide = (index: number) => setCurrentIndex(index)
+  const goToSlide = (idx: number) => setCurrentIndex(idx)
 
   if (isLoading || projects.length === 0) return null
 
   const t = {
-    ourProjects: locale === "uk" ? "Наші проекти" : "Our Projects",
-    description:
+    title: locale === "uk" ? "Наші проекти" : "Our Projects",
+    subtitle:
       locale === "uk"
         ? "Зростайте, масштабуйтесь та оптимізуйте.\nПознайомтесь з нашими недавніми роботами."
         : "Grow, scale up, and optimize.\nExplore our recent client work.",
   }
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: "var(--background)" }}>
-      <div className="max-w-[1200px] mx-auto px-4">
-        <div className="text-center mb-16 md:mb-24">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{t.ourProjects}</h2>
-          <p className="text-lg md:text-xl opacity-70 whitespace-pre-line">{t.description}</p>
+    <section
+      className="py-16 md:py-24 lg:py-32 relative overflow-hidden"
+      style={{ backgroundColor: "var(--background)" }}
+    >
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 md:mb-16 lg:mb-24">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 tracking-tight">
+            {t.title}
+          </h2>
+          <p className="text-lg md:text-xl lg:text-2xl opacity-70 whitespace-pre-line leading-relaxed">
+            {t.subtitle}
+          </p>
         </div>
 
-        {/* Desktop: чистый stack без зума */}
-        <div className="hidden lg:block overflow-visible">
+        {/* ─── Desktop: Scroll Stack ─── */}
+        <div className="hidden lg:block">
           <ScrollStack
             useWindowScroll={true}
-            itemDistance={100} // расстояние по вертикали между триггерами
-            itemScale={0} // ОТКЛЮЧАЕМ масштаб/зум полностью
-            itemStackDistance={30} // горизонтальное смещение (как в референсе)
-            stackPosition="40%" // где начинается stacking
-            scaleEndPosition="0%" // не используется, т.к. scale=0
-            baseScale={1} // фиксированный размер
+            itemDistance={140}           // vertical spacing between cards when not stacked
+            itemScale={0}                // no additional scale per card
+            itemStackDistance={40}       // how much cards are offset when stacked
+            stackPosition="35%"          // when stacking should start (earlier = more dramatic)
+            scaleEndPosition="0%"        // not used since itemScale = 0
+            baseScale={1}                // cards stay full size
+            rotationAmount={0}           // optional subtle tilt: try 1.5–3
+            blurAmount={0}               // optional depth blur: try 0.6–1.2
             className="w-full"
           >
-            {projects.map((project, index) => (
+            {projects.map((project, idx) => (
               <ScrollStackItem
                 key={project.id}
-                itemClassName="w-full max-w-[1100px] mx-auto px-0" // чуть шире для выхода за края
+                itemClassName="w-full max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8"
               >
-                <ProjectCard project={project} index={index} />
+                <ProjectCard project={project} index={idx} />
               </ScrollStackItem>
             ))}
           </ScrollStack>
         </div>
 
-        {/* Mobile/Tablet Carousel */}
+        {/* ─── Mobile / Tablet: Carousel ─── */}
         <div className="lg:hidden">
           <div className="relative">
-            <div className="overflow-hidden">
+            <div className="overflow-hidden rounded-xl">
               <div
-                className="flex transition-transform duration-300 ease-in-out"
+                className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
-                {projects.map((project, index) => (
-                  <div key={project.id} className="min-w-full flex-shrink-0 px-2">
-                    <ProjectCard project={project} index={index} />
+                {projects.map((project, idx) => (
+                  <div key={project.id} className="min-w-full flex-shrink-0 px-2 sm:px-4">
+                    <ProjectCard project={project} index={idx} />
                   </div>
                 ))}
               </div>
             </div>
-            {/* Navigation Arrows */}
+
+            {/* Arrows */}
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
-              aria-label="Previous"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-sm text-white p-3 rounded-full shadow-lg z-10 hover:bg-black/80 transition-colors"
+              aria-label="Previous project"
             >
-              &lt;
+              ←
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
-              aria-label="Next"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-sm text-white p-3 rounded-full shadow-lg z-10 hover:bg-black/80 transition-colors"
+              aria-label="Next project"
             >
-              &gt;
+              →
             </button>
-            {/* Pagination Dots */}
-            <div className="flex justify-center mt-4 space-x-2">
+
+            {/* Dots */}
+            <div className="flex justify-center gap-2.5 mt-6">
               {projects.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => goToSlide(idx)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    idx === currentIndex ? "bg-[#FF6200]" : "bg-gray-500"
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    idx === currentIndex
+                      ? "bg-[#FF6200] scale-125"
+                      : "bg-white/30 hover:bg-white/50"
                   }`}
+                  aria-label={`Go to project ${idx + 1}`}
                 />
               ))}
             </div>
