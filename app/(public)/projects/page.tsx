@@ -387,10 +387,9 @@ export default function ProjectsPage() {
       subtitle: "Find out how we have turned our clients' inspiring ideas into high-end products",
       consultationTitle: "Request Free Consultation",
       processTitle: "What's the process?",
-      processStep1: "Our specialist will reach out after reviewing your message",
-      processStep2: "If needed we'll sign an NDA to ensure trust, after which we project details",
-      processStep3: "We'll create a roadmap to turn your vision into reality",
-      processStep4: "You'll receive a detailed proposal with timelines, and expert onboarding",
+      processStep1: "Our specialist will reach out after reviewing your message",
+      processStep2: "If needed we'll sign an NDA to ensure trust, after what you provide us with the project details",
+      processStep3: "You'll receive a detailed proposal including estimates, timelines, and expert profiles",
       nameLabel: "Your Name",
       emailLabel: "Your Email",
       messageLabel: "Your Message",
