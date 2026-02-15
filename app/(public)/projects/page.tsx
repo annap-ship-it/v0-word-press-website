@@ -387,9 +387,9 @@ export default function ProjectsPage() {
       subtitle: "Find out how we have turned our clients' inspiring ideas into high-end products",
       consultationTitle: "Request Free Consultation",
       processTitle: "What's the process?",
-      processStep1: "Our specialist will reach out after reviewing your message",
+      processStep1: "Our specialist will reach out after reviewing your message",
       processStep2: "If needed we'll sign an NDA to ensure trust, after what you provide us with the project details",
-      processStep3: "You'll receive a detailed proposal including estimates, timelines, and expert profiles",
+      processStep3: "You'll receive a detailed proposal including estimates, timelines, and expert profiles",
       nameLabel: "Your Name",
       emailLabel: "Your Email",
       messageLabel: "Your Message",
@@ -419,8 +419,7 @@ export default function ProjectsPage() {
       processTitle: "Як це працює?",
       processStep1: "Наш фахівець зв'яжеться з вами після розгляду вашого повідомлення",
       processStep2: "Якщо потрібно ми підпишемо NDA щоб забезпечити довіру, після чого деталі проекту",
-      processStep3: "Ми створимо дорожну карту, щоб втілити вашу видіння в реальність",
-      processStep4: "Ви отримаєте детальну пропозицію з графіком та експертним супроводом",
+      processStep3: "Ви отримаєте детальну пропозицію з оцінкою, таймлайном та експертним профайлом",
       nameLabel: "Ваше ім'я",
       emailLabel: "Ваша електронна пошта",
       messageLabel: "Ваше повідомлення",
