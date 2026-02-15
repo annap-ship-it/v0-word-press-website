@@ -668,7 +668,7 @@ export default function ProjectsPage() {
                     <path d="M8 10H16M8 6H12M8 14H11" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                  </svg>
                   <p 
                     className="leading-relaxed"
                     style={{ 
