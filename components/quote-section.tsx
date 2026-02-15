@@ -88,7 +88,7 @@ export function QuoteSection() {
           </div>
 
           {/* Цитата */}
-<div className="order-1 lg:order-2 space-y-8">
+<div className="order-1 lg:order-2 space-y-4">
   <div className="flex flex-col items-start">
     <img
       src="/quote.svg"
