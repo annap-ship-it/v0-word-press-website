@@ -107,7 +107,7 @@ export function QuoteSection() {
             <div className="space-y-1">
               <p className="text-xl font-semibold text-foreground">{t.name}</p>
               <p className="text-foreground/60">{t.title1}</p>
-              <p className="text-foreground/60">{t.title2}</p>
+              
             </div>
 
             {/* Соцсети */}
