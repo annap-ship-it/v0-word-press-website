@@ -121,7 +121,7 @@
 }
 
 .scroll-stack-card {
-  transform: translate3d(0, 0, 0);          /* force GPU + subpixel */
+  transform: translate3d(0, 0, 0);          /* только для GPU-ускорения */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   will-change: transform, filter;
