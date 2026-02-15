@@ -680,12 +680,10 @@ export default function ProjectsPage() {
                   </p>
                 </div>
                 <div className="flex items-start gap-3 md:gap-4">
-                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    path d="M8 12L11 15L16 10" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                  </div>
                   <p 
                     className="leading-relaxed"
                     style={{ 
