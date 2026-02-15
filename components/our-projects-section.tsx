@@ -28,29 +28,27 @@ function ProjectCard({
   const textColor = "text-white"
   const boxShadow = !isOrange ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "none"
 
-  // Normalize title
-  const title =
-    typeof project.title === "string"
-      ? project.title
-      : project.title[locale as "en" | "uk"] || project.title.en || ""
+  let title: string
+  if (typeof project.title === "string") {
+    title = project.title
+  } else {
+    title = project.title[locale as "en" | "uk"] || project.title.en || ""
+  }
 
-  // Normalize short description
-  const shortDesc =
-    typeof project.shortDescription === "string"
-      ? project.shortDescription
-      : project.shortDescription[locale as "en" | "uk"] ||
-        project.shortDescription.en ||
-        ""
+  let shortDesc: string
+  if (typeof project.shortDescription === "string") {
+    shortDesc = project.shortDescription
+  } else {
+    shortDesc = project.shortDescription[locale as "en" | "uk"] || project.shortDescription.en || ""
+  }
 
-  // Normalize full description (fallback to short)
-  const solution =
-    typeof project.fullDescription === "string"
-      ? project.fullDescription
-      : project.fullDescription
-      ? project.fullDescription[locale as "en" | "uk"] ||
-        project.fullDescription.en ||
-        shortDesc
-      : shortDesc
+  let solution = shortDesc
+  if (project.fullDescription) {
+    solution =
+      typeof project.fullDescription === "string"
+        ? project.fullDescription
+        : project.fullDescription[locale as "en" | "uk"] || project.fullDescription.en || shortDesc
+  }
 
   return (
     <Link href={`/projects/${project.slug}`} className="block w-full">
@@ -71,14 +69,13 @@ function ProjectCard({
               {solution}
             </p>
           </div>
-          <span className="text-xs sm:text-sm opacity-75 flex-shrink-0 mt-3 md:mt-4">
+          <span className="text-xs sm:text-sm opacity-75 flex-shrink-0 mt-2">
             {locale === "uk" ? "Читати повний кейс →" : "Read the full case →"}
           </span>
         </div>
-
         <div className="w-full md:w-1/2 relative h-48 sm:h-64 md:h-auto order-2 md:order-none">
           <Image
-            src={project.image || "/placeholder.svg?height=400&width=600"}
+            src={project.image || "/placeholder.svg"}
             alt={title}
             fill
             className="object-cover"
@@ -102,120 +99,106 @@ export function OurProjectsSection() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch("/api/projects")
-        if (res.ok) {
-          const data = await res.json()
+        const response = await fetch("/api/projects")
+        if (response.ok) {
+          const data = await response.json()
           setProjects(data)
         }
-      } catch (err) {
-        console.error("Failed to load projects:", err)
+      } catch (error) {
+        console.error("[OurProjects] Failed to fetch projects:", error)
       } finally {
         setIsLoading(false)
       }
     }
-
     fetchProjects()
   }, [])
 
-  // Mobile navigation
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % projects.length)
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length)
-  const goToSlide = (idx: number) => setCurrentIndex(idx)
+  const goToSlide = (index: number) => setCurrentIndex(index)
 
   if (isLoading || projects.length === 0) return null
 
   const t = {
-    title: locale === "uk" ? "Наші проекти" : "Our Projects",
-    subtitle:
+    ourProjects: locale === "uk" ? "Наші проекти" : "Our Projects",
+    description:
       locale === "uk"
         ? "Зростайте, масштабуйтесь та оптимізуйте.\nПознайомтесь з нашими недавніми роботами."
         : "Grow, scale up, and optimize.\nExplore our recent client work.",
   }
 
   return (
-    <section
-      className="py-16 md:py-24 lg:py-32 relative overflow-hidden"
-      style={{ backgroundColor: "var(--background)" }}
-    >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 md:mb-16 lg:mb-24">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 tracking-tight">
-            {t.title}
-          </h2>
-          <p className="text-lg md:text-xl lg:text-2xl opacity-70 whitespace-pre-line leading-relaxed">
-            {t.subtitle}
-          </p>
+    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: "var(--background)" }}>
+      <div className="max-w-[1200px] mx-auto px-4">
+        <div className="text-center mb-16 md:mb-24">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{t.ourProjects}</h2>
+          <p className="text-lg md:text-xl opacity-70 whitespace-pre-line">{t.description}</p>
         </div>
 
-        {/* ─── Desktop: Scroll Stack ─── */}
-        <div className="hidden lg:block">
+        {/* Desktop: Stacking animation — только анимация, цвета/стили карточек не меняем */}
+        <div className="hidden lg:block perspective-[1100px]">
           <ScrollStack
             useWindowScroll={true}
-            itemDistance={140}           // vertical spacing between cards when not stacked
-            itemScale={0}                // no additional scale per card
-            itemStackDistance={40}       // how much cards are offset when stacked
-            stackPosition="35%"          // when stacking should start (earlier = more dramatic)
-            scaleEndPosition="0%"        // not used since itemScale = 0
-            baseScale={1}                // cards stay full size
-            rotationAmount={0}           // optional subtle tilt: try 1.5–3
-            blurAmount={0}               // optional depth blur: try 0.6–1.2
-            className="w-full"
+            itemDistance={160}           // расстояние между карточками до начала стека
+            itemScale={0.04}             // небольшое уменьшение размера на каждый слой
+            itemStackDistance={48}       // смещение вниз при наложении (заметный стек)
+            stackPosition="32%"          // где начинается прилипание и stacking
+            scaleEndPosition="8%"        // где масштаб достигает минимума
+            baseScale={0.96}             // лёгкое уменьшение базового размера для глубины
+            rotationAmount={2.4}         // небольшой наклон для 3D-ощущения
+            blurAmount={0.8}             // размытие нижних карточек в стеке
+            className="w-full min-h-[140vh] py-20" // пространство для комфортного скролла
           >
-            {projects.map((project, idx) => (
+            {projects.map((project, index) => (
               <ScrollStackItem
                 key={project.id}
-                itemClassName="w-full max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8"
+                itemClassName="w-full max-w-[1100px] mx-auto px-0"
               >
-                <ProjectCard project={project} index={idx} />
+                <ProjectCard project={project} index={index} />
               </ScrollStackItem>
             ))}
           </ScrollStack>
         </div>
 
-        {/* ─── Mobile / Tablet: Carousel ─── */}
+        {/* Mobile/Tablet: Carousel — без изменений */}
         <div className="lg:hidden">
           <div className="relative">
-            <div className="overflow-hidden rounded-xl">
+            <div className="overflow-hidden">
               <div
-                className="flex transition-transform duration-500 ease-out"
+                className="flex transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
-                {projects.map((project, idx) => (
-                  <div key={project.id} className="min-w-full flex-shrink-0 px-2 sm:px-4">
-                    <ProjectCard project={project} index={idx} />
+                {projects.map((project, index) => (
+                  <div key={project.id} className="min-w-full flex-shrink-0 px-2">
+                    <ProjectCard project={project} index={index} />
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Arrows */}
             <button
               onClick={prevSlide}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-sm text-white p-3 rounded-full shadow-lg z-10 hover:bg-black/80 transition-colors"
-              aria-label="Previous project"
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+              aria-label="Previous"
             >
-              ←
+              &lt;
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-sm text-white p-3 rounded-full shadow-lg z-10 hover:bg-black/80 transition-colors"
-              aria-label="Next project"
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+              aria-label="Next"
             >
-              →
+              &gt;
             </button>
 
-            {/* Dots */}
-            <div className="flex justify-center gap-2.5 mt-6">
+            <div className="flex justify-center mt-4 space-x-2">
               {projects.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => goToSlide(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    idx === currentIndex
-                      ? "bg-[#FF6200] scale-125"
-                      : "bg-white/30 hover:bg-white/50"
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    idx === currentIndex ? "bg-[#FF6200]" : "bg-gray-500"
                   }`}
-                  aria-label={`Go to project ${idx + 1}`}
                 />
               ))}
             </div>
