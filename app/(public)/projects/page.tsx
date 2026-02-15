@@ -640,7 +640,7 @@ export default function ProjectsPage() {
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
-                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      fontSize: "clamp(24px, 1.04vw, 20px)",
                       lineHeight: "100%",
                       letterSpacing: "-2%"
                     }}
