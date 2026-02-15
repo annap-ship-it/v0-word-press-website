@@ -696,23 +696,8 @@ export default function ProjectsPage() {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
-                <div></div>
-                <div className="flex items-start gap-3 md:gap-4">
-                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-                    </svg>
-                  </div>
-                  <p 
-                    className="leading-relaxed"
-                    style={{ 
-                      color: isDark ? "#FFFFFF" : "#FFFFFF",
-                      fontSize: "clamp(14px, 1.04vw, 20px)"
-                    }}
-                  >
-                    {t.processStep4}
-                  </p>
-                </div>
+                
+                
               </div>
             </div>
           </AnimatedCard>
