@@ -637,9 +637,12 @@ export default function ProjectsPage() {
                   <h3 
                     className="font-semibold mb-2 md:mb-4"
                     style={{ 
-                      color: isDark ? "#FFFFFF" : "#FFFFFF",
-                      fontSize: "clamp(18px, 1.25vw, 24px)",
-                      lineHeight: "1.2"
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
                     }}
                   >
                     {t.processTitle}
@@ -653,10 +656,14 @@ export default function ProjectsPage() {
                     <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                   <p 
-                    className="leading-relaxed"
+                    className="leading-none"
                     style={{ 
-                      color: isDark ? "#FFFFFF" : "#FFFFFF",
-                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
                     }}
                   >
                     {t.processStep1}
@@ -670,10 +677,14 @@ export default function ProjectsPage() {
                     <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <p 
-                    className="leading-relaxed"
+                    className="leading-none"
                     style={{ 
-                      color: isDark ? "#FFFFFF" : "#FFFFFF",
-                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
                     }}
                   >
                     {t.processStep2}
@@ -685,10 +696,14 @@ export default function ProjectsPage() {
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="#FF6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <p 
-                    className="leading-relaxed"
+                    className="leading-none"
                     style={{ 
-                      color: isDark ? "#FFFFFF" : "#FFFFFF",
-                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
                     }}
                   >
                     {t.processStep3}
@@ -696,8 +711,25 @@ export default function ProjectsPage() {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
-                
-                
+                <div></div>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <p 
+                    className="leading-none"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
+                    }}
+                  >
+                    {t.processStep4}
+                  </p>
+                </div>
               </div>
             </div>
           </AnimatedCard>
