@@ -646,14 +646,12 @@ export default function ProjectsPage() {
                   </h3>
                 </div>
                 <div className="flex items-start gap-3 md:gap-4">
-                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M9 9L13.5 12L18 9" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M3 13.5H5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M1 10.5H5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" strokeLinecap="round" />
-                    </svg>
-                  </div>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    <path d="M9 9L13.5 12L18 9" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M3 13.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M1 10.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
                   <p 
                     className="leading-relaxed"
                     style={{ 
