@@ -93,7 +93,7 @@ export function QuoteSection() {
     <img
       src="/quote.svg"
       alt="quote"
-      className="w-16 md:w-24"
+      className="w-16 md:w-10"
     />
     <div className="h-10" /> {/* 40px spacer */}
   </div>
