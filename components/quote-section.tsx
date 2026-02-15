@@ -88,11 +88,28 @@ export function QuoteSection() {
           </div>
 
           {/* Цитата */}
-          <div className="order-1 lg:order-2 space-y-8">
-            <div className="flex flex-col items-start">
-              <span className="text-6xl md:text-8xl font-bold text-orange-600 block leading-none">"</span>
-              <div className="h-10" /> {/* 40px spacer */}
-            </div>
+export default function QuoteBlock({ children }) {
+  return (
+    <div className="order-1 lg:order-2 space-y-8">
+      <div className="flex flex-col items-start">
+        {/* SVG вместо текста " */}
+        <img
+          src="/images/quote.svg"
+          alt="Quote"
+          className="w-16 md:w-24"
+        />
+
+        <div className="h-10" /> {/* 40px spacer */}
+      </div>
+
+      {/* Текст цитаты */}
+      <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+        {children}
+      </p>
+    </div>
+  );
+}
+
 
             <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground whitespace-pre-line">
               {t.quote}
