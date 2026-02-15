@@ -4,161 +4,148 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
+import Lenis from 'lenis'
+import throttle from 'lodash.throttle'
+import { useLayoutEffect, useRef, useCallback } from 'react'
 
 // ────────────────────────────────────────────────
-// ScrollStack + ScrollStackItem (вставлен полностью, без наклона)
+// ScrollStack + ScrollStackItem — без лишних отступов
 // ────────────────────────────────────────────────
-
-import { useLayoutEffect, useRef, useCallback } from 'react';
-import Lenis from 'lenis';
-import throttle from 'lodash.throttle';
 
 export const ScrollStackItem = ({ children, itemClassName = '' }) => (
   <div
-    className={`scroll-stack-card relative w-full my-8 rounded-[14px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
+    className={`scroll-stack-card relative w-full my-12 rounded-[14px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
     style={{
       backfaceVisibility: 'hidden',
     }}
   >
     {children}
   </div>
-);
+)
 
 const ScrollStack = ({
   children,
   className = '',
-  itemDistance = 160,
+  itemDistance = 120,
   itemScale = 0.04,
-  itemStackDistance = 48,
-  stackPosition = '32%',
-  scaleEndPosition = '8%',
+  itemStackDistance = 40,
+  stackPosition = '35%',
+  scaleEndPosition = '10%',
   baseScale = 0.96,
-  blurAmount = 0.8,
+  blurAmount = 0.6,
   useWindowScroll = true,
-  onStackComplete,
 }) => {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const stackCompletedRef = useRef(false);
-  const animationFrameRef = useRef<number | null>(null);
-  const lenisRef = useRef<Lenis | null>(null);
-  const cardsRef = useRef<HTMLElement[]>([]);
-  const lastTransformsRef = useRef(new Map<number, any>());
-  const isUpdatingRef = useRef(false);
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const animationFrameRef = useRef<number | null>(null)
+  const lenisRef = useRef<Lenis | null>(null)
+  const cardsRef = useRef<HTMLElement[]>([])
+  const lastTransformsRef = useRef(new Map<number, any>())
+  const isUpdatingRef = useRef(false)
 
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
-    if (scrollTop < start) return 0;
-    if (scrollTop > end) return 1;
-    return (scrollTop - start) / (end - start);
-  }, []);
+    if (scrollTop < start) return 0
+    if (scrollTop > end) return 1
+    return (scrollTop - start) / (end - start)
+  }, [])
 
   const parsePercentage = useCallback((value: string | number, containerHeight: number) => {
     if (typeof value === 'string' && value.includes('%')) {
-      return (parseFloat(value) / 100) * containerHeight;
+      return (parseFloat(value) / 100) * containerHeight
     }
-    return Number(value);
-  }, []);
+    return Number(value)
+  }, [])
 
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
       return {
         scrollTop: window.scrollY,
         containerHeight: window.innerHeight,
-      };
+      }
     }
-    const scroller = scrollerRef.current;
-    if (!scroller) return { scrollTop: 0, containerHeight: 0 };
+    const scroller = scrollerRef.current
+    if (!scroller) return { scrollTop: 0, containerHeight: 0 }
     return {
       scrollTop: scroller.scrollTop,
       containerHeight: scroller.clientHeight,
-    };
-  }, [useWindowScroll]);
+    }
+  }, [useWindowScroll])
 
   const getElementOffset = useCallback((element: HTMLElement) => {
     if (useWindowScroll) {
-      const rect = element.getBoundingClientRect();
-      return rect.top + window.scrollY;
+      const rect = element.getBoundingClientRect()
+      return rect.top + window.scrollY
     }
-    return element.offsetTop;
-  }, [useWindowScroll]);
+    return element.offsetTop
+  }, [useWindowScroll])
 
   const updateCardTransforms = useCallback(() => {
-    if (!cardsRef.current.length || isUpdatingRef.current) return;
-    isUpdatingRef.current = true;
+    if (!cardsRef.current.length || isUpdatingRef.current) return
+    isUpdatingRef.current = true
 
-    const { scrollTop, containerHeight } = getScrollData();
-    const stackPositionPx = parsePercentage(stackPosition, containerHeight);
-    const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
+    const { scrollTop, containerHeight } = getScrollData()
+    const stackPositionPx = parsePercentage(stackPosition, containerHeight)
+    const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight)
 
     const endElement = useWindowScroll
       ? document.querySelector('.scroll-stack-end')
-      : scrollerRef.current?.querySelector('.scroll-stack-end');
-    const endElementTop = endElement ? getElementOffset(endElement as HTMLElement) : 0;
+      : scrollerRef.current?.querySelector('.scroll-stack-end')
+    const endElementTop = endElement ? getElementOffset(endElement as HTMLElement) : 0
 
     cardsRef.current.forEach((card, i) => {
-      if (!card) return;
+      if (!card) return
 
-      const cardTop = getElementOffset(card);
-      const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const triggerEnd = cardTop - scaleEndPositionPx;
-      const pinStart = triggerStart;
-      const pinEnd = endElementTop - containerHeight / 2;
+      const cardTop = getElementOffset(card)
+      const triggerStart = cardTop - stackPositionPx - itemStackDistance * i
+      const triggerEnd = cardTop - scaleEndPositionPx
+      const pinStart = triggerStart
+      const pinEnd = endElementTop - containerHeight / 2
 
-      const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
-      const targetScale = baseScale + i * itemScale;
-      const scale = 1 - scaleProgress * (1 - targetScale);
+      const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd)
+      const targetScale = baseScale + i * itemScale
+      const scale = 1 - scaleProgress * (1 - targetScale)
 
-      let blur = 0;
+      let blur = 0
       if (blurAmount) {
-        let topCardIndex = 0;
+        let topCardIndex = 0
         cardsRef.current.forEach((c, j) => {
-          if (!c) return;
-          const cTop = getElementOffset(c);
+          if (!c) return
+          const cTop = getElementOffset(c)
           if (scrollTop >= cTop - stackPositionPx - itemStackDistance * j) {
-            topCardIndex = j;
+            topCardIndex = j
           }
-        });
-        if (i < topCardIndex) blur = (topCardIndex - i) * blurAmount;
+        })
+        if (i < topCardIndex) blur = (topCardIndex - i) * blurAmount
       }
 
-      let translateY = 0;
+      let translateY = 0
       if (scrollTop >= pinStart) {
         translateY = Math.min(
           scrollTop - cardTop + stackPositionPx + itemStackDistance * i,
           pinEnd - cardTop + stackPositionPx + itemStackDistance * i
-        );
+        )
       }
 
       const newTransform = {
         translateY: Math.round(translateY * 10) / 10,
         scale: Math.round(scale * 100) / 100,
         blur: Math.round(blur * 10) / 10,
-      };
+      }
 
-      const last = lastTransformsRef.current.get(i);
+      const last = lastTransformsRef.current.get(i)
       const changed =
         !last ||
         Math.abs(last.translateY - newTransform.translateY) > 0.4 ||
         Math.abs(last.scale - newTransform.scale) > 0.004 ||
-        Math.abs(last.blur - newTransform.blur) > 0.4;
+        Math.abs(last.blur - newTransform.blur) > 0.4
 
       if (changed) {
-        card.style.transform = `translateY(${newTransform.translateY}px) scale(${newTransform.scale})`;
-        card.style.filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : 'none';
-        lastTransformsRef.current.set(i, newTransform);
+        card.style.transform = `translateY(${newTransform.translateY}px) scale(${newTransform.scale})`
+        card.style.filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : 'none'
+        lastTransformsRef.current.set(i, newTransform)
       }
+    })
 
-      if (i === cardsRef.current.length - 1) {
-        const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-        if (isPinned && !stackCompletedRef.current) {
-          stackCompletedRef.current = true;
-          onStackComplete?.();
-        } else if (!isPinned && stackCompletedRef.current) {
-          stackCompletedRef.current = false;
-        }
-      }
-    });
-
-    isUpdatingRef.current = false;
+    isUpdatingRef.current = false
   }, [
     baseScale,
     blurAmount,
@@ -167,69 +154,68 @@ const ScrollStack = ({
     getScrollData,
     itemScale,
     itemStackDistance,
-    onStackComplete,
     parsePercentage,
     scaleEndPosition,
     stackPosition,
     useWindowScroll,
-  ]);
+  ])
 
-  const throttledUpdate = throttle(updateCardTransforms, 12);
+  const throttledUpdate = throttle(updateCardTransforms, 12)
 
   const handleScroll = useCallback(() => {
-    throttledUpdate();
-  }, [throttledUpdate]);
+    throttledUpdate()
+  }, [throttledUpdate])
 
   const setupLenis = useCallback(() => {
     const lenis = new Lenis({
-      duration: 1.6,
-      easing: (t) => 1 - Math.pow(1 - t, 5),
+      duration: 1.4,
+      easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
       syncTouch: true,
-      lerp: 0.07,
-      wheelMultiplier: 0.9,
-    });
+      lerp: 0.09,
+      wheelMultiplier: 1,
+    })
 
-    lenis.on('scroll', handleScroll);
+    lenis.on('scroll', handleScroll)
 
     const raf = (time: number) => {
-      lenis.raf(time);
-      animationFrameRef.current = requestAnimationFrame(raf);
-    };
-    animationFrameRef.current = requestAnimationFrame(raf);
+      lenis.raf(time)
+      animationFrameRef.current = requestAnimationFrame(raf)
+    }
+    animationFrameRef.current = requestAnimationFrame(raf)
 
-    lenisRef.current = lenis;
-  }, [handleScroll]);
+    lenisRef.current = lenis
+  }, [handleScroll])
 
   useLayoutEffect(() => {
-    const scroller = scrollerRef.current;
-    if (!scroller && !useWindowScroll) return;
+    const scroller = scrollerRef.current
+    if (!scroller && !useWindowScroll) return
 
     const cards = Array.from(
       useWindowScroll
         ? document.querySelectorAll('.scroll-stack-card')
         : (scroller?.querySelectorAll('.scroll-stack-card') ?? [])
-    ) as HTMLElement[];
-    cardsRef.current = cards;
+    ) as HTMLElement[]
+    cardsRef.current = cards
 
     cards.forEach((card, i) => {
       if (i < cards.length - 1) {
-        card.style.marginBottom = `${itemDistance}px`;
+        card.style.marginBottom = `${itemDistance}px`
       }
-      card.style.willChange = 'transform, filter';
-      card.style.transformOrigin = 'top center';
-      card.style.transform = 'none';
-    });
+      card.style.willChange = 'transform, filter'
+      card.style.transformOrigin = 'top center'
+      card.style.transform = 'none'
+    })
 
-    setupLenis();
-    updateCardTransforms();
+    setupLenis()
+    updateCardTransforms()
 
     return () => {
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-      lenisRef.current?.destroy();
-      lastTransformsRef.current.clear();
-    };
-  }, [itemDistance, setupLenis, updateCardTransforms, useWindowScroll]);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
+      lenisRef.current?.destroy()
+      lastTransformsRef.current.clear()
+    }
+  }, [itemDistance, setupLenis, updateCardTransforms, useWindowScroll])
 
   return (
     <div
@@ -240,16 +226,16 @@ const ScrollStack = ({
         WebkitOverflowScrolling: 'touch',
       }}
     >
-      <div className="scroll-stack-inner pt-[20vh] px-10 md:px-20 pb-[80vh] min-h-[200vh]">
+      <div className="scroll-stack-inner">
         {children}
-        <div className="scroll-stack-end w-full h-1" />
+        <div className="scroll-stack-end w-full h-px" />
       </div>
     </div>
-  );
-};
+  )
+}
 
 // ────────────────────────────────────────────────
-// Ваш оригинальный OurProjectsSection с интеграцией
+// ProjectCard и OurProjectsSection — ваш оригинальный контент
 // ────────────────────────────────────────────────
 
 interface Project {
@@ -376,28 +362,28 @@ export function OurProjectsSection() {
   return (
     <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: "var(--background)" }}>
       <div className="max-w-[1200px] mx-auto px-4">
-        <div className="text-center mb-16 md:mb-24">
+        <div className="text-center mb-12 md:mb-16">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{t.ourProjects}</h2>
           <p className="text-lg md:text-xl opacity-70 whitespace-pre-line">{t.description}</p>
         </div>
 
-        {/* Desktop: Scroll Stack без наклона */}
+        {/* Desktop: Scroll Stack */}
         <div className="hidden lg:block">
           <ScrollStack
             useWindowScroll={true}
-            itemDistance={160}
+            itemDistance={120}          // расстояние между карточками до стека
             itemScale={0.04}
-            itemStackDistance={48}
-            stackPosition="32%"
-            scaleEndPosition="8%"
+            itemStackDistance={40}      // смещение при наложении
+            stackPosition="35%"
+            scaleEndPosition="10%"
             baseScale={0.96}
-            blurAmount={0.8}
-            className="w-full min-h-[140vh] py-20"
+            blurAmount={0.6}
+            className="w-full"
           >
             {projects.map((project, index) => (
               <ScrollStackItem
                 key={project.id}
-                itemClassName="w-full max-w-[1100px] mx-auto px-0"
+                itemClassName="w-full max-w-[1100px] mx-auto"
               >
                 <ProjectCard project={project} index={index} />
               </ScrollStackItem>
