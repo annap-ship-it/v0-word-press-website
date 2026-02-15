@@ -712,28 +712,7 @@ export default function ProjectsPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
                 <div></div>
-               >
-              </div>
-            </div>
-          </AnimatedCard>
-
-          {/* Contact Form */}
-          <AnimatedCard delay={200}>
-            {isSubmitted ? (
-              <div
-                className="rounded-[4px] p-12 text-center"
-                style={{ backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }}
-              >
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
-                  {t.successMessage}
-                </h3>
-                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{t.receivedMessage}</p>
-              </div>
+                             </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Form */}
