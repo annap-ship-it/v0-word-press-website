@@ -631,46 +631,88 @@ export default function ProjectsPage() {
 
           {/* Process Steps */}
           <AnimatedCard delay={100}>
-            <div className="rounded-[4px] p-6 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="rounded-[4px] p-6 md:p-8 lg:p-12 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 <div className="text-center md:text-left">
-                  <h3 className="text-[#FF6200] font-semibold text-lg mb-2">{t.processTitle}</h3>
+                  <h3 
+                    className="font-semibold mb-2 md:mb-4"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#FFFFFF",
+                      fontSize: "clamp(18px, 1.25vw, 24px)",
+                      lineHeight: "1.2"
+                    }}
+                  >
+                    {t.processTitle}
+                  </h3>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                   </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                  <p 
+                    className="leading-relaxed"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#FFFFFF",
+                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                    }}
+                  >
                     {t.processStep1}
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path>
                     </svg>
                   </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                  <p 
+                    className="leading-relaxed"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#FFFFFF",
+                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                    }}
+                  >
                     {t.processStep2}
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                       <polyline points="14 2 14 8 20 8"></polyline>
                     </svg>
                   </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                  <p 
+                    className="leading-relaxed"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#FFFFFF",
+                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                    }}
+                  >
                     {t.processStep3}
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-                
-                
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
+                <div></div>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+                    </svg>
+                  </div>
+                  <p 
+                    className="leading-relaxed"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#FFFFFF",
+                      fontSize: "clamp(14px, 1.04vw, 20px)"
+                    }}
+                  >
+                    {t.processStep4}
+                  </p>
+                </div>
               </div>
             </div>
           </AnimatedCard>
