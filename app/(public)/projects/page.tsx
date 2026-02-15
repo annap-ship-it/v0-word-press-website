@@ -712,7 +712,36 @@ export default function ProjectsPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
                 <div></div>
-                             </div>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <p 
+                    className="leading-none"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
+                    }}
+                  >
+                    {t.processStep4}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AnimatedCard>
+
+          {/* Contact Form Section */}
+          <AnimatedCard delay={200}>
+            {isSubmitted ? (
+              <div className="text-center py-12">
+                <p className="text-lg" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
+                  {t.successMessage || t.receivedMessage}
+                </p>
+              </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Form */}
