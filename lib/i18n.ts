@@ -212,6 +212,16 @@ export const translations = {
     attachFileOptional: "Attach file (optional)",
     caseStudyText:
       "Proud of our recent work on automating the Admin System where we built a GraphQL API and Vue dashboard with real-time tracking for faster, smarter equipment monitoring.",
+    // Services Page Contact Form
+    contactFormHeading: "Send us a note with your idea, and we'll get in touch to provide guidance on implementation",
+    typeYourName: "Type your Name",
+    typeYourEmail: "Type your email",
+    typeYourMessage: "Type your message",
+    pleasAcceptTerms: "Please accept the Terms and Conditions",
+    recaptchaNotLoaded: "reCAPTCHA not loaded. Refresh page.",
+    messageSent: "Message sent successfully!",
+    failedToSend: "Failed to send message. Please try again.",
+    sending: "Sending...",
     // Blog Translations
 
   },
@@ -428,6 +438,16 @@ export const translations = {
     attachFileOptional: "Додати файл (необов'язково)",
     caseStudyText:
       "Пишаймося нашою недавною роботою з автоматизації системи Admin, де ми створили GraphQL API та Vue dashboard з відстеженням у реальному часі для швидшого та розумнішого моніторингу обладнання.",
+    // Services Page Contact Form
+    contactFormHeading: "Надішліть нам нотатки з вашою ідеєю й ми допоможемо її впровадити",
+    typeYourName: "Введіть своє ім'я",
+    typeYourEmail: "Введіть свою електронну адресу",
+    typeYourMessage: "Введіть своє повідомлення",
+    pleasAcceptTerms: "Будь ласка, прийміть Умови та положення",
+    recaptchaNotLoaded: "reCAPTCHA не завантажена. Оновіть сторінку.",
+    messageSent: "Повідомлення відправлене успішно!",
+    failedToSend: "Не вдалося надіслати повідомлення. Спробуйте ще раз.",
+    sending: "Надсилання...",
   },
 } as const as const
 

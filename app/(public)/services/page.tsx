@@ -296,7 +296,7 @@ export default function ServicesPage() {
               {/* Form */}
               <div>
                 <h2
-                  className="font-bold mb-8 text-white whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+                  className="font-bold mb-8 text-white"
                   style={{
                     fontFamily: "Onest",
                     fontWeight: 700,
@@ -306,7 +306,7 @@ export default function ServicesPage() {
                     letterSpacing: "-0.04em",
                   }}
                 >
-                  {t.getConsultation || "Send us a note with your idea, and we'll get in touch to provide guidance on implementation"}
+                  {t.contactFormHeading}
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
