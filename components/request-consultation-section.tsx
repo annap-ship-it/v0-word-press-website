@@ -197,26 +197,7 @@ export function RequestConsultationSection() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6">
-        <div className="max-w-[1280px] mx-auto text-center">
-          <h1
-            className="font-bold mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontSize: "clamp(40px, 5vw, 72px)",
-              lineHeight: "1.1",
-              backgroundImage: isDark
-                ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
-                : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            {t.servicesTitle}
-          </h1>
-        </div>
-      </section>
+      
 
       {/* Contact Form Section */}
       <section className="py-16 px-6">
