@@ -116,17 +116,7 @@ export function QuoteSection() {
             >
               <button
                 type="button"
-                className={`
-      relative overflow-hidden
-      flex items-center justify-center
-      w-full sm:w-auto px-8 py-4
-      rounded-full
-      font-[Onest] font-normal text-base leading-[100%]
-      text-white
-      transition duration-300 ease-out
-      bg-[#FF6200]
-      cursor-pointer
-    `}
+                className="relative overflow-hidden flex items-center justify-center w-full sm:w-auto px-8 py-4 rounded-full font-[Onest] font-normal text-base leading-[100%] text-white transition duration-300 ease-out bg-[#FF6200] cursor-pointer"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)";
                 }}
