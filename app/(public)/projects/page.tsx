@@ -444,7 +444,7 @@ export default function ProjectsPage() {
     },
   }
 
-  const t = translations[locale as keyof typeof translations]
+  const t = translations[locale as keyof typeof translations] || translations.en
 
   const titleGradient = isDark
     ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
