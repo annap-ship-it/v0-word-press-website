@@ -5,7 +5,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
 import Lenis from 'lenis'
-import throttle from 'lodash.throttle'
 import { useLayoutEffect, useRef, useCallback } from 'react'
 
 // ────────────────────────────────────────────────
@@ -140,7 +139,7 @@ const ScrollStack = ({
 
       if (changed) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale})`
-        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : ''
+        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : 'none'
         
         card.style.transform = transform
         card.style.filter = filter
@@ -163,11 +162,14 @@ const ScrollStack = ({
     useWindowScroll,
   ])
 
-  const throttledUpdate = throttle(updateCardTransforms, 12)
-
   const handleScroll = useCallback(() => {
-    throttledUpdate()
-  }, [throttledUpdate])
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+    }
+    animationFrameRef.current = requestAnimationFrame(() => {
+      updateCardTransforms()
+    })
+  }, [updateCardTransforms])
 
   const setupLenis = useCallback(() => {
     const lenis = new Lenis({
