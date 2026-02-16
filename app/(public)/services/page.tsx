@@ -10,9 +10,8 @@ import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 declare global {
   interface Window {
     grecaptcha: {
-      enterprise: {
-        execute: (siteKey: string, options: { action: string }) => Promise<string>
-      }
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
+      ready: (callback: () => void) => void
     }
   }
 }
@@ -60,7 +59,7 @@ export default function ServicesPage() {
     if (scriptLoaded.current) return
 
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/enterprise.js?render=explicit"
+    script.src = "https://www.google.com/recaptcha/api.js?render=explicit"
     script.async = true
     script.defer = true
     document.head.appendChild(script)
@@ -97,7 +96,21 @@ export default function ServicesPage() {
     setSubmitStatus(null)
 
     try {
-      const token = await window.grecaptcha.enterprise.execute(siteKey, { action: "contact_form" })
+      // Wait for grecaptcha to be ready
+      await new Promise<void>((resolve) => {
+        if ((window as any).grecaptcha) {
+          resolve()
+        } else {
+          const checkInterval = setInterval(() => {
+            if ((window as any).grecaptcha) {
+              clearInterval(checkInterval)
+              resolve()
+            }
+          }, 100)
+        }
+      })
+
+      const token = await window.grecaptcha.execute(siteKey, { action: "contact_form" })
 
       const form = new FormData()
       form.append("name", formData.name)
@@ -283,17 +296,17 @@ export default function ServicesPage() {
               {/* Form */}
               <div>
                 <h2
-                  className="font-bold mb-8 text-white whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+                  className="font-bold mb-8 text-white"
                   style={{
                     fontFamily: "Onest",
                     fontWeight: 700,
                     fontStyle: "normal",
-                    fontSize: "clamp(28px, 3.8vw, 48px)",
+                    fontSize: "clamp(18px, 1.25vw, 24px)",
                     lineHeight: "100%",
-                    letterSpacing: "-0.04em",
+                    letterSpacing: "-4%",
                   }}
                 >
-                  {t.getConsultation || "Send us a note with your idea, and we'll get in touch to provide guidance on implementation"}
+                  {t.contactFormHeading}
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -469,11 +482,11 @@ export default function ServicesPage() {
                     <label className="text-sm text-white/80" style={{ fontFamily: "Onest" }}>
                       {t.iAccept || "I Accept"}{" "}
                       <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
-                        {t.termsAndConditions || "Terms and Conditions"}
+                        {t.acceptTerms || "Terms and Conditions"}
                       </Link>
                       .<br />
-                      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
-                      {t.marketing || "We may send you occasionally marketing emails."}
+                      {t.bySubmitting || "By submitting your email, you accept terms and conditions."}<br />
+                      {t.mayEcho || "We may send you occasionally marketing emails."}
                     </label>
                   </div>
 

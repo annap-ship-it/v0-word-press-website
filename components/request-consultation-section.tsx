@@ -10,9 +10,8 @@ import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 declare global {
   interface Window {
     grecaptcha: {
-      enterprise: {
-        execute: (siteKey: string, options: { action: string }) => Promise<string>
-      }
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
+      ready: (callback: () => void) => void
     }
   }
 }
@@ -60,7 +59,7 @@ export function RequestConsultationSection() {
     if (scriptLoaded.current) return
 
     const script = document.createElement("script")
-    script.src = "https://www.google.com/recaptcha/enterprise.js?render=explicit"
+    script.src = "https://www.google.com/recaptcha/api.js?render=explicit"
     script.async = true
     script.defer = true
     document.head.appendChild(script)
@@ -97,7 +96,21 @@ export function RequestConsultationSection() {
     setSubmitStatus(null)
 
     try {
-      const token = await window.grecaptcha.enterprise.execute(siteKey, { action: "contact_form" })
+      // Wait for grecaptcha to be ready
+      await new Promise<void>((resolve) => {
+        if ((window as any).grecaptcha) {
+          resolve()
+        } else {
+          const checkInterval = setInterval(() => {
+            if ((window as any).grecaptcha) {
+              clearInterval(checkInterval)
+              resolve()
+            }
+          }, 100)
+        }
+      })
+
+      const token = await window.grecaptcha.execute(siteKey, { action: "contact_form" })
 
       const form = new FormData()
       form.append("name", formData.name)
@@ -184,99 +197,10 @@ export function RequestConsultationSection() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6">
-        <div className="max-w-[1280px] mx-auto text-center">
-          <h1
-            className="font-bold mb-4"
-            style={{
-              fontFamily: "Onest",
-              fontSize: "clamp(40px, 5vw, 72px)",
-              lineHeight: "1.1",
-              backgroundImage: isDark
-                ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
-                : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            {t.servicesTitle}
-          </h1>
-        </div>
-      </section>
-
-      {/* Services Sections */}
-      <section className="pb-16">
-        <div className="max-w-[1280px] mx-auto px-6">
-          {services.map((service, index) => (
-            <div key={index}>
-              {index > 0 && (
-                <div
-                  className="w-full mb-16"
-                  style={{
-                    height: "1px",
-                    background: "var(--foreground)",
-                    opacity: 0.1,
-                  }}
-                />
-              )}
-              <div
-                id={service.id}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20 items-center scroll-mt-32 ${
-                  service.reverse ? "lg:grid-flow-dense" : ""
-                }`}
-              >
-                <div className={service.reverse ? "lg:col-start-2" : ""}>
-                  <h2
-                    className="font-semibold mb-6"
-                    style={{
-                      fontFamily: "Onest",
-                      fontSize: "clamp(24px, 3vw, 40px)",
-                      lineHeight: "1.2",
-                      color: service.titleHighlight ? undefined : "inherit",
-                    }}
-                  >
-                    {service.titleHighlight ? (
-                      <>
-                        <span style={{ color: "#FF6200" }}>{service.titleHighlight}</span>{" "}
-                        {service.title.replace(service.titleHighlight, "").trim()}
-                      </>
-                    ) : (
-                      service.title
-                    )}
-                  </h2>
-                  <p
-                    style={{
-                      fontFamily: "Onest",
-                      fontSize: "16px",
-                      lineHeight: "1.6",
-                      color: "var(--foreground)",
-                      opacity: 0.8,
-                    }}
-                  >
-                    {service.description}
-                  </p>
-                </div>
-
-                <div className={service.reverse ? "lg:col-start-1 lg:row-start-1" : ""}>
-                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
-                    <Image
-                      src={service.image || "/placeholder.svg"}
-                      alt={service.imageAlt}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       {/* Contact Form Section */}
-      <section className="py-16 px-6">
+      <section className="pt-16 pb-8 px-6">
         <div className="max-w-[1280px] mx-auto">
           <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -431,11 +355,11 @@ export function RequestConsultationSection() {
     <label className="text-sm text-white/80 leading-relaxed" style={{ fontFamily: "Onest" }}>
       {t.iAccept || "I Accept"}{" "}
       <Link href="/terms" className="underline text-white hover:text-[#FF6200]">
-        {t.termsAndConditions || "Terms and Conditions"}
+        {t.acceptTerms || "Terms and Conditions"}
       </Link>
       .<br />
-      {t.bySubmittingEmail || "By submitting your email, you accept terms and conditions."}<br />
-      {t.marketing || "We may send you occasionally marketing emails."}
+      {t.bySubmitting || "By submitting your email, you accept terms and conditions."}<br />
+      {t.mayEcho || "We may send you occasionally marketing emails."}
     </label>
   </div>
 

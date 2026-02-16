@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+import { ProjectsOverlappingSection } from "@/components/projects-overlapping-section"
 
 interface Project {
   id: string
@@ -387,7 +388,8 @@ export default function ProjectsPage() {
       consultationTitle: "Request Free Consultation",
       processTitle: "What's the process?",
       processStep1: "Our specialist will reach out after reviewing your message",
-      processStep2: "We'll create a roadmap to turn your vision into reality",
+      processStep2: "If needed we'll sign an NDA to ensure trust, after what you provide us with the project details",
+      processStep3: "You'll receive a detailed proposal including estimates, timelines, and expert profiles",
       nameLabel: "Your Name",
       emailLabel: "Your Email",
       messageLabel: "Your Message",
@@ -416,7 +418,8 @@ export default function ProjectsPage() {
       consultationTitle: "Запитати безкоштовну консультацію",
       processTitle: "Як це працює?",
       processStep1: "Наш фахівець зв'яжеться з вами після розгляду вашого повідомлення",
-      processStep2: "Ми створимо дорожну карту, щоб втілити вашу видіння в реальність",
+      processStep2: "Якщо потрібно ми підпишемо NDA щоб забезпечити довіру, після чого деталі проекту",
+      processStep3: "Ви отримаєте детальну пропозицію з оцінкою, таймлайном та експертним профайлом",
       nameLabel: "Ваше ім'я",
       emailLabel: "Ваша електронна пошта",
       messageLabel: "Ваше повідомлення",
@@ -441,7 +444,7 @@ export default function ProjectsPage() {
     },
   }
 
-  const t = translations[locale as keyof typeof translations]
+  const t = translations[locale as keyof typeof translations] || translations.en
 
   const titleGradient = isDark
     ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
@@ -626,52 +629,98 @@ export default function ProjectsPage() {
 
           {/* Process Steps */}
           <AnimatedCard delay={100}>
-            <div className="rounded-[4px] p-6 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="rounded-[4px] p-6 md:p-8 lg:p-12 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 <div className="text-center md:text-left">
-                  <h3 className="text-[#FF6200] font-semibold text-lg mb-2">{t.processTitle}</h3>
+                  <h3 
+                    className="font-semibold mb-2 md:mb-4"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(24px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
+                    }}
+                  >
+                    {t.processTitle}
+                  </h3>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    <path d="M9 9L13.5 12L18 9" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M3 13.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M1 10.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  <p 
+                    className="leading-none"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
+                    }}
+                  >
                     {t.processStep1}
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded bg-[#FF6200] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                    </svg>
-                  </div>
-                  <p className="text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    <path d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8 10H16M8 6H12M8 14H11" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <p 
+                    className="leading-none"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
+                    }}
+                  >
                     {t.processStep2}
                   </p>
                 </div>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                    <path d="M8 12L11 15L16 10" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <p 
+                    className="leading-none"
+                    style={{ 
+                      color: isDark ? "#FFFFFF" : "#000000",
+                      fontFamily: "Onest, sans-serif",
+                      fontWeight: 400,
+                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
+                      lineHeight: "100%",
+                      letterSpacing: "-2%"
+                    }}
+                  >
+                    {t.processStep3}
+                  </p>
+                </div>
               </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
+                <div></div>
+                </div>
             </div>
           </AnimatedCard>
 
-          {/* Contact Form */}
+          {/* Contact Form Section */}
           <AnimatedCard delay={200}>
             {isSubmitted ? (
-              <div
-                className="rounded-[4px] p-12 text-center"
-                style={{ backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }}
-              >
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold mb-4" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
-                  {t.successMessage}
-                </h3>
-                <p style={{ color: isDark ? "#A0A0A0" : "#666666" }}>{t.receivedMessage}</p>
+              <div className="text-center py-12">
+                <p className="text-lg" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
+                  {t.successMessage || t.receivedMessage}
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -756,12 +805,56 @@ export default function ProjectsPage() {
 
                   {/* Submit Button */}
                   <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="px-8 py-3 rounded-full bg-[#FF6200] text-white font-semibold hover:bg-[#E55A00] transition-colors disabled:opacity-50"
-                  >
-                    {isSubmitting ? t.sendingButton : t.submitButton}
-                  </button>
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`
+                        relative overflow-hidden
+                        flex items-center justify-center gap-[10px]
+                        text-[16px] font-medium leading-[1]
+                        text-white
+                        transition duration-300 ease-out
+                        disabled:cursor-not-allowed disabled:opacity-50
+                        bg-[#FF6200] rounded-[50px]
+                        hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
+                        active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
+                        active:scale-[0.98]
+                      `}
+                      onMouseEnter={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "#FF6200"
+                        }
+                      }}
+                      onMouseDown={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
+                        }
+                      }}
+                      onMouseUp={(e) => {
+                        if (!isSubmitting) {
+                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                        }
+                      }}
+                      style={{
+                        width: "264px",
+                        height: "40px",
+                        padding: "4px 14px",
+                        fontFamily: "Onest",
+                      }}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          {t.sending || "Sending..."}
+                        </>
+                      ) : (
+                        t.send || "Send"
+                      )}
+                    </button>
 
                   {/* Terms */}
                   <div className="flex items-start gap-2">
@@ -788,6 +881,11 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* reCAPTCHA widget */}
+                  <div
+                    ref={recaptchaRef}
+                    className="g-recaptcha"
+                    data-sitekey="6LcKsjksAAAAAGoEUPaQnULL3xDPUW5c_bLP5EjT"
+                  />
                 </form>
 
                 {/* Image */}

@@ -392,16 +392,18 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Combined Social Icons and Rating Badges - Desktop: 1 horizontal row, Mobile: 2 separate grid sections */}
-        <div className="flex flex-col md:flex-row md:justify-center md:items-center md:gap-4 gap-8">
-          {/* Social Icons - Mobile: 3 columns grid, Desktop: horizontal row */}
-          <div className="grid grid-cols-3 md:flex md:flex-row md:gap-3 gap-4 justify-items-center">
-            <a
-              href="https://www.facebook.com/profile.php?id=61559195634421"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-            >
+        {/* Combined Social Icons and Rating Badges - Full width layout */}
+        <div className="flex flex-col gap-8">
+          {/* Social Icons and Contact Info - Side by side on desktop */}
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8 w-full">
+            {/* Social Icons - Mobile: 3 columns grid, Desktop: horizontal row */}
+            <div className="grid grid-cols-3 md:flex md:flex-row md:gap-3 gap-4 justify-items-center md:justify-start">
+              <a
+                href="https://www.facebook.com/profile.php?id=61559195634421"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
+              >
               <svg
                 width="10"
                 height="18"
@@ -539,9 +541,10 @@ export function Footer() {
               </svg>
             </a>
           </div>
+          {/* End of social icons section */}
 
           {/* Rating Badges - Mobile: 2 columns grid, Desktop: horizontal row */}
-          <div className="grid grid-cols-2 md:flex md:flex-row md:gap-4 gap-4">
+          <div className="grid grid-cols-2 md:flex md:flex-row md:gap-4 gap-4 w-full">
             {/* Sortlist Badge */}
             <a
               href="https://www.sortlist.com/agency/idea-team?disableCache=true"
@@ -685,8 +688,11 @@ export function Footer() {
               </div>
             </a>
           </div>
+          {/* End of rating badges section */}
         </div>
+        {/* End of combined social and badges section */}
 
+        {/* Divider and Footer Links */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
           <p>©Idea Team 2024. All Rights Reserved.</p>
           <div className="flex items-center gap-6">

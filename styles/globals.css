@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&subset=cyrillic,cyrillic-ext,latin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Onest:ital,wght@0,100..900;1,100..900&subset=cyrillic,cyrillic-ext,latin&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -120,6 +122,13 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+.scroll-stack-card {
+  transform: translate3d(0, 0, 0);          /* только для GPU-ускорения */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform, filter;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -142,4 +151,20 @@
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/Onest-VariableFont_wght.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Onest', system-ui, sans-serif;
 }

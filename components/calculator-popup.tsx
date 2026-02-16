@@ -88,7 +88,7 @@ function RateCalculatorPopout({ isOpen, onClose, onCalculateClick }: RateCalcula
           onClick={handleCalculateClick}
           className="w-full max-w-[300px] h-[30px] rounded-[50px] bg-[#FF6200] text-white font-medium hover:bg-[#E55800] transition-colors"
           style={{
-            padding: "4px 14px",
+            padding: "6px 14px",
             fontSize: "clamp(14px, 3.5vw, 16px)",
           }}
         >
