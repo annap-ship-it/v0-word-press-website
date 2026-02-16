@@ -154,7 +154,7 @@ export function Navigation() {
                 <div
                   className="absolute left-0 animate-in fade-in"
                   style={{
-                    top: "46px", // 52px (nav height) - 6px (button padding) = 46px to touch nav bar edge
+                    top: "46px",
                     animationTimingFunction: "ease-out",
                     animationDuration: "300ms",
                   }}
@@ -163,29 +163,17 @@ export function Navigation() {
                   <div
                     className="absolute"
                     style={{
-                      top: "-17px", // Position arrow above the dropdown to touch nav bar edge
-                      left: "81px",
-                      width: "24px",
-                      height: "17px",
+                      top: "-11px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "11px solid transparent",
+                      borderRight: "11px solid transparent",
+                      borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
                       zIndex: 20,
                     }}
-                  >
-                    <svg
-                      width="24"
-                      height="17"
-                      viewBox="0 0 24 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        display: "block",
-                      }}
-                    >
-                      <path
-                        d="M10.7655 0.480262C11.2677 -0.160087 12.2323 -0.160087 12.7345 0.480262L23.2017 13.7472C23.8518 14.5831 23.3039 15.8696 22.2672 15.8696H1.23282C0.196124 15.8696 -0.351794 14.5831 0.29833 13.7472L10.7655 0.480262Z"
-                        fill={isDark ? "#212121" : "#FFFFFF"}
-                      />
-                    </svg>
-                  </div>
+                  />
 
                   {/* Dropdown content */}
                   <div
@@ -402,9 +390,12 @@ export function Navigation() {
                         </div>
 
                         {/* Read All Reviews button */}
-                        <button
-                          className="absolute bottom-3.5 left-3.5 transition-all duration-300 ease-out"
+                        <Link
+                          href="/#feedbacks"
+                          className="absolute transition-all duration-300 ease-out"
                           style={{
+                            bottom: "14px",
+                            left: "14px",
                             width: "auto",
                             minWidth: "140px",
                             maxWidth: "270px",
@@ -425,6 +416,9 @@ export function Navigation() {
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = "#FF62001A"
@@ -441,7 +435,7 @@ export function Navigation() {
                         >
                           {/* Using t.readAllReviews from useLocale hook instead of currentTranslations */}
                           {t.readAllReviews}
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -485,29 +479,17 @@ export function Navigation() {
                   <div
                     className="absolute"
                     style={{
-                      top: "-17px", // Position arrow above the dropdown to touch nav bar edge
-                      left: "81px",
-                      width: "24px",
-                      height: "17px",
+                      top: "-11px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "11px solid transparent",
+                      borderRight: "11px solid transparent",
+                      borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
                       zIndex: 20,
                     }}
-                  >
-                    <svg
-                      width="24"
-                      height="17"
-                      viewBox="0 0 24 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        display: "block",
-                      }}
-                    >
-                      <path
-                        d="M10.7655 0.480262C11.2677 -0.160087 12.2323 -0.160087 12.7345 0.480262L23.2017 13.7472C23.8518 14.5831 23.3039 15.8696 22.2672 15.8696H1.23282C0.196124 15.8696 -0.351794 14.5831 0.29833 13.7472L10.7655 0.480262Z"
-                        fill={isDark ? "#212121" : "#FFFFFF"}
-                      />
-                    </svg>
-                  </div>
+                  />
 
                   {/* Dropdown content */}
                   <div
