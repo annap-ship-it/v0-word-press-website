@@ -301,9 +301,9 @@ export default function ServicesPage() {
                     fontFamily: "Onest",
                     fontWeight: 700,
                     fontStyle: "normal",
-                    fontSize: "clamp(28px, 3.8vw, 48px)",
+                    fontSize: "clamp(18px, 1.25vw, 24px)",
                     lineHeight: "100%",
-                    letterSpacing: "-0.04em",
+                    letterSpacing: "-4%",
                   }}
                 >
                   {t.contactFormHeading}
