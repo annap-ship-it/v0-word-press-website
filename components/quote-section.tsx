@@ -29,22 +29,20 @@ function SocialLinks() {
         href="https://www.linkedin.com/company/idea-team-dev/"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground transition-colors"
-        style={{ border: '1px solid #FFFFFF80' }}
+        className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground text-foreground dark:text-foreground/60 transition-colors"
       >
-        <LinkedInIcon className="w-6 h-6 text-foreground" />
-        <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>LinkedIn</span>
+        <LinkedInIcon className="w-6 h-6" />
+        <span>LinkedIn</span>
       </Link>
 
       <Link
         href="https://t.me/OleksandrRomanov777"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground transition-colors"
-        style={{ border: '1px solid #FFFFFF80' }}
+        className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground text-foreground dark:text-foreground/60 transition-colors"
       >
-        <TelegramIcon className="w-6 h-6 text-foreground" />
-        <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Telegram</span>
+        <TelegramIcon className="w-6 h-6" />
+        <span>Telegram</span>
       </Link>
     </div>
   )
