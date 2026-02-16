@@ -200,7 +200,7 @@ export function RequestConsultationSection() {
       
 
       {/* Contact Form Section */}
-      <section className="pt-16 pb-16 px-6">
+      <section className="pt-16 pb-8 px-6">
         <div className="max-w-[1280px] mx-auto">
           <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
