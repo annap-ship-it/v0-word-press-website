@@ -185,7 +185,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
       <div
         className="relative w-full rounded-[14px] shadow-lg"
         style={{
-          maxWidth: "936px",
+          maxWidth: "clamp(100%, 25vw + 20px, 936px)",
           backgroundColor: isDark ? "#212121" : "#FFFFFF",
           borderRadius: "14px",
         }}
