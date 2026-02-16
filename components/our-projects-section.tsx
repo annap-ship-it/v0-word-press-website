@@ -14,9 +14,10 @@ import { useLayoutEffect, useRef, useCallback } from 'react'
 
 export const ScrollStackItem = ({ children, itemClassName = '' }) => (
   <div
-    className={`scroll-stack-card relative w-full my-12 rounded-[14px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
+    className={`scroll-stack-card relative w-full my-8 rounded-[14px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
     style={{
       backfaceVisibility: 'hidden',
+      transformStyle: 'preserve-3d'
     }}
   >
     {children}
@@ -97,7 +98,7 @@ const ScrollStack = ({
       const cardTop = getElementOffset(card)
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i
       const triggerEnd = cardTop - scaleEndPositionPx
-      const pinStart = triggerStart
+      const pinStart = cardTop - stackPositionPx - itemStackDistance * i
       const pinEnd = endElementTop - containerHeight / 2
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd)
@@ -118,29 +119,31 @@ const ScrollStack = ({
       }
 
       let translateY = 0
-      if (scrollTop >= pinStart) {
-        translateY = Math.min(
-          scrollTop - cardTop + stackPositionPx + itemStackDistance * i,
-          pinEnd - cardTop + stackPositionPx + itemStackDistance * i
-        )
+      if (scrollTop >= pinStart && scrollTop <= pinEnd) {
+        translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i
+      } else if (scrollTop > pinEnd) {
+        translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i
       }
 
       const newTransform = {
-        translateY: Math.round(translateY * 10) / 10,
-        scale: Math.round(scale * 100) / 100,
-        blur: Math.round(blur * 10) / 10,
+        translateY: Math.round(translateY * 100) / 100,
+        scale: Math.round(scale * 1000) / 1000,
+        blur: Math.round(blur * 100) / 100,
       }
 
       const last = lastTransformsRef.current.get(i)
       const changed =
         !last ||
-        Math.abs(last.translateY - newTransform.translateY) > 0.4 ||
-        Math.abs(last.scale - newTransform.scale) > 0.004 ||
-        Math.abs(last.blur - newTransform.blur) > 0.4
+        Math.abs(last.translateY - newTransform.translateY) > 0.1 ||
+        Math.abs(last.scale - newTransform.scale) > 0.001 ||
+        Math.abs(last.blur - newTransform.blur) > 0.1
 
       if (changed) {
-        card.style.transform = `translateY(${newTransform.translateY}px) scale(${newTransform.scale})`
-        card.style.filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : 'none'
+        const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale})`
+        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : ''
+        
+        card.style.transform = transform
+        card.style.filter = filter
         lastTransformsRef.current.set(i, newTransform)
       }
     })
@@ -168,12 +171,15 @@ const ScrollStack = ({
 
   const setupLenis = useCallback(() => {
     const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => 1 - Math.pow(1 - t, 4),
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      syncTouch: true,
-      lerp: 0.09,
+      touchMultiplier: 2,
+      infinite: false,
       wheelMultiplier: 1,
+      lerp: 0.1,
+      syncTouch: true,
+      syncTouchLerp: 0.075,
     })
 
     lenis.on('scroll', handleScroll)
@@ -204,7 +210,11 @@ const ScrollStack = ({
       }
       card.style.willChange = 'transform, filter'
       card.style.transformOrigin = 'top center'
-      card.style.transform = 'none'
+      card.style.backfaceVisibility = 'hidden'
+      card.style.transform = 'translateZ(0)'
+      ;(card.style as any).webkitTransform = 'translateZ(0)'
+      card.style.perspective = '1000px'
+      ;(card.style as any).webkitPerspective = '1000px'
     })
 
     setupLenis()
@@ -224,6 +234,8 @@ const ScrollStack = ({
       style={{
         overscrollBehavior: 'contain',
         WebkitOverflowScrolling: 'touch',
+        WebkitTransform: 'translateZ(0)',
+        transform: 'translateZ(0)',
       }}
     >
       <div className="scroll-stack-inner">
