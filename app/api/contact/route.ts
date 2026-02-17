@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
     }
 
     const resendPayload: Record<string, unknown> = {
-      from: "onboarding@resend.dev", // Use default Resend domain that works out of the box
+      from: "noreply@ideateam.dev", // Use verified custom domain
       to: emailContent.to,
       subject: emailContent.subject,
       html: emailContent.html,
