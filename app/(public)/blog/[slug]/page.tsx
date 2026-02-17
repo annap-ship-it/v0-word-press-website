@@ -25,6 +25,8 @@ import {
 import type { JSX } from "react"
 import { translations } from "@/lib/i18n"
 import { AnimatedSection } from "@/components/AnimatedSection"
+import { MeetingBanner } from "@/components/meeting-banner"
+import { FAQSection } from "@/components/faq-section"
 
 interface ContentBlock {
   type: string
@@ -654,6 +656,16 @@ export default function BlogPostPage() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Meeting Banner */}
+      <section className="py-8 md:py-12">
+        <div className="max-w-[900px] mx-auto px-4 md:px-6">
+          <MeetingBanner isDark={isDark} />
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
