@@ -25,8 +25,8 @@ import {
 import type { JSX } from "react"
 import { translations } from "@/lib/i18n"
 import { AnimatedSection } from "@/components/AnimatedSection"
-import { MeetingBanner } from "@/components/meeting-banner"
-import { FAQSection } from "@/components/faq-section"
+import { ArticleFAQSection } from "@/components/article-faq-section"
+import { ArticleCTABanner } from "@/components/article-cta-banner"
 
 interface ContentBlock {
   type: string
@@ -657,15 +657,114 @@ export default function BlogPostPage() {
         </div>
       </section>
 
-      {/* Meeting Banner */}
-      <section className="py-8 md:py-12">
-        <div className="max-w-[900px] mx-auto px-4 md:px-6">
-          <MeetingBanner isDark={isDark} />
-        </div>
+      {/* CTA Banner */}
+      <section className="py-8 md:py-12 max-w-[1280px] mx-auto px-4 md:px-6">
+        <ArticleCTABanner meetingUrl="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a" />
       </section>
 
       {/* FAQ Section */}
-      <FAQSection />
+      {(post?.slug?.includes("version-control") || post?.slug?.includes("code-review")) && (
+        <ArticleFAQSection
+          faqItems={
+            post?.slug?.includes("version-control")
+              ? [
+                  {
+                    id: 1,
+                    questionEn: "How can Idea Team help with version control implementation?",
+                    questionUk: "Як Idea Team може допомогти з впровадженням контролю версій?",
+                    answerEn:
+                      "Idea Team provides experienced developers who can set up and manage Git, SVN, or Perforce repositories, create branching strategies and workflows, integrate VCS with CI/CD pipelines, train your internal team on best practices, and scale your development team via outstaffing to meet project demands.",
+                    answerUk:
+                      "Idea Team надає досвідчених розробників, які можуть налаштувати та керувати сховищами Git, SVN або Perforce, створювати стратегії розгалуження та робочі процеси, інтегрувати VCS з конвеєрами CI/CD, навчати вашу внутрішню команду найкращим практикам та масштабувати вашу команду розробки через аутстафінг для виконання вимог проекту.",
+                  },
+                  {
+                    id: 2,
+                    questionEn: "What are the risks of switching VCS mid-project?",
+                    questionUk: "Які ризики переходу на VCS під час проекту?",
+                    answerEn:
+                      "Migrating a VCS can be complex and costly. It may involve transferring large codebases, preserving history, retraining teams, and updating CI/CD processes. Choosing the right system from the start avoids these issues.",
+                    answerUk:
+                      "Міграція VCS може бути складною та дорогою. Вона може включати передачу великих кодових баз, збереження історії, перепідготовку команд та оновлення процесів CI/CD. Вибір правильної системи з самого початку дозволяє уникнути цих проблем.",
+                  },
+                  {
+                    id: 3,
+                    questionEn: "Why is distributed VCS preferred for modern development?",
+                    questionUk: "Чому розподілена VCS переважна для сучасної розробки?",
+                    answerEn:
+                      "Distributed systems like Git are flexible, reliable, and compatible with modern DevOps tools and cloud workflows. They allow parallel development, offline work, and better backup redundancy, which is ideal for web and mobile development projects.",
+                    answerUk:
+                      "Розподілені системи, такі як Git, гнучкі, надійні та сумісні з сучасними інструментами DevOps та хмарними робочими процесами. Вони дозволяють паралельну розробку, автономну роботу та кращу резервну надмірність, що ідеально підходить для веб-розробки та мобільних проектів.",
+                  },
+                  {
+                    id: 4,
+                    questionEn: "When is centralised VCS still relevant?",
+                    questionUk: "Коли централізована VCS все ще актуальна?",
+                    answerEn:
+                      "Centralised systems are useful when managing very large binary assets (like video or game assets), requiring strict access controls, or supporting older development workflows in enterprise or regulated environments.",
+                    answerUk:
+                      "Централізовані системи корисні при керуванні дуже великими бінарними активами (як відеоматеріали або ігрові активи), вимагаючи суворого контролю доступу або підтримки старих робочих процесів розробки в корпоративних або регульованих середовищах.",
+                  },
+                  {
+                    id: 5,
+                    questionEn: "Can Idea Team help scale developers for VCS integration?",
+                    questionUk: "Може ли Idea Team допомогти масштабувати розробників для інтеграції VCS?",
+                    answerEn:
+                      "Yes. Idea Team's outstaffing model lets you onboard skilled developers quickly to manage or improve your version control processes, scale teams up or down, and ensure your codebase is secure and well-organised.",
+                    answerUk:
+                      "Так. Модель аутстафінгу Idea Team дозволяє вам швидко підключити кваліфікованих розробників для керування або покращення процесів контролю версій, масштабування команд вгору або вниз та забезпечення безпеки та добре організованої кодової бази.",
+                  },
+                ]
+              : [
+                  {
+                    id: 1,
+                    questionEn: "How can the Idea Team support my code review process?",
+                    questionUk: "Як Idea Team може підтримати мій процес перевірки коду?",
+                    answerEn:
+                      "Idea Team developers can integrate structured code review workflows into your projects, provide mentorship and knowledge sharing across teams, implement automated checks for code quality, rotate reviewers to ensure broad expertise and avoid silos, and scale teams efficiently through outstaffing.",
+                    answerUk:
+                      "Розробники Idea Team можуть інтегрувати структуровані робочі процеси перевірки коду у ваші проекти, надати наставництво та обмін знаннями між командами, впровадити автоматизовані перевірки якості коду, ротувати рецензентів для забезпечення широкої експертизи та уникнення силосів, та масштабувати команди ефективно через аутстафінг.",
+                  },
+                  {
+                    id: 2,
+                    questionEn: "What tools are recommended for code reviews?",
+                    questionUk: "Які інструменти рекомендуються для перевірок коду?",
+                    answerEn:
+                      "Common tools include GitHub, GitLab, Bitbucket, and specialized code review platforms. Linters, formatters, static analysis, and CI/CD integrations enhance efficiency and maintain quality.",
+                    answerUk:
+                      "Поширені інструменти включають GitHub, GitLab, Bitbucket та спеціалізовані платформи перевірки коду. Лінтери, форматери, статичний аналіз та інтеграції CI/CD підвищують ефективність та підтримують якість.",
+                  },
+                  {
+                    id: 3,
+                    questionEn: "Can code reviews improve team collaboration?",
+                    questionUk: "Чи можуть перевірки коду покращити командну співпрацю?",
+                    answerEn:
+                      "Yes. By making code transparent and reviewed collectively, teams learn from each other, share expertise, and maintain consistent coding practices across all projects.",
+                    answerUk:
+                      "Так. Роблячи код прозорим та перевіреним колективно, команди вчаться один у одного, діляться експертизою та підтримують послідовні практики кодування в усіх проектах.",
+                  },
+                  {
+                    id: 4,
+                    questionEn: "How often should code reviews be conducted?",
+                    questionUk: "Як часто повинні проводитися перевірки коду?",
+                    answerEn:
+                      "Code reviews should be part of your continuous development process. Every pull request or change should be reviewed before merging. Aim for reviews within 24 hours for optimal team collaboration and project momentum.",
+                    answerUk:
+                      "Перевірки коду повинні бути частиною вашого безперервного процесу розробки. Кожен запит на витяг або зміна повинні бути перевірені перед об''єднанням. Спрямуйтеся на перевірки протягом 24 годин для оптимальної командної співпраці та динаміки проекту.",
+                  },
+                  {
+                    id: 5,
+                    questionEn: "What metrics should I track for code review effectiveness?",
+                    questionUk: "Які показники я повинен відслідковувати для ефективності перевірки коду?",
+                    answerEn:
+                      "Track metrics like first response time, review turnaround time, defect detection rate, review distribution, and code quality improvements. These metrics help optimize your review workflow and team productivity.",
+                    answerUk:
+                      "Відслідковуйте показники, такі як час першої відповіді, час перевірки, ступінь виявлення дефектів, розподіл перевірок та покращення якості коду. Ці показники допомагають оптимізувати ваш робочий процес перевірки та продуктивність команди.",
+                  },
+                ]
+          }
+          isDark={isDark}
+        />
+      )}
 
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
