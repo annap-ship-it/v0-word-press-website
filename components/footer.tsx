@@ -691,6 +691,8 @@ export function Footer() {
           {/* End of rating badges section */}
         </div>
         {/* End of combined social and badges section */}
+        </div>
+        {/* End of flex-col-gap-8 container */}
 
         {/* Divider and Footer Links */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
