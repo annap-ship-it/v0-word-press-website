@@ -404,126 +404,126 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
               >
-              <svg
-                width="10"
-                height="18"
-                viewBox="0 0 10 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                <svg
+                  width="10"
+                  height="18"
+                  viewBox="0 0 10 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                >
+                  <path
+                    d="M9 1H6.5C5.57174 1 4.6815 1.36875 4.02513 2.02513C3.36875 2.6815 3 3.57174 3 4.5V7H0.5V10.5H3V17H6.5V10.5H9L9.5 7H6.5V4.5C6.5 4.36739 6.55268 4.24021 6.64645 4.14645C6.74021 4.05268 6.86739 4 7 4H9.5L9 1Z"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/idea-team-dev/?viewAsMember=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
               >
-                <path
-                  d="M9 1H6.5C5.57174 1 4.6815 1.36875 4.02513 2.02513C3.36875 2.6815 3 3.57174 3 4.5V7H0.5V10.5H3V17H6.5V10.5H9L9.5 7H6.5V4.5C6.5 4.36739 6.55268 4.24021 6.64645 4.14645C6.74021 4.05268 6.86739 4 7 4H9.5L9 1Z"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://www.linkedin.com/company/idea-team-dev/?viewAsMember=true"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                >
+                  <path
+                    d="M4.30556 13.1944V6.97222M7.86111 10.3056V6.97222M7.86111 10.3056C7.86111 6.97222 13.1944 6.97222 13.1944 10.3056V13.1944M7.86111 10.3056V13.1944M4.30556 4.31444L4.31444 4.30457M16.75 12.3056V5.19444C16.75 2.73985 14.7602 0.75 12.3056 0.75H5.19444C2.73985 0.75 0.75 2.73985 0.75 5.19444V12.3056C0.75 14.7602 2.73985 16.75 5.19444 16.75H12.3056C14.7602 16.75 16.75 14.7602 16.75 12.3056Z"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://x.com/IdeaTeamDeV"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
               >
-                <path
-                  d="M4.30556 13.1944V6.97222M7.86111 10.3056V6.97222M7.86111 10.3056C7.86111 6.97222 13.1944 6.97222 13.1944 10.3056V13.1944M7.86111 10.3056V13.1944M4.30556 4.31444L4.31444 4.30457M16.75 12.3056V5.19444C16.75 2.73985 14.7602 0.75 12.3056 0.75H5.19444C2.73985 0.75 0.75 2.73985 0.75 5.19444V12.3056C0.75 14.7602 2.73985 16.75 5.19444 16.75H12.3056C14.7602 16.75 16.75 14.7602 16.75 12.3056Z"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://x.com/IdeaTeamDeV"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-            >
-              <svg
-                width="16"
-                height="14"
-                viewBox="0 0 16 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                <svg
+                  width="16"
+                  height="14"
+                  viewBox="0 0 16 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                >
+                  <path
+                    d="M12.6 0H15.054L9.694 5.93021L16 14H11.063L7.196 9.10483L2.771 14H0.316L6.049 7.65655L0 0H5.063L8.558 4.47324L12.6 0ZM11.74 12.5788H13.1L4.323 1.3469H2.865L11.74 12.5788Z"
+                    fill="white"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/idea_team_dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
               >
-                <path
-                  d="M12.6 0H15.054L9.694 5.93021L16 14H11.063L7.196 9.10483L2.771 14H0.316L6.049 7.65655L0 0H5.063L8.558 4.47324L12.6 0ZM11.74 12.5788H13.1L4.323 1.3469H2.865L11.74 12.5788Z"
-                  fill="white"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://www.instagram.com/idea_team_dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                >
+                  <path
+                    d="M13.6389 3.87L13.6478 3.86012M12.3056 8.75C12.3056 10.7137 10.7137 12.3056 8.75 12.3056C6.78632 12.3056 5.19444 10.7137 5.19444 8.75C5.19444 6.78632 6.78632 5.19444 8.75 5.19444C10.7137 5.19444 12.3056 6.78632 12.3056 8.75ZM0.75 5.19444V12.3056C0.75 14.7602 2.73985 16.75 5.19444 16.75H12.3056C14.7602 16.75 16.75 14.7602 16.75 12.3056V5.19444C16.75 2.73985 14.7602 0.75 12.3056 0.75H5.19444C2.73985 0.75 0.75 2.73985 0.75 5.19444Z"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://t.me/OleksandrRomanov777"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
               >
-                <path
-                  d="M13.6389 3.87L13.6478 3.86012M12.3056 8.75C12.3056 10.7137 10.7137 12.3056 8.75 12.3056C6.78632 12.3056 5.19444 10.7137 5.19444 8.75C5.19444 6.78632 6.78632 5.19444 8.75 5.19444C10.7137 5.19444 12.3056 6.78632 12.3056 8.75ZM0.75 5.19444V12.3056C0.75 14.7602 2.73985 16.75 5.19444 16.75H12.3056C14.7602 16.75 16.75 14.7602 16.75 12.3056V5.19444C16.75 2.73985 14.7602 0.75 12.3056 0.75H5.19444C2.73985 0.75 0.75 2.73985 0.75 5.19444Z"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://t.me/OleksandrRomanov777"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-            >
-              <svg
-                width="22"
-                height="18"
-                viewBox="0 0 22 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                <svg
+                  width="22"
+                  height="18"
+                  viewBox="0 0 22 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                >
+                  <path
+                    d="M20.7501 0.75L0.750061 8.75L8.11848 9.81667M20.7501 0.75L18.1185 16.75L8.11848 9.81667M20.7501 0.75L8.11848 9.81667M8.11848 9.81667V15.6833L11.5383 12.1877"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://wa.me/380935125038"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
               >
-                <path
-                  d="M20.7501 0.75L0.750061 8.75L8.11848 9.81667M20.7501 0.75L18.1185 16.75L8.11848 9.81667M20.7501 0.75L8.11848 9.81667M8.11848 9.81667V15.6833L11.5383 12.1877"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://wa.me/380935125038"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
-              >
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:opacity-100 opacity-60 transition-opacity duration-300"
+                >
                 <path
                   d="M15.6588 12.9204V14.2342C15.6593 14.3562 15.6312 14.4769 15.5761 14.5887C15.521 14.7004 15.4402 14.8007 15.3389 14.8832C15.2376 14.9656 15.118 15.0284 14.9878 15.0675C14.8575 15.1065 14.7195 15.1211 14.5826 15.1101C13.0636 14.9637 11.6044 14.5032 10.3224 13.7656C9.12961 13.0932 8.11837 12.1961 7.36044 11.138C6.52615 9.99552 6.00696 8.69476 5.84492 7.34111C5.83258 7.22 5.8488 7.09795 5.89255 6.98271C5.9363 6.86747 6.00662 6.76158 6.09903 6.67177C6.19144 6.58197 6.30392 6.51021 6.4293 6.46108C6.55468 6.41195 6.69022 6.38652 6.82729 6.38641H8.30826C8.54783 6.38431 8.78009 6.45958 8.96174 6.59816C9.14339 6.73675 9.26204 6.9292 9.29557 7.13966C9.35808 7.5601 9.474 7.97293 9.64113 8.37025C9.70755 8.527 9.72192 8.69735 9.68255 8.86113C9.64318 9.0249 9.55171 9.17523 9.41898 9.2943L8.79204 9.85048C9.49479 10.9469 10.5181 11.8547 11.754 12.4781L12.3809 11.9219C12.5151 11.8042 12.6846 11.723 12.8692 11.6881C13.0538 11.6532 13.2458 11.6659 13.4225 11.7248C13.8704 11.8731 14.3358 11.9759 14.8097 12.0314C15.0495 12.0614 15.2685 12.1686 15.4251 12.3325C15.5816 12.4964 15.6648 12.7056 15.6588 12.9204Z"
                   stroke="white"
@@ -691,6 +691,8 @@ export function Footer() {
           {/* End of rating badges section */}
         </div>
         {/* End of combined social and badges section */}
+        </div>
+        {/* End of flex-col-gap-8 container */}
 
         {/* Divider and Footer Links */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#CCCCCC] mt-8 pt-8 border-t border-[#3A3A3A] relative">
