@@ -398,12 +398,12 @@ export function Footer() {
           <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8 w-full">
             {/* Social Icons - Mobile: 3 columns grid, Desktop: horizontal row */}
             <div className="grid grid-cols-3 md:flex md:flex-row md:gap-3 gap-4 justify-items-center md:justify-start">
-              <a
-                href="https://www.facebook.com/profile.php?id=61559195634421"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
-              >
+            <a
+              href="https://www.facebook.com/profile.php?id=61559195634421"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center transition-all duration-300 group"
+            >
               <svg
                 width="10"
                 height="18"
