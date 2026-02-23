@@ -6,7 +6,7 @@
   * {
     animation-duration: 0.3s !important;
   }
-  
+
   /* Disable expensive animations on mobile */
   .animate-fadeIn,
   .animate-slideIn,
@@ -14,7 +14,7 @@
   [class*="animate-"] {
     animation-duration: 0.1s !important;
   }
-  
+
   /* Reduce motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
     * {
@@ -362,6 +362,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -369,22 +370,27 @@
 
 @layer utilities {
   @keyframes float {
+
     0%,
     100% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-12px);
     }
   }
+
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
+
   .scroll-animate {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
   }
+
   .scroll-animate.visible {
     opacity: 1;
     transform: translateY(0);
