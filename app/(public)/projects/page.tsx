@@ -424,7 +424,7 @@ export default function ProjectsPage() {
       emailLabel: "Ваша електронна пошта",
       messageLabel: "Ваше повідомлення",
       attachLabel: "Додати файл (опціонально)",
-      termsLabel: "Я згоден з Умовами та положеннями",
+      termsLabel: "Я згоден з",
       submitButton: "Надіслати запит",
       successMessage: "Дякуємо! Ми скоро з вами зв'яжемося.",
       errorMessage: "Помилка при відправленні форми. Спробуйте ще раз.",
