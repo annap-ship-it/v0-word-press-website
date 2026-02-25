@@ -1385,7 +1385,7 @@ export function Navigation() {
                       </Link>
 
                       <Link
-                        href="/experience"
+                        href="/#our-expertise"
                         className="flex items-center gap-3 transition-all duration-300 ease-out"
                         style={{
                           padding: "10px",
