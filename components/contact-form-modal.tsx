@@ -576,7 +576,16 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                   cursor: "pointer",
                 }}
               >
-                {t.iAccept} {t.acceptTerms || "Terms and Conditions"}
+                {t.iAccept || "I Accept"}{" "}
+                <Link
+                  href="/terms"
+                  className="underline text-white hover:text-[#FF6200]"
+                // optional: open in new tab if it's external/legal page
+                // target="_blank"
+                // rel="noopener noreferrer"
+                >
+                  {t.acceptTerms || "Terms and Conditions"}
+                </Link>
               </label>
             </div>
 
