@@ -114,7 +114,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
 
       // Get reCAPTCHA v3 token
       let grecaptcha = (window as any).grecaptcha
-      
+
       // Wait up to 3 seconds for grecaptcha to load
       let attempts = 0
       while (!grecaptcha && attempts < 30) {
@@ -575,7 +575,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                   cursor: "pointer",
                 }}
               >
-                {t.iAccept} {t.termsAndConditions}
+                {t.iAccept} {t.acceptTerms || "Terms and Conditions"}
               </label>
             </div>
 
