@@ -128,16 +128,20 @@ export function Navigation() {
           </Link>
 
           <div className="flex items-center flex-shrink min-w-0" style={{ gap: "40px" }}>
+
             {/* Company Dropdown */}
-            <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div
+              className="relative flex justify-center"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
               <button
                 onClick={() => setCompanyOpen(!companyOpen)}
-                className="flex items-center gap-1 transition-colors whitespace-nowrap"
+                className="flex items-center gap-1 whitespace-nowrap"
                 style={{
                   fontFamily: "Onest",
                   fontWeight: 400,
                   fontSize: "16px",
-                  lineHeight: "100%",
                   letterSpacing: "0.02em",
                   color: textColor,
                 }}
@@ -152,30 +156,30 @@ export function Navigation() {
 
               {companyOpen && (
                 <div
-                  className="absolute left-0 animate-in fade-in"
+                  className="absolute z-50"
                   style={{
-                    top: "46px",
-                    animationTimingFunction: "ease-out",
-                    animationDuration: "300ms",
+                    top: "50px",
+                    left: "50%",
+                    transform: "translateX(-5%)",
+                    width: "552px",
                   }}
                 >
-                  {/* Polygon positioned to start exactly at the dropdown container edge */}
+                  {/* Triangle aligned to button */}
                   <div
                     className="absolute"
                     style={{
                       top: "-11px",
-                      left: "50%",
+                      left: "5%",
                       transform: "translateX(-50%)",
                       width: 0,
                       height: 0,
                       borderLeft: "11px solid transparent",
                       borderRight: "11px solid transparent",
                       borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
-                      zIndex: 20,
                     }}
                   />
 
-                  {/* Dropdown content */}
+                  {/* Dropdown */}
                   <div
                     className="relative overflow-hidden"
                     style={{
@@ -183,9 +187,10 @@ export function Navigation() {
                       height: "196px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
-                      boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
+                      boxShadow: !isDark ? "0px 4px 4px #00000040" : undefined,
                     }}
                   >
+
                     <div className="flex h-full">
                       {/* Left column - Menu items */}
                       <div className="flex-1 p-6 flex flex-col justify-center gap-4">
@@ -438,27 +443,31 @@ export function Navigation() {
                         </Link>
                       </div>
                     </div>
+
                   </div>
                 </div>
               )}
             </div>
 
             {/* Services Dropdown */}
-            <div className="relative" onMouseEnter={handleServicesMouseEnter} onMouseLeave={handleServicesMouseLeave}>
+            <div
+              className="relative flex justify-center"
+              onMouseEnter={handleServicesMouseEnter}
+              onMouseLeave={handleServicesMouseLeave}
+            >
               <button
                 onClick={() => setServicesOpen(!servicesOpen)}
-                className="flex items-center gap-1 transition-colors whitespace-nowrap"
+                className="flex items-center gap-1 whitespace-nowrap"
                 style={{
                   fontFamily: "Onest",
                   fontWeight: 400,
                   fontSize: "16px",
-                  lineHeight: "100%",
                   letterSpacing: "0.02em",
                   color: textColor,
                 }}
               >
-                {/* Using t.services from useLocale hook instead of currentTranslations */}
                 {t.services}
+
                 {servicesOpen ? (
                   <ChevronUp className="h-4 w-4" style={{ color: textColor }} />
                 ) : (
@@ -468,30 +477,28 @@ export function Navigation() {
 
               {servicesOpen && (
                 <div
-                  className="absolute left-0 animate-in fade-in"
+                  className="absolute z-50"
                   style={{
-                    top: "46px",
-                    animationTimingFunction: "ease-out",
-                    animationDuration: "300ms",
+                    top: "50px",
+                    left: "50%",
+                    transform: "translateX(-25%)",
+                    width: "552px",
                   }}
                 >
-                  {/* Polygon arrow */}
+                  {/* Triangle */}
                   <div
                     className="absolute"
                     style={{
                       top: "-11px",
-                      left: "50%",
+                      left: "25%",
                       transform: "translateX(-50%)",
-                      width: 0,
-                      height: 0,
                       borderLeft: "11px solid transparent",
                       borderRight: "11px solid transparent",
                       borderBottom: `11px solid ${isDark ? "#212121" : "#FFFFFF"}`,
-                      zIndex: 20,
                     }}
                   />
 
-                  {/* Dropdown content */}
+                  {/* Dropdown */}
                   <div
                     className="relative overflow-hidden"
                     style={{
@@ -499,9 +506,10 @@ export function Navigation() {
                       height: "207px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
-                      boxShadow: !isDark ? "0px 4px 4px 0px #00000040" : undefined,
+                      boxShadow: !isDark ? "0px 4px 4px #00000040" : undefined,
                     }}
                   >
+
                     <div className="flex h-full p-5 gap-5">
                       {/* Column 1 - 30% width */}
                       <div className="flex flex-col gap-3" style={{ width: "30%" }}>
@@ -775,6 +783,7 @@ export function Navigation() {
                         </Link>
                       </div>
                     </div>
+
                   </div>
                 </div>
               )}
