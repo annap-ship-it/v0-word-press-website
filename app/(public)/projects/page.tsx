@@ -394,7 +394,7 @@ export default function ProjectsPage() {
       emailLabel: "Your Email",
       messageLabel: "Your Message",
       attachLabel: "Attach File (optional)",
-      termsLabel: "I agree to the Terms and Conditions",
+      termsLabel: "I agree to the",
       submitButton: "Send Request",
       successMessage: "Thank you! We'll be in touch soon.",
       errorMessage: "Error submitting form. Please try again.",
@@ -632,9 +632,9 @@ export default function ProjectsPage() {
             <div className="rounded-[4px] p-6 md:p-8 lg:p-12 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 <div className="text-center md:text-left">
-                  <h3 
+                  <h3
                     className="font-semibold mb-2 md:mb-4"
-                    style={{ 
+                    style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
@@ -648,14 +648,14 @@ export default function ProjectsPage() {
                 </div>
                 <div className="flex items-start gap-3 md:gap-4">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
-                    <path d="M9 9L13.5 12L18 9" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M3 13.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M1 10.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M9 9L13.5 12L18 9" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M3 13.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 10.5H5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
-                  <p 
+                  <p
                     className="leading-none"
-                    style={{ 
+                    style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
@@ -669,14 +669,14 @@ export default function ProjectsPage() {
                 </div>
                 <div className="flex items-start gap-3 md:gap-4">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
-                    <path d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M8 10H16M8 6H12M8 14H11" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M8 10H16M8 6H12M8 14H11" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  <p 
+                  <p
                     className="leading-none"
-                    style={{ 
+                    style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
@@ -690,12 +690,12 @@ export default function ProjectsPage() {
                 </div>
                 <div className="flex items-start gap-3 md:gap-4">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
-                    <path d="M8 12L11 15L16 10" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8 12L11 15L16 10" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  <p 
+                  <p
                     className="leading-none"
-                    style={{ 
+                    style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
@@ -710,7 +710,7 @@ export default function ProjectsPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8">
                 <div></div>
-                </div>
+              </div>
             </div>
           </AnimatedCard>
 
@@ -805,9 +805,9 @@ export default function ProjectsPage() {
 
                   {/* Submit Button */}
                   <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={`
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`
                         relative overflow-hidden
                         flex items-center justify-center gap-[10px]
                         text-[16px] font-medium leading-[1]
@@ -819,42 +819,42 @@ export default function ProjectsPage() {
                         active:bg-gradient-to-br active:from-[#FF6200] active:to-[#000000]
                         active:scale-[0.98]
                       `}
-                      onMouseEnter={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "#FF6200"
-                        }
-                      }}
-                      onMouseDown={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
-                        }
-                      }}
-                      onMouseUp={(e) => {
-                        if (!isSubmitting) {
-                          e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
-                        }
-                      }}
-                      style={{
-                        width: "264px",
-                        height: "40px",
-                        padding: "4px 14px",
-                        fontFamily: "Onest",
-                      }}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          {t.sending || "Sending..."}
-                        </>
-                      ) : (
-                        t.send || "Send"
-                      )}
-                    </button>
+                    onMouseEnter={(e) => {
+                      if (!isSubmitting) {
+                        e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSubmitting) {
+                        e.currentTarget.style.background = "#FF6200"
+                      }
+                    }}
+                    onMouseDown={(e) => {
+                      if (!isSubmitting) {
+                        e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
+                      }
+                    }}
+                    onMouseUp={(e) => {
+                      if (!isSubmitting) {
+                        e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+                      }
+                    }}
+                    style={{
+                      width: "264px",
+                      height: "40px",
+                      padding: "4px 14px",
+                      fontFamily: "Onest",
+                    }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        {t.sending || "Sending..."}
+                      </>
+                    ) : (
+                      t.send || "Send"
+                    )}
+                  </button>
 
                   {/* Terms */}
                   <div className="flex items-start gap-2">
