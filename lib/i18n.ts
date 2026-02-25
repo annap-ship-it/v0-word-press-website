@@ -447,7 +447,7 @@ export const translations = {
     recaptchaNotLoaded: "reCAPTCHA не завантажена. Оновіть сторінку.",
     messageSent: "Повідомлення відправлене успішно!",
     failedToSend: "Не вдалося надіслати повідомлення. Спробуйте ще раз.",
-    sending: "Надсилання...",
+    sending: "Відправка...",
   },
 } as const as const
 
