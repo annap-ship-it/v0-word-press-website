@@ -438,7 +438,7 @@ export default function ProjectsPage() {
       receivedMessage: "Ми отримали ваше повідомлення і скоро з вами зв'яжемося.",
       fileAttachInfo: "Можна додати не більше 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
       sendingButton: "Надсилання...",
-      termsAndConditions: "Умови та положення",
+      termsAndConditions: "Умовами та положеннями",
       emailDisclaimer:
         "Надсилаючи свою електронну пошту, ви приймаєте умови та положення. Ми можемо периодично надсилати вам маркетингові листи.",
     },
