@@ -47,7 +47,7 @@ export const translations = {
     sendUsMessage: "Send us your idea, and we'll reach out to provide recommendations on implementation.",
     fileUploadInfo: "You can attach up to 3 files, each up to 10 MB.",
     attachFile: "Attach File",
-    acceptTerms: "I accept",
+    acceptTerms: "Terms and conditions",
     agreeToTerms: "By submitting your request, you agree to the terms and conditions",
     marketingEmails: "We may periodically send you marketing emails",
     relatedArticles: "Related Articles",
