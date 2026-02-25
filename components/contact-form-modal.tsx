@@ -6,6 +6,7 @@ import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
 import { X } from "lucide-react"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+import Link from "next/link"
 
 interface ContactFormModalProps {
   isOpen: boolean
