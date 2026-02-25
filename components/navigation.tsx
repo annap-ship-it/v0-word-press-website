@@ -190,7 +190,7 @@ export function Navigation() {
                       {/* Left column - Menu items */}
                       <div className="flex-1 p-6 flex flex-col justify-center gap-4">
                         <Link
-                          href="/about"
+                          href="/#about"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
