@@ -86,15 +86,15 @@ export function QuoteSection() {
           </div>
 
           {/* Цитата */}
-<div className="order-1 lg:order-2 space-y-2">
-  <div className="flex flex-col items-start">
-    <img
-      src="/quote.svg"
-      alt="quote"
-      className="w-16 md:w-10"
-    />
-    <div className="h-10" /> {/* 40px spacer */}
-  </div>
+          <div className="order-1 lg:order-2 space-y-2">
+            <div className="flex flex-col items-start">
+              <img
+                src="/quote.svg"
+                alt="quote"
+                className="w-16 md:w-10"
+              />
+              <div className="h-10" /> {/* 40px spacer */}
+            </div>
 
 
             <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground whitespace-pre-line">
@@ -105,7 +105,7 @@ export function QuoteSection() {
             <div className="space-y-1">
               <p className="text-xl font-semibold text-foreground">{t.name}</p>
               <p className="text-foreground/60">{t.title1}</p>
-              
+
             </div>
 
             {/* Соцсети */}
@@ -113,7 +113,7 @@ export function QuoteSection() {
 
             {/* Кнопка */}
             <Link
-              href="https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov?uuid=4e29d5b9-1873-430d-ad6c-8779c8f06a0a"
+              href="https://calendar.app.google/sySAYTvgF8Zi264U7"
               target="_blank"
               rel="noopener noreferrer"
             >
