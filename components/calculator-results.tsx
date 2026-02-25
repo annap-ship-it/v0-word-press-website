@@ -135,7 +135,7 @@ export default function CalculatorResults({ onClose }: CalculatorResultsProps) {
             fontFamily: "Onest, sans-serif",
             fontSize: "clamp(14px, 3.5vw, 18px)",
           }}
-          onClick={() => window.open("https://meetings-eu1.hubspot.com/meetings/oleksandr-romanov", "_blank")}
+          onClick={() => window.open("https://calendar.app.google/sySAYTvgF8Zi264U7", "_blank")}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = "#FF7A2E"
           }}
