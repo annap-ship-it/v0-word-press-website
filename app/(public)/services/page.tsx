@@ -235,9 +235,8 @@ export default function ServicesPage() {
               )}
               <div
                 id={service.id}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20 items-center scroll-mt-32 ${
-                  service.reverse ? "lg:grid-flow-dense" : ""
-                }`}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20 items-center scroll-mt-32 ${service.reverse ? "lg:grid-flow-dense" : ""
+                  }`}
               >
                 <div className={service.reverse ? "lg:col-start-2" : ""}>
                   <h2
@@ -492,9 +491,8 @@ export default function ServicesPage() {
 
                   {submitStatus && (
                     <div
-                      className={`p-4 rounded-[4px] mt-5 ${
-                        submitStatus.type === "success" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
-                      }`}
+                      className={`p-4 rounded-[4px] mt-5 ${submitStatus.type === "success" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+                        }`}
                       style={{ fontFamily: "Onest" }}
                     >
                       {submitStatus.message}
