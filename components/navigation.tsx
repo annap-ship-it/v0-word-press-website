@@ -236,7 +236,7 @@ export function Navigation() {
                         </Link>
 
                         <Link
-                          href="/experience"
+                          href="/#our-expertise"
                           className="flex items-center gap-5 transition-all duration-300 ease-out group"
                           style={{
                             width: "186px",
@@ -1361,7 +1361,7 @@ export function Navigation() {
                     {/* Menu items - Left column on 480px+ */}
                     <div className="flex flex-col gap-3">
                       <Link
-                        href="/about"
+                        href="/#about-us"
                         className="flex items-center gap-3 transition-all duration-300 ease-out"
                         style={{
                           padding: "10px",
