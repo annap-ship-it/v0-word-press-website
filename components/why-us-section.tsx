@@ -448,7 +448,7 @@ export function WhyUsSection2() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <p className="text-sm font-medium text-[#212121]">
+                <p className="text-m font-medium text-[#212121]">
                   {t.cards[3].label}
                   <span className="text-[#FF6200]">{t.cards[3].highlighted}</span>
                 </p>
