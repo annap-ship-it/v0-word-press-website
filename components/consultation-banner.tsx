@@ -25,16 +25,6 @@ export function ConsultationBanner() {
 
   const buttonText = isUk ? "Отримати консультацію" : "Get Consultation"
 
-  const handleClick = () => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(
-        new CustomEvent("open-overlay", {
-          detail: { id: "get_consultation_form_dark" },
-        })
-      )
-    }
-  }
-
   return (
     <div className="w-full py-10 sm:py-12 md:py-16 lg:py-20 px-5 sm:px-8 md:px-10 lg:px-12">
       <div
@@ -55,7 +45,7 @@ export function ConsultationBanner() {
         />
 
         {/* Контент */}
-        <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-center justify-center md:justify-between px-6 sm:px-10 md:px-12 lg:px-16 xl:px-24 gap-5 md:gap-0">
+        <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-center justify-center md:justify-between px-6 sm:px-10 md:px-16 lg:px-24 gap-4 md:gap-0">
           {/* Текст */}
           <p
             className="
@@ -64,34 +54,36 @@ export function ConsultationBanner() {
               leading-[1.2] tracking-[-0.015em]
               max-w-[90%] sm:max-w-[80%] md:max-w-[55%] lg:max-w-[60%]
               text-center md:text-left
-              drop-shadow-[0_3px_12px_rgba(0,0,0,0.7)]
+              drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]
             "
           >
             {text}
           </p>
 
           {/* Кнопка */}
-          <button
-            onClick={handleClick}
+          <a
+            href="https://calendar.app.google/sySAYTvgF8Zi264U7"
+            target="_blank"
+            rel="noopener noreferrer"
             className="
+              flex items-center justify-center
               px-[14px] py-[4px]
               min-w-[200px]
               h-[40px]
-              bg-[#FF6200] text-white font-['Onest'] font-semibold
+              bg-[#FF6200]
+              text-white font-['Onest'] font-semibold
               text-[16px]
               rounded-[50px]
               tracking-[0.02em]
               transition-all duration-300 ease-out
-              shadow-[0_4px_16px_rgba(255,98,0,0.4)]
-              hover:shadow-[0_8px_32px_rgba(255,98,0,0.6)]
-              hover:scale-[1.02]
-              active:scale-[0.98]
               animate-dissolve
-              mt-5 md:mt-0
+              hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000] hover:bg-[length:200%_200%] hover:bg-[92.84deg]
+              active:bg-gradient-to-r active:from-[#FF6200] active:to-[#000000] active:bg-[length:200%_200%] active:bg-[93.96deg]
+              mt-4 md:mt-0
             "
           >
             {buttonText}
-          </button>
+          </a>
         </div>
       </div>
     </div>
