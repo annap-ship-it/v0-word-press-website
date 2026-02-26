@@ -12,74 +12,119 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #ff6200; /* Preserved from existing */
-  --primary-foreground: oklch(1 0 0); /* Preserved from existing */
-  --secondary: oklch(1 0 0); /* Preserved from existing */
-  --secondary-foreground: oklch(0.145 0 0); /* Preserved from existing */
-  --muted: oklch(0.963 0.003 342.15); /* Preserved from existing */
-  --muted-foreground: oklch(0.598 0 0); /* Preserved from existing */
-  --accent: #ff6200; /* Preserved from existing */
-  --accent-foreground: oklch(1 0 0); /* Preserved from existing */
+  --primary: #ff6200;
+  /* Preserved from existing */
+  --primary-foreground: oklch(1 0 0);
+  /* Preserved from existing */
+  --secondary: oklch(1 0 0);
+  /* Preserved from existing */
+  --secondary-foreground: oklch(0.145 0 0);
+  /* Preserved from existing */
+  --muted: oklch(0.963 0.003 342.15);
+  /* Preserved from existing */
+  --muted-foreground: oklch(0.598 0 0);
+  /* Preserved from existing */
+  --accent: #ff6200;
+  /* Preserved from existing */
+  --accent-foreground: oklch(1 0 0);
+  /* Preserved from existing */
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0); /* Preserved from existing */
+  --destructive-foreground: oklch(1 0 0);
+  /* Preserved from existing */
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #ff6200; /* Preserved from existing */
+  --ring: #ff6200;
+  /* Preserved from existing */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0); /* Preserved from existing */
-  --sidebar-foreground: oklch(0.145 0 0); /* Preserved from existing */
-  --sidebar-primary: oklch(0.205 0 0); /* Preserved from existing */
-  --sidebar-primary-foreground: oklch(0.985 0 0); /* Preserved from existing */
-  --sidebar-accent: oklch(0.97 0 0); /* Preserved from existing */
-  --sidebar-accent-foreground: oklch(0.205 0 0); /* Preserved from existing */
-  --sidebar-border: oklch(0.922 0 0); /* Preserved from existing */
-  --sidebar-ring: oklch(0.708 0 0); /* Preserved from existing */
-  --darkgrey1: oklch(0.32 0 0); /* Preserved from existing */
-  --tech-card: #f6f6f6; /* Preserved from existing */
-  --tech-card-border: rgba(0, 0, 0, 0.1); /* Preserved from existing */
+  --sidebar: oklch(0.985 0 0);
+  /* Preserved from existing */
+  --sidebar-foreground: oklch(0.145 0 0);
+  /* Preserved from existing */
+  --sidebar-primary: oklch(0.205 0 0);
+  /* Preserved from existing */
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  /* Preserved from existing */
+  --sidebar-accent: oklch(0.97 0 0);
+  /* Preserved from existing */
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  /* Preserved from existing */
+  --sidebar-border: oklch(0.922 0 0);
+  /* Preserved from existing */
+  --sidebar-ring: oklch(0.708 0 0);
+  /* Preserved from existing */
+  --darkgrey1: oklch(0.32 0 0);
+  /* Preserved from existing */
+  --tech-card: #f6f6f6;
+  /* Preserved from existing */
+  --tech-card-border: rgba(0, 0, 0, 0.1);
+  /* Preserved from existing */
 }
 
 .dark {
   --background: oklch(0.145 0 0);
-  --foreground: oklch(1 0 0); /* Preserved from existing */
-  --card: oklch(0.216 0 0); /* Preserved from existing */
-  --card-foreground: oklch(1 0 0); /* Preserved from existing */
+  --foreground: oklch(1 0 0);
+  /* Preserved from existing */
+  --card: oklch(0.216 0 0);
+  /* Preserved from existing */
+  --card-foreground: oklch(1 0 0);
+  /* Preserved from existing */
   --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(1 0 0); /* Preserved from existing */
-  --primary: #ff6200; /* Preserved from existing */
-  --primary-foreground: oklch(1 0 0); /* Preserved from existing */
-  --secondary: oklch(0.145 0 0); /* Preserved from existing */
-  --secondary-foreground: oklch(1 0 0); /* Preserved from existing */
+  --popover-foreground: oklch(1 0 0);
+  /* Preserved from existing */
+  --primary: #ff6200;
+  /* Preserved from existing */
+  --primary-foreground: oklch(1 0 0);
+  /* Preserved from existing */
+  --secondary: oklch(0.145 0 0);
+  /* Preserved from existing */
+  --secondary-foreground: oklch(1 0 0);
+  /* Preserved from existing */
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.712 0 0); /* Preserved from existing */
-  --accent: #ff6200; /* Preserved from existing */
-  --accent-foreground: oklch(0.145 0 0); /* Preserved from existing */
+  --muted-foreground: oklch(0.712 0 0);
+  /* Preserved from existing */
+  --accent: #ff6200;
+  /* Preserved from existing */
+  --accent-foreground: oklch(0.145 0 0);
+  /* Preserved from existing */
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0); /* Preserved from existing */
+  --destructive-foreground: oklch(1 0 0);
+  /* Preserved from existing */
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: #ff6200; /* Preserved from existing */
+  --ring: #ff6200;
+  /* Preserved from existing */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0); /* Preserved from existing */
-  --sidebar-foreground: oklch(0.985 0 0); /* Preserved from existing */
-  --sidebar-primary: oklch(0.488 0.243 264.376); /* Preserved from existing */
-  --sidebar-primary-foreground: oklch(0.985 0 0); /* Preserved from existing */
-  --sidebar-accent: oklch(0.269 0 0); /* Preserved from existing */
-  --sidebar-accent-foreground: oklch(0.985 0 0); /* Preserved from existing */
-  --sidebar-border: oklch(0.269 0 0); /* Preserved from existing */
-  --sidebar-ring: oklch(0.439 0 0); /* Preserved from existing */
-  --darkgrey1: oklch(0.32 0 0); /* Preserved from existing */
-  --tech-card: #252525; /* Preserved from existing */
-  --tech-card-border: rgba(255, 255, 255, 0.2); /* Preserved from existing */
+  --sidebar: oklch(0.205 0 0);
+  /* Preserved from existing */
+  --sidebar-foreground: oklch(0.985 0 0);
+  /* Preserved from existing */
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  /* Preserved from existing */
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  /* Preserved from existing */
+  --sidebar-accent: oklch(0.269 0 0);
+  /* Preserved from existing */
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  /* Preserved from existing */
+  --sidebar-border: oklch(0.269 0 0);
+  /* Preserved from existing */
+  --sidebar-ring: oklch(0.439 0 0);
+  /* Preserved from existing */
+  --darkgrey1: oklch(0.32 0 0);
+  /* Preserved from existing */
+  --tech-card: #252525;
+  /* Preserved from existing */
+  --tech-card-border: rgba(255, 255, 255, 0.2);
+  /* Preserved from existing */
 }
 
 @theme inline {
@@ -123,7 +168,8 @@
 }
 
 .scroll-stack-card {
-  transform: translate3d(0, 0, 0);          /* только для GPU-ускорения */
+  transform: translate3d(0, 0, 0);
+  /* только для GPU-ускорения */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   will-change: transform, filter;
@@ -133,6 +179,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -140,14 +187,17 @@
 
 @layer utilities {
   @keyframes float {
+
     0%,
     100% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-12px);
     }
   }
+
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
@@ -167,4 +217,30 @@
 
 body {
   font-family: 'Onest', system-ui, sans-serif;
+}
+
+@keyframes dissolve {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-dissolve {
+  animation: dissolve 300ms ease-out forwards;
+}
+
+/* Hover стан */
+button:hover {
+  background: linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%);
+}
+
+/* Active / Press стан */
+button:active {
+  background: linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%);
 }
