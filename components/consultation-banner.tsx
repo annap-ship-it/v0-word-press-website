@@ -68,13 +68,15 @@ export function ConsultationBanner() {
             className="
               flex items-center justify-center
               px-[14px] py-[4px]
-              min-w-[200px]
+              w-[200px]
               h-[40px]
               bg-[#FF6200]
               text-white font-['Onest'] font-semibold
               text-[16px]
-              rounded-[50px]
+              leading-none
               tracking-[0.02em]
+              text-center
+              rounded-[50px]
               transition-all duration-300 ease-out
               animate-dissolve
               hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000] hover:bg-[length:200%_200%] hover:bg-[92.84deg]
