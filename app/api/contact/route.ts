@@ -54,7 +54,10 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: `secret=${recaptchaSecret}&response=${recaptchaToken}`,
+      body: new URLSearchParams({
+        secret: recaptchaSecret,
+        response: recaptchaToken,
+      }),
     })
 
     const verificationData = (await verificationResponse.json()) as {

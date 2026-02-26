@@ -44,15 +44,15 @@ export function AboutUsSection() {
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">{texts.title}</h2>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-3 gap-12 items-start">
           {/* Left: Text Content */}
           <div className="space-y-6">
-            <p className="text-base md:text-lg leading-relaxed text-foreground/80">{texts.description1}</p>
-            <p className="text-base md:text-lg leading-relaxed text-foreground/80">{texts.description2}</p>
+            <p className="md:text-lg leading-relaxed text-white/60">{texts.description1}</p>
+            <p className="md:text-lg leading-relaxed text-white/60">{texts.description2}</p>
           </div>
 
           {/* Right: Interactive Map */}
-          <div className="relative">
+          <div className="relative col-span-2">
             <div className="relative w-full" style={{ aspectRatio: "755/443" }}>
               <WorldMapWithHover />
             </div>

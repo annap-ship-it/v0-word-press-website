@@ -73,6 +73,7 @@ export function HeroBanner() {
               fontWeight: 800,
               color: theme === "light" ? "#000000" : "#FFFFFF",
               marginTop: "160px",
+              marginBottom: "20px",
             }}
           >
             {t.mainTitle}
@@ -100,6 +101,8 @@ export function HeroBanner() {
               letterSpacing: "2%",
               fontWeight: 500,
               color: theme === "light" ? "#000000" : "#FFFFFF",
+              marginBottom: "40px",
+              marginTop: "8px",
             }}
           >
             {t.subtitle1}
@@ -155,7 +158,7 @@ export function HeroBanner() {
                 fontSize: "16px",
                 lineHeight: "100%",
                 fontWeight: 400,
-                paddingTop: "15px",
+                marginTop: "8px",
                 color: theme === "light" ? "#000000" : "#FFFFFF",
               }}
             >
@@ -170,7 +173,7 @@ export function HeroBanner() {
             style={{
               maxWidth: "1116px",
               height: "auto",
-              margin: "64px auto 0",
+              margin: "96px auto 0",
             }}
           >
             <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center">
