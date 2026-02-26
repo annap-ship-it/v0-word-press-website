@@ -14,7 +14,7 @@ export function ConsultationBanner() {
   }, [])
 
   if (!mounted) {
-    return <div className="w-full h-[200px] md:h-[300px] bg-[#0f0f0f]" />
+    return <div className="w-full h-[220px] md:h-[300px] bg-[#0f0f0f]" />
   }
 
   const isUk = locale === "uk"
@@ -36,32 +36,33 @@ export function ConsultationBanner() {
   }
 
   return (
-    <div className="w-full py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+    <div className="w-full py-10 sm:py-12 md:py-16 lg:py-20 px-5 sm:px-8 md:px-10 lg:px-12">
       <div
         className="
           relative mx-auto rounded-3xl overflow-hidden
           bg-gradient-to-br from-[#0f0f0f] via-[#1a0f00] to-[#2a1708]
-          max-w-[95%] sm:max-w-[92%] md:max-w-6xl lg:max-w-7xl
-          aspect-[5/2.8] sm:aspect-[5/2.2] md:aspect-[5/1.8] lg:aspect-[5/1.4]
+          max-w-[96%] sm:max-w-[92%] md:max-w-6xl lg:max-w-7xl
+          aspect-[5/3] sm:aspect-[5/2.6] md:aspect-[5/1.9] lg:aspect-[5/1.45]
         "
       >
-        {/* Основний оранжевий glow */}
+        {/* Оранжевий glow */}
         <div
           className="
             absolute inset-0 pointer-events-none
-            bg-[radial-gradient(ellipse_at_bottom,_#ff6200_10%,transparent_68%)]
-            opacity-75 md:opacity-90 blur-xl md:blur-3xl lg:blur-4xl
+            bg-[radial-gradient(ellipse_at_bottom,_#ff6200_12%,transparent_70%)]
+            opacity-70 md:opacity-90 blur-xl md:blur-3xl
           "
         />
 
-        {/* Контент: текст + кнопка */}
-        <div className="relative z-10 h-full flex flex-col md:flex-row items-center justify-between px-6 sm:px-10 md:px-12 lg:px-16 xl:px-24 gap-6 md:gap-0">
+        {/* Контент */}
+        <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-center justify-center md:justify-between px-6 sm:px-10 md:px-12 lg:px-16 xl:px-24 gap-5 md:gap-0">
+          {/* Текст */}
           <p
             className="
               text-white font-medium
               text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[40px]
-              leading-[1.15] tracking-[-0.02em]
-              max-w-[90%] md:max-w-[60%] lg:max-w-[65%]
+              leading-[1.2] tracking-[-0.015em]
+              max-w-[90%] sm:max-w-[80%] md:max-w-[55%] lg:max-w-[60%]
               text-center md:text-left
               drop-shadow-[0_3px_12px_rgba(0,0,0,0.7)]
             "
@@ -69,15 +70,15 @@ export function ConsultationBanner() {
             {text}
           </p>
 
+          {/* Кнопка */}
           <button
             onClick={handleClick}
             className="
-              px-6 md:px-7 lg:px-8
-              py-3 md:py-3.5
-              min-w-[180px] md:min-w-[200px]
-              h-10 md:h-[40px]
+              px-[14px] py-[4px]
+              min-w-[200px]
+              h-[40px]
               bg-[#FF6200] text-white font-['Onest'] font-semibold
-              text-base md:text-[16px]
+              text-[16px]
               rounded-[50px]
               tracking-[0.02em]
               transition-all duration-300 ease-out
@@ -86,6 +87,7 @@ export function ConsultationBanner() {
               hover:scale-[1.02]
               active:scale-[0.98]
               animate-dissolve
+              mt-5 md:mt-0
             "
           >
             {buttonText}
