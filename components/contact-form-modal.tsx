@@ -49,7 +49,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
   }, [])
 
   useEffect(() => {
-    if (scriptLoaded.current) return
+    if (scriptLoaded.current || !siteKey) return
 
     // Load reCAPTCHA v3 script
     const script = document.createElement("script")
