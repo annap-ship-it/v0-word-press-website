@@ -7,17 +7,36 @@ import { useLocale } from "@/lib/locale-context"
 // --- Иконки с fill="currentColor" ---
 function LinkedInIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none" // Changed to none because this icon uses strokes
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Outer Border */}
+      <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" stroke="currentColor"/>
+
+      {/* The Dot of the 'i' */}
+      <path d="M7 12.0101L7.01 11.999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+
+      {/* The 'n' and 'i' body */}
+      <path d="M11 16V12.75M11 9V12.75M11 12.75C11 9 17 9 17 12.75V16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+
+      {/* The stem of the 'i' */}
+      <path d="M7 16V12.5V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
-  )
+  );
 }
 
 function TelegramIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.687c.546-.335 1.074-.16.65.21l-8.15 7.34.002.001-.315 4.71c.447 0 .645-.222.9-.491l2.162-2.04 4.552 3.36c.937.664 1.96.331 2.28-.721l3.715-17.297c.29-.95-.537-1.428-1.54-.932z" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" stroke="currentColor"/>
+      <path d="M19 7L4 12.5L9.52632 13.2333M19 7L17.0263 18L9.52632 13.2333M19 7L9.52632 13.2333M9.52632 13.2333V17.2667L12.0912 14.8634" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
+
   )
 }
 
@@ -87,7 +106,7 @@ export function QuoteSection() {
 
           {/* Цитата */}
           <div className="order-1 lg:order-2 space-y-2">
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start mb-0">
               <img
                 src="/quote.svg"
                 alt="quote"
@@ -97,15 +116,18 @@ export function QuoteSection() {
             </div>
 
 
-            <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground whitespace-pre-line">
+            <blockquote className="mb-[30px] font-['Onest'] font-medium text-[20px] leading-none tracking-[0%] text-foreground whitespace-pre-line">
               {t.quote}
             </blockquote>
 
             {/* Подпись */}
             <div className="space-y-1">
-              <p className="text-xl font-semibold text-foreground">{t.name}</p>
-              <p className="text-foreground/60">{t.title1}</p>
-
+              <p className="mb-[10px] font-onest font-medium text-[16px] leading-none tracking-[0%] text-foreground">
+                {t.name}
+              </p>
+              <p className="font-onest font-normal text-[14px] leading-[110%] tracking-[0%] text-foreground/60">
+                {t.title1}
+              </p>
             </div>
 
             {/* Соцсети */}
