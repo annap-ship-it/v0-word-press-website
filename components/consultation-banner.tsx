@@ -1,9 +1,21 @@
 "use client"
 
 import { useLocale } from "@/lib/locale-context"
+import { useState, useEffect } from "react"
 
 export function ConsultationBanner() {
-  const { locale } = useLocale()
+  const localeData = useLocale() || { locale: "en" } // захист від undefined на сервері
+  const { locale } = localeData
+
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <div className="w-full h-64 bg-gradient-to-br from-[#1a1a1a] to-[#3d1f0a]" /> // placeholder, щоб уникнути hydration mismatch
+  }
 
   const isUk = locale === "uk"
 
@@ -14,7 +26,7 @@ export function ConsultationBanner() {
   const buttonText = isUk ? "Отримати консультацію" : "Get Consultation"
 
   const handleClick = () => {
-    // Твій код відкриття форми
+    // Безпечний виклик тільки на клієнті
     if (typeof window !== "undefined") {
       window.dispatchEvent(
         new CustomEvent("open-overlay", {
@@ -34,7 +46,6 @@ export function ConsultationBanner() {
           aspect-[5/2.5] sm:aspect-[5/2] md:aspect-[5/1.6]
         "
       >
-        {/* Легкий оранжевий блік */}
         <div
           className="
             absolute inset-0 pointer-events-none
@@ -44,32 +55,16 @@ export function ConsultationBanner() {
         />
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 sm:px-12 md:px-16">
-          <p
-            className="
-              font-medium text-white
-              text-xl sm:text-2xl md:text-3xl
-              leading-tight tracking-tight
-              max-w-4xl mx-auto
-              drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]
-            "
-          >
+          <p className="text-white text-xl sm:text-2xl md:text-3xl font-medium leading-tight tracking-tight max-w-4xl mx-auto mb-8 drop-shadow-md">
             {text}
           </p>
 
           <button
             onClick={handleClick}
             className="
-              mt-6 sm:mt-8
-              px-8 sm:px-12 md:px-16
-              py-4 sm:py-5
-              bg-[#FF6200] hover:bg-[#ff751f] active:bg-[#e55a00]
-              text-white font-medium
-              text-base sm:text-lg md:text-xl
-              rounded-full
-              shadow-[0_4px_20px_rgba(255,98,0,0.4)]
-              hover:shadow-[0_8px_32px_rgba(255,98,0,0.6)]
-              transition-all duration-200
-              min-w-[220px] sm:min-w-[260px] md:min-w-[300px]
+              px-10 py-4 bg-[#FF6200] text-white font-medium text-lg rounded-full
+              hover:bg-[#ff751f] transition-all duration-200
+              shadow-lg hover:shadow-xl
               animate-dissolve
             "
           >
