@@ -337,56 +337,26 @@ export function WhyUsSection2() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M4 14V18.4C4 18.7314 4.26863 19 4.6 19H10"
+                    d="M3.2 14.2222V4C3.2 2.89543 4.09543 2 5.2 2H18.8C19.9046 2 20.8 2.89543 20.8 4V14.2222M3.2 14.2222H20.8M3.2 14.2222L1.71969 19.4556C1.35863 20.7321 2.31762 22 3.64418 22H20.3558C21.6824 22 22.6414 20.7321 22.2803 19.4556L20.8 14.2222"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M11 19L13 19"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                   <path
-                    d="M19 14V18.4C19 18.7314 18.7314 19 18.4 19H14"
+                    d="M14 6L16 8L14 10"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                   <path
-                    d="M14 5H18.4C18.7314 5 19 5.26863 19 5.6V10"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M4 10V5.6C4 5.26863 4.26863 5 4.6 5H10"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M14 19V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V19"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M4 10H5C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14H4"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M19 10H20C21.1046 10 22 10.8954 22 12C22 13.1046 21.1046 14 20 14H19"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M14 5V4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4V5"
+                    d="M10 6L8 8L10 10"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeLinecap="round"
@@ -415,6 +385,27 @@ export function WhyUsSection2() {
             {/* Right column cards */}
             <div className="flex flex-col gap-8 justify-between">
               {/* We don't hide our rates */}
+              <div
+                className="rounded-2xl p-6"
+                style={{
+                  background: "#FFFFFF",
+                  border: "1px solid #E0E0E0",
+                }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 20H5C3.89543 20 3 19.1046 3 18V9C3 7.89543 3.89543 7 5 7H19C20.1046 7 21 7.89543 21 9V18C21 19.1046 20.1046 20 19 20Z" stroke="#212121" stroke-width="1.5" />
+                  <path d="M7 7V3.6C7 3.26863 7.26863 3 7.6 3H16.4C16.7314 3 17 3.26863 17 3.6V7" stroke="#212121" stroke-width="1.5" />
+                  <path d="M10 3V7" stroke="#212121" stroke-width="1.5" />
+                  <path d="M12 3V7" stroke="#212121" stroke-width="1.5" />
+                  <path d="M16.5 14C16.2239 14 16 13.7761 16 13.5C16 13.2239 16.2239 13 16.5 13C16.7761 13 17 13.2239 17 13.5C17 13.7761 16.7761 14 16.5 14Z" fill="#212121" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p className="text-sm font-medium text-[#212121]">
+                  {t.cards[1].label}
+                  <span className="text-[#FF6200]">{t.cards[1].highlighted}</span>
+                </p>
+              </div>
+
+              {/* We take full responsibility */}
               <div
                 className="rounded-2xl p-6"
                 style={{
@@ -457,54 +448,7 @@ export function WhyUsSection2() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <p className="text-sm font-medium text-[#212121]">
-                  {t.cards[1].label}
-                  <span className="text-[#FF6200]">{t.cards[1].highlighted}</span>
-                </p>
-              </div>
-
-              {/* We take full responsibility */}
-              <div
-                className="rounded-2xl p-6"
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #E0E0E0",
-                }}
-              >
-                <svg
-                  className="w-6 h-6 text-[#212121] mb-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.2 14.2222V4C3.2 2.89543 4.09543 2 5.2 2H18.8C19.9046 2 20.8 2.89543 20.8 4V14.2222M3.2 14.2222H20.8M3.2 14.2222L1.71969 19.4556C1.35863 20.7321 2.31762 22 3.64418 22H20.3558C21.6824 22 22.6414 20.7321 22.2803 19.4556L20.8 14.2222"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M11 19L13 19"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M14 6L16 8L14 10"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M10 6L8 8L10 10"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <p className="text-sm font-medium text-[#212121]">
+                <p className="text-m font-medium text-[#212121]">
                   {t.cards[3].label}
                   <span className="text-[#FF6200]">{t.cards[3].highlighted}</span>
                 </p>
@@ -522,15 +466,67 @@ export function WhyUsSection2() {
               }}
             >
               <svg
-                className="w-8 h-8 text-[#212121] mb-4"
+                className="w-6 h-6 text-[#212121] mb-4"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <circle cx="12" cy="12" r="1"></circle>
-                <circle cx="19" cy="12" r="1"></circle>
-                <circle cx="5" cy="12" r="1"></circle>
+                <path
+                  d="M4 14V18.4C4 18.7314 4.26863 19 4.6 19H10"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M19 14V18.4C19 18.7314 18.7314 19 18.4 19H14"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14 5H18.4C18.7314 5 19 5.26863 19 5.6V10"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M4 10V5.6C4 5.26863 4.26863 5 4.6 5H10"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14 19V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V19"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M4 10H5C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14H4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M19 10H20C21.1046 10 22 10.8954 22 12C22 13.1046 21.1046 14 20 14H19"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14 5V4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4V5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
               <p className="text-base font-medium text-[#212121] leading-relaxed">
                 {t.transparency.label}

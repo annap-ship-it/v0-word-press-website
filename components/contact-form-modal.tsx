@@ -6,6 +6,7 @@ import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
 import { X } from "lucide-react"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
+import Link from "next/link"
 
 interface ContactFormModalProps {
   isOpen: boolean
@@ -114,7 +115,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
 
       // Get reCAPTCHA v3 token
       let grecaptcha = (window as any).grecaptcha
-      
+
       // Wait up to 3 seconds for grecaptcha to load
       let attempts = 0
       while (!grecaptcha && attempts < 30) {
@@ -575,7 +576,16 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                   cursor: "pointer",
                 }}
               >
-                {t.iAccept} {t.termsAndConditions}
+                {t.iAccept || "I Accept"}{" "}
+                <Link
+                  href="/terms"
+                  className="underline text-white hover:text-[#FF6200]"
+                // optional: open in new tab if it's external/legal page
+                // target="_blank"
+                // rel="noopener noreferrer"
+                >
+                  {t.acceptTerms || "Terms and Conditions"}
+                </Link>
               </label>
             </div>
 
