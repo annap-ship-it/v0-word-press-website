@@ -110,8 +110,14 @@ export function WhyUsSection() {
               </p>
               <ul className="space-y-4 text-base md:text-lg text-foreground/80">
                 {currentContent.section3.benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-start gap-4">
-                    <span className="text-primary mt-1.5 flex-shrink-0">•</span>
+                  <li key={index} className="flex items-start gap-[11px]">
+                    <span className="text-primary mt-1.5 flex-shrink-0">
+                      <img
+                        src="/icons/tech/bullet.svg"
+                        alt=""
+                        className="mt-[5px] w-2 h-2 flex-shrink-0"
+                      />
+                    </span>
                     <span>{benefit}</span>
                   </li>
                 ))}
