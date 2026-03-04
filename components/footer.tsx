@@ -206,6 +206,30 @@ export function Footer() {
                   sales@ideateam.dev
                 </a>
               </div>
+
+              <div className="flex items-center gap-3">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 256 256"
+                fill="none"
+                className="flex-shrink-0"
+              >
+                <path
+                  d="M176,220C98.80371,220,36,157.19629,36,80A52.06484,52.06484,0,0,1,81.4209,28.41211a12.01552,12.01552,0,0,1,12.47558,7.19141L113.9873,82.48047a11.97729,11.97729,0,0,1-.99023,11.2998L96.36133,119.19922a3.938,3.938,0,0,0-.291,3.86035h.001a80.54061,80.54061,0,0,0,37.19726,37.0293,3.93771,3.93771,0,0,0,3.8711-.31836l25.03515-16.69434a11.96393,11.96393,0,0,1,11.38379-1.0459l46.83789,20.07325a12.01851,12.01851,0,0,1,7.19141,12.4746A52.06486,52.06486,0,0,1,176,220Z"
+                  stroke="white"
+                  strokeWidth="12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+                <a
+                  href="tel:+380937352057"
+                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                >
+                  +38093 735 20 57
+                </a>
+              </div>
             </div>
           </div>
 

@@ -176,17 +176,17 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-start justify-center my-10 p-3 md:p-4 overflow-y-auto"
       style={{
         background: "rgba(0, 0, 0, 0.5)",
-        paddingTop: "clamp(80px, 10vh, 120px)",
+        paddingTop: "clamp(60px, 8vh, 100px)",
       }}
       onClick={onClose}
     >
       <div
         className="relative w-full rounded-[14px] shadow-lg"
         style={{
-          maxWidth: "936px",
+          maxWidth: "820px",
           backgroundColor: isDark ? "#212121" : "#FFFFFF",
           borderRadius: "14px",
         }}
@@ -206,8 +206,8 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         {/* SECTION 1: Header (Title + Description) */}
         <div
           style={{
-            padding: "clamp(24px, 4vw, 40px)",
-            paddingBottom: "clamp(16px, 2vw, 24px)",
+            padding: "clamp(18px, 3vw, 30px)",
+            paddingBottom: "clamp(12px, 2vw, 18px)",
           }}
         >
           <h1
@@ -216,7 +216,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
               color: isDark ? "#FFFFFF" : "#212121",
               fontFamily: "Onest",
               fontWeight: 700,
-              fontSize: "clamp(32px, 6vw, 48px)",
+              fontSize: "clamp(26px, 5vw, 38px)",
               lineHeight: "1",
               letterSpacing: "-0.04em",
             }}
@@ -242,16 +242,16 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         <style>{`
           .form-image-grid {
             display: grid;
-            grid-template-columns: 350px 407px;
-            gap: 32px;
-            padding: clamp(24px, 4vw, 40px);
-            padding-top: clamp(16px, 2vw, 24px);
-            padding-bottom: clamp(16px, 2vw, 24px);
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            padding: clamp(18px, 3vw, 30px);
+            padding-top: clamp(12px, 2vw, 18px);
+            padding-bottom: clamp(12px, 2vw, 18px);
           }
           @media (max-width: 1023px) {
             .form-image-grid {
               grid-template-columns: 1fr;
-              gap: 24px;
+              gap: 20px;
             }
           }
         `}</style>
@@ -349,13 +349,13 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder={t.enterYourMessage}
-                className="w-full px-4 py-3 rounded-lg border transition resize-none"
+                className="w-full px-4 py-2.5 rounded-lg border transition resize-none"
                 style={{
                   backgroundColor: isDark ? "#373737" : "#FFFFFF",
                   borderColor: isDark ? "#626262" : "#A8A8A8",
                   color: isDark ? "#FFFFFF" : "#212121",
                   fontFamily: "Onest",
-                  height: "80px",
+                  height: "70px",
                 }}
                 required
               />
@@ -407,20 +407,20 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
             )}
 
             {/* Send button and File attachment */}
-            <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap pt-2">
+          <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap pt-1">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="py-3 rounded-full font-semibold transition hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
+                className="py-2.5 rounded-full font-semibold transition hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
                 style={{
                   backgroundColor: "#FF6200",
                   color: "#FFFFFF",
                   fontFamily: "Onest",
                   fontWeight: 600,
-                  fontSize: "clamp(14px, 1vw, 16px)",
-                  paddingLeft: "24px",
-                  paddingRight: "24px",
-                  minWidth: "150px",
+                  fontSize: "clamp(13px, 0.95vw, 15px)",
+                  paddingLeft: "20px",
+                  paddingRight: "20px",
+                  minWidth: "140px",
                 }}
               >
                 {isSubmitting ? "Sending..." : t.send}
@@ -523,17 +523,17 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
         <style>{`
           .acceptance-grid {
             display: grid;
-            grid-template-columns: 350px 407px;
-            gap: 32px;
+            gap: 24px;
             align-items: start;
-            padding: clamp(24px, 4vw, 40px);
-            padding-top: clamp(16px, 2vw, 24px);
+            grid-template-columns: 1fr;
+            padding: clamp(18px, 3vw, 28px);
+            padding-top: clamp(12px, 2vw, 18px);
             border-top: 1px solid ${isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"};
           }
           @media (max-width: 1023px) {
             .acceptance-grid {
               grid-template-columns: 1fr;
-              gap: 24px;
+              gap: 20px;
             }
           }
         `}</style>
@@ -545,8 +545,8 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
               style={{
                 display: "flex",
                 alignItems: "flex-start",
-                gap: "8px",
-                marginBottom: "8px",
+                gap: "6px",
+                marginBottom: "6px",
               }}
             >
               <input
