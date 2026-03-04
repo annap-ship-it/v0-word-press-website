@@ -630,15 +630,13 @@ export default function ProjectsPage() {
           {/* Process Steps */}
           <AnimatedCard delay={100}>
             <div className="rounded-[4px] p-6 md:p-8 lg:p-12 mb-12" style={{ backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }}>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
-                <div className="text-center md:text-left">
+            <div className="text-center md:text-left mb-10">
                   <h3
-                    className="font-semibold mb-2 md:mb-4"
+                    className="font-semibold mb-2 md:mb-4 text-xl"
                     style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
-                      fontSize: "clamp(24px, 1.04vw, 20px)",
                       lineHeight: "100%",
                       letterSpacing: "-2%"
                     }}
@@ -646,6 +644,7 @@ export default function ProjectsPage() {
                     {t.processTitle}
                   </h3>
                 </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                 <div className="flex items-start gap-3 md:gap-4">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
                     <path d="M9 9L13.5 12L18 9" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -654,12 +653,11 @@ export default function ProjectsPage() {
                     <path d="M5 7.5V7C5 5.89543 5.89543 5 7 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H7C5.89543 19 5 18.1046 5 17V16.5" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                   <p
-                    className="leading-none"
+                    className="leading-none text-xl"
                     style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
-                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
                       lineHeight: "100%",
                       letterSpacing: "-2%"
                     }}
@@ -675,12 +673,11 @@ export default function ProjectsPage() {
                     <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <p
-                    className="leading-none"
+                    className="leading-none text-xl"
                     style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
-                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
                       lineHeight: "100%",
                       letterSpacing: "-2%"
                     }}
@@ -688,18 +685,17 @@ export default function ProjectsPage() {
                     {t.processStep2}
                   </p>
                 </div>
-                <div className="flex items-start gap-3 md:gap-4">
+                <div className="flex items-start gap-3 md:gap-4 ">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
                     <path d="M8 12L11 15L16 10" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="#FF6200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <p
-                    className="leading-none"
+                    className="leading-none text-xl"
                     style={{
                       color: isDark ? "#FFFFFF" : "#000000",
                       fontFamily: "Onest, sans-serif",
                       fontWeight: 400,
-                      fontSize: "clamp(14.8px, 1.04vw, 20px)",
                       lineHeight: "100%",
                       letterSpacing: "-2%"
                     }}
@@ -733,7 +729,9 @@ export default function ProjectsPage() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
-                      className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors"
+                      className={`w-full px-4 py-3 rounded-[4px] border-b-2 outline-none transition-colors ${
+                        formData.name ? "focus:border-[#bC9A8F]" : "focus:border-white"
+                      }`}
                       style={{
                         backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
                         color: isDark ? "#FFFFFF" : "#000000",
@@ -747,7 +745,9 @@ export default function ProjectsPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
-                      className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors"
+                      className={`w-full px-4 py-3 rounded-[4px] border-b-2 outline-none transition-colors ${
+                        formData.email ? "focus:border-[#bC9A8F]" : "focus:border-white"
+                      }`}
                       style={{
                         backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
                         color: isDark ? "#FFFFFF" : "#000000",
@@ -761,7 +761,9 @@ export default function ProjectsPage() {
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       required
                       rows={4}
-                      className="w-full px-4 py-3 rounded-[4px] border-b-2 border-transparent focus:border-[#FF6200] outline-none transition-colors resize-none"
+                      className={`w-full px-4 py-3 rounded-[4px] border-b-2 outline-none transition-colors ${
+                        formData.message ? "focus:border-[#bC9A8F]" : "focus:border-white"
+                      }`}
                       style={{
                         backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
                         color: isDark ? "#FFFFFF" : "#000000",
@@ -774,10 +776,9 @@ export default function ProjectsPage() {
                     <button
                       type="button"
                       onClick={handleFileAttach}
-                      className="flex items-center gap-2 px-4 py-2 rounded-[4px] border transition-colors hover:border-[#FF6200]"
+                      className="flex items-center gap-2 px-4 py-2 rounded-[4px] border transition-colors hover:border-[#FF6200] hover:bg-[#5c2c0f] fomt-semibold active:bg-[#FAF9F8] active:text-black"
                       style={{
                         borderColor: isDark ? "#3A3A3A" : "#E0E0E0",
-                        color: isDark ? "#FFFFFF" : "#000000",
                       }}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
@@ -791,7 +792,7 @@ export default function ProjectsPage() {
                   </div>
 
                   {attachedFile && (
-                    <div className="flex items-center gap-2 text-sm" style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
+                    <div className="flex items-center gap-2 text-sm " style={{ color: isDark ? "#A0A0A0" : "#666666" }}>
                       <span>{attachedFile.name}</span>
                       <button
                         type="button"
@@ -863,7 +864,7 @@ export default function ProjectsPage() {
                       id="terms-projects"
                       checked={termsAccepted}
                       onChange={(e) => setTermsAccepted(e.target.checked)}
-                      className="mt-1"
+                      className="mt-1 accent-[#f66001]"
                     />
                     <label
                       htmlFor="terms-projects"

@@ -26,6 +26,7 @@ export function AwardsSection() {
     },
   ]
 
+
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-card">
       <div className="max-w-7xl mx-auto px-4">
@@ -47,7 +48,6 @@ export function AwardsSection() {
                   height: "clamp(64px, 9.6vw, 180px)",
                 }}
               />
-              {/* Светлая версия */}
               <Image
                 src={award.light}
                 alt={award.alt}

@@ -201,7 +201,7 @@ export function Footer() {
                 </svg>
                 <a
                   href="mailto:sales@ideateam.dev"
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   sales@ideateam.dev
                 </a>
@@ -225,7 +225,7 @@ export function Footer() {
               </svg>
                 <a
                   href="tel:+380937352057"
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   +38093 735 20 57
                 </a>
@@ -240,7 +240,7 @@ export function Footer() {
                 <Link
                   href="/#about-us"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.aboutUs}
                 </Link>
@@ -249,7 +249,7 @@ export function Footer() {
                 <Link
                   href="/#our-expertise"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.ourExperience}
                 </Link>
@@ -258,7 +258,7 @@ export function Footer() {
                 <Link
                   href="/careers"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.careers}
                 </Link>
@@ -279,7 +279,7 @@ export function Footer() {
                 <Link
                   href="/projects#multi-brand-ecommerce"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.multibrande}
                 </Link>
@@ -288,7 +288,7 @@ export function Footer() {
                 <Link
                   href="/projects#statistics-platform"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.statisticsPlatform}
                 </Link>
@@ -297,7 +297,7 @@ export function Footer() {
                 <Link
                   href="/projects#sensor-infobox"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.sensorInfobox}
                 </Link>
@@ -306,7 +306,7 @@ export function Footer() {
                 <Link
                   href="/projects#ecommerce-platform"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.ecommercePlatform}
                 </Link>
@@ -327,7 +327,7 @@ export function Footer() {
                 <Link
                   href="/services#custom-web-solutions"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.customWeb}
                 </Link>
@@ -336,7 +336,7 @@ export function Footer() {
                 <Link
                   href="/services#mobile-applications"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.mobileApps}
                 </Link>
@@ -345,7 +345,7 @@ export function Footer() {
                 <Link
                   href="/services#ux-ui-design"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.uxui}
                 </Link>
@@ -354,7 +354,7 @@ export function Footer() {
                 <Link
                   href="/services#qa"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.qa}
                 </Link>
@@ -363,7 +363,7 @@ export function Footer() {
                 <Link
                   href="/services#devops"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.devops}
                 </Link>
@@ -372,7 +372,7 @@ export function Footer() {
                 <Link
                   href="/services#data-analytics"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.dataAnalytics}
                 </Link>
@@ -406,7 +406,7 @@ export function Footer() {
                   <Link
                     href="/blog"
                     onClick={handleLinkClick}
-                    className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                    className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                   >
                     {t.viewAllPosts}
                   </Link>
@@ -572,7 +572,7 @@ export function Footer() {
             {/* Sortlist Badge */}
             <a
               href="https://www.sortlist.com/agency/idea-team?disableCache=true"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -601,7 +601,7 @@ export function Footer() {
             {/* Clutch Badge */}
             <a
               href="https://clutch.co/profile/idea-team"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -641,7 +641,7 @@ export function Footer() {
             {/* Google Badge */}
             <a
               href="https://ideateam.dev/"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -660,7 +660,7 @@ export function Footer() {
             {/* G2 Badge */}
             <a
               href="https://www.g2.com/products/idea-team-dev/reviews"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -696,7 +696,7 @@ export function Footer() {
             {/* DOU Badge */}
             <a
               href="https://jobs.dou.ua/companies/idea-team-dev/"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
