@@ -1,5 +1,6 @@
 "use client"
 
+import { createPortal } from "react-dom"
 import { useTheme } from "@/lib/theme-context"
 import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
@@ -13,6 +14,7 @@ export default function CalculatorResults({ onClose }: CalculatorResultsProps) {
   const { theme } = useTheme()
   const { locale } = useLocale()
   const isDark = theme === "dark"
+
 
   const t = translations[locale as keyof typeof translations] || translations.en
 
@@ -38,20 +40,20 @@ export default function CalculatorResults({ onClose }: CalculatorResultsProps) {
     "/images/candidate-4.jpg",
   ]
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 overflow-y-auto"
       style={{
         backgroundColor: "rgba(0, 0, 0, 0.5)",
+        overscrollBehavior: "contain",
       }}
       onClick={onClose}
     >
+      <div className="min-h-full flex items-center justify-center p-4">
       <div
         className="relative w-full max-w-[680px] rounded-2xl p-6 md:p-10 shadow-lg"
         style={{
           backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF",
-          maxHeight: "90vh",
-          overflowY: "auto",
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -97,7 +99,6 @@ export default function CalculatorResults({ onClose }: CalculatorResultsProps) {
                   fontSize: "clamp(16px, 4vw, 24px)",
                   lineHeight: "100%",
                   letterSpacing: "-0.03em",
-                  color: "#FFFFFF",
                 }}
               >
                 {result.text}
@@ -152,6 +153,8 @@ export default function CalculatorResults({ onClose }: CalculatorResultsProps) {
           {t.bookInterview}
         </button>
       </div>
-    </div>
+      </div>
+    </div>,
+    document.body
   )
 }

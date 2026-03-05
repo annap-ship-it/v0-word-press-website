@@ -201,9 +201,33 @@ export function Footer() {
                 </svg>
                 <a
                   href="mailto:sales@ideateam.dev"
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   sales@ideateam.dev
+                </a>
+              </div>
+
+              <div className="flex items-center gap-3">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 256 256"
+                fill="none"
+                className="flex-shrink-0"
+              >
+                <path
+                  d="M176,220C98.80371,220,36,157.19629,36,80A52.06484,52.06484,0,0,1,81.4209,28.41211a12.01552,12.01552,0,0,1,12.47558,7.19141L113.9873,82.48047a11.97729,11.97729,0,0,1-.99023,11.2998L96.36133,119.19922a3.938,3.938,0,0,0-.291,3.86035h.001a80.54061,80.54061,0,0,0,37.19726,37.0293,3.93771,3.93771,0,0,0,3.8711-.31836l25.03515-16.69434a11.96393,11.96393,0,0,1,11.38379-1.0459l46.83789,20.07325a12.01851,12.01851,0,0,1,7.19141,12.4746A52.06486,52.06486,0,0,1,176,220Z"
+                  stroke="white"
+                  strokeWidth="12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+                <a
+                  href="tel:+380937352057"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
+                >
+                  +38093 735 20 57
                 </a>
               </div>
             </div>
@@ -216,7 +240,7 @@ export function Footer() {
                 <Link
                   href="/#about-us"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.aboutUs}
                 </Link>
@@ -225,7 +249,7 @@ export function Footer() {
                 <Link
                   href="/#our-expertise"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.ourExperience}
                 </Link>
@@ -234,7 +258,7 @@ export function Footer() {
                 <Link
                   href="/careers"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.careers}
                 </Link>
@@ -255,7 +279,7 @@ export function Footer() {
                 <Link
                   href="/projects#multi-brand-ecommerce"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.multibrande}
                 </Link>
@@ -264,7 +288,7 @@ export function Footer() {
                 <Link
                   href="/projects#statistics-platform"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.statisticsPlatform}
                 </Link>
@@ -273,7 +297,7 @@ export function Footer() {
                 <Link
                   href="/projects#sensor-infobox"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.sensorInfobox}
                 </Link>
@@ -282,7 +306,7 @@ export function Footer() {
                 <Link
                   href="/projects#ecommerce-platform"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300 line-clamp-2"
                 >
                   {t.ecommercePlatform}
                 </Link>
@@ -303,7 +327,7 @@ export function Footer() {
                 <Link
                   href="/services#custom-web-solutions"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.customWeb}
                 </Link>
@@ -312,7 +336,7 @@ export function Footer() {
                 <Link
                   href="/services#mobile-applications"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.mobileApps}
                 </Link>
@@ -321,7 +345,7 @@ export function Footer() {
                 <Link
                   href="/services#ux-ui-design"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.uxui}
                 </Link>
@@ -330,7 +354,7 @@ export function Footer() {
                 <Link
                   href="/services#qa"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.qa}
                 </Link>
@@ -339,7 +363,7 @@ export function Footer() {
                 <Link
                   href="/services#devops"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.devops}
                 </Link>
@@ -348,7 +372,7 @@ export function Footer() {
                 <Link
                   href="/services#data-analytics"
                   onClick={handleLinkClick}
-                  className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                  className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                 >
                   {t.dataAnalytics}
                 </Link>
@@ -382,7 +406,7 @@ export function Footer() {
                   <Link
                     href="/blog"
                     onClick={handleLinkClick}
-                    className="text-[#CCCCCC] text-sm hover:text-[#FF6200] transition-colors duration-300"
+                    className="text-[#A7A7A7] hover:text-[#FFFFFF] active:text-[#FBC6A3] text-sm transition-colors duration-300"
                   >
                     {t.viewAllPosts}
                   </Link>
@@ -548,7 +572,7 @@ export function Footer() {
             {/* Sortlist Badge */}
             <a
               href="https://www.sortlist.com/agency/idea-team?disableCache=true"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -577,7 +601,7 @@ export function Footer() {
             {/* Clutch Badge */}
             <a
               href="https://clutch.co/profile/idea-team"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -617,7 +641,7 @@ export function Footer() {
             {/* Google Badge */}
             <a
               href="https://ideateam.dev/"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -636,7 +660,7 @@ export function Footer() {
             {/* G2 Badge */}
             <a
               href="https://www.g2.com/products/idea-team-dev/reviews"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"
@@ -672,7 +696,7 @@ export function Footer() {
             {/* DOU Badge */}
             <a
               href="https://jobs.dou.ua/companies/idea-team-dev/"
-              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer"
+              className="flex items-center gap-3 px-5 py-3 bg-transparent border rounded transition-all cursor-pointer active:bg-[#483122]"
               style={{ borderColor: "#444444" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#FFFFFF"

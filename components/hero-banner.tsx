@@ -176,18 +176,12 @@ export function HeroBanner() {
               margin: "96px auto 0",
             }}
           >
-            <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center">
-              <div className="text-center flex-1 sm:flex-none">
-                <span
-                  className="block font-bold"
-                  style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+            <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center ">
+              <div className="stat-item text-center flex-1 sm:flex-none cursor-pointer">
+                <span className="block font-bold stat-number" style={{ fontSize: "32px" }}>
                   25+
                 </span>
-                <span
-                  className="block mt-0"
-                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+                <span className="block mt-0 stat-label" style={{ fontSize: "16px" }}>
                   {t.estimations}
                 </span>
               </div>
@@ -197,27 +191,11 @@ export function HeroBanner() {
                 style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
               />
 
-              <div className="text-center flex-1 sm:flex-none">
-                <span
-                  className="block font-bold"
-                  style={{
-                    fontSize: "32px",
-                    ...(theme === "light"
-                      ? { color: "#212121" }
-                      : {
-                          backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #FF6200 100%)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                        }),
-                  }}
-                >
+              <div className="stat-item text-center flex-1 sm:flex-none cursor-pointer">
+                <span className="block font-bold stat-number " style={{ fontSize: "32px" }}>
                   15+
                 </span>
-                <span
-                  className="block mt-0"
-                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+                <span className="block mt-0 stat-label" style={{ fontSize: "16px" }}>
                   {t.totalProjects}
                 </span>
               </div>
@@ -228,18 +206,12 @@ export function HeroBanner() {
               style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
             />
 
-            <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center">
-              <div className="text-center flex-1 sm:flex-none">
-                <span
-                  className="block font-bold"
-                  style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+            <div className="flex items-center gap-4 w-full sm:w-auto justify-start sm:justify-center cursor-pointer">
+              <div className="stat-item text-center flex-1 sm:flex-none">
+                <span className="block font-bold stat-number" style={{ fontSize: "32px" }}>
                   10+
                 </span>
-                <span
-                  className="block mt-0"
-                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+                <span className="block mt-0 stat-label" style={{ fontSize: "16px" }}>
                   {t.successfulClients}
                 </span>
               </div>
@@ -249,17 +221,11 @@ export function HeroBanner() {
                 style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)" }}
               />
 
-              <div className="text-center flex-1 sm:flex-none">
-                <span
-                  className="block font-bold"
-                  style={{ fontSize: "32px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+              <div className="stat-item text-center flex-1 sm:flex-none">
+                <span className="block font-bold stat-number" style={{ fontSize: "32px" }}>
                   20+
                 </span>
-                <span
-                  className="block mt-0"
-                  style={{ fontSize: "16px", color: theme === "light" ? "#000000" : "#FFFFFF" }}
-                >
+                <span className="block mt-0 stat-label" style={{ fontSize: "16px" }}>
                   {t.professionals}
                 </span>
               </div>

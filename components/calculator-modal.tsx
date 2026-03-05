@@ -4,6 +4,7 @@ import { useTheme } from "@/lib/theme-context"
 import { useLocale } from "@/lib/locale-context"
 import { translations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 import CalculatorResults from "./calculator-results"
 
@@ -41,13 +42,13 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
 
   useEffect(() => {
     if (isOpen) {
+      document.documentElement.style.overflow = "hidden"
       document.body.style.overflow = "hidden"
       setShowResults(false)
-    } else {
-      document.body.style.overflow = "unset"
     }
     return () => {
-      document.body.style.overflow = "unset"
+      document.documentElement.style.overflow = ""
+      document.body.style.overflow = ""
     }
   }, [isOpen])
 
@@ -81,20 +82,19 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
     return <CalculatorResults onClose={onClose} />
   }
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{
         backgroundColor: "rgba(0, 0, 0, 0.5)",
       }}
       onClick={onClose}
+      onWheel={(e) => e.stopPropagation()}
     >
       <div
-        className="relative w-full max-w-[640px] rounded-2xl p-10 shadow-lg"
+        className="relative w-full max-w-[640px] rounded-2xl p-10 shadow-lg overflow-y-auto max-h-[90vh] md:overflow-visible md:max-h-none"
         style={{
           backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF",
-          maxHeight: "90vh",
-          overflowY: "auto",
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -552,7 +552,8 @@ export function CalculatorModal({ isOpen, onClose }: CalculatorModalProps) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

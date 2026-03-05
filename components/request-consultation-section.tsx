@@ -200,18 +200,18 @@ export function RequestConsultationSection() {
       
 
       {/* Contact Form Section */}
-      <section className="pt-16 pb-8 px-6">
-        <div className="max-w-[1280px] mx-auto">
-          <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <section className="pt-10 pb-6 px-4 md:px-6">
+        <div className="max-w-[1120px] mx-auto">
+          <div className="rounded-2xl p-5 md:p-8 lg:p-9" style={{ background: "#1E1E1E" }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
               {/* Form */}
               <div>
                 <h2
-                  className="font-bold mb-8 text-white whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+                  className="font-bold mb-6 text-white whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
                   style={{
                     fontFamily: "Onest",
-                    fontSize: "clamp(32px, 3.8vw, 48px)",
-                    lineHeight: "1.1",
+                    fontSize: "clamp(28px, 3vw, 40px)",
+                    lineHeight: "1.15",
                   }}
                 >
                   {t.getConsultation || "Send us a note with your idea, and we'll get in touch to provide guidance on implementation"}
@@ -272,14 +272,14 @@ export function RequestConsultationSection() {
     />
   </div>
 
-  <div className="flex flex-wrap items-center gap-6 mt-4">
+  <div className="flex flex-wrap items-center gap-4 mt-3">
     <button
       type="submit"
       disabled={isSubmitting}
       className={`
         relative overflow-hidden
         flex items-center justify-center gap-2.5
-        px-10 py-4 text-base font-medium
+        px-6 py-3 text-sm md:text-base font-medium
         text-white
         bg-[#FF6200] rounded-full
         hover:bg-gradient-to-r hover:from-[#FF6200] hover:to-[#000000]
@@ -289,9 +289,7 @@ export function RequestConsultationSection() {
         transition-all duration-300
       `}
       style={{
-        width: "264px",
-        height: "40px",
-        padding: "4px 14px",
+        minWidth: "200px",
         fontFamily: "Onest",
       }}
     >
@@ -376,7 +374,7 @@ export function RequestConsultationSection() {
               </div>
 
               {/* Image */}
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden">
+              <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden">
                 <Image
                   src="/images/f236a65b9dcdd59fe25f5a9694d5243e04bca53a-20-281-29.jpg"
                   alt="Developer working at desk"

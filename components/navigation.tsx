@@ -8,6 +8,7 @@ import { useTheme } from "@/lib/theme-context"
 import { useState, useRef, useEffect } from "react"
 import { ChevronDown, ChevronUp, Building2, Award, Briefcase, Menu } from "lucide-react"
 import { ContactFormModal } from "@/components/contact-form-modal"
+import { cn } from "@/lib/utils"
 
 export function Navigation() {
   const { locale, t } = useLocale()
@@ -131,7 +132,7 @@ export function Navigation() {
 
             {/* Company Dropdown */}
             <div
-              className="relative flex justify-center"
+              className={cn("relative flex justify-center px-3 py-1.5 border border-transparent transition-colors duration-100 rounded-full", {" border-gray-300": companyOpen})}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
@@ -187,7 +188,7 @@ export function Navigation() {
                       height: "196px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
-                      boxShadow: !isDark ? "0px 4px 4px #00000040" : undefined,
+                      boxShadow: !isDark ? "0px 1px 1px #00000010" : undefined,
                     }}
                   >
 
@@ -451,7 +452,7 @@ export function Navigation() {
 
             {/* Services Dropdown */}
             <div
-              className="relative flex justify-center"
+              className={cn("relative flex justify-center px-3 py-1.5 border border-transparent transition-colors duration-100 rounded-full", {" border-gray-300": servicesOpen})}
               onMouseEnter={handleServicesMouseEnter}
               onMouseLeave={handleServicesMouseLeave}
             >
@@ -506,7 +507,7 @@ export function Navigation() {
                       height: "207px",
                       borderRadius: "14px",
                       background: isDark ? "#212121" : "#FFFFFF",
-                      boxShadow: !isDark ? "0px 4px 4px #00000040" : undefined,
+                      boxShadow: !isDark ? "0px 1px 1px #00000010" : undefined,
                     }}
                   >
 
@@ -721,7 +722,7 @@ export function Navigation() {
                             width: "196px",
                             height: "167px",
                             borderRadius: "6px",
-                            boxShadow: "0px 4px 4px 0px #00000040",
+                            boxShadow: "0px 3px 3px 0px #00000010",
                           }}
                         >
                           <img
@@ -790,7 +791,10 @@ export function Navigation() {
             </div>
 
             {/* Projects Dropdown */}
-            <div className="relative" onMouseEnter={handleProjectsMouseEnter} onMouseLeave={handleProjectsMouseLeave}>
+            <div
+              className={cn("relative flex justify-center border px-3 py-2.5 border-transparent transition-colors duration-100 rounded-full", {" border-gray-300": projectsOpen})}
+              onMouseEnter={handleProjectsMouseEnter} 
+              onMouseLeave={handleProjectsMouseLeave}>
               <button
                 onClick={() => setProjectsOpen(!projectsOpen)}
                 className="flex items-center gap-1 transition-colors whitespace-nowrap"
@@ -851,7 +855,7 @@ export function Navigation() {
                       padding: "20px",
                       display: "flex",
                       gap: "20px",
-                      boxShadow: "0px 4px 4px 0px #00000040",
+                      boxShadow: "0px 1px 1px 0px #00000010",
                     }}
                   >
                     {/* Left Column - Image */}
@@ -1102,7 +1106,7 @@ export function Navigation() {
 
             <Link
               href="/blog"
-              className="transition-colors whitespace-nowrap"
+              className={cn("relative flex justify-center border px-3.5 py-2.5 border-transparent transition-colors duration-100 rounded-full hover:border-gray-300")}
               style={{
                 fontFamily: "Onest",
                 fontWeight: 400,
@@ -1118,7 +1122,7 @@ export function Navigation() {
 
             <Link
               href="/careers"
-              className="transition-colors whitespace-nowrap"
+              className={cn("relative flex justify-center border px-3.5 py-2.5 border-transparent transition-colors duration-100 rounded-full hover:border-gray-300")}
               style={{
                 fontFamily: "Onest",
                 fontWeight: 400,
@@ -1840,7 +1844,7 @@ export function Navigation() {
                           maxWidth: "280px",
                           height: "180px",
                           borderRadius: "6px",
-                          boxShadow: "0px 4px 4px 0px #00000040",
+                          boxShadow: "0px 1px 1px 0px #00000010",
                         }}
                       >
                         <img

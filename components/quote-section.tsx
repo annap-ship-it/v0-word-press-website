@@ -45,7 +45,7 @@ function SocialLinks() {
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8">
       <Link
-        href="https://www.linkedin.com/company/idea-team-dev/"
+        href="https://www.linkedin.com/in/oleksandr-romanov-ideateam/"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 px-5 py-3 rounded-full border border-foreground/20 dark:border-foreground/50 hover:border-foreground text-foreground dark:text-foreground/60 transition-colors"
