@@ -16,11 +16,10 @@ const content = {
       {
         title: "2. How We Use Cookies",
         content: `We use cookies for the following purposes:
-
-• Essential Cookies: Required for the website to function properly
-• Analytics Cookies: Help us understand how visitors interact with our website
-• Functional Cookies: Remember your preferences and settings
-• Marketing Cookies: Used to deliver relevant advertisements`
+          •    Essential Cookies: Required for the website to function properly
+          •    Analytics Cookies: Help us understand how visitors interact with our website
+          •    Functional Cookies: Remember your preferences and settings
+          •    Marketing Cookies: Used to deliver relevant advertisements`
       },
       {
         title: "3. Types of Cookies We Use",
@@ -40,9 +39,9 @@ These cookies may be set through our site by our advertising partners. They may 
         title: "4. Third-Party Cookies",
         content: `Some cookies are placed by third-party services that appear on our pages. We use the following third-party services:
 
-• Google Analytics - for website analytics
-• Google reCAPTCHA - for spam protection
-• Social media platforms - for social sharing functionality`
+•    Google Analytics - for website analytics
+•    Google reCAPTCHA - for spam protection
+•    Social media platforms - for social sharing functionality`
       },
       {
         title: "5. Managing Cookies",
@@ -88,10 +87,10 @@ Address: IdeaTeam Development Company`
         title: "2. Як ми використовуємо файли cookie",
         content: `Ми використовуємо файли cookie для наступних цілей:
 
-• Необхідні файли cookie: потрібні для правильної роботи веб-сайту
-• Аналітичні файли cookie: допомагають нам зрозуміти, як відвідувачі взаємодіють з нашим веб-сайтом
-• Функціональні файли cookie: запам'ятовують ваші налаштування та переваги
-• Маркетингові файли cookie: використовуються для показу релевантної реклами`
+•    Необхідні файли cookie: потрібні для правильної роботи веб-сайту
+•    Аналітичні файли cookie: допомагають нам зрозуміти, як відвідувачі взаємодіють з нашим веб-сайтом
+•    Функціональні файли cookie: запам'ятовують ваші налаштування та переваги
+•    Маркетингові файли cookie: використовуються для показу релевантної реклами`
       },
       {
         title: "3. Типи файлів cookie, які ми використовуємо",
@@ -111,9 +110,9 @@ Address: IdeaTeam Development Company`
         title: "4. Файли cookie третіх сторін",
         content: `Деякі файли cookie розміщуються сторонніми службами, які з'являються на наших сторінках. Ми використовуємо наступні сторонні служби:
 
-• Google Analytics - для аналітики веб-сайту
-• Google reCAPTCHA - для захисту від спаму
-• Платформи соціальних мереж - для функцій соціального обміну`
+•    Google Analytics - для аналітики веб-сайту
+•    Google reCAPTCHA - для захисту від спаму
+•    Платформи соціальних мереж - для функцій соціального обміну`
       },
       {
         title: "5. Управління файлами cookie",
@@ -177,7 +176,7 @@ export default function CookiePolicyPage() {
               </h2>
               <div 
                 className="whitespace-pre-line text-base leading-relaxed"
-                style={{ color: "var(--muted-foreground)" }}
+                style={{ color: "rgba(var(--foreground-rgb, 255 255 255) / 0.6)" }}
               >
                 {section.content}
               </div>

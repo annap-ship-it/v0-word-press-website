@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
@@ -95,10 +95,15 @@ function ProjectCard({
   )
 }
 
+// Ці значення мають збігатись з props ScrollStack нижче
+const STACK_POSITION = 0.35   // stackPosition="35%"
+const ITEM_STACK_DIST = 22    // itemStackDistance
+
 export function OurProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const desktopWrapperRef = useRef<HTMLDivElement>(null)
   const { locale } = useLocale()
 
   useEffect(() => {
@@ -119,6 +124,37 @@ export function OurProjectsSection() {
     fetchProjects()
   }, [])
 
+  // Динамічно встановлює висоту desktop wrapper рівно до моменту
+  // коли остання картка фіксується — без зайвого скролу після
+  useEffect(() => {
+    const wrapper = desktopWrapperRef.current
+    if (!wrapper || projects.length === 0) return
+
+    const calculate = () => {
+      const cards = Array.from(wrapper.querySelectorAll(".scroll-stack-card")) as HTMLElement[]
+      if (!cards.length) return
+
+      const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY
+      const lastCard = cards[cards.length - 1]
+      const lastCardTop = lastCard.getBoundingClientRect().top + window.scrollY
+
+      const stackPosPx = STACK_POSITION * window.innerHeight
+      const lastPinTrigger = lastCardTop - stackPosPx - (cards.length - 1) * ITEM_STACK_DIST
+
+      // Висота = відстань до останнього тригера + висота viewport + 60px запасу
+      const height = lastPinTrigger - wrapperTop + window.innerHeight + 60
+      wrapper.style.height = `${Math.max(height, window.innerHeight)}px`
+    }
+
+    // Невелика затримка щоб ScrollStack встиг відрендеритись
+    const timer = setTimeout(calculate, 100)
+    window.addEventListener("resize", calculate)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("resize", calculate)
+    }
+  }, [projects])
+
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % projects.length)
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length)
   const goToSlide = (index: number) => setCurrentIndex(index)
@@ -134,38 +170,15 @@ export function OurProjectsSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: "var(--background)" }}>
-      <div className="max-w-[1200px] mx-auto px-4">
-        <div className="text-center mb-16 md:mb-24">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{t.ourProjects}</h2>
-          <p className="text-lg md:text-xl opacity-70 whitespace-pre-line">{t.description}</p>
-        </div>
+    <section className="relative" style={{ backgroundColor: "var(--background)" }}>
 
-        {/* Desktop: чистый stack без зума */}
-        <div className="hidden lg:block overflow-visible">
-          <ScrollStack
-            useWindowScroll={true}
-            itemDistance={100} // расстояние по вертикали между триггерами
-            itemScale={0} // ОТКЛЮЧАЕМ масштаб/зум полностью
-            itemStackDistance={30} // горизонтальное смещение (как в референсе)
-            stackPosition="40%" // где начинается stacking
-            scaleEndPosition="0%" // не используется, т.к. scale=0
-            baseScale={1} // фиксированный размер
-            className="w-full"
-          >
-            {projects.map((project, index) => (
-              <ScrollStackItem
-                key={project.id}
-                itemClassName="w-full max-w-[1100px] mx-auto px-0" // чуть шире для выхода за края
-              >
-                <ProjectCard project={project} index={index} />
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
-        </div>
-
-        {/* Mobile/Tablet Carousel */}
-        <div className="lg:hidden">
+      {/* Mobile/Tablet: звичайний лейаут */}
+      <div className="lg:hidden py-16 md:py-24">
+        <div className="max-w-[1200px] mx-auto px-4">
+          <div className="text-center mb-16 md:mb-24">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.ourProjects}</h2>
+            <p className="text-lg md:text-xl opacity-70 whitespace-pre-line">{t.description}</p>
+          </div>
           <div className="relative">
             <div className="overflow-hidden">
               <div
@@ -179,7 +192,6 @@ export function OurProjectsSection() {
                 ))}
               </div>
             </div>
-            {/* Navigation Arrows */}
             <button
               onClick={prevSlide}
               className="absolute left-0 top-1/2 -translate-y-1/2 p-2 text-[#787877] active:text-orange-500"
@@ -198,7 +210,6 @@ export function OurProjectsSection() {
                 <path d="M1 13L7 7L1 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            {/* Pagination Dots */}
             <div className="flex justify-center mt-4 space-x-2">
               {projects.map((_, idx) => (
                 <button
@@ -213,6 +224,43 @@ export function OurProjectsSection() {
           </div>
         </div>
       </div>
+
+      {/* Desktop: висота розраховується динамічно через desktopWrapperRef */}
+      <div
+        ref={desktopWrapperRef}
+        className="hidden lg:block relative"
+      >
+        {/* Sticky заголовок — завжди видний поки секція в viewport */}
+        <div
+          className="sticky top-0 z-50 text-center pt-12 pb-8"
+          style={{ backgroundColor: "var(--background)" }}
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{t.ourProjects}</h2>
+          <p className="text-lg md:text-xl opacity-70 whitespace-pre-line">{t.description}</p>
+        </div>
+
+        {/* ScrollStack — позиції рахуються від document top */}
+        <ScrollStack
+          useWindowScroll={true}
+          itemDistance={100}
+          itemScale={0.03}
+          itemStackDistance={22}
+          stackPosition="35%"
+          scaleEndPosition="90%"
+          baseScale={0.88}
+          className="w-full max-w-[1200px] mx-auto px-4"
+        >
+          {projects.map((project, index) => (
+            <ScrollStackItem
+              key={project.id}
+              itemClassName={`w-full max-w-[1100px] mx-auto px-0 z-[${index + 1}]`}
+            >
+              <ProjectCard project={project} index={index} />
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
+      </div>
+
     </section>
   )
 }
