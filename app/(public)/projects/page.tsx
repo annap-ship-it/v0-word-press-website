@@ -572,7 +572,7 @@ export default function ProjectsPage() {
                                   return (
                                     <span
                                       key={i}
-                                      className="px-3 py-1.5 rounded-[4px] text-xs font-medium flex items-center gap-2 transition-transform duration-200 hover:scale-105"
+                                      className="px-3 py-2 rounded-[4px] text-xs font-medium flex items-center gap-2 transition-transform duration-200 hover:scale-105"
                                       style={{
                                         backgroundColor: isDark ? "#323130" : "#FFFFFF",
                                         color: isDark ? "#FFFFFF" : "#000000",
@@ -745,13 +745,10 @@ export default function ProjectsPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
-                      className={`w-full px-4 py-3 rounded-[4px] border-b-2 outline-none transition-colors ${
+                      className={`w-full px-4 py-3 rounded-[4px] border-b-2 outline-none transition-colors bg-[#F5F5F5] dark:bg-[#1E1E1E]
+ ${
                         formData.email ? "focus:border-[#bC9A8F]" : "focus:border-white"
                       }`}
-                      style={{
-                        backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
-                        color: isDark ? "#FFFFFF" : "#000000",
-                      }}
                     />
                   </div>
                   <div>
@@ -776,17 +773,18 @@ export default function ProjectsPage() {
                     <button
                       type="button"
                       onClick={handleFileAttach}
-                      className="flex items-center gap-2 px-4 py-2 rounded-[4px] border transition-colors hover:border-[#FF6200] hover:bg-[#5c2c0f] fomt-semibold active:bg-[#FAF9F8] active:text-black"
+                      className="flex items-center gap-2 px-4 py-2 rounded-[4px] border transition-colors hover:border-[#FF6200] hover:bg-[#FF62001A] active:bg-[#FF62004D] active:text-white"
                       style={{
                         borderColor: isDark ? "#3A3A3A" : "#E0E0E0",
-                      }}
+                        color: isDark ? "#FFFFFF" : "#000000",
+                      }} 
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6200" strokeWidth="2">
                         <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
                       </svg>
                       {t.attachLabel}
                     </button>
-                    <span className="text-xs" style={{ color: isDark ? "#666666" : "#999999" }}>
+                    <span className="text-xs w-1/2" style={{ color: isDark ? "#666666" : "#999999" }}>
                       {t.fileAttachInfo}
                     </span>
                   </div>
@@ -809,7 +807,7 @@ export default function ProjectsPage() {
                     type="submit"
                     disabled={isSubmitting}
                     className={`
-                        relative overflow-hidden
+                        relative overflow-hidden 
                         flex items-center justify-center gap-[10px]
                         text-[16px] font-medium leading-[1]
                         text-white

@@ -291,12 +291,12 @@ export default function CareersPage() {
               </p>
               <p>
                 {t.introText3}
-                <span className="text-[#FF6200] font-medium underline">{t.introHighlight2}</span>
+                <span className="text-[#FF6200] font-medium">{t.introHighlight2}</span>
                 {t.introText4}
               </p>
               <p>
                 {t.introText5}
-                <span className="text-[#FF6200] font-medium underline">{t.introHighlight3}</span>
+                <span className="text-[#FF6200] font-medium">{t.introHighlight3}</span>
                 {t.introText6}
               </p>
             </div>
@@ -493,7 +493,7 @@ export default function CareersPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#FF6200] hover:bg-[#e55a00] text-white rounded-full h-12 text-base font-medium"
+                className="w-full bg-[#FF6200] hover:bg-[linear-gradient(92.84deg,_#FF6200_29.79%,_#000000_100.07%)] transition-all duration-300 text-white rounded-full h-12 text-base font-medium"
               >
                 {isSubmitting ? (
                   <>

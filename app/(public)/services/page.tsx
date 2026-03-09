@@ -20,6 +20,7 @@ export default function ServicesPage() {
   const { t } = useLocale()
 
   const [isDark, setIsDark] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -162,7 +163,6 @@ export default function ServicesPage() {
     {
       id: "qa",
       title: t.qaAutomation,
-      titleHighlight: t.locale === "uk" ? "Ручне та" : "Manual and",
       description: t.qaAutomationDesc,
       image: "/images/d99f7180c4bf0265069aa1c177dc0143e37e4d79.jpg",
       imageAlt: "Manual and Automation QA - testing screens",
@@ -197,7 +197,7 @@ export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6">
+      <section className="pt-42 pb-16 px-6">
         <div className="max-w-[1280px] mx-auto text-center">
           <h1
             className="font-bold mb-4"
@@ -222,7 +222,7 @@ export default function ServicesPage() {
       <section className="pb-16">
         <div className="max-w-[1280px] mx-auto px-6">
           {services.map((service, index) => (
-            <div key={index}>
+            <div key={index} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)}>
               {index > 0 && (
                 <div
                   className="w-full mb-16"
@@ -245,10 +245,19 @@ export default function ServicesPage() {
                       fontFamily: "Onest",
                       fontSize: "clamp(24px, 3vw, 40px)",
                       lineHeight: "1.2",
-                      color: service.titleHighlight ? undefined : "inherit",
+                      backgroundImage: hoveredIndex === index
+                        ? (isDark
+                          ? "linear-gradient(90.39deg, #FF6200 34.5%, #FFFFFF 66.76%)"
+                          : "linear-gradient(90.39deg, #FF6200 34.5%, #000000 66.76%)")
+                        : undefined,
+                      WebkitBackgroundClip: hoveredIndex === index ? "text" : undefined,
+                      WebkitTextFillColor: hoveredIndex === index ? "transparent" : undefined,
+                      backgroundClip: hoveredIndex === index ? "text" : undefined,
+                      color: hoveredIndex === index ? undefined : (service.titleHighlight ? undefined : "inherit"),
+                      transition: "all 0.3s ease",
                     }}
                   >
-                    {service.titleHighlight ? (
+                    {service.titleHighlight && hoveredIndex !== index ? (
                       <>
                         <span style={{ color: "#FF6200" }}>{service.titleHighlight}</span>{" "}
                         {service.title.replace(service.titleHighlight, "").trim()}
@@ -293,92 +302,103 @@ export default function ServicesPage() {
           <div className="rounded-2xl p-6 md:p-10 lg:p-12" style={{ background: "#1E1E1E" }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               {/* Form */}
-              <div>
-                <h2
-                  className="font-bold mb-8 text-white"
-                  style={{
-                    fontFamily: "Onest",
-                    fontWeight: 700,
-                    fontStyle: "normal",
-                    fontSize: "clamp(18px, 1.25vw, 24px)",
-                    lineHeight: "100%",
-                    letterSpacing: "-4%",
-                  }}
-                >
-                  {t.contactFormHeading}
-                </h2>
-
+              <div className="lg:col-span-2">
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-white"
+                  <div className="flex flex-row gap-8 items-stretch">
+                    <div className="flex-1 flex flex-col gap-4">
+                    <h2
+                      className="font-bold mb-8 text-white"
                       style={{
                         fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
+                        fontWeight: 700,
+                        fontStyle: "normal",
+                        fontSize: "clamp(18px, 1.25vw, 24px)",
+                        lineHeight: "100%",
+                        letterSpacing: "-4%",
                       }}
                     >
-                      {t.name || "Name"}
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder={t.typeYourName || "Type your Name"}
-                      required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
-                      style={{ fontFamily: "Onest" }}
-                    />
-                  </div>
+                      {t.contactFormHeading}
+                    </h2>
+                      <div>
+                        <label
+                          htmlFor="name"
+                          className="block mb-2 text-white"
+                          style={{
+                            fontFamily: "Onest",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {t.name || "Name"}
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder={t.typeYourName || "Type your Name"}
+                          required
+                          className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+                          style={{ fontFamily: "Onest" }}
+                        />
+                      </div>
 
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-white"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      {t.email || "Email"}
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder={t.typeYourEmail || "Type your email"}
-                      required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
-                      style={{ fontFamily: "Onest" }}
-                    />
-                  </div>
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block mb-2 text-white"
+                          style={{
+                            fontFamily: "Onest",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {t.email || "Email"}
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder={t.typeYourEmail || "Type your email"}
+                          required
+                          className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 bg-[#2A2A2A]"
+                          style={{ fontFamily: "Onest" }}
+                        />
+                      </div>
 
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block mb-2 text-white"
-                      style={{
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      {t.message || "Message"}
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder={t.typeYourMessage || "Type your message"}
-                      required
-                      className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
-                      style={{ fontFamily: "Onest" }}
-                    />
+                      <div>
+                        <label
+                          htmlFor="message"
+                          className="block mb-2 text-white"
+                          style={{
+                            fontFamily: "Onest",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {t.message || "Message"}
+                        </label>
+                        <textarea
+                          id="message"
+                          rows={4}
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          placeholder={t.typeYourMessage || "Type your message"}
+                          required
+                          className="w-full px-4 py-3 rounded-[4px] border border-[#3A3A3A] text-white placeholder:text-white/50 resize-none bg-[#2A2A2A]"
+                          style={{ fontFamily: "Onest" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="relative flex-1 rounded-2xl overflow-hidden min-h-0 mb-1">
+                      <Image
+                        src="/images/f236a65b9dcdd59fe25f5a9694d5243e04bca53a-20-281-29.jpg"
+                        alt="Developer working at desk"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-6 mt-4">
@@ -499,16 +519,6 @@ export default function ServicesPage() {
                     </div>
                   )}
                 </form>
-              </div>
-
-              {/* Image */}
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden">
-                <Image
-                  src="/images/f236a65b9dcdd59fe25f5a9694d5243e04bca53a-20-281-29.jpg"
-                  alt="Developer working at desk"
-                  fill
-                  className="object-cover"
-                />
               </div>
             </div>
           </div>
