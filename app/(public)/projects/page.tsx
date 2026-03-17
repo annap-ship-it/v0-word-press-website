@@ -8,6 +8,7 @@ import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { getRecaptchaSiteKey } from "@/app/actions/recaptcha"
 import { ProjectsOverlappingSection } from "@/components/projects-overlapping-section"
+import {Loader2} from "lucide-react";
 
 interface Project {
   id: string
