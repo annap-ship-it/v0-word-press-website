@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Главная -->
+  <url>
+    <loc>https://ideateam.dev/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Основные разделы -->
+  <url>
+    <loc>https://ideateam.dev/projects</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://ideateam.dev/services</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Блог (основная страница + несколько актуальных постов) -->
+  <url>
+    <loc>https://ideateam.dev/blog</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://ideateam.dev/blog/code-reviews-best-practices</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ideateam.dev/blog/it-outstaffing-vs-outsourcing</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ideateam.dev/blog/calculating-web-app-development-cost</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Дополнительные посты (если они существуют и актуальны) -->
+  <url>
+    <loc>https://ideateam.dev/blog/code-reviews-boosting-quality</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://ideateam.dev/blog/it-outstaffing-scaling-teams</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
