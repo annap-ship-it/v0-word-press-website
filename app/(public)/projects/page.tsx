@@ -24,6 +24,11 @@ interface Project {
   stack: string[]
 }
 
+type SubmitState = {
+  status: "idle" | "success" | "error"
+  message?: string
+}
+
 // Extract project data from content blocks
 function extractProjectData(content: any) {
   const data = {
@@ -229,7 +234,7 @@ export default function ProjectsPage() {
   })
   const [attachedFiles, setAttachedFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitState, setSubmitState] = useState<SubmitState>({ status: "idle" })
   const [termsAccepted, setTermsAccepted] = useState(false)
   const [siteKey, setSiteKey] = useState<string>("")
   const scriptLoaded = useRef(false)
@@ -341,7 +346,10 @@ export default function ProjectsPage() {
     })
 
     if (attachedFiles.length + validFiles.length > maxFiles) {
-      alert("You can attach up to 3 files only")
+      setSubmitState({
+        status: "error",
+        message: t.fileAttachInfo
+      })
       return
     }
 
@@ -354,8 +362,31 @@ export default function ProjectsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitState({
+      status: "idle"
+    })
+
+    if (!formData.name || !formData.email || !formData.message) {
+      setSubmitState({
+        status: "error",
+        message: t.allFieldsRequiredAlert
+      })
+      return
+    }
+
     if (!termsAccepted) {
-      alert(t.termsRequiredAlert)
+      setSubmitState({
+        status: "error",
+        message: t.termsRequiredAlert
+      })
+      return
+    }
+
+    if (attachedFiles.length > 3) {
+      setSubmitState({
+        status: "error",
+        message: t.fileAttachInfo
+      })
       return
     }
 
@@ -372,7 +403,10 @@ export default function ProjectsPage() {
       }
 
       if (!grecaptcha || !grecaptcha.execute) {
-        alert("reCAPTCHA failed to load. Please refresh and try again.")
+        setSubmitState({
+          status: "error",
+          message: t.recaptchaLoadFailAlert
+        })
         setIsSubmitting(false)
         return
       }
@@ -399,14 +433,29 @@ export default function ProjectsPage() {
 
       if (response.ok) {
         setTimeout(() => {
-          setIsSubmitted(true)
+          setSubmitState({
+            status: "success"
+          })
         }, 150)
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        })
+        setAttachedFiles([])
+        setTermsAccepted(false)
       } else {
-        alert(t.errorMessage)
+        setSubmitState({
+          status: "error",
+          message: t.errorMessage
+        })
       }
     } catch (error) {
       console.error("Error submitting form:", error)
-      alert(t.errorMessage)
+      setSubmitState({
+        status: "error",
+        message: t.errorMessage
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -436,10 +485,12 @@ export default function ProjectsPage() {
       fileSizeError: "File must be less than 3MB",
       termsRequiredAlert: "Please accept Terms and Conditions",
       recaptchaRequiredAlert: "Please complete the reCAPTCHA",
+      recaptchaLoadFailAlert: "reCAPTCHA failed to load. Please refresh and try again",
       receivedMessage: "We've received your message and will get back to you soon.",
       fileAttachInfo: "No more than 3 files may be attached up to 3MB each. Formats: doc, docx, pdf, ppt, pptx.",
       sendingButton: "Sending...",
       termsAndConditions: "Terms and Conditions",
+      allFieldsRequiredAlert: "Please fill all necessary fields",
       emailDisclaimer:
         "By submitting your email, you accept terms and conditions. We may send you occasionally marketing emails.",
     },
@@ -466,10 +517,12 @@ export default function ProjectsPage() {
       fileSizeError: "Файл повинен бути менше за 3 МБ",
       termsRequiredAlert: "Будь ласка, прийміть Умови та положення",
       recaptchaRequiredAlert: "Будь ласка, завершіть reCAPTCHA",
+      recaptchaLoadFailAlert: "Помилка завантаження reCAPTCHA. Будь ласка, оновіть сторінку і спробуйте ще раз.",
       receivedMessage: "Ми отримали ваше повідомлення і скоро з вами зв'яжемося.",
       fileAttachInfo: "Можна додати не більше 3 файлів розміром до 3 МБ кожен. Формати: doc, docx, pdf, ppt, pptx.",
       sendingButton: "Надсилання...",
       termsAndConditions: "Умовами та положеннями",
+      allFieldsRequiredAlert: "Будь ласка, заповніть всі обов\'язкові поля.",
       emailDisclaimer:
         "Надсилаючи свою електронну пошту, ви приймаєте умови та положення. Ми можемо периодично надсилати вам маркетингові листи.",
     },
@@ -743,7 +796,7 @@ export default function ProjectsPage() {
 
           {/* Contact Form Section */}
           <AnimatedCard delay={200}>
-            {isSubmitted ? (
+            {submitState.status === "success" ? (
               <div className="text-center py-12">
                 <p className="text-lg" style={{ color: isDark ? "#FFFFFF" : "#000000" }}>
                   {t.successMessage || t.receivedMessage}
@@ -901,6 +954,12 @@ export default function ProjectsPage() {
                       t.send || "Send"
                     )}
                   </button>
+
+                  {submitState.status === "error" && (
+                    <p className="text-center text-sm mt-2" style={{ color: "#F44336" }}>
+                      {submitState.message || t.errorMessage}
+                    </p>
+                  )}
 
                   {/* Terms */}
                   <div className="flex items-start gap-2">
