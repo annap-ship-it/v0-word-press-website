@@ -89,6 +89,16 @@ const testimonials: Testimonial[] = [
     text: `We turned to the Idea Team to expand the team for our client's project. From the first contact, their structured approach and expertise were clear. The team quickly immersed themselves, offered innovative solutions, ensured transparent communication and on-time delivery. The final product exceeded the end client's expectations in functionality and usability.`,
     avatarUrl: "/avatar5.svg",
   },
+  {
+    id: 7,
+    locale: "en",
+    name: "Maryna Shuliak",
+    position: "CBDO",
+    company: "Acropolium",
+    rating: 5,
+    text: `Working with the Idea Team showed us how quickly the team can dive into a project and maintain a high development pace. Communication was always transparent, and the solutions were well-thought-out and effective.`,
+    avatarUrl: "/avatar5.svg",
+  },
 ];
 
 export function FeedbackSection() {
