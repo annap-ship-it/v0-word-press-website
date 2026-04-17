@@ -112,46 +112,45 @@ export function HeroBanner() {
 
           <div className="flex flex-col items-center gap-4 mt-12 md:mt-14">
             <button
-              className="h-10 rounded-full px-7 font-normal transition-all duration-300 ease-out disabled:cursor-not-allowed md:w-[200px] md:h-[40px]"
-              style={{
-                width: "200px",
-                height: "40px",
-                borderRadius: "50px",
-                padding: "4px 14px",
-                fontSize: "16px",
-                lineHeight: "100%",
-                fontFamily: "Onest",
-                fontWeight: 400,
-                letterSpacing: "0%",
-                background: "#FF6200",
-                color: "#FFFFFF",
-              }}
-              onClick={() => setIsPopoutOpen(true)}
-              onMouseEnter={(e) => {
-                if (!e.currentTarget.disabled) {
-                  e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!e.currentTarget.disabled) {
-                  e.currentTarget.style.background = "#FF6200"
-                }
-              }}
-              onMouseDown={(e) => {
-                if (!e.currentTarget.disabled) {
-                  e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
-                }
-              }}
-              onMouseUp={(e) => {
-                if (!e.currentTarget.disabled) {
-                  e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
-                }
-              }}
-              disabled={false}
-            >
-              {t.buttonText}
-            </button>
-
+  className="h-10 rounded-full px-7 font-normal transition-all duration-300 ease-out disabled:cursor-not-allowed md:w-[200px] md:h-[40px]"
+  style={{
+    width: "200px",
+    height: "40px",
+    borderRadius: "50px",
+    padding: "4px 14px",
+    fontSize: "16px",
+    lineHeight: "100%",
+    fontFamily: "Onest",
+    fontWeight: 400,
+    letterSpacing: "0%",
+    background: "#FF6200",
+    color: "#FFFFFF",
+  }}
+  onClick={() => setContactFormOpen(true)}     // ← Изменено: теперь открывает форму консультации
+  onMouseEnter={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "#FF6200"
+    }
+  }}
+  onMouseDown={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "linear-gradient(93.96deg, #FF6200 -62.56%, #000000 61.87%)"
+    }
+  }}
+  onMouseUp={(e) => {
+    if (!e.currentTarget.disabled) {
+      e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
+    }
+  }}
+  disabled={false}
+>
+  {t.buttonText}
+</button>
             <p
               className="text-white/80 text-center md:w-[272px] md:h-[40px] md:mt-[15px] opacity-60"
               style={{
