@@ -1,5 +1,3 @@
-// components/consultation-modal.tsx
-
 "use client"
 
 import { useState, useRef, useEffect } from "react"
