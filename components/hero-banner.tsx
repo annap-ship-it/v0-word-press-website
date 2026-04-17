@@ -1,3 +1,5 @@
+// components/hero-banner.tsx
+
 "use client"
 
 import { useTheme } from "@/lib/theme-context"
@@ -5,7 +7,7 @@ import { useLocale } from "@/lib/locale-context"
 import { useState } from "react"
 
 import LiquidEther from "./liquid-ether"
-import ConsultationModal from "./consultation-modal"   // ← Новый модальный компонент
+import ConsultationModal from "./consultation-modal"
 import CalculatorModal from "./calculator-modal"
 
 export function HeroBanner() {
@@ -113,7 +115,7 @@ export function HeroBanner() {
                 background: "#FF6200",
                 color: "#FFFFFF",
               }}
-              onClick={() => setContactFormOpen(true)}   // ← Открывает форму
+              onClick={() => setContactFormOpen(true)}
               onMouseEnter={(e) => {
                 if (!e.currentTarget.disabled) {
                   e.currentTarget.style.background = "linear-gradient(92.84deg, #FF6200 29.79%, #000000 100.07%)"
@@ -156,13 +158,13 @@ export function HeroBanner() {
         </div>
       </section>
 
-      {/* Модальное окно с формой консультации */}
+      {/* Модальное окно с формой */}
       <ConsultationModal
         isOpen={contactFormOpen}
         onClose={() => setContactFormOpen(false)}
       />
 
-      {/* Калькулятор (оставлен на случай) */}
+      {/* Калькулятор */}
       <CalculatorModal
         isOpen={isCalculatorOpen}
         onClose={() => setIsCalculatorOpen(false)}
